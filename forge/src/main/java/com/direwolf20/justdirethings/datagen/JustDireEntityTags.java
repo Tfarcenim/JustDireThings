@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -18,14 +18,14 @@ import java.util.concurrent.CompletableFuture;
 
 public class JustDireEntityTags extends EntityTypeTagsProvider {
     public JustDireEntityTags(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> providerCompletableFuture, @Nullable ExistingFileHelper existingFileHelper) {
-        super(packOutput, providerCompletableFuture, JustDireThingsForge.MODID, existingFileHelper);
+        super(packOutput, providerCompletableFuture, JustDireThings.MODID, existingFileHelper);
     }
 
-    public static final TagKey<EntityType<?>> CREATURE_CATCHER_DENY = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "creature_catcher_deny"));
-    public static final TagKey<EntityType<?>> NO_AI_DENY = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "no_ai_deny"));
-    public static final TagKey<EntityType<?>> NO_EARTHQUAKE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "no_earthquake"));
-    public static final TagKey<EntityType<?>> PARADOX_DENY = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "paradox_deny"));
-    public static final TagKey<EntityType<?>> PARADOX_ABSORB_DENY = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "paradox_absorb_deny"));
+    public static final TagKey<EntityType<?>> CREATURE_CATCHER_DENY = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "creature_catcher_deny"));
+    public static final TagKey<EntityType<?>> NO_AI_DENY = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "no_ai_deny"));
+    public static final TagKey<EntityType<?>> NO_EARTHQUAKE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "no_earthquake"));
+    public static final TagKey<EntityType<?>> PARADOX_DENY = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "paradox_deny"));
+    public static final TagKey<EntityType<?>> PARADOX_ABSORB_DENY = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "paradox_absorb_deny"));
 
 
     @Override

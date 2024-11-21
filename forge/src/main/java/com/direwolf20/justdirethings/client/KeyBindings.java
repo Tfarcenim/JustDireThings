@@ -1,7 +1,7 @@
 package com.direwolf20.justdirethings.client;
 
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.items.PortalGunV2;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableItem;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -50,12 +50,12 @@ public class KeyBindings {
 
     @SubscribeEvent
     public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
-        LOGGER.debug("Registering {} keybinding for {}", keyMappings.size(), JustDireThingsForge.MODID);
+        LOGGER.debug("Registering {} keybinding for {}", keyMappings.size(), JustDireThings.MODID);
         keyMappings.forEach(event::register);
     }
 
     private static String getKey(String name) {
-        return String.join(".", JustDireThingsForge.MODID, "key", name);
+        return String.join(".", JustDireThings.MODID, "key", name);
     }
 
     public static void onClientInput(InputEvent.Key event) {

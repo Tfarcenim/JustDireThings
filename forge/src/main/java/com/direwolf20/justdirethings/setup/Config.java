@@ -2,9 +2,9 @@ package com.direwolf20.justdirethings.setup;
 
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.mojang.logging.LogUtils;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
@@ -13,95 +13,95 @@ import java.util.Map;
 public class Config {
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final ModConfigSpec.Builder CLIENT_BUILDER = new ModConfigSpec.Builder();
-    public static final ModConfigSpec.Builder COMMON_BUILDER = new ModConfigSpec.Builder();
-    public static final ModConfigSpec.Builder SERVER_BUILDER = new ModConfigSpec.Builder();
+    public static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
+    public static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
+    public static final ForgeConfigSpec.Builder SERVER_BUILDER = new ForgeConfigSpec.Builder();
 
-    public static ModConfigSpec COMMON_CONFIG;
+    public static ForgeConfigSpec COMMON_CONFIG;
 
     public static final String OVERLAY_POSITION = "overlay_position";
-    public static ModConfigSpec.IntValue OVERLAY_X;
-    public static ModConfigSpec.IntValue OVERLAY_Y;
+    public static ForgeConfigSpec.IntValue OVERLAY_X;
+    public static ForgeConfigSpec.IntValue OVERLAY_Y;
 
     public static final String CATEGORY_GENERAL = "general";
-    public static ModConfigSpec.IntValue MINIMUM_MACHINE_TICK_SPEED;
+    public static ForgeConfigSpec.IntValue MINIMUM_MACHINE_TICK_SPEED;
 
     public static final String CATEGORY_GOO = "goo";
-    public static ModConfigSpec.BooleanValue GOO_CAN_DIE;
-    public static ModConfigSpec.DoubleValue GOO_DEATH_CHANCE;
+    public static ForgeConfigSpec.BooleanValue GOO_CAN_DIE;
+    public static ForgeConfigSpec.DoubleValue GOO_DEATH_CHANCE;
 
     public static final String CATEGORY_ABILITIES = "abilities";
-    public static Map<Ability, ModConfigSpec.BooleanValue> AVAILABLE_ABILITY_MAP = new HashMap<>();
-    public static ModConfigSpec.IntValue TOOL_MAX_BREAK_FERRICORE;
-    public static ModConfigSpec.IntValue TOOL_MAX_BREAK_BLAZEGOLD;
-    public static ModConfigSpec.IntValue TOOL_MAX_BREAK_CELESTIGEM;
-    public static ModConfigSpec.IntValue TOOL_MAX_BREAK_ECLIPSEALLOY;
+    public static Map<Ability, ForgeConfigSpec.BooleanValue> AVAILABLE_ABILITY_MAP = new HashMap<>();
+    public static ForgeConfigSpec.IntValue TOOL_MAX_BREAK_FERRICORE;
+    public static ForgeConfigSpec.IntValue TOOL_MAX_BREAK_BLAZEGOLD;
+    public static ForgeConfigSpec.IntValue TOOL_MAX_BREAK_CELESTIGEM;
+    public static ForgeConfigSpec.IntValue TOOL_MAX_BREAK_ECLIPSEALLOY;
 
     public static final String CATEGORY_GENERATOR_T1 = "generator_t1";
-    public static ModConfigSpec.IntValue GENERATOR_T1_FE_PER_FUEL_TICK;
-    public static ModConfigSpec.IntValue GENERATOR_T1_BURN_SPEED_MULTIPLIER;
-    public static ModConfigSpec.IntValue GENERATOR_T1_MAX_FE;
-    public static ModConfigSpec.IntValue GENERATOR_T1_FE_PER_TICK;
+    public static ForgeConfigSpec.IntValue GENERATOR_T1_FE_PER_FUEL_TICK;
+    public static ForgeConfigSpec.IntValue GENERATOR_T1_BURN_SPEED_MULTIPLIER;
+    public static ForgeConfigSpec.IntValue GENERATOR_T1_MAX_FE;
+    public static ForgeConfigSpec.IntValue GENERATOR_T1_FE_PER_TICK;
 
     public static final String CATEGORY_GENERATOR_FLUID_T1 = "generator_fluid_t1";
-    public static ModConfigSpec.IntValue GENERATOR_FLUID_T1_MAX_FE;
-    public static ModConfigSpec.IntValue GENERATOR_FLUID_T1_FE_PER_TICK;
-    public static ModConfigSpec.IntValue FUEL_TIER2_FE_PER_MB;
-    public static ModConfigSpec.IntValue FUEL_TIER3_FE_PER_MB;
-    public static ModConfigSpec.IntValue FUEL_TIER4_FE_PER_MB;
+    public static ForgeConfigSpec.IntValue GENERATOR_FLUID_T1_MAX_FE;
+    public static ForgeConfigSpec.IntValue GENERATOR_FLUID_T1_FE_PER_TICK;
+    public static ForgeConfigSpec.IntValue FUEL_TIER2_FE_PER_MB;
+    public static ForgeConfigSpec.IntValue FUEL_TIER3_FE_PER_MB;
+    public static ForgeConfigSpec.IntValue FUEL_TIER4_FE_PER_MB;
 
     public static final String CATEGORY_FUEL_CANISTER = "fuel_canister";
-    public static ModConfigSpec.IntValue FUEL_CANISTER_MINIMUM_TICKS_CONSUMED;
-    public static ModConfigSpec.IntValue FUEL_CANISTER_MAXIMUM_FUEL;
+    public static ForgeConfigSpec.IntValue FUEL_CANISTER_MINIMUM_TICKS_CONSUMED;
+    public static ForgeConfigSpec.IntValue FUEL_CANISTER_MAXIMUM_FUEL;
 
     public static final String CATEGORY_PORTAL_GUNS = "portal_gun";
-    public static ModConfigSpec.IntValue PORTAL_GUN_V1_RF_CAPACITY;
-    public static ModConfigSpec.IntValue PORTAL_GUN_V1_RF_COST;
-    public static ModConfigSpec.IntValue PORTAL_GUN_V2_RF_CAPACITY;
-    public static ModConfigSpec.IntValue PORTAL_GUN_V2_RF_COST;
+    public static ForgeConfigSpec.IntValue PORTAL_GUN_V1_RF_CAPACITY;
+    public static ForgeConfigSpec.IntValue PORTAL_GUN_V1_RF_COST;
+    public static ForgeConfigSpec.IntValue PORTAL_GUN_V2_RF_CAPACITY;
+    public static ForgeConfigSpec.IntValue PORTAL_GUN_V2_RF_COST;
 
     public static final String CATEGORY_TIME_WAND = "time_wand";
-    public static ModConfigSpec.IntValue TIME_WAND_RF_CAPACITY;
-    public static ModConfigSpec.IntValue TIMEWAND_RF_COST;
-    public static ModConfigSpec.DoubleValue TIMEWAND_FLUID_COST;
-    public static ModConfigSpec.ConfigValue<Integer> TIME_WAND_MAX_MULTIPLIER;
-    public static ModConfigSpec.BooleanValue TIME_WAND_FAKE_PLAYER_ALLOWED;
+    public static ForgeConfigSpec.IntValue TIME_WAND_RF_CAPACITY;
+    public static ForgeConfigSpec.IntValue TIMEWAND_RF_COST;
+    public static ForgeConfigSpec.DoubleValue TIMEWAND_FLUID_COST;
+    public static ForgeConfigSpec.ConfigValue<Integer> TIME_WAND_MAX_MULTIPLIER;
+    public static ForgeConfigSpec.BooleanValue TIME_WAND_FAKE_PLAYER_ALLOWED;
 
     public static final String CATEGORY_PARADOX_MACHINE = "paradox_machine";
-    public static ModConfigSpec.IntValue PARADOX_TOTAL_FLUID_CAPACITY;
-    public static ModConfigSpec.IntValue PARADOX_TOTAL_RF_CAPACITY;
-    public static ModConfigSpec.IntValue PARADOX_RF_PER_ENTITY;
-    public static ModConfigSpec.IntValue PARADOX_RF_PER_BLOCK;
-    public static ModConfigSpec.IntValue PARADOX_FLUID_PER_ENTITY;
-    public static ModConfigSpec.IntValue PARADOX_FLUID_PER_BLOCK;
-    public static ModConfigSpec.DoubleValue PARADOX_ENERGY_PER_BLOCK;
-    public static ModConfigSpec.DoubleValue PARADOX_ENERGY_PER_ENTITY;
-    public static ModConfigSpec.DoubleValue PARADOX_ENERGY_MAX;
-    public static ModConfigSpec.BooleanValue PARADOX_RESTRICTED_MOBS;
+    public static ForgeConfigSpec.IntValue PARADOX_TOTAL_FLUID_CAPACITY;
+    public static ForgeConfigSpec.IntValue PARADOX_TOTAL_RF_CAPACITY;
+    public static ForgeConfigSpec.IntValue PARADOX_RF_PER_ENTITY;
+    public static ForgeConfigSpec.IntValue PARADOX_RF_PER_BLOCK;
+    public static ForgeConfigSpec.IntValue PARADOX_FLUID_PER_ENTITY;
+    public static ForgeConfigSpec.IntValue PARADOX_FLUID_PER_BLOCK;
+    public static ForgeConfigSpec.DoubleValue PARADOX_ENERGY_PER_BLOCK;
+    public static ForgeConfigSpec.DoubleValue PARADOX_ENERGY_PER_ENTITY;
+    public static ForgeConfigSpec.DoubleValue PARADOX_ENERGY_MAX;
+    public static ForgeConfigSpec.BooleanValue PARADOX_RESTRICTED_MOBS;
 
     public static final String ENERGY_TRANSMITTER_T1 = "energy_transmitter_t1";
-    public static ModConfigSpec.DoubleValue ENERGY_TRANSMITTER_T1_LOSS_PER_BLOCK;
-    public static ModConfigSpec.IntValue ENERGY_TRANSMITTER_T1_MAX_RF;
-    public static ModConfigSpec.IntValue ENERGY_TRANSMITTER_T1_RF_PER_TICK;
+    public static ForgeConfigSpec.DoubleValue ENERGY_TRANSMITTER_T1_LOSS_PER_BLOCK;
+    public static ForgeConfigSpec.IntValue ENERGY_TRANSMITTER_T1_MAX_RF;
+    public static ForgeConfigSpec.IntValue ENERGY_TRANSMITTER_T1_RF_PER_TICK;
 
     public static final String CATEGORY_POCKET_GENERATOR = "pocket_generator";
-    public static ModConfigSpec.IntValue POCKET_GENERATOR_FE_PER_FUEL_TICK;
-    public static ModConfigSpec.IntValue POCKET_GENERATOR_BURN_SPEED_MULTIPLIER;
-    public static ModConfigSpec.IntValue POCKET_GENERATOR_MAX_FE;
-    public static ModConfigSpec.IntValue POCKET_GENERATOR_FE_PER_TICK;
+    public static ForgeConfigSpec.IntValue POCKET_GENERATOR_FE_PER_FUEL_TICK;
+    public static ForgeConfigSpec.IntValue POCKET_GENERATOR_BURN_SPEED_MULTIPLIER;
+    public static ForgeConfigSpec.IntValue POCKET_GENERATOR_MAX_FE;
+    public static ForgeConfigSpec.IntValue POCKET_GENERATOR_FE_PER_TICK;
 
-    public static void register(ModContainer container) {
+    public static void register(ModLoadingContext container) {
         //registerServerConfigs(container);
         registerCommonConfigs(container);
         registerClientConfigs(container);
     }
 
-    private static void registerClientConfigs(ModContainer container) {
+    private static void registerClientConfigs(ModLoadingContext container) {
         overlayConfig();
         container.registerConfig(ModConfig.Type.CLIENT, CLIENT_BUILDER.build());
     }
 
-    private static void registerCommonConfigs(ModContainer container) {
+    private static void registerCommonConfigs(ModLoadingContext container) {
         generalConfig();
         gooConfig();
         abilityConfigs();
@@ -117,7 +117,7 @@ public class Config {
         container.registerConfig(ModConfig.Type.COMMON, COMMON_CONFIG);
     }
 
-    private static void registerServerConfigs(ModContainer container) {
+    private static void registerServerConfigs(ModLoadingContext container) {
 
         container.registerConfig(ModConfig.Type.SERVER, SERVER_BUILDER.build());
     }

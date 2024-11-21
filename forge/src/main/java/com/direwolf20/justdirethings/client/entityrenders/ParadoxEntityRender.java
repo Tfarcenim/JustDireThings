@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.entityrenders;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.renderers.OurRenderTypes;
 import com.direwolf20.justdirethings.client.renderers.RenderHelpers;
 import com.direwolf20.justdirethings.common.entities.ParadoxEntity;
@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class ParadoxEntityRender extends EntityRenderer<ParadoxEntity> {
     private static final Random random = new Random();  // Use entity's tickCount to seed the randomness
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/entity/vortex1.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/entity/vortex1.png");
 
     private float savedPulseScale = -1;
 

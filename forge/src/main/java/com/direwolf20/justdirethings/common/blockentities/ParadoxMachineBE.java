@@ -17,7 +17,6 @@ import com.direwolf20.justdirethings.util.interfacehelpers.AreaAffectingData;
 import com.direwolf20.justdirethings.util.interfacehelpers.RedstoneControlData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -677,7 +676,7 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         if (level.isClientSide && isRunning && !pkt.getTag().getBoolean("isRunning")) {
             Minecraft mc = Minecraft.getInstance();
             if (mc.level != null) {
@@ -685,13 +684,13 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
                 mc.getSoundManager().stop(SoundEvents.PORTAL_AMBIENT.getLocation(), SoundSource.BLOCKS);
             }
         }
-        super.onDataPacket(net, pkt, lookupProvider);
+        super.onDataPacket(net, pkt);
 
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.put("snapshotData", snapshotData);
         tag.putBoolean("renderParadox", renderParadox);
         tag.putInt("targetType", targetType);
@@ -721,8 +720,8 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
+    public void load(CompoundTag tag) {
+        super.load(tag);
         if (tag.contains("snapshotData"))
             snapshotData = tag.getCompound("snapshotData");
         if (tag.contains("renderParadox"))

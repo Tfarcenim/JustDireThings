@@ -4,7 +4,7 @@ import com.direwolf20.justdirethings.common.items.FuelCanister;
 import com.direwolf20.justdirethings.datagen.JustDireItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 

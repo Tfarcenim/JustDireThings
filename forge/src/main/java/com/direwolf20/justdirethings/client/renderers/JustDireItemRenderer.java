@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.renderers;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.entities.CreatureCatcherEntity;
 import com.direwolf20.justdirethings.common.items.CreatureCatcher;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -28,7 +28,7 @@ public class JustDireItemRenderer extends BlockEntityWithoutLevelRenderer {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
     }
 
-    private static final ModelResourceLocation CREATURE_CATCHER_BASE = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "item/creaturecatcher_base"));
+    private static final ModelResourceLocation CREATURE_CATCHER_BASE = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "item/creaturecatcher_base"));
 
 
 

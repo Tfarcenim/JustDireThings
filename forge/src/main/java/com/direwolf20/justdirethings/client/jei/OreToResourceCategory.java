@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.jei;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mezz.jei.api.constants.VanillaTypes;
@@ -25,7 +25,7 @@ public class OreToResourceCategory implements IRecipeCategory<OreToResourceRecip
     private final IDrawable icon;
     private final IDrawable pickaxeIcon;
     private final IDrawableAnimated animatedArrow;
-    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "ore_to_resource");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "ore_to_resource");
 
     public OreToResourceCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createBlankDrawable(120, 30);  // Adjust size as needed

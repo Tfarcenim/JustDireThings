@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.entityrenders;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.entitymodels.PortalProjectileModel;
 import com.direwolf20.justdirethings.common.entities.PortalProjectile;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class PortalProjectileRender extends EntityRenderer<PortalProjectile> {
-    protected static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/entity/portal_projectile.png");
+    protected static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/entity/portal_projectile.png");
     protected final PortalProjectileModel model;
 
     public PortalProjectileRender(EntityRendererProvider.Context pContext) {

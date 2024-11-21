@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen.recipes;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.blockentities.basebe.GooBlockBE_Base;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.mojang.serialization.Codec;
@@ -96,7 +96,7 @@ public class GooSpreadRecipe implements CraftingRecipe {
 
 
     public static class Serializer implements RecipeSerializer<GooSpreadRecipe> {
-        private static final net.minecraft.resources.ResourceLocation NAME = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "goospread");
+        private static final net.minecraft.resources.ResourceLocation NAME = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "goospread");
         private static final MapCodec<GooSpreadRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 p_311734_ -> p_311734_.group(
                                 ResourceLocation.CODEC.fieldOf("id").forGetter(p_301134_ -> p_301134_.id),

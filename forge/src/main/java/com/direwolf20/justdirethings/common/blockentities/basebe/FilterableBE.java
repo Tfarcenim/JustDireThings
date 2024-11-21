@@ -163,7 +163,7 @@ public interface FilterableBE {
     }
 
     default boolean isStackValidFilter(LiquidBlock liquidBlock) {
-        ItemStack testStack = new ItemStack(liquidBlock.fluid.getBucket());
+        ItemStack testStack = new ItemStack(liquidBlock.getFluid().getBucket());
         ItemStackKey key = new ItemStackKey(testStack, getFilterData().compareNBT);
         if (getFilterData().filterCache.containsKey(key)) return getFilterData().filterCache.get(key);
 

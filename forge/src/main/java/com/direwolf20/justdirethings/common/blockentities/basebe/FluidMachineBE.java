@@ -2,8 +2,8 @@ package com.direwolf20.justdirethings.common.blockentities.basebe;
 
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public interface FluidMachineBE {
     default int getMaxMB() {

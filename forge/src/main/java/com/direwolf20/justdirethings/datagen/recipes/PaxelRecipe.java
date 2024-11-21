@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen.recipes;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
@@ -168,7 +168,7 @@ public class PaxelRecipe implements SmithingRecipe {
 
 
     public static class Serializer implements RecipeSerializer<PaxelRecipe> {
-        private static final ResourceLocation NAME = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "paxel");
+        private static final ResourceLocation NAME = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "paxel");
         private static final MapCodec<PaxelRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 p_311734_ -> p_311734_.group(
                                 Ingredient.CODEC.fieldOf("template").forGetter(p_301070_ -> p_301070_.template),

@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -12,7 +12,7 @@ public record BlockStateFilterPayload(
         int slot,
         CompoundTag compoundTag
 ) implements CustomPacketPayload {
-    public static final Type<BlockStateFilterPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "block_state_filter_packet"));
+    public static final Type<BlockStateFilterPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "block_state_filter_packet"));
 
     @Override
     public Type<BlockStateFilterPayload> type() {

@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.renderers.shader;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
@@ -63,7 +63,7 @@ public class DireRenderTypes extends RenderType {
 			this.name = name;
 			this.format = format;
 			this.builder = Util.memoize(builder);
-			this.shaderLocation = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, this.name);
+			this.shaderLocation = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, this.name);
 		}
 
 		public RenderType using(List<ShaderTexture> textures) {
@@ -75,7 +75,7 @@ public class DireRenderTypes extends RenderType {
 		}
 
 		public String formattedName() {
-			return "%s_%s".formatted(JustDireThingsForge.MODID, name);
+			return "%s_%s".formatted(JustDireThings.MODID, name);
 		}
 
 		public ResourceLocation shaderLocation() {

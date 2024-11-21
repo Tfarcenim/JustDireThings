@@ -9,7 +9,6 @@ import com.direwolf20.justdirethings.util.NBTHelpers;
 import com.direwolf20.justdirethings.util.interfacehelpers.RedstoneControlData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -488,8 +487,8 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         if (boundTo != null)
             tag.put("boundTo", NBTHelpers.globalPosToNBT(boundTo));
         tag.putBoolean("swapBlocks", swapBlocks);
@@ -497,8 +496,8 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
+    public void load(CompoundTag tag) {
+        super.load(tag);
         if (tag.contains("boundTo")) {
             GlobalPos newBoundTo = NBTHelpers.nbtToGlobalPos(tag.getCompound("boundTo"));
             boolean same = newBoundTo.equals(boundTo);

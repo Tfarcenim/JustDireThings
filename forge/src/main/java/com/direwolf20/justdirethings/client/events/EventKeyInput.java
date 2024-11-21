@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.events;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.KeyBindings;
 import com.direwolf20.justdirethings.client.screens.AdvPortalRadialMenu;
 import com.direwolf20.justdirethings.common.items.PortalGunV2;
@@ -33,7 +33,7 @@ import java.util.List;
 
 import static com.direwolf20.justdirethings.util.MiscTools.getHitResult;
 
-@EventBusSubscriber(modid = JustDireThingsForge.MODID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = JustDireThings.MODID, value = Dist.CLIENT)
 public class EventKeyInput {
 
     @SubscribeEvent

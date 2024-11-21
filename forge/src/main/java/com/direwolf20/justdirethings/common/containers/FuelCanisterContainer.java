@@ -3,13 +3,13 @@ package com.direwolf20.justdirethings.common.containers;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseContainer;
 import com.direwolf20.justdirethings.common.containers.handlers.FuelCanisterHandler;
 import com.direwolf20.justdirethings.setup.Registration;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 public class FuelCanisterContainer extends BaseContainer {
     public static final int SLOTS = 1;
@@ -17,8 +17,8 @@ public class FuelCanisterContainer extends BaseContainer {
     public ItemStack fuelCanisterItemstack;
     public Player playerEntity;
 
-    public FuelCanisterContainer(int windowId, Inventory playerInventory, Player player, RegistryFriendlyByteBuf extraData) {
-        this(windowId, playerInventory, player, ItemStack.OPTIONAL_STREAM_CODEC.decode(extraData));
+    public FuelCanisterContainer(int windowId, Inventory playerInventory, Player player, FriendlyByteBuf extraData) {
+        this(windowId, playerInventory, player, extraData.readItem());
     }
 
     public FuelCanisterContainer(int windowId, Inventory playerInventory, Player player, ItemStack fuelCanister) {

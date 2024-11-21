@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.screens.basescreens;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButtonFactory;
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ValueButtons;
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ValueButtonsDouble;
@@ -45,10 +45,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends BaseScreen<T> {
-    protected final ResourceLocation JUSTSLOT = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/justslot.png");
-    protected final ResourceLocation POWERBAR = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/powerbar.png");
-    protected final ResourceLocation FLUIDBAR = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/fluidbar.png");
-    protected final ResourceLocation SOCIALBACKGROUND = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "background");
+    protected final ResourceLocation JUSTSLOT = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/justslot.png");
+    protected final ResourceLocation POWERBAR = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/powerbar.png");
+    protected final ResourceLocation FLUIDBAR = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/fluidbar.png");
+    protected final ResourceLocation SOCIALBACKGROUND = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "background");
     protected BaseMachineContainer container;
     protected BaseMachineBE baseMachineBE;
     protected double xRadius = 3, yRadius = 3, zRadius = 3;

@@ -73,15 +73,15 @@ public class EclipseGateBE extends BlockEntity {
 
     /** Misc Methods for TE's */
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
+    public void load(CompoundTag tag) {
+        super.load(tag);
         this.sourceBlock = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), tag.getCompound("sourceBlock"));
         this.lifetime = tag.getByte("lifetime");
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         if (this.sourceBlock != null) {
             tag.put("sourceBlock", NbtUtils.writeBlockState(this.sourceBlock));
             tag.putByte("lifetime", this.lifetime);
@@ -95,20 +95,20 @@ public class EclipseGateBE extends BlockEntity {
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        this.loadAdditional(tag, lookupProvider);
+    public void handleUpdateTag(CompoundTag tag) {
+        this.load(tag);
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider p_323910_) {
+    public CompoundTag getUpdateTag() {
         CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, p_323910_);
+        saveAdditional(tag);
         return tag;
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        this.loadAdditional(pkt.getTag(), lookupProvider);
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        this.load(pkt.getTag());
     }
 
     public void markDirtyClient() {

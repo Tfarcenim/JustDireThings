@@ -142,8 +142,8 @@ public class InventoryHolderBE extends BaseMachineBE {
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.putBoolean("compareNBT", compareNBT);
         tag.putBoolean("filtersOnly", filtersOnly);
         tag.putBoolean("compareCounts", compareCounts);
@@ -156,8 +156,8 @@ public class InventoryHolderBE extends BaseMachineBE {
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
+    public void load(CompoundTag tag) {
+        super.load(tag);
         compareNBT = tag.getBoolean("compareNBT");
         filtersOnly = tag.getBoolean("filtersOnly");
         compareCounts = tag.getBoolean("compareCounts");

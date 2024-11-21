@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.platform;
 
-import com.example.examplemod.platform.services.IPlatformHelper;
+import com.direwolf20.justdirethings.platform.services.IPlatformHelper;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
 

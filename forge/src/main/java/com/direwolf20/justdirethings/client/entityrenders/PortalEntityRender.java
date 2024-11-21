@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.entityrenders;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.renderers.shader.DireRenderTypes;
 import com.direwolf20.justdirethings.client.renderers.shader.ShaderTexture;
 import com.direwolf20.justdirethings.common.entities.PortalEntity;
@@ -25,7 +25,7 @@ import static com.direwolf20.justdirethings.client.renderers.RenderHelpers.rende
 public class PortalEntityRender<T extends PortalEntity> extends EntityRenderer<T> {
     protected static final RenderType renderType = DireRenderTypes.getRenderType("portal_entity")
             .using(List.of(
-                    new ShaderTexture(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/block/portal_shader.png"))
+                    new ShaderTexture(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/block/portal_shader.png"))
             ));
     public PortalEntityRender(EntityRendererProvider.Context pContext) {
         super(pContext);

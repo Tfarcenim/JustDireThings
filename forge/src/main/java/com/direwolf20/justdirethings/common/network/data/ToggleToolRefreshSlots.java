@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 public record ToggleToolRefreshSlots(
         int slot
 ) implements CustomPacketPayload {
-    public static final Type<ToggleToolRefreshSlots> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "toggle_tool_refresh_slots"));
+    public static final Type<ToggleToolRefreshSlots> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "toggle_tool_refresh_slots"));
 
     @Override
     public Type<ToggleToolRefreshSlots> type() {

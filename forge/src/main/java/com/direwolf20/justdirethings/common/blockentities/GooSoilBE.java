@@ -9,9 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class GooSoilBE extends BlockEntity {
     private NBTHelpers.BoundInventory boundInventory;
@@ -42,17 +40,16 @@ public class GooSoilBE extends BlockEntity {
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         if (boundInventory != null) {
             tag.put("boundinventory", NBTHelpers.BoundInventory.toNBT(boundInventory));
         }
     }
 
-    @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+    public void load(CompoundTag tag) {
         if (tag.contains("boundinventory"))
             boundInventory = NBTHelpers.BoundInventory.fromNBT(tag.getCompound("boundinventory"));
-        super.loadAdditional(tag, provider);
+        super.load(tag);
     }
 }

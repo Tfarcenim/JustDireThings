@@ -6,8 +6,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.Random;
 
@@ -35,7 +35,7 @@ public class MiscHelpers {
         BlockEntity be = level.getBlockEntity(blockPos);
         // if we have a TE and its an item handler, try extracting from that
         if (be != null) {
-            IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockPos, side);
+            IItemHandler handler = be.getCapability(ForgeCapabilities.ITEM_HANDLER,side).orElse(null);
             return handler;
         }
         return null;

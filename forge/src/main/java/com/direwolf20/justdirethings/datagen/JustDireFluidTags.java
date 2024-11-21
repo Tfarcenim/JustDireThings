@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -19,7 +19,7 @@ public class JustDireFluidTags extends FluidTagsProvider {
     public static final TagKey<Fluid> EXPERIENCE = forgeTag("experience");
 
     public JustDireFluidTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, JustDireThingsForge.MODID, existingFileHelper);
+        super(output, lookupProvider, JustDireThings.MODID, existingFileHelper);
     }
 
     private static TagKey<Fluid> forgeTag(String name) {

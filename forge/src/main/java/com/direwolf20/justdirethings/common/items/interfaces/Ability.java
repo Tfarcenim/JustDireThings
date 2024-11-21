@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.items.interfaces;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +37,7 @@ public enum Ability {
     MINDFOG(SettingType.TOGGLE, 1, 50, UseType.PASSIVE, BindingType.CUSTOM_ONLY, Registration.UPGRADE_MINDFOG),
     INVULNERABILITY(SettingType.SLIDER, 25, 5000, UseType.USE_COOLDOWN, BindingType.CUSTOM_ONLY,
             AbilityMethods::invulnerability, CustomSettingType.NONE,
-            ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/overlay/invulnerability.png"), Registration.UPGRADE_INVULNERABILITY),
+            ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/overlay/invulnerability.png"), Registration.UPGRADE_INVULNERABILITY),
     POTIONARROW(SettingType.TOGGLE, 1, 50, UseType.PASSIVE, BindingType.CUSTOM_ONLY, Registration.UPGRADE_POTIONARROW),
 
     //Tier 2
@@ -47,20 +47,20 @@ public enum Ability {
     LAVAREPAIR(SettingType.TOGGLE, 0, 0, UseType.PASSIVE, BindingType.CUSTOM_ONLY),
     CAUTERIZEWOUNDS(SettingType.TOGGLE, 30, 1500, UseType.USE_COOLDOWN, BindingType.LEFT_AND_CUSTOM,
             AbilityMethods::cauterizeWounds, CustomSettingType.NONE,
-            ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/overlay/cauterizewounds.png"), Registration.UPGRADE_CAUTERIZEWOUNDS),
+            ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/overlay/cauterizewounds.png"), Registration.UPGRADE_CAUTERIZEWOUNDS),
     AIRBURST(SettingType.SLIDER, 1, 250, UseType.USE, BindingType.LEFT_AND_CUSTOM,
             AbilityMethods::airBurst, CustomSettingType.NONE),
     SWIMSPEED(SettingType.SLIDER, 1, 5, UseType.PASSIVE_TICK, BindingType.CUSTOM_ONLY,
             AbilityMethods::swimSpeed, CustomSettingType.NONE, Registration.UPGRADE_SWIMSPEED),
     GROUNDSTOMP(SettingType.SLIDER, 25, 5000, UseType.USE_COOLDOWN, BindingType.CUSTOM_ONLY,
             AbilityMethods::groundstomp, CustomSettingType.NONE,
-            ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/overlay/groundstomp.png"), Registration.UPGRADE_GROUNDSTOMP),
+            ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/overlay/groundstomp.png"), Registration.UPGRADE_GROUNDSTOMP),
     EXTINGUISH(SettingType.SLIDER, 25, 5000, UseType.PASSIVE_TICK_COOLDOWN, BindingType.CUSTOM_ONLY,
             AbilityMethods::extinguish, CustomSettingType.NONE,
-            ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/overlay/extinguish.png"), Registration.UPGRADE_EXTINGUISH),
+            ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/overlay/extinguish.png"), Registration.UPGRADE_EXTINGUISH),
     STUPEFY(SettingType.SLIDER, 25, 5000, UseType.USE_COOLDOWN, BindingType.CUSTOM_ONLY,
             AbilityMethods::stupefy, CustomSettingType.NONE,
-            ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/overlay/stupefy.png"), Registration.UPGRADE_STUPEFY),
+            ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/overlay/stupefy.png"), Registration.UPGRADE_STUPEFY),
     SPLASH(SettingType.TOGGLE, 20, 250, UseType.PASSIVE, BindingType.CUSTOM_ONLY, Registration.UPGRADE_SPLASH),
 
     //Tier 3
@@ -72,7 +72,7 @@ public enum Ability {
     ELYTRA(SettingType.SLIDER, 1, 1000, UseType.PASSIVE, BindingType.CUSTOM_ONLY, Registration.UPGRADE_ELYTRA),
     DECOY(SettingType.SLIDER, 25, 5000, UseType.USE_COOLDOWN, BindingType.CUSTOM_ONLY,
             AbilityMethods::decoy, CustomSettingType.NONE,
-            ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/overlay/decoy.png"), Registration.UPGRADE_DECOY),
+            ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/overlay/decoy.png"), Registration.UPGRADE_DECOY),
     LINGERING(SettingType.TOGGLE, 50, 1000, UseType.PASSIVE, BindingType.CUSTOM_ONLY, Registration.UPGRADE_LINGERING),
     HOMING(SettingType.TOGGLE, 50, 2000, UseType.PASSIVE, BindingType.CUSTOM_ONLY, CustomSettingType.TARGET, Registration.UPGRADE_HOMING),
     WATERBREATHING(SettingType.TOGGLE, 50, 500, UseType.PASSIVE_TICK, BindingType.CUSTOM_ONLY, AbilityMethods::waterBreathing, CustomSettingType.NONE, Registration.UPGRADE_WATERBREATHING),
@@ -87,16 +87,16 @@ public enum Ability {
             AbilityMethods::eclipseGate, CustomSettingType.NONE), //FE Per block Removed
     DEATHPROTECTION(SettingType.SLIDER, 25, 450000, UseType.PASSIVE_COOLDOWN, BindingType.CUSTOM_ONLY,
             CustomSettingType.NONE,
-            ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/overlay/deathprotection.png"), Registration.UPGRADE_DEATHPROTECTION),
+            ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/overlay/deathprotection.png"), Registration.UPGRADE_DEATHPROTECTION),
     DEBUFFREMOVER(SettingType.SLIDER, 25, 50000, UseType.USE_COOLDOWN, BindingType.CUSTOM_ONLY,
             AbilityMethods::debuffRemover, CustomSettingType.NONE,
-            ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/overlay/debuffremover.png"), Registration.UPGRADE_DEBUFFREMOVER),
+            ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/overlay/debuffremover.png"), Registration.UPGRADE_DEBUFFREMOVER),
     EARTHQUAKE(SettingType.SLIDER, 25, 50000, UseType.USE_COOLDOWN, BindingType.CUSTOM_ONLY,
             AbilityMethods::earthquake, CustomSettingType.NONE,
-            ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/overlay/earthquake.png"), Registration.UPGRADE_EARTHQUAKE),
+            ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/overlay/earthquake.png"), Registration.UPGRADE_EARTHQUAKE),
     NOAI(SettingType.SLIDER, 25, 100000, UseType.USE_COOLDOWN, BindingType.CUSTOM_ONLY,
             AbilityMethods::noAI, CustomSettingType.NONE,
-            ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/overlay/noai.png"), Registration.UPGRADE_NOAI),
+            ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/overlay/noai.png"), Registration.UPGRADE_NOAI),
     FLIGHT(SettingType.SLIDER, 1, 100, UseType.PASSIVE_TICK, BindingType.CUSTOM_ONLY,
             AbilityMethods::flight, CustomSettingType.NONE, Registration.UPGRADE_FLIGHT),
     LAVAIMMUNITY(SettingType.SLIDER, 1, 1000, UseType.PASSIVE, BindingType.CUSTOM_ONLY, Registration.UPGRADE_LAVAIMMUNITY),
@@ -104,7 +104,7 @@ public enum Ability {
     TIMEPROTECTION(SettingType.SLIDER, 1, 5000, UseType.PASSIVE, BindingType.CUSTOM_ONLY, Registration.UPGRADE_TIMEPROTECTION),
     EPICARROW(SettingType.SLIDER, 25, 100000, UseType.USE_COOLDOWN, BindingType.CUSTOM_ONLY,
             AbilityMethods::epicArrow, CustomSettingType.NONE,
-            ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/overlay/epicarrow.png"), Registration.UPGRADE_EPICARROW);
+            ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/overlay/epicarrow.png"), Registration.UPGRADE_EPICARROW);
 
 
     public enum SettingType {
@@ -156,7 +156,7 @@ public enum Ability {
         this.name = this.name().toLowerCase(Locale.ROOT);
         this.settingType = settingType;
         this.localization = "justdirethings.ability." + name;
-        this.iconLocation = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/buttons/" + name + ".png");
+        this.iconLocation = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/" + name + ".png");
         this.durabilityCost = durabilityCost;
         this.feCost = feCost;
         this.bindingType = bindingType;

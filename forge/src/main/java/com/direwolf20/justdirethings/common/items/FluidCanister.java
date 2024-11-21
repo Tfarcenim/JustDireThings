@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.items;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.FluidContainingItem;
 import com.direwolf20.justdirethings.util.MagicHelpers;
@@ -61,7 +61,7 @@ public class FluidCanister extends Item implements FluidContainingItem {
         }
 
         public Component getTooltip() {
-            return Component.translatable(JustDireThingsForge.MODID + ".fillmode." + baseName);
+            return Component.translatable(JustDireThings.MODID + ".fillmode." + baseName);
         }
 
         public FillMode next() {
@@ -116,7 +116,7 @@ public class FluidCanister extends Item implements FluidContainingItem {
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack slotStack = player.getInventory().getItem(i);
                 if (slotStack.getItem() instanceof FluidCanister) continue;
-                if (fillMode == FillMode.JDTONLY && !slotStack.getItem().getCreatorModId(slotStack).equals(JustDireThingsForge.MODID))
+                if (fillMode == FillMode.JDTONLY && !slotStack.getItem().getCreatorModId(slotStack).equals(JustDireThings.MODID))
                     continue;
                 IFluidHandlerItem slotFluidHandler = slotStack.getCapability(Capabilities.FluidHandler.ITEM);
                 if (slotFluidHandler != null) {

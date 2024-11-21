@@ -23,30 +23,25 @@ import com.direwolf20.justdirethings.setup.Registration;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.loading.FMLLoader;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
-import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.neoforged.neoforge.items.ComponentItemHandler;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
-@Mod(JustDireThingsForge.MODID)
+@Mod(JustDireThings.MODID)
 public class JustDireThingsForge {
-    public static final String MODID = "justdirethings";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public JustDireThingsForge(IEventBus modEventBus, ModContainer container) {
+    public JustDireThingsForge() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Registration.init(modEventBus);
-        Config.register(container);
+        Config.register(ModLoadingContext.get());
 
         modEventBus.addListener(ModSetup::init);
         ModSetup.CREATIVE_MODE_TABS.register(modEventBus);
@@ -58,6 +53,7 @@ public class JustDireThingsForge {
         if (FMLLoader.getDist().isClient()) {
             modEventBus.addListener(ClientSetup::init);
         }
+        JustDireThings.init();
     }
 
     private void registerEntityAttributes(EntityAttributeCreationEvent event) {
@@ -66,8 +62,7 @@ public class JustDireThingsForge {
     }
 
     private void registerCustomAttributes(EntityAttributeModificationEvent event) {
-        event.add(EntityType.PLAYER,
-                Registration.PHASE);
+        event.add(EntityType.PLAYER, Registration.PHASE);
     }
 
     private void registerChunkLoaders(RegisterTicketControllersEvent event) {

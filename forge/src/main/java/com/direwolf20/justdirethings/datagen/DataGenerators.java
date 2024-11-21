@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = JustDireThingsForge.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = JustDireThings.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {

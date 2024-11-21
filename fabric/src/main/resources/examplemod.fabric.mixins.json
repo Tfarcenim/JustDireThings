@@ -7,7 +7,7 @@
     "mixins": [
     ],
     "client": [
-        "MixinTitleScreen"
+      "com.direwolf20.justdirethings.mixin.MixinTitleScreen"
     ],
     "server": [
     ],

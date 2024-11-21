@@ -19,6 +19,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -102,7 +106,7 @@ public class FluidPlacerT1BE extends BaseMachineBE implements RedstoneControlled
         FluidStack fluidStack = fluidHandlerItem.drain(1000, IFluidHandler.FluidAction.SIMULATE);
         if (fluidStack.getAmount() == 0)
             return false;
-        if (!getFluidStack().isEmpty() && !getFluidStack().is(fluidStack.getFluid()))
+        if (!getFluidStack().isEmpty() && !getFluidStack().isFluidEqual(fluidStack))
             return false;
         return true;
     }

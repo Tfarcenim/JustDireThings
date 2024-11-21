@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -15,7 +15,7 @@ public record ToggleToolLeftRightClickPayload(
         boolean isMouse,
         boolean requireEquipped
 ) implements CustomPacketPayload {
-    public static final Type<ToggleToolLeftRightClickPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "tool_left_right_click_settings_packet"));
+    public static final Type<ToggleToolLeftRightClickPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "tool_left_right_click_settings_packet"));
 
     @Override
     public Type<ToggleToolLeftRightClickPayload> type() {

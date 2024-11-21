@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -18,7 +18,7 @@ public record LeftClickPayload(
         int keyCode, //-1 for left click
         boolean isMouse
 ) implements CustomPacketPayload {
-    public static final Type<LeftClickPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "left_click_packet"));
+    public static final Type<LeftClickPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "left_click_packet"));
 
     @Override
     public Type<LeftClickPayload> type() {

@@ -1,12 +1,9 @@
 package com.direwolf20.justdirethings.common.containers.handlers;
 
 import com.direwolf20.justdirethings.common.items.PotionCanister;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
-import net.minecraft.world.item.component.ItemContainerContents;
-import net.neoforged.neoforge.items.ComponentItemHandler;
 
 public class PotionCanisterHandler extends ComponentItemHandler {
     private final ItemStack potionStack;

@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.screens;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.containers.PotionCanisterContainer;
 import com.direwolf20.justdirethings.common.items.PotionCanister;
 import com.direwolf20.justdirethings.util.MagicHelpers;
@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanisterContainer> {
-    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/fuelcanister.png");
-    protected final ResourceLocation FLUIDBAR = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/fluidbar.png");
+    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/fuelcanister.png");
+    protected final ResourceLocation FLUIDBAR = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/fluidbar.png");
     ResourceLocation potionOverlay = ResourceLocation.fromNamespaceAndPath("minecraft", "item/potion_overlay");
 
 
@@ -193,7 +193,7 @@ public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanister
     }
 
     private static MutableComponent getTrans(String key, Object... args) {
-        return Component.translatable(JustDireThingsForge.MODID + "." + key, args);
+        return Component.translatable(JustDireThings.MODID + "." + key, args);
     }
 
 }

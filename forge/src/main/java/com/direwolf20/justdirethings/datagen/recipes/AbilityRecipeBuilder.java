@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen.recipes;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -90,7 +90,7 @@ public class AbilityRecipeBuilder implements RecipeBuilder {
         String armorName = BuiltInRegistries.ITEM.getKey(this.base.getItems()[0].getItem()).getPath();
         String abilityItemPath = BuiltInRegistries.ITEM.getKey(this.addition.getItems()[0].getItem()).getPath();
         String abilityName = abilityItemPath.substring(abilityItemPath.indexOf("_") + 1);
-        this.save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, armorName + "-" + abilityName));
+        this.save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, armorName + "-" + abilityName));
     }
 
     @Override

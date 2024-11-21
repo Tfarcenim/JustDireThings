@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.jei;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.datagen.recipes.FluidDropRecipe;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class FluidDropRecipeCategory implements IRecipeCategory<FluidDropRecipe> {
     public static final RecipeType<FluidDropRecipe> TYPE =
-            RecipeType.create(JustDireThingsForge.MODID, "fluid_drop_recipe", FluidDropRecipe.class);
+            RecipeType.create(JustDireThings.MODID, "fluid_drop_recipe", FluidDropRecipe.class);
 
     public static final int width = 120;
     public static final int height = 40;

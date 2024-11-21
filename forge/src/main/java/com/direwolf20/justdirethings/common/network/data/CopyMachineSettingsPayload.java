@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -11,7 +11,7 @@ public record CopyMachineSettingsPayload(
         boolean area, boolean offset,
         boolean filter, boolean redstone
 ) implements CustomPacketPayload {
-    public static final Type<CopyMachineSettingsPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "copy_machine_settings_packet"));
+    public static final Type<CopyMachineSettingsPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "copy_machine_settings_packet"));
 
     @Override
     public Type<CopyMachineSettingsPayload> type() {

@@ -11,7 +11,6 @@ import com.mojang.authlib.GameProfile;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -24,11 +23,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.common.util.BlockSnapshot;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.common.util.FakePlayerFactory;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.Map;
 import java.util.UUID;
@@ -108,7 +106,7 @@ public class BaseMachineBE extends BlockEntity {
         ChunkPos chunkPos = new ChunkPos(blockPos);
         if (chunkTestCache.containsKey(chunkPos))
             return chunkTestCache.get(chunkPos);
-        boolean canPlace = !EventHooks.onBlockPlace(fakePlayer, BlockSnapshot.create(level.dimension(), level, blockPos.below()), Direction.UP);
+        boolean canPlace = true;//todo !EventHooks.onBlockPlace(fakePlayer, BlockSnapshot.create(level.dimension(), level, blockPos.below()), Direction.UP);
         chunkTestCache.put(chunkPos, canPlace);
         return canPlace;
     }
@@ -169,20 +167,20 @@ public class BaseMachineBE extends BlockEntity {
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        this.loadAdditional(tag, lookupProvider);
+    public void handleUpdateTag(CompoundTag tag) {
+        this.load(tag);
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+    public CompoundTag getUpdateTag() {
         CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, provider);
+        saveAdditional(tag);
         return tag;
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        super.onDataPacket(net, pkt, lookupProvider);
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net, pkt);
         if (this instanceof AreaAffectingBE areaAffectingBE)
             areaAffectingBE.getAreaAffectingData().area = null; //Clear this cache when a packet comes in, so it can redraw properly if the area was changed
     }
@@ -240,8 +238,8 @@ public class BaseMachineBE extends BlockEntity {
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.putInt("tickspeed", tickSpeed);
         if (placedByUUID != null)
             tag.putUUID("placedBy", placedByUUID);
@@ -255,7 +253,7 @@ public class BaseMachineBE extends BlockEntity {
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+    public void load(CompoundTag tag) {
         if (tag.contains("direction"))
             direction = tag.getInt("direction");
         if (tag.contains("tickspeed"))
@@ -268,6 +266,6 @@ public class BaseMachineBE extends BlockEntity {
             filterableBE.loadFilterSettings(tag);
         if (this instanceof RedstoneControlledBE redstoneControlledBE)
             redstoneControlledBE.loadRedstoneSettings(tag);
-        super.loadAdditional(tag, provider);
+        super.load(tag);
     }
 }

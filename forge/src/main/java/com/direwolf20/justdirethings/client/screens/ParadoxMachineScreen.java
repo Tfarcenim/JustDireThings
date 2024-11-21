@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.screens;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.screens.basescreens.BaseMachineScreen;
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButtonFactory;
 import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
@@ -24,7 +24,7 @@ import java.awt.*;
 import java.util.Arrays;
 
 public class ParadoxMachineScreen extends BaseMachineScreen<ParadoxMachineContainer> {
-    protected static final ResourceLocation PARADOXBAR = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/paradoxbar.png");
+    protected static final ResourceLocation PARADOXBAR = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/paradoxbar.png");
     private boolean renderParadox = false;
     private int targetType = 0;
     public ParadoxMachineScreen(ParadoxMachineContainer container, Inventory inv, Component name) {

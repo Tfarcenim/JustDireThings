@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.setup.ModSetup;
 import com.direwolf20.justdirethings.setup.Registration;
@@ -9,7 +9,7 @@ import net.minecraft.data.PackOutput;
 
 public class JustDireLanguageProvider extends net.neoforged.neoforge.common.data.LanguageProvider {
     public JustDireLanguageProvider(PackOutput output, String locale) {
-        super(output, JustDireThingsForge.MODID, locale);
+        super(output, JustDireThings.MODID, locale);
     }
 
     @Override

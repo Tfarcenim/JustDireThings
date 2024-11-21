@@ -4,12 +4,15 @@ import com.direwolf20.justdirethings.common.containers.basecontainers.BaseContai
 import com.direwolf20.justdirethings.common.containers.handlers.PotionCanisterHandler;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.setup.Registration;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
@@ -19,8 +22,8 @@ public class PotionCanisterContainer extends BaseContainer {
     public ItemStack potionCanister;
     public Player playerEntity;
 
-    public PotionCanisterContainer(int windowId, Inventory playerInventory, Player player, RegistryFriendlyByteBuf extraData) {
-        this(windowId, playerInventory, player, ItemStack.OPTIONAL_STREAM_CODEC.decode(extraData));
+    public PotionCanisterContainer(int windowId, Inventory playerInventory, Player player, FriendlyByteBuf extraData) {
+        this(windowId, playerInventory, player, extraData.readItem());
     }
 
     public PotionCanisterContainer(int windowId, Inventory playerInventory, Player player, ItemStack potionCanister) {

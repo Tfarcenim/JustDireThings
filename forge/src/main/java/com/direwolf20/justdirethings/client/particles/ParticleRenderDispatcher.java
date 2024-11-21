@@ -1,7 +1,7 @@
 package com.direwolf20.justdirethings.client.particles;
 
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.particles.alwaysvisibleparticle.AlwaysVisibleParticle;
 import com.direwolf20.justdirethings.client.particles.glitterparticle.GlitterParticleType;
 import com.direwolf20.justdirethings.client.particles.gooexplodeparticle.GooExplodeParticle;
@@ -12,7 +12,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
-@EventBusSubscriber(modid = JustDireThingsForge.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = JustDireThings.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class ParticleRenderDispatcher {
 
     @SubscribeEvent

@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.screens;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButtonFactory;
 import com.direwolf20.justdirethings.client.screens.widgets.BaseButton;
 import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class MachineSettingsCopierScreen extends Screen {
-    public static final ResourceLocation SOCIALBACKGROUND = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "background");
+    public static final ResourceLocation SOCIALBACKGROUND = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "background");
     private ItemStack copyMachineSettingsItemstack;
     boolean area, offset, filter, redstone;
     int topSectionWidth, topSectionHeight, topSectionLeft, topSectionTop;

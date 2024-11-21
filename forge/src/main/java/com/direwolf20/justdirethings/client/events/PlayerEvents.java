@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.events;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.items.PortalGun;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.LeftClickableTool;
@@ -27,7 +27,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.Set;
 
-@EventBusSubscriber(modid = JustDireThingsForge.MODID)
+@EventBusSubscriber(modid = JustDireThings.MODID)
 public class PlayerEvents {
     private static BlockPos destroyPos = BlockPos.ZERO;
     private static int gameTicksMining = 0;

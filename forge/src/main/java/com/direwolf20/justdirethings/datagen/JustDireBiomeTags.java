@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -16,10 +16,10 @@ import java.util.concurrent.CompletableFuture;
 
 public class JustDireBiomeTags extends BiomeTagsProvider {
     public JustDireBiomeTags(PackOutput p_255800_, CompletableFuture<HolderLookup.Provider> p_256205_, @Nullable ExistingFileHelper existingFileHelper) {
-        super(p_255800_, p_256205_, JustDireThingsForge.MODID, existingFileHelper);
+        super(p_255800_, p_256205_, JustDireThings.MODID, existingFileHelper);
     }
 
-    public static final TagKey<Biome> UNSTABLE_PORTAL_FLUID_VIABLE = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "unstable_portal_fluid_viable"));
+    public static final TagKey<Biome> UNSTABLE_PORTAL_FLUID_VIABLE = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "unstable_portal_fluid_viable"));
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {

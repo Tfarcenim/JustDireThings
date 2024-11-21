@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -9,7 +9,7 @@ import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 
 public class JustDireSounds extends SoundDefinitionsProvider {
     public JustDireSounds(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, JustDireThingsForge.MODID, existingFileHelper);
+        super(output, JustDireThings.MODID, existingFileHelper);
     }
 
     @Override

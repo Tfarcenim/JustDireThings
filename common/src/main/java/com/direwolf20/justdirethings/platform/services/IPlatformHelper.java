@@ -1,4 +1,4 @@
-package com.example.examplemod.platform.services;
+package com.direwolf20.justdirethings.platform.services;
 
 public interface IPlatformHelper {
 

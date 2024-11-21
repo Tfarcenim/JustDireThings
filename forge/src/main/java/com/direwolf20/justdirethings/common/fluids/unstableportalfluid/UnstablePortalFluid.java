@@ -6,9 +6,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
 
-public abstract class UnstablePortalFluid extends BaseFlowingFluid {
+public abstract class UnstablePortalFluid extends ForgeFlowingFluid {
     public static final Properties PROPERTIES = new Properties(
             Registration.UNSTABLE_PORTAL_FLUID_TYPE,
             Registration.UNSTABLE_PORTAL_FLUID_FLOWING,

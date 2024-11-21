@@ -2,8 +2,9 @@ package com.direwolf20.justdirethings.common.capabilities;
 
 import com.direwolf20.justdirethings.common.blockentities.ExperienceHolderBE;
 import com.direwolf20.justdirethings.setup.Registration;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 import java.util.function.Predicate;
 

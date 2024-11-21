@@ -16,8 +16,8 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.inventory.RecipeHolder;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -226,8 +226,8 @@ public class GooBlockBE_Base extends BlockEntity {
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         ListTag counterListTag = new ListTag();
         for (Direction direction : Direction.values()) {
             CompoundTag counterTag = new CompoundTag();
@@ -248,7 +248,7 @@ public class GooBlockBE_Base extends BlockEntity {
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+    public void load(CompoundTag tag) {
         if (tag.contains("sideCounters")) {
             ListTag listNBT = tag.getList("sideCounters", Tag.TAG_COMPOUND);
             for (int i = 0; i < listNBT.size(); i++) {
@@ -267,7 +267,7 @@ public class GooBlockBE_Base extends BlockEntity {
                 this.sidedDurations.put(Direction.values()[direction], duration);
             }
         }
-        super.loadAdditional(tag, provider);
+        super.load(tag);
     }
 
     @Override
@@ -277,20 +277,20 @@ public class GooBlockBE_Base extends BlockEntity {
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        this.loadAdditional(tag, lookupProvider);
+    public void handleUpdateTag(CompoundTag tag) {
+        this.load(tag);
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider p_323910_) {
+    public CompoundTag getUpdateTag() {
         CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, p_323910_);
+        saveAdditional(tag);
         return tag;
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        this.loadAdditional(pkt.getTag(), lookupProvider);
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        this.load(pkt.getTag());
     }
 
     public void markDirtyClient() {

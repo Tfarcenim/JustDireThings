@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -19,7 +19,7 @@ import net.neoforged.neoforge.internal.versions.neoforge.NeoForgeVersion;
 
 public class JustDireItemModels extends ItemModelProvider {
     public JustDireItemModels(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, JustDireThingsForge.MODID, existingFileHelper);
+        super(output, JustDireThings.MODID, existingFileHelper);
     }
 
     @Override

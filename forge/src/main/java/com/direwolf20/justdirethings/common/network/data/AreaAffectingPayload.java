@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,7 +13,7 @@ public record AreaAffectingPayload(
         int xOffset, int yOffset, int zOffset,
         boolean renderArea
 ) implements CustomPacketPayload {
-    public static final Type<AreaAffectingPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "area_affecting_packet"));
+    public static final Type<AreaAffectingPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "area_affecting_packet"));
 
     @Override
     public Type<AreaAffectingPayload> type() {

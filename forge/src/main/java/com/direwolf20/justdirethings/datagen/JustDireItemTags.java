@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class JustDireItemTags extends ItemTagsProvider {
     public JustDireItemTags(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, BlockTagsProvider blockTags, ExistingFileHelper helper) {
-        super(packOutput, lookupProvider, blockTags.contentsGetter(), JustDireThingsForge.MODID, helper);
+        super(packOutput, lookupProvider, blockTags.contentsGetter(), JustDireThings.MODID, helper);
     }
 
     public static final TagKey<Item> WRENCHES = forgeTag("wrenches");
@@ -41,14 +41,14 @@ public class JustDireItemTags extends ItemTagsProvider {
         return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
     }
 
-    public static final TagKey<Item> FUEL_CANISTER_DENY = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "deny_fuel_canister"));
-    public static final TagKey<Item> AUTO_SMELT_DENY = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "auto_smelt_deny"));
-    public static final TagKey<Item> AUTO_SMOKE_DENY = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "auto_smoke_deny"));
-    public static final TagKey<Item> GOO_REVIVE_TIER_1 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "goo_revive_tier_1"));
-    public static final TagKey<Item> GOO_REVIVE_TIER_2 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "goo_revive_tier_2"));
-    public static final TagKey<Item> GOO_REVIVE_TIER_3 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "goo_revive_tier_3"));
-    public static final TagKey<Item> GOO_REVIVE_TIER_4 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "goo_revive_tier_4"));
-    public static final TagKey<Item> PARADOX_DENY = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "paradox_deny"));
+    public static final TagKey<Item> FUEL_CANISTER_DENY = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "deny_fuel_canister"));
+    public static final TagKey<Item> AUTO_SMELT_DENY = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "auto_smelt_deny"));
+    public static final TagKey<Item> AUTO_SMOKE_DENY = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "auto_smoke_deny"));
+    public static final TagKey<Item> GOO_REVIVE_TIER_1 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "goo_revive_tier_1"));
+    public static final TagKey<Item> GOO_REVIVE_TIER_2 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "goo_revive_tier_2"));
+    public static final TagKey<Item> GOO_REVIVE_TIER_3 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "goo_revive_tier_3"));
+    public static final TagKey<Item> GOO_REVIVE_TIER_4 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "goo_revive_tier_4"));
+    public static final TagKey<Item> PARADOX_DENY = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "paradox_deny"));
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {

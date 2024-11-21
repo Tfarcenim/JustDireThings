@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen.recipes;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -93,7 +93,7 @@ public class GooSpreadRecipeTagBuilder implements RecipeBuilder {
     }
 
     public void save(RecipeOutput pRecipeOutput) {
-        this.save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, BuiltInRegistries.BLOCK.getKey(this.output.getBlock()).getPath() + "-goospread_tag"));
+        this.save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, BuiltInRegistries.BLOCK.getKey(this.output.getBlock()).getPath() + "-goospread_tag"));
     }
 
     @Override

@@ -5,7 +5,7 @@
  */
 package com.direwolf20.justdirethings.client.screens;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.KeyBindings;
 import com.direwolf20.justdirethings.client.OurSounds;
 import com.direwolf20.justdirethings.client.renderers.OurRenderTypes;
@@ -36,10 +36,10 @@ import org.joml.Matrix4f;
 import java.awt.*;
 
 public class AdvPortalRadialMenu extends Screen {
-    ToggleButtonFactory.TextureLocalization ADD_BUTTON = new ToggleButtonFactory.TextureLocalization(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/buttons/add.png"), Component.translatable("justdirethings.screen.add_favorite"));
-    ToggleButtonFactory.TextureLocalization REMOVE_BUTTON = new ToggleButtonFactory.TextureLocalization(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/buttons/remove.png"), Component.translatable("justdirethings.screen.remove_favorite"));
-    ToggleButtonFactory.TextureLocalization EDIT_BUTTON = new ToggleButtonFactory.TextureLocalization(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/buttons/matchnbttrue.png"), Component.translatable("justdirethings.screen.edit_favorite"));
-    ToggleButtonFactory.TextureLocalization STAYOPEN_BUTTON = new ToggleButtonFactory.TextureLocalization(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/buttons/area.png"), Component.translatable("justdirethings.screen.stay_open"));
+    ToggleButtonFactory.TextureLocalization ADD_BUTTON = new ToggleButtonFactory.TextureLocalization(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/add.png"), Component.translatable("justdirethings.screen.add_favorite"));
+    ToggleButtonFactory.TextureLocalization REMOVE_BUTTON = new ToggleButtonFactory.TextureLocalization(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/remove.png"), Component.translatable("justdirethings.screen.remove_favorite"));
+    ToggleButtonFactory.TextureLocalization EDIT_BUTTON = new ToggleButtonFactory.TextureLocalization(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/matchnbttrue.png"), Component.translatable("justdirethings.screen.edit_favorite"));
+    ToggleButtonFactory.TextureLocalization STAYOPEN_BUTTON = new ToggleButtonFactory.TextureLocalization(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/area.png"), Component.translatable("justdirethings.screen.stay_open"));
     private static final int SEGMENTS = PortalGunV2.MAX_FAVORITES;
 
     private int timeIn = 0;

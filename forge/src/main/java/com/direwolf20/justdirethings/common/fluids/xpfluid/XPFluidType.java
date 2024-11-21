@@ -4,8 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.material.FluidState;
-import net.neoforged.neoforge.common.SoundActions;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.common.SoundActions;
+import net.minecraftforge.fluids.FluidType;
 
 public class XPFluidType extends FluidType {
     public XPFluidType() {

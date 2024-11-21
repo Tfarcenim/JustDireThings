@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.screens;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock_T1;
 import com.direwolf20.justdirethings.common.containers.PocketGeneratorContainer;
 import com.direwolf20.justdirethings.common.items.FuelCanister;
@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGeneratorContainer> {
-    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/pocketgenerator.png");
+    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/pocketgenerator.png");
 
     protected final PocketGeneratorContainer container;
     private ItemStack pocketGenerator;
@@ -179,7 +179,7 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
     }
 
     private static MutableComponent getTrans(String key, Object... args) {
-        return Component.translatable(JustDireThingsForge.MODID + "." + key, args);
+        return Component.translatable(JustDireThings.MODID + "." + key, args);
     }
 
 }

@@ -18,7 +18,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -32,15 +31,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -207,14 +204,11 @@ public interface ToggleableTool extends ToggleableItem {
 
     static int getInstantRFCost(float cumulativeDestroy, Level level, ItemStack stack) {
         int rfCost = Math.max(Ability.INSTABREAK.getFeCost(), Ability.INSTABREAK.getFeCost() * (int) cumulativeDestroy);
-        if (level.holder(Enchantments.EFFICIENCY).isPresent()) {
-            Holder<Enchantment> holder = level.holder(Enchantments.EFFICIENCY).get();
-            int efficiency = stack.getEnchantmentLevel(holder);
+            int efficiency = stack.getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
             if (efficiency > 0) {
                 float discount = 0.1f * efficiency;
                 rfCost = rfCost - (int) (rfCost * discount);
             }
-        }
         return rfCost;
     }
 
@@ -370,11 +364,11 @@ public interface ToggleableTool extends ToggleableItem {
 
     static boolean isItemEquipped(ItemStack itemStack, Player player) {
         if (itemStack.getItem() instanceof BaseBoots)
-            return ItemStack.isSameItemSameComponents(itemStack, player.getItemBySlot(EquipmentSlot.FEET));
+            return ItemStack.isSameItemSameTags(itemStack, player.getItemBySlot(EquipmentSlot.FEET));
         if (itemStack.getItem() instanceof BaseLeggings)
-            return ItemStack.isSameItemSameComponents(itemStack, player.getItemBySlot(EquipmentSlot.LEGS));
+            return ItemStack.isSameItemSameTags(itemStack, player.getItemBySlot(EquipmentSlot.LEGS));
         if (itemStack.getItem() instanceof BaseChestplate)
-            return ItemStack.isSameItemSameComponents(itemStack, player.getItemBySlot(EquipmentSlot.CHEST));
+            return ItemStack.isSameItemSameTags(itemStack, player.getItemBySlot(EquipmentSlot.CHEST));
         if (itemStack.getItem() instanceof BaseHelmet)
             return ItemStack.isSameItemSameComponents(itemStack, player.getItemBySlot(EquipmentSlot.HEAD));
         return ItemStack.isSameItemSameComponents(itemStack, player.getItemInHand(InteractionHand.MAIN_HAND)) || ItemStack.isSameItemSameComponents(itemStack, player.getItemInHand(InteractionHand.OFF_HAND));

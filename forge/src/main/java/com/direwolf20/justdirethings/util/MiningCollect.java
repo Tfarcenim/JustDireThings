@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.util;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.items.tools.basetools.BaseHoe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,6 +13,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ public class MiningCollect {
         }
 
         public Component getTooltip() {
-            return Component.translatable(JustDireThingsForge.MODID + ".tooltip.screen.sizemode." + baseName);
+            return Component.translatable(JustDireThings.MODID + ".tooltip.screen.sizemode." + baseName);
         }
     }
 
@@ -97,7 +99,7 @@ public class MiningCollect {
             return false;
         if (tool.getItem() instanceof BaseHoe && player instanceof Player player1) {
             UseOnContext useOnContext = new UseOnContext(level, player1, InteractionHand.MAIN_HAND, tool, new BlockHitResult(pos.getCenter(), side, pos, false));
-            BlockState toolModifiedState = level.getBlockState(pos).getToolModifiedState(useOnContext, net.neoforged.neoforge.common.ItemAbilities.HOE_TILL, true);
+            BlockState toolModifiedState = level.getBlockState(pos).getToolModifiedState(useOnContext, ToolActions.HOE_TILL, true);
             if (toolModifiedState != null)
                 return true;
         }

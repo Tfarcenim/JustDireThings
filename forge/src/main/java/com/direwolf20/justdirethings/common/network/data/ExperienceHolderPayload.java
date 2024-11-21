@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -11,7 +11,7 @@ public record ExperienceHolderPayload(
         boolean add,
         int levels
 ) implements CustomPacketPayload {
-    public static final Type<ExperienceHolderPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "experience_holder"));
+    public static final Type<ExperienceHolderPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "experience_holder"));
 
     @Override
     public Type<ExperienceHolderPayload> type() {

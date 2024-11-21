@@ -90,7 +90,7 @@ public class InventoryHolder extends BaseMachineBlock {
         if (blockEntity instanceof BaseMachineBE baseMachineBE && !baseMachineBE.isDefaultSettings()) {
             ItemStack itemStack = new ItemStack(Item.byBlock(this));
             CompoundTag compoundTag = new CompoundTag();
-            ((BaseMachineBE) blockEntity).saveAdditional(compoundTag, builder.getLevel().registryAccess());
+            ((BaseMachineBE) blockEntity).saveAdditional(compoundTag);
             ((InventoryHolderBE) blockEntity).saveInventory(compoundTag, builder.getLevel().registryAccess());
             if (!compoundTag.isEmpty()) {
                 itemStack.set(JustDireDataComponents.CUSTOM_DATA_1, CustomData.of(compoundTag));

@@ -22,9 +22,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.event.level.BlockEvent;
 
 import java.util.*;
 
@@ -215,20 +216,19 @@ public class BlockBreakerT1BE extends BaseMachineBE implements RedstoneControlle
     public float getDestroySpeed(BlockPos blockPos, ItemStack tool, FakePlayer player, BlockState blockState) {
         float toolDestroySpeed = tool.getDestroySpeed(blockState);
         if (toolDestroySpeed > 1.0F) {
-            HolderLookup.RegistryLookup<Enchantment> registrylookup = level.getServer().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
-            int efficiency = tool.getEnchantmentLevel(registrylookup.getOrThrow(Enchantments.EFFICIENCY));
+            int efficiency = tool.getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
             if (efficiency > 0) {
                 toolDestroySpeed += (float) (efficiency * efficiency + 1);
             }
         }
-        toolDestroySpeed = net.neoforged.neoforge.event.EventHooks.getBreakSpeed(player, blockState, toolDestroySpeed, blockPos);
+        //todo toolDestroySpeed = ForgeHooks.getBreakSpeed(player, blockState, toolDestroySpeed, blockPos);
         return toolDestroySpeed;
     }
 
     public boolean tryBreakBlock(ItemStack tool, FakePlayer fakePlayer, BlockPos breakPos, BlockState blockState) {
         setFakePlayerData(tool, fakePlayer, breakPos, getFacing());
         BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, breakPos, level.getBlockState(breakPos), fakePlayer);
-        if (NeoForge.EVENT_BUS.post(event).isCanceled()) return false;
+        if (MinecraftForge.EVENT_BUS.post(event)) return false;
         breakBlock(fakePlayer, breakPos, tool, blockState);
         return true;
     }
@@ -240,16 +240,16 @@ public class BlockBreakerT1BE extends BaseMachineBE implements RedstoneControlle
         if (success) {
             Block.dropResources(state, level, breakPos, blockEntity, player, itemStack);
             if (state.getDestroySpeed(level, breakPos) != 0.0F)
-                itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
+                itemStack.hurtAndBreak(1, player, LivingEntity.getEquipmentSlotForItem(InteractionHand.MAIN_HAND));
         }
     }
 
     public void sendPackets(int pBreakerId, BlockPos pPos, int pProgress) {
         for (ServerPlayer serverplayer : level.getServer().getPlayerList().getPlayers()) {
             if (serverplayer != null && serverplayer.level() == level && serverplayer.getId() != pBreakerId) {
-                double d0 = (double) pPos.getX() - serverplayer.getX();
-                double d1 = (double) pPos.getY() - serverplayer.getY();
-                double d2 = (double) pPos.getZ() - serverplayer.getZ();
+                double d0 = pPos.getX() - serverplayer.getX();
+                double d1 = pPos.getY() - serverplayer.getY();
+                double d2 = pPos.getZ() - serverplayer.getZ();
                 if (d0 * d0 + d1 * d1 + d2 * d2 < 1024.0) {
                     serverplayer.connection.send(new ClientboundBlockDestructionPacket(pBreakerId, pPos, pProgress));
                 }

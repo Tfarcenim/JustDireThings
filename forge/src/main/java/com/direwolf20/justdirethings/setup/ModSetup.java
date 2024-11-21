@@ -15,7 +15,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import static com.direwolf20.justdirethings.JustDireThingsForge.MODID;
+import static com.direwolf20.justdirethings.JustDireThings.MODID;
 
 public class ModSetup {
     public static void init(final FMLCommonSetupEvent event) {

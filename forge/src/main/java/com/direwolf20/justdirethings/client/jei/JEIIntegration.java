@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.jei;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.jei.ghostfilters.GhostFilterBasic;
 import com.direwolf20.justdirethings.client.screens.basescreens.BaseScreen;
 import com.direwolf20.justdirethings.common.blocks.baseblocks.BaseMachineBlock;
@@ -35,7 +35,7 @@ public class JEIIntegration implements IModPlugin {
     @Nonnull
     @Override
     public ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "jei_plugin");
+        return ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "jei_plugin");
     }
 
     @Override

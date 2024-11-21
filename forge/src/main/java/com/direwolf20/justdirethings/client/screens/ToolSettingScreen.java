@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.screens;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButtonFactory;
 import com.direwolf20.justdirethings.client.screens.widgets.BaseButton;
 import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
@@ -35,8 +35,8 @@ import org.lwjgl.glfw.GLFW;
 import java.util.*;
 
 public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContainer> {
-    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/settings.png");
-    protected final ResourceLocation JUSTSLOT = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/justslot.png");
+    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/settings.png");
+    protected final ResourceLocation JUSTSLOT = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/justslot.png");
 
     protected final ToolSettingContainer container;
     Player player;
@@ -466,7 +466,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
     }
 
     private static MutableComponent getTrans(String key, Object... args) {
-        return Component.translatable(JustDireThingsForge.MODID + "." + key, args);
+        return Component.translatable(JustDireThings.MODID + "." + key, args);
     }
 
 }

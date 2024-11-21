@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -12,7 +12,7 @@ public record ParadoxSyncPayload(
         BlockPos blockPos,
         int runtime
 ) implements CustomPacketPayload {
-    public static final Type<ParadoxSyncPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "paradox_sync"));
+    public static final Type<ParadoxSyncPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "paradox_sync"));
 
     @Override
     public Type<ParadoxSyncPayload> type() {

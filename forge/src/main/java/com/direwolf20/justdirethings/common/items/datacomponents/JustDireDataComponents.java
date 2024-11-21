@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.items.datacomponents;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.ToolRecords;
 import com.direwolf20.justdirethings.util.NBTHelpers;
@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class JustDireDataComponents {
-    public static final DeferredRegister<DataComponentType<?>> COMPONENTS = DeferredRegister.createDataComponents(JustDireThingsForge.MODID);
+    public static final DeferredRegister<DataComponentType<?>> COMPONENTS = DeferredRegister.createDataComponents(JustDireThings.MODID);
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> ENTITIYTYPE = COMPONENTS.register("entitytype", () -> DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> FLOATINGTICKS = COMPONENTS.register("floatingticks", () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());

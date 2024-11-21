@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -14,7 +14,7 @@ public record ClickerPayload(
         boolean showFakePlayer,
         int maxHoldTicks
 ) implements CustomPacketPayload {
-    public static final Type<ClickerPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "clicker_packet"));
+    public static final Type<ClickerPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "clicker_packet"));
 
     @Override
     public Type<ClickerPayload> type() {

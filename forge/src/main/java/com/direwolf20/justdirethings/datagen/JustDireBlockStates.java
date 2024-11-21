@@ -20,7 +20,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Objects;
 
-import static com.direwolf20.justdirethings.JustDireThingsForge.MODID;
+import static com.direwolf20.justdirethings.JustDireThings.MODID;
 
 
 public class JustDireBlockStates extends BlockStateProvider {

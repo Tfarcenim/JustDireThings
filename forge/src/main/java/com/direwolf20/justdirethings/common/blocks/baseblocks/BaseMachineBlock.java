@@ -141,7 +141,7 @@ public abstract class BaseMachineBlock extends Block implements EntityBlock {
         if (blockEntity instanceof BaseMachineBE baseMachineBE && !baseMachineBE.isDefaultSettings()) {
             ItemStack itemStack = new ItemStack(Item.byBlock(this));
             CompoundTag compoundTag = new CompoundTag();
-            ((BaseMachineBE) blockEntity).saveAdditional(compoundTag, builder.getLevel().registryAccess());
+            ((BaseMachineBE) blockEntity).saveAdditional(compoundTag);
             if (!compoundTag.isEmpty()) {
                 itemStack.set(JustDireDataComponents.CUSTOM_DATA_1, CustomData.of(compoundTag));
             }

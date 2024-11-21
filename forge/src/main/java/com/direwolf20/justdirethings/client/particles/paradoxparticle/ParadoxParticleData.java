@@ -7,16 +7,16 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.Locale;
 import java.util.UUID;
 
 public class ParadoxParticleData implements ParticleOptions {
-    public static final MapCodec<ParadoxParticleData> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
+    public static final MapCodec<ParadoxParticleData> MAP_CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     ItemStack.CODEC.fieldOf("itemStack").forGetter(p -> p.itemStack),
                     Codec.DOUBLE.fieldOf("targetX").forGetter(p -> p.targetX),
@@ -25,21 +25,7 @@ public class ParadoxParticleData implements ParticleOptions {
                     Codec.INT.fieldOf("ticksPerBlock").forGetter(p -> p.ticksPerBlock),
                     UUIDUtil.CODEC.fieldOf("paradox_uuid").forGetter(p -> p.paradox_uuid)
             ).apply(instance, ParadoxParticleData::new));
-    public static final StreamCodec<RegistryFriendlyByteBuf, ParadoxParticleData> STREAM_CODEC = StreamCodec.composite(
-            ItemStack.STREAM_CODEC,
-            ParadoxParticleData::getItemStack,
-            ByteBufCodecs.DOUBLE,
-            ParadoxParticleData::getTargetX,
-            ByteBufCodecs.DOUBLE,
-            ParadoxParticleData::getTargetY,
-            ByteBufCodecs.DOUBLE,
-            ParadoxParticleData::getTargetZ,
-            ByteBufCodecs.INT,
-            ParadoxParticleData::getTicksPerBlock,
-            UUIDUtil.STREAM_CODEC,
-            ParadoxParticleData::getParadox_uuid,
-            ParadoxParticleData::new
-    );
+
 
     private final ItemStack itemStack;
     public final double targetX;
@@ -61,6 +47,21 @@ public class ParadoxParticleData implements ParticleOptions {
     @Override
     public ParticleType<ParadoxParticleData> getType() {
         return ModParticles.PARADOXPARTICLE.get();
+    }
+
+    @Override
+    public void writeToNetwork(FriendlyByteBuf friendlyByteBuf) {
+        friendlyByteBuf.writeItemStack(itemStack,false);
+        friendlyByteBuf.writeDouble(targetX);
+        friendlyByteBuf.writeDouble(targetY);
+        friendlyByteBuf.writeDouble(targetZ);
+        friendlyByteBuf.writeInt(ticksPerBlock);
+        friendlyByteBuf.writeUUID(paradox_uuid);
+    }
+
+    @Override
+    public String writeToString() {
+        return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f", BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),targetX,targetY,targetZ, ticksPerBlock);
     }
 
     public ItemStack getItemStack() {

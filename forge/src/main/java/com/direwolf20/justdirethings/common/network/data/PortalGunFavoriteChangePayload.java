@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.util.NBTHelpers;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -16,7 +16,7 @@ public record PortalGunFavoriteChangePayload(
         boolean editing,
         Vec3 coordinates
 ) implements CustomPacketPayload {
-    public static final Type<PortalGunFavoriteChangePayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "portal_gun_favorite_change"));
+    public static final Type<PortalGunFavoriteChangePayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "portal_gun_favorite_change"));
 
     @Override
     public Type<PortalGunFavoriteChangePayload> type() {

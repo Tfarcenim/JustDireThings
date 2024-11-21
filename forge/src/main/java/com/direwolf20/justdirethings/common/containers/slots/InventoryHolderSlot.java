@@ -4,6 +4,8 @@ import com.direwolf20.justdirethings.common.blockentities.InventoryHolderBE;
 import com.direwolf20.justdirethings.common.containers.handlers.FilterBasicHandler;
 import com.direwolf20.justdirethings.util.ItemStackKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 

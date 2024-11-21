@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.screens.standardbuttons;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public class ValueButtons {
-    private static final ResourceLocation add = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/buttons/add.png");
-    private static final ResourceLocation subtract = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/buttons/remove.png");
+    private static final ResourceLocation add = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/add.png");
+    private static final ResourceLocation subtract = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/remove.png");
     private static final int STANDARD_WIDTH = 12; // Example width
     private static final int STANDARD_HEIGHT = 12; // Example height
     private final Font font;

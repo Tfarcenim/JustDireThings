@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -11,7 +11,7 @@ public record DropperSettingPayload(
         int dropCount,
         int pickupDelay
 ) implements CustomPacketPayload {
-    public static final Type<DropperSettingPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "dropper_setting_packet"));
+    public static final Type<DropperSettingPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "dropper_setting_packet"));
 
     @Override
     public Type<DropperSettingPayload> type() {

@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -14,7 +14,7 @@ public record GhostSlotPayload(
         int count,
         int mbAmt
 ) implements CustomPacketPayload {
-    public static final Type<GhostSlotPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "ghost_slot"));
+    public static final Type<GhostSlotPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "ghost_slot"));
 
     @Override
     public Type<GhostSlotPayload> type() {

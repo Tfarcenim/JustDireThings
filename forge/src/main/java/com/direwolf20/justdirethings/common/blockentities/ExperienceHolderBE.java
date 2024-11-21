@@ -12,7 +12,6 @@ import com.direwolf20.justdirethings.util.interfacehelpers.FilterData;
 import com.direwolf20.justdirethings.util.interfacehelpers.RedstoneControlData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -268,8 +267,8 @@ public class ExperienceHolderBE extends BaseMachineBE implements AreaAffectingBE
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.putInt("exp", exp);
         tag.putInt("targetExp", targetExp);
         tag.putBoolean("collectExp", collectExp);
@@ -278,8 +277,8 @@ public class ExperienceHolderBE extends BaseMachineBE implements AreaAffectingBE
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
+    public void load(CompoundTag tag) {
+        super.load(tag);
         exp = tag.getInt("exp");
         targetExp = tag.getInt("targetExp");
         collectExp = tag.getBoolean("collectExp");

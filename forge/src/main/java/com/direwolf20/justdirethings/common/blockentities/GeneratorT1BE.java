@@ -13,7 +13,6 @@ import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.interfacehelpers.RedstoneControlData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.inventory.ContainerData;
@@ -256,8 +255,8 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.putInt("burnRemaining", burnRemaining);
         tag.putInt("maxBurn", maxBurn);
         tag.putInt("feRemaining", feRemaining);
@@ -265,8 +264,8 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
+    public void load(CompoundTag tag) {
+        super.load(tag);
         this.burnRemaining = tag.getInt("burnRemaining");
         this.maxBurn = tag.getInt("maxBurn");
         this.feRemaining = tag.getInt("feRemaining");

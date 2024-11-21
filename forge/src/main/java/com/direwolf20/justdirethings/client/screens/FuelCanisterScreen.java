@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.client.screens;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.containers.FuelCanisterContainer;
 import com.direwolf20.justdirethings.common.items.FuelCanister;
 import com.direwolf20.justdirethings.util.MagicHelpers;
@@ -23,7 +23,7 @@ import java.awt.*;
 import java.util.List;
 
 public class FuelCanisterScreen extends AbstractContainerScreen<FuelCanisterContainer> {
-    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "textures/gui/fuelcanister.png");
+    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/fuelcanister.png");
 
     protected final FuelCanisterContainer container;
     private ItemStack fuelCanister;
@@ -127,7 +127,7 @@ public class FuelCanisterScreen extends AbstractContainerScreen<FuelCanisterCont
     }
 
     private static MutableComponent getTrans(String key, Object... args) {
-        return Component.translatable(JustDireThingsForge.MODID + "." + key, args);
+        return Component.translatable(JustDireThings.MODID + "." + key, args);
     }
 
 }

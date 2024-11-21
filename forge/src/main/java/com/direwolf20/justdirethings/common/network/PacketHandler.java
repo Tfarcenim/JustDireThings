@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.network.data.*;
 import com.direwolf20.justdirethings.common.network.handler.*;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -8,7 +8,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 public class PacketHandler {
     public static void registerNetworking(final RegisterPayloadHandlersEvent event) {
-        final PayloadRegistrar registrar = event.registrar(JustDireThingsForge.MODID);
+        final PayloadRegistrar registrar = event.registrar(JustDireThings.MODID);
 
         //Going to Server
         registrar.playToServer(AreaAffectingPayload.TYPE, AreaAffectingPayload.STREAM_CODEC, AreaAffectingPacket.get()::handle);

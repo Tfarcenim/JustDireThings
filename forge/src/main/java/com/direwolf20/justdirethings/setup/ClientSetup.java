@@ -1,7 +1,7 @@
 package com.direwolf20.justdirethings.setup;
 
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.KeyBindings;
 import com.direwolf20.justdirethings.client.blockentityrenders.*;
 import com.direwolf20.justdirethings.client.blockentityrenders.gooblocks.GooBlockRender_Tier1;
@@ -57,9 +57,9 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import java.io.IOException;
 
-import static com.direwolf20.justdirethings.JustDireThingsForge.MODID;
+import static com.direwolf20.justdirethings.JustDireThings.MODID;
 
-@EventBusSubscriber(modid = JustDireThingsForge.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = JustDireThings.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
     public static void init(final FMLClientSetupEvent event) {
         NeoForge.EVENT_BUS.addListener(KeyBindings::onClientInput);
@@ -78,11 +78,11 @@ public class ClientSetup {
             registerEnabledToolTextures(Registration.Pocket_Generator.get());
             for (var bow : Registration.BOWS.getEntries()) {
                 if (bow.get() instanceof BaseBow baseBow) {
-                    ItemProperties.register(bow.get(), ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "pull"), (stack, level, living, id) -> {
+                    ItemProperties.register(bow.get(), ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "pull"), (stack, level, living, id) -> {
                         if (living == null || living.getUseItem() != stack) return 0.0F;
                         return (stack.getUseDuration(living) - (living.getUseItemRemainingTicks() + (20 - baseBow.getMaxDraw()))) / baseBow.getMaxDraw();
                     });
-                    ItemProperties.register(bow.get(), ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "pulling"), (stack, level, living, id) -> {
+                    ItemProperties.register(bow.get(), ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "pulling"), (stack, level, living, id) -> {
                         return living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0F : 0.0F;
                     });
                 }
@@ -91,17 +91,17 @@ public class ClientSetup {
 
         event.enqueueWork(() -> {
             ItemProperties.register(Registration.FluidCanister.get(),
-                    ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "fullness"), (stack, level, living, id) -> FluidCanister.getFullness(stack));
+                    ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "fullness"), (stack, level, living, id) -> FluidCanister.getFullness(stack));
         });
 
         event.enqueueWork(() -> {
             ItemProperties.register(Registration.PotionCanister.get(),
-                    ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "potion_fullness"), (stack, level, living, id) -> PotionCanister.getFullness(stack));
+                    ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "potion_fullness"), (stack, level, living, id) -> PotionCanister.getFullness(stack));
         });
 
         event.enqueueWork(() -> {
             ItemProperties.register(Registration.PortalGunV2.get(),
-                    ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "fullness"), (stack, level, living, id) -> PortalGunV2.getFullness(stack));
+                    ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "fullness"), (stack, level, living, id) -> PortalGunV2.getFullness(stack));
         });
 
         ItemBlockRenderTypes.setRenderLayer(Registration.UNSTABLE_PORTAL_FLUID_SOURCE.get(), RenderType.translucent());
@@ -112,7 +112,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void registerOverlays(RegisterGuiLayersEvent event) {
-        event.registerAbove(VanillaGuiLayers.HOTBAR, ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "abilitycooldownoverlay"), AbilityCooldownOverlay.INSTANCE);
+        event.registerAbove(VanillaGuiLayers.HOTBAR, ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "abilitycooldownoverlay"), AbilityCooldownOverlay.INSTANCE);
     }
 
     private static void onTexturesStitched(final TextureAtlasStitchedEvent event) {
@@ -125,7 +125,7 @@ public class ClientSetup {
     public static void registerEnabledToolTextures(Item tool) {
         if (tool instanceof ToggleableItem toggleableItem) {
             ItemProperties.register(tool,
-                    ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "enabled"), (stack, level, living, id) -> {
+                    ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "enabled"), (stack, level, living, id) -> {
                         if (stack.getItem() instanceof PocketGenerator) {
                             if (!toggleableItem.getEnabled(stack)) return 0.0f;
                             IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
@@ -141,7 +141,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void mrl(ModelEvent.RegisterAdditional e) {
-        e.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "item/creaturecatcher_base")));
+        e.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "item/creaturecatcher_base")));
     }
 
     @SubscribeEvent

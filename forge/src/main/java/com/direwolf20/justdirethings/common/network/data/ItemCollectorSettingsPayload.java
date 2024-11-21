@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.network.data;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -11,7 +11,7 @@ public record ItemCollectorSettingsPayload(
         boolean respectPickupDelay,
         boolean showParticles
 ) implements CustomPacketPayload {
-    public static final Type<ItemCollectorSettingsPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "item_collector_settings"));
+    public static final Type<ItemCollectorSettingsPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "item_collector_settings"));
 
     @Override
     public Type<ItemCollectorSettingsPayload> type() {

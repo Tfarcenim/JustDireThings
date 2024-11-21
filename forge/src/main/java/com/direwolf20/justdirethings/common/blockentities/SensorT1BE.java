@@ -8,7 +8,6 @@ import com.direwolf20.justdirethings.util.interfacehelpers.FilterData;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.Entity;
@@ -378,8 +377,8 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.putInt("senseTarget", sense_target.ordinal());
         tag.putBoolean("strongSignal", strongSignal);
         tag.put("blockStateProps", saveBlockStateProperties());
@@ -388,12 +387,12 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+    public void load(CompoundTag tag) {
         this.sense_target = SENSE_TARGET.values()[tag.getInt("senseTarget")];
         this.strongSignal = tag.getBoolean("strongSignal");
         this.senseAmount = tag.getInt("senseAmount");
         this.equality = tag.getInt("equality");
-        super.loadAdditional(tag, provider);
+        super.load(tag);
         loadBlockStateProperties(tag.getCompound("blockStateProps")); //Do this after the filter data comes in, so we know the itemstack in the filter
     }
 }

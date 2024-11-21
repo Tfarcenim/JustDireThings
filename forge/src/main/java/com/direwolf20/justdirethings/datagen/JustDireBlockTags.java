@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.datagen;
 
-import com.direwolf20.justdirethings.JustDireThingsForge;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -19,17 +19,17 @@ import java.util.concurrent.CompletableFuture;
 public class JustDireBlockTags extends BlockTagsProvider {
 
     public JustDireBlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, JustDireThingsForge.MODID, existingFileHelper);
+        super(output, lookupProvider, JustDireThings.MODID, existingFileHelper);
     }
 
-    public static final TagKey<Block> LAWNMOWERABLE = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "lawnmowerable"));
-    public static final TagKey<Block> NO_AUTO_CLICK = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "noautoclick"));
-    public static final TagKey<Block> SWAPPERDENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "swapper_deny"));
-    public static final TagKey<Block> ECLISEGATEDENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "eclipsegate_deny"));
-    public static final TagKey<Block> PHASEDENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "phase_deny"));
-    public static final TagKey<Block> TICK_SPEED_DENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "tick_speed_deny"));
-    public static final TagKey<Block> PARADOX_ALLOW = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "paradox_allow"));
-    public static final TagKey<Block> PARADOX_ABSORB_DENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThingsForge.MODID, "paradox_absorb_deny"));
+    public static final TagKey<Block> LAWNMOWERABLE = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "lawnmowerable"));
+    public static final TagKey<Block> NO_AUTO_CLICK = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "noautoclick"));
+    public static final TagKey<Block> SWAPPERDENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "swapper_deny"));
+    public static final TagKey<Block> ECLISEGATEDENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "eclipsegate_deny"));
+    public static final TagKey<Block> PHASEDENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "phase_deny"));
+    public static final TagKey<Block> TICK_SPEED_DENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "tick_speed_deny"));
+    public static final TagKey<Block> PARADOX_ALLOW = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "paradox_allow"));
+    public static final TagKey<Block> PARADOX_ABSORB_DENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "paradox_absorb_deny"));
     public static final TagKey<Block> CHARCOAL = forgeTag("storage_blocks/charcoal");
 
     private static TagKey<Block> forgeTag(String name) {
