@@ -1,6 +1,5 @@
 package com.direwolf20.justdirethings.common.items.datacomponents;
 
-import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.ToolRecords;
 import com.direwolf20.justdirethings.util.NBTHelpers;
@@ -8,40 +7,226 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.item.component.ItemContainerContents;
-import net.neoforged.neoforge.fluids.SimpleFluidContent;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class JustDireDataComponents {
-    public static final DeferredRegister<DataComponentType<?>> COMPONENTS = DeferredRegister.createDataComponents(JustDireThings.MODID);
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> ENTITIYTYPE = COMPONENTS.register("entitytype", () -> DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> FLOATINGTICKS = COMPONENTS.register("floatingticks", () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> LAVAREPAIR_LAVAPOS = COMPONENTS.register("lavapos", () -> DataComponentType.<BlockPos>builder().persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<ToolRecords.AbilityCooldown>>> ABILITY_COOLDOWNS = COMPONENTS.register("ability_cooldowns", () -> DataComponentType.<List<ToolRecords.AbilityCooldown>>builder().persistent(ToolRecords.AbilityCooldown.LIST_CODEC).networkSynchronized(ToolRecords.AbilityCooldown.STREAM_CODEC.apply(ByteBufCodecs.list())).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<NBTHelpers.BoundInventory>> BOUND_INVENTORY = COMPONENTS.register("bound_inventory", () -> DataComponentType.<NBTHelpers.BoundInventory>builder().persistent(NBTHelpers.BoundInventory.CODEC).networkSynchronized(NBTHelpers.BoundInventory.STREAM_CODEC).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> TOOL_ENABLED = COMPONENTS.register("tool_enabled", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<NBTHelpers.GlobalVec3>> BOUND_GLOBAL_VEC3 = COMPONENTS.register("bound_global_vec3", () -> DataComponentType.<NBTHelpers.GlobalVec3>builder().persistent(NBTHelpers.GlobalVec3.CODEC).networkSynchronized(NBTHelpers.GlobalVec3.STREAM_CODEC).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<GlobalPos>> BOUND_GLOBAL_POS = COMPONENTS.register("bound_global_pos", () -> DataComponentType.<GlobalPos>builder().persistent(GlobalPos.CODEC).networkSynchronized(GlobalPos.STREAM_CODEC).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<String>>> LEFT_CLICK_ABILITIES = COMPONENTS.register("left_click_abilities", () -> DataComponentType.<List<String>>builder().persistent(Codec.STRING.listOf()).networkSynchronized(ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list())).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<ToolRecords.AbilityBinding>>> ABILITY_BINDINGS = COMPONENTS.register("ability_bindings", () -> DataComponentType.<List<ToolRecords.AbilityBinding>>builder().persistent(ToolRecords.AbilityBinding.LIST_CODEC).networkSynchronized(ToolRecords.AbilityBinding.STREAM_CODEC.apply(ByteBufCodecs.list())).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> POCKETGEN_COUNTER = COMPONENTS.register("pocketgen_counter", () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> POCKETGEN_FUELMULT = COMPONENTS.register("pocketgen_fuelmult", () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> POCKETGEN_MAXBURN = COMPONENTS.register("pocketgen_maxburn", () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
+    static Boolean getBoolean(ItemStack stack,String key) {
+        return stack.hasTag() ? stack.getTag().getBoolean(key) : null;
+    }
+
+    static void setBoolean(ItemStack stack,Boolean value,String key) {
+        if (value == null) {
+            stack.removeTagKey(key);
+        } else {
+            stack.getOrCreateTag().putBoolean(key,value);
+        }
+    }
+
+    static Integer getInt(ItemStack stack,String key) {
+        return stack.hasTag() ? stack.getTag().getInt(key) : null;
+    }
+
+    static void setInt(ItemStack stack,Integer value,String key) {
+        if (value == null) {
+            stack.removeTagKey(key);
+        } else {
+            stack.getOrCreateTag().putInt(key,value);
+        }
+    }
+
+    static Integer getInt(ItemStack stack,String key) {
+        return stack.hasTag() ? stack.getTag().getInt(key) : null;
+    }
+
+    static void setInt(ItemStack stack,Integer value,String key) {
+        if (value == null) {
+            stack.removeTagKey(key);
+        } else {
+            stack.getOrCreateTag().putInt(key,value);
+        }
+    }
+
+    public static String getEntityType(ItemStack stack) {
+        return stack.hasTag() ? stack.getTag().getString("entitytype") : null;
+    }
+
+    public static void setEntityType(ItemStack stack,String value) {
+        if (value == null) {
+            stack.removeTagKey("entitytype");
+        } else {
+            stack.getOrCreateTag().putString("entitytype",value);
+        }
+    }
+
+    public static float getFloatingTicks(ItemStack stack) {
+        return stack.hasTag() ? stack.getTag().getFloat("floatingticks") : 0;
+    }
+
+    public static BlockPos getLavaPos(ItemStack stack) {
+        if (stack.hasTag() && stack.getTag().contains("lavapos")) {
+            int[] ints = stack.getTag().getIntArray("lavapos");
+            return new BlockPos(ints[0],ints[1],ints[2]);
+        }
+        return null;
+    }
+
+    public static void setLavaPos(ItemStack stack,@Nullable BlockPos value) {
+        if (value == null) {
+            stack.removeTagKey("lavapos");
+        } else {
+            stack.getOrCreateTag().putIntArray("lavapos",new int[]{value.getX(),value.getY(),value.getZ()});
+        }
+    }
+
+    public static ToolRecords.AbilityCooldown getAbilityCooldowns(ItemStack stack) {
+        if (stack.hasTag() && stack.getTag().contains("ability_cooldowns")) {
+            return ToolRecords.AbilityCooldown.fromTag(stack.getTag().getCompound("ability_cooldowns"));
+        }
+        return null;
+    }
+
+    public static void setAbilityCooldowns(ItemStack stack, @Nullable ToolRecords.AbilityCooldown cooldowns) {
+        if (cooldowns == null) {
+            stack.removeTagKey("ability_cooldowns");
+        } else {
+            stack.getOrCreateTag().put("ability_cooldowns",cooldowns.toTag());
+        }
+    }
+
+    public static NBTHelpers.BoundInventory getBoundInventory(ItemStack stack) {
+        if (stack.hasTag() && stack.getTag().contains("bound_inventory")) {
+            return NBTHelpers.BoundInventory.fromNBT(stack.getTag().getCompound("bound_inventory"));
+        }
+        return null;
+    }
+
+    public static void setBoundInventory(ItemStack stack,@Nullable NBTHelpers.BoundInventory inventory) {
+        if (inventory == null) {
+            stack.removeTagKey("bound_inventory");
+        } else {
+            stack.getOrCreateTag().put("bound_inventory",inventory.toNBT());
+        }
+    }
+
+    public static Boolean getToolEnabled(ItemStack stack) {
+        return getBoolean(stack,"tool_enabled");
+    }
+
+    public static void setToolEnabled(ItemStack stack,Boolean value) {
+        setBoolean(stack,value,"tool_enabled");
+    }
+
+    public static NBTHelpers.GlobalVec3 getBoundGlobalVec3(ItemStack stack) {
+        if (stack.hasTag() && stack.getTag().contains("bound_global_vec3")) {
+            return NBTHelpers.GlobalVec3.fromTag(stack.getTagElement("bound_global_vec3"));
+        }
+        return null;
+    }
+
+    public static void setBoundGlobalVec3(ItemStack stack,@Nullable NBTHelpers.GlobalVec3 vec3) {
+        if (vec3 == null) {
+            stack.removeTagKey("bound_global_vec3");
+        } else {
+            stack.getOrCreateTag().put("bound_global_vec3",vec3.toTag());
+        }
+    }
+
+    public static GlobalPos getBoundGlobalPos(ItemStack stack) {
+        if (stack.hasTag() && stack.getTag().contains("bound_global_pos")) {
+            return NBTHelpers.nbtToGlobalPos(stack.getTagElement("bound_global_pos"));
+        }
+        return null;
+    }
+
+    public static void setBoundGlobalPos(ItemStack stack,@Nullable GlobalPos pos) {
+        if (pos == null) {
+            stack.removeTagKey("bound_global_pos");
+        } else {
+            stack.getOrCreateTag().put("bound_global_pos",NBTHelpers.globalPosToNBT(pos));
+        }
+    }
+
+    public static List<String> getLeftClickAbilities(ItemStack stack) {
+        if (stack.hasTag() && stack.getTag().contains("left_click_abilities")) {
+            ListTag listTag = stack.getTag().getList("left_click_abilities", Tag.TAG_STRING);
+            List<String> list = new ArrayList<>();
+            for (Tag tag : listTag) {
+                list.add(tag.getAsString());
+            }
+            return list;
+        }
+        return null;
+    }
+
+    public static void setLeftClickAbilities(ItemStack stack,@Nullable List<String> list) {
+        if (list == null) {
+            stack.removeTagKey("left_click_abilities");
+        } else {
+            ListTag listTag = new ListTag();
+            list.forEach(s -> listTag.add(StringTag.valueOf(s)));
+            stack.getOrCreateTag().put("left_click_abilities",listTag);
+        }
+    }
+
+    public static ToolRecords.AbilityBinding getAbilityBindings(ItemStack stack) {
+        if (stack.hasTag() && stack.getTag().contains("ability_bindings")) {
+            return ToolRecords.AbilityBinding.fromTag(stack.getTagElement("ability_bindings"));
+        }
+        return null;
+    }
+
+    public static void setAbilityBindings(ItemStack stack, ToolRecords.AbilityBinding binding) {
+        if (binding == null) {
+            stack.removeTagKey("ability_bindings");
+        } else {
+            stack.getOrCreateTag().put("ability_bindings",binding.toTag());
+        }
+    }
+
+    public static Integer getPocketgenCounter(ItemStack stack) {
+        return getInt(stack,"pocketgen_counter");
+    }
+
+    public static void setPocketgenCounter(ItemStack stack,Integer value) {
+        setInt(stack,value,"pocketgen_counter");
+    }
+
+    public static Integer getPocketgenFuelmult(ItemStack stack) {
+        return getInt(stack,"pocketgen_fuelmult");
+    }
+
+    public static void setPocketgenFuelmult(ItemStack stack,Integer value) {
+        setInt(stack,value,"pocketgen_fuelmult");
+    }
+
+    public static Integer getPocketgenMaxburn(ItemStack stack) {
+        return getInt(stack,"pocketgen_maxburn");
+    }
+
+    public static void setPocketgenMaxburn(ItemStack stack,Integer value) {
+        setInt(stack,value,"pocketgen_maxburn");
+    }
+
+    public static Integer getFuelCanisterFuelLevel(ItemStack stack) {
+        return getInt(stack,"fuelcanister_fuellevel");
+    }
+
+    public static void setFuelcanisterFuellevel(ItemStack stack,Integer value) {
+        setInt(stack,value,"fuelcanister_fuellevel");
+    }
+
+
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> FUELCANISTER_FUELLEVEL = COMPONENTS.register("fuelcanister_fuellevel", () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> FUELCANISTER_BURNSPEED = COMPONENTS.register("fuelcanister_burnspeed", () -> DataComponentType.<Double>builder().persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE).build());
 

@@ -3,6 +3,7 @@ package com.direwolf20.justdirethings.common.items.interfaces;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
@@ -19,15 +20,17 @@ public class ToolRecords {
                         .apply(cooldownInstance, AbilityCooldown::new)
         );
         public static final Codec<List<AbilityCooldown>> LIST_CODEC = CODEC.listOf();
-        public static final StreamCodec<ByteBuf, AbilityCooldown> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.STRING_UTF8,
-                AbilityCooldown::abilityName,
-                ByteBufCodecs.VAR_INT,
-                AbilityCooldown::cooldownTicks,
-                ByteBufCodecs.BOOL,
-                AbilityCooldown::isactive,
-                AbilityCooldown::new
-        );
+        public CompoundTag toTag() {
+            CompoundTag tag = new CompoundTag();
+            tag.putString("ability_name",abilityName);
+            tag.putInt("cooldown_ticks",cooldownTicks);
+            tag.putBoolean("is_active",isactive);
+            return tag;
+        }
+
+        public static AbilityCooldown fromTag(CompoundTag tag) {
+            return new AbilityCooldown(tag.getString("ability_name"),tag.getInt("cooldown_ticks"),tag.getBoolean("is_active"));
+        }
     }
 
     public record AbilityBinding(String abilityName, int key, boolean isMouse, boolean requireEquipped) {
@@ -41,16 +44,19 @@ public class ToolRecords {
                         .apply(cooldownInstance, AbilityBinding::new)
         );
         public static final Codec<List<AbilityBinding>> LIST_CODEC = CODEC.listOf();
-        public static final StreamCodec<ByteBuf, AbilityBinding> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.STRING_UTF8,
-                AbilityBinding::abilityName,
-                ByteBufCodecs.VAR_INT,
-                AbilityBinding::key,
-                ByteBufCodecs.BOOL,
-                AbilityBinding::isMouse,
-                ByteBufCodecs.BOOL,
-                AbilityBinding::requireEquipped,
-                AbilityBinding::new
-        );
+
+
+        public CompoundTag toTag() {
+            CompoundTag tag = new CompoundTag();
+            tag.putString("ability_name",abilityName);
+            tag.putInt("key",key);
+            tag.putBoolean("is_mouse",isMouse);
+            tag.putBoolean("require_equipped",requireEquipped);
+            return tag;
+        }
+
+        public static AbilityBinding fromTag(CompoundTag tag) {
+            return new AbilityBinding(tag.getString("ability_name"),tag.getInt("key"),tag.getBoolean("is_mouse"),tag.getBoolean("require_equipped"));
+        }
     }
 }

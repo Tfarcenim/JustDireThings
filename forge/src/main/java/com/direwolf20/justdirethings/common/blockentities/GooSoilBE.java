@@ -43,7 +43,7 @@ public class GooSoilBE extends BlockEntity {
     public void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         if (boundInventory != null) {
-            tag.put("boundinventory", NBTHelpers.BoundInventory.toNBT(boundInventory));
+            tag.put("boundinventory", boundInventory.toNBT());
         }
     }
 
