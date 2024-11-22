@@ -87,18 +87,18 @@ public class NBTHelpers {
         public static PortalDestination fromNBT(CompoundTag tag) {
             PortalDestination portalDestination = null;
             if (tag.contains("globalVec3") && tag.contains("direction") && tag.contains("name")) {
-                GlobalVec3 globalVec = NBTHelpers.nbtToGlobalVec3(tag.getCompound("globalVec3"));
+                GlobalVec3 globalVec = GlobalVec3.fromTag(tag.getCompound("globalVec3"));
                 if (globalVec == null) return null;
                 portalDestination = new PortalDestination(globalVec, Direction.values()[tag.getInt("direction")], tag.getString("name"));
             }
             return portalDestination;
         }
 
-        public static CompoundTag toNBT(PortalDestination portalDestination) {
+        public CompoundTag toNBT() {
             CompoundTag tag = new CompoundTag();
-            tag.put("globalVec3", portalDestination.globalVec3.toTag());
-            tag.putInt("direction", portalDestination.direction.ordinal());
-            tag.putString("name", portalDestination.name);
+            tag.put("globalVec3", globalVec3.toTag());
+            tag.putInt("direction", direction.ordinal());
+            tag.putString("name", name);
             return tag;
         }
     }

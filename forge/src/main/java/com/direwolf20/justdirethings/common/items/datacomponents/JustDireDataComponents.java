@@ -7,10 +7,13 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,8 +24,8 @@ import java.util.UUID;
 
 public class JustDireDataComponents {
 
-    static Boolean getBoolean(ItemStack stack,String key) {
-        return stack.hasTag() ? stack.getTag().getBoolean(key) : null;
+    static Boolean getBoolean(ItemStack stack,String key) {//booleans are bytes internally
+        return stack.hasTag() && stack.getTag().contains(key,Tag.TAG_BYTE) ? stack.getTag().getBoolean(key) : null;
     }
 
     static void setBoolean(ItemStack stack,Boolean value,String key) {
@@ -34,7 +37,7 @@ public class JustDireDataComponents {
     }
 
     static Integer getInt(ItemStack stack,String key) {
-        return stack.hasTag() ? stack.getTag().getInt(key) : null;
+        return stack.hasTag() && stack.getTag().contains(key,Tag.TAG_INT) ? stack.getTag().getInt(key) : null;
     }
 
     static void setInt(ItemStack stack,Integer value,String key) {
@@ -45,20 +48,20 @@ public class JustDireDataComponents {
         }
     }
 
-    static Integer getInt(ItemStack stack,String key) {
-        return stack.hasTag() ? stack.getTag().getInt(key) : null;
+    static Double getDouble(ItemStack stack,String key) {
+        return stack.hasTag() && stack.getTag().contains(key,Tag.TAG_DOUBLE) ? stack.getTag().getDouble(key) : null;
     }
 
-    static void setInt(ItemStack stack,Integer value,String key) {
+    static void setDouble(ItemStack stack,Double value,String key) {
         if (value == null) {
             stack.removeTagKey(key);
         } else {
-            stack.getOrCreateTag().putInt(key,value);
+            stack.getOrCreateTag().putDouble(key,value);
         }
     }
 
     public static String getEntityType(ItemStack stack) {
-        return stack.hasTag() ? stack.getTag().getString("entitytype") : null;
+        return stack.hasTag() && stack.getTag().contains("entitytype") ? stack.getTag().getString("entitytype") : null;
     }
 
     public static void setEntityType(ItemStack stack,String value) {
@@ -66,6 +69,21 @@ public class JustDireDataComponents {
             stack.removeTagKey("entitytype");
         } else {
             stack.getOrCreateTag().putString("entitytype",value);
+        }
+    }
+
+    public static UUID getUUID(ItemStack stack,String key) {
+        if (stack.hasTag() && stack.getTag().hasUUID(key)) {
+            return stack.getTag().getUUID(key);
+        }
+        return null;
+    }
+
+    public static void setUUID(ItemStack stack,UUID uuid,String key) {
+        if (uuid == null) {
+            stack.removeTagKey(key);
+        } else {
+            stack.getOrCreateTag().putUUID(key,uuid);
         }
     }
 
@@ -226,26 +244,138 @@ public class JustDireDataComponents {
         setInt(stack,value,"fuelcanister_fuellevel");
     }
 
+    public static Double getFuelCanisterBurnspeed(ItemStack stack) {
+        return getDouble(stack,"fuelcanister_burnspeed");
+    }
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> FUELCANISTER_FUELLEVEL = COMPONENTS.register("fuelcanister_fuellevel", () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> FUELCANISTER_BURNSPEED = COMPONENTS.register("fuelcanister_burnspeed", () -> DataComponentType.<Double>builder().persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE).build());
+    public static void setFuelcanisterBurnspeed(ItemStack stack,Double value) {
+        setDouble(stack,value,"fuelcanister_burnspeed");
+    }
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> COPY_AREA_SETTINGS = COMPONENTS.register("copy_area_settings", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> COPY_OFFSET_SETTINGS = COMPONENTS.register("copy_offset_settings", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> COPY_FILTER_SETTINGS = COMPONENTS.register("copy_filter_settings", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> COPY_REDSTONE_SETTINGS = COMPONENTS.register("copy_redstone_settings", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<CustomData>> COPIED_MACHINE_DATA = COMPONENTS.register("copied_machine_data", () -> DataComponentType.<CustomData>builder().persistent(CustomData.CODEC).networkSynchronized(CustomData.STREAM_CODEC).build());
+    public static Boolean getCopyAreaSettings(ItemStack stack) {
+        return getBoolean(stack,"copy_area_settings");
+    }
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> PORTALGUN_UUID = COMPONENTS.register("portalgun_uuid", () -> DataComponentType.<UUID>builder().persistent(UUIDUtil.CODEC).networkSynchronized(UUIDUtil.STREAM_CODEC).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> PORTALGUN_FAVORITE = COMPONENTS.register("portalgun_favorite", () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
+    public static void setCopyAreaSettings(ItemStack stack,Boolean value) {
+        setBoolean(stack,value,"copy_area_settings");
+    }
+
+    public static Boolean getCopyOffsetSettings(ItemStack stack) {
+        return getBoolean(stack,"copy_offset_settings");
+    }
+
+    public static void setCopyOffsetSettings(ItemStack stack,Boolean value) {
+        setBoolean(stack,value,"copy_offset_settings");
+    }
+
+    public static Boolean getCopyFilterSettings(ItemStack stack) {
+        return getBoolean(stack,"copy_filter_settings");
+    }
+
+    public static void setCopyFilterSettings(ItemStack stack,Boolean value) {
+        setBoolean(stack,value,"copy_filter_settings");
+    }
+
+    public static Boolean getCopyRedstoneSettings(ItemStack stack) {
+        return getBoolean(stack,"copy_redstone_settings");
+    }
+
+    public static void setCopyRedstoneSettings(ItemStack stack,Boolean value) {
+        setBoolean(stack,value,"copy_redstone_settings");
+    }
+
+    public static UUID getPortalgunUUID(ItemStack stack) {
+        return getUUID(stack,"portalgun_uuid");
+    }
+
+    public static void setPortalgunUUID(ItemStack stack,UUID value) {
+        setUUID(stack,value,"portalgun_uuid");
+    }
+
+    public static Integer getPortalgunFavorite(ItemStack stack) {
+        return getInt(stack,"portalgun_favorite");
+    }
+
+    public static void setPortalgunFavorite(ItemStack stack,Integer value) {
+        setInt(stack,value,"portalgun_favorite");
+    }
+
+    static NBTHelpers.PortalDestination getPortalDestination(ItemStack stack,String key) {
+        if (stack.hasTag() && stack.getTag().contains(key)) {
+            return NBTHelpers.PortalDestination.fromNBT(stack.getTagElement(key));
+        }
+        return null;
+    }
+    static void setPortalDestination(ItemStack stack, @Nullable NBTHelpers.PortalDestination destination,String key) {
+        if (destination == null) {
+            stack.removeTagKey(key);
+        } else {
+            stack.getOrCreateTag().put(key,destination.toNBT());
+        }
+    }
+
+    static List<NBTHelpers.PortalDestination> getPortalGunFavorites(ItemStack stack) {
+        return getPortalDestination(stack,"portal_gun_favorites");
+    }
+
+    static void setPortalGunFavorites(ItemStack stack, @Nullable List<NBTHelpers.PortalDestination> destination) {
+        setPortalDestination(stack,destination,"portal_gun_favorites");
+    }
+
+    public static NBTHelpers.PortalDestination getPortalGunPrevious(ItemStack stack) {
+        return getPortalDestination(stack,"portal_gun_previous");
+    }
+
+    public static void setPortalGunPrevious(ItemStack stack, @Nullable NBTHelpers.PortalDestination destination) {
+        setPortalDestination(stack,destination,"portal_gun_previous");
+    }
+
+    public static Boolean getPortalGunStayOpen(ItemStack stack) {
+        return getBoolean(stack,"portal_gun_stay_open");
+    }
+
+    public static void setPortalGunStayOpen(ItemStack stack,Boolean value) {
+        setBoolean(stack,value,"portal_gun_stay_open");
+    }
+
+    public static FluidStack getFluidContainer(ItemStack stack) {
+        if (stack.hasTag() && stack.getTag().contains("fluid_container")) {
+            return FluidStack.loadFluidStackFromNBT(stack.getTagElement("fluid_container"));
+        }
+        return FluidStack.EMPTY;
+    }
+
+    public static void setFluidContainer(ItemStack stack,FluidStack fluidStack) {
+        if (fluidStack.isEmpty()) {
+            stack.removeTagKey("fluid_container");
+        } else {
+            stack.getOrCreateTag().put("fluid_container",fluidStack.writeToNBT(new CompoundTag()));
+        }
+    }
+
+    public static Integer getForgeEnergy(ItemStack stack) {
+        return getInt(stack,"forge_energy");
+    }
+
+    public static void setForgeEnergy(ItemStack stack,Integer value) {
+        setInt(stack,value,"forge_energy");
+    }
+
+    public static Integer getFluidCanisterMode(ItemStack stack) {
+        return getInt(stack,"fluid_canister_mode");
+    }
+
+    public static void setFluidCanisterMode(ItemStack stack,Integer value) {
+        setInt(stack,value,"fluid_canister_mode");
+    }
+
+
+
+
+    //public static final DeferredHolder<DataComponentType<?>, DataComponentType<CustomData>> COPIED_MACHINE_DATA = COMPONENTS.register("copied_machine_data", () -> DataComponentType.<CustomData>builder().persistent(CustomData.CODEC).networkSynchronized(CustomData.STREAM_CODEC).build());
+
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<NBTHelpers.PortalDestination>>> PORTAL_GUN_FAVORITES = COMPONENTS.register("portal_gun_favorites", () -> DataComponentType.<List<NBTHelpers.PortalDestination>>builder().persistent(NBTHelpers.PortalDestination.CODEC.listOf()).networkSynchronized(NBTHelpers.PortalDestination.STREAM_CODEC.apply(ByteBufCodecs.list())).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<NBTHelpers.PortalDestination>> PORTAL_GUN_PREVIOUS = COMPONENTS.register("portal_gun_previous", () -> DataComponentType.<NBTHelpers.PortalDestination>builder().persistent(NBTHelpers.PortalDestination.CODEC).networkSynchronized(NBTHelpers.PortalDestination.STREAM_CODEC).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> PORTAL_GUN_STAY_OPEN = COMPONENTS.register("portal_gun_stay_open", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<SimpleFluidContent>> FLUID_CONTAINER = COMPONENTS.register("fluid_container", () -> DataComponentType.<SimpleFluidContent>builder().persistent(SimpleFluidContent.CODEC).networkSynchronized(SimpleFluidContent.STREAM_CODEC).build());
-
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> FORGE_ENERGY = COMPONENTS.register("forge_energy", () -> DataComponentType.<Integer>builder().persistent(Codec.INT.orElse(0)).networkSynchronized(ByteBufCodecs.VAR_INT).build());
-
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> FLUID_CANISTER_MODE = COMPONENTS.register("fluid_canister_mode", () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
+    //public static final DeferredHolder<DataComponentType<?>, DataComponentType<SimpleFluidContent>> FLUID_CONTAINER = COMPONENTS.register("fluid_container", () -> DataComponentType.<SimpleFluidContent>builder().persistent(SimpleFluidContent.CODEC).networkSynchronized(SimpleFluidContent.STREAM_CODEC).build());
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<String>>> STUPEFY_TARGETS = COMPONENTS.register("stupefy_targets", () -> DataComponentType.<List<String>>builder().persistent(Codec.STRING.listOf()).networkSynchronized(ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list())).build());
 

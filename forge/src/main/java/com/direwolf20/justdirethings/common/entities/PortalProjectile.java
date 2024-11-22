@@ -245,7 +245,7 @@ public class PortalProjectile extends Projectile {
         if (portalGunUUID != null)
             compound.putUUID("portalGunUUID", portalGunUUID);
         if (portalDestination != null)
-            compound.put("portalDestination", NBTHelpers.PortalDestination.toNBT(portalDestination));
+            compound.put("portalDestination", portalDestination.toNBT());
     }
 
     private static Direction.Axis getPortalAlignment(Vec3 velocity) {
