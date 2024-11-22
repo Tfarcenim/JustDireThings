@@ -8,13 +8,14 @@ import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.LeftClickableTool;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableItem;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
-import com.direwolf20.justdirethings.common.network.data.LeftClickPayload;
+import com.direwolf20.justdirethings.network.server.C2SLeftClickPayload;
 import com.direwolf20.justdirethings.common.network.data.ToggleToolPayload;
 import com.direwolf20.justdirethings.common.network.data.ToolSettingsGUIPayload;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -118,7 +119,7 @@ public class EventKeyInput {
                 UseOnContext useoncontext = new UseOnContext(player.level(), player, InteractionHand.MAIN_HAND, itemStack, blockHitResult);
                 toggleableTool.useOnAbility(useoncontext, itemStack, key, isMouse);
             }
-            PacketDistributor.sendToServer(new LeftClickPayload(0, false, BlockPos.ZERO, -1, invSlot, key, isMouse)); //Type 0 == air
+            PacketDistributor.sendToServer(new C2SLeftClickPayload(0, false, BlockPos.ZERO, Direction.UP, invSlot, key, isMouse)); //Type 0 == air
         }
     }
 }

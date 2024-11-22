@@ -14,6 +14,8 @@ import com.direwolf20.justdirethings.common.containers.handlers.FilterBasicHandl
 import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
 import com.direwolf20.justdirethings.common.network.data.*;
 import com.direwolf20.justdirethings.network.server.C2SAreaAffectingPayload;
+import com.direwolf20.justdirethings.network.server.C2SGhostSlotPayload;
+import com.direwolf20.justdirethings.network.server.C2SFilterSettingPayload;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.MiscTools;
@@ -422,7 +424,7 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
                 ItemStack stack = this.menu.getCarried();// getMinecraft().player.inventoryMenu.getCarried();
                 stack = stack.copy().split(hoveredSlot.getMaxStackSize()); // Limit to slot limit
                 hoveredSlot.set(stack); // Temporarily update the client for continuity purposes
-                PacketDistributor.sendToServer(new GhostSlotPayload(hoveredSlot.index, stack, stack.getCount(), -1));
+                PacketDistributor.sendToServer(new C2SGhostSlotPayload(hoveredSlot.index, stack, stack.getCount(), -1));
                 return true;
             }
         }
@@ -466,7 +468,7 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
         if (baseMachineBE instanceof AreaAffectingBE)
             PacketDistributor.sendToServer(new C2SAreaAffectingPayload(xRadius, yRadius, zRadius, xOffset, yOffset, zOffset, renderArea));
         if (baseMachineBE instanceof FilterableBE)
-            PacketDistributor.sendToServer(new FilterSettingPayload(filterData.allowlist, filterData.compareNBT, filterData.blockItemFilter));
+            PacketDistributor.sendToServer(new C2SFilterSettingPayload(filterData.allowlist, filterData.compareNBT, filterData.blockItemFilter));
         if (baseMachineBE instanceof RedstoneControlledBE)
             PacketDistributor.sendToServer(new RedstoneSettingPayload(redstoneMode.ordinal()));
     }

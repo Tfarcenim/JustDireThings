@@ -36,9 +36,7 @@ public class PlayerAccessor extends BaseMachineBlock {
     @Override
     public void openMenu(Player player, BlockPos blockPos) {
         player.openMenu(new SimpleMenuProvider(
-                (windowId, playerInventory, playerEntity) -> new PlayerAccessorContainer(windowId, playerInventory, blockPos), Component.translatable("")), (buf -> {
-            buf.writeBlockPos(blockPos);
-        }));
+                (windowId, playerInventory, playerEntity) -> new PlayerAccessorContainer(windowId, playerInventory, blockPos), Component.empty()));
     }
 
     @Override

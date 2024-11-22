@@ -1,10 +1,7 @@
 package com.direwolf20.justdirethings.platform.services;
 
 import com.direwolf20.justdirethings.network.client.S2CModPacket;
-import com.direwolf20.justdirethings.network.server.C2SBlockStateFilterPayload;
-import com.direwolf20.justdirethings.network.server.C2SAreaAffectingPayload;
-import com.direwolf20.justdirethings.network.server.C2SClickerPayload;
-import com.direwolf20.justdirethings.network.server.C2SModPacket;
+import com.direwolf20.justdirethings.network.server.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -54,4 +51,28 @@ public interface IPlatformHelper {
     void handleC2SBlockStateFilterPayload(ServerPlayer player, C2SBlockStateFilterPayload blockStateFilterPayload);
 
     void handleC2SClickerPayload(ServerPlayer player, C2SClickerPayload c2SClickerPayload);
+
+    void handleC2SLeftClickPayload(ServerPlayer player, C2SLeftClickPayload c2SLeftClickPayload);
+
+    void handleC2SCopyMachineSettingsPayload(ServerPlayer player, C2SCopyMachineSettingsPayload c2SCopyMachineSettingsPayload);
+
+    void handleC2SDirectionSettingPayload(ServerPlayer player, C2SDirectionSettingPayload c2SDirectionSettingPayload);
+
+    void handleC2SDropperSettingPayload(ServerPlayer player, C2SDropperSettingPayload c2SDropperSettingPayload);
+
+    void handleC2SExperienceHolderPayload(ServerPlayer player, C2SExperienceHolderPayload c2SExperienceHolderPayload);
+
+    void handleC2SExperienceHolderSettingsPayload(ServerPlayer player, C2SExperienceHolderSettingsPayload c2SExperienceHolderSettingsPayload);
+
+    void handleC2SGhostSlotPayload(ServerPlayer player, C2SGhostSlotPayload c2SGhostSlotPayload);
+
+    void handleC2SFilterSettingPayload(ServerPlayer player, C2SFilterSettingPayload c2SFilterSettingPayload);
+
+    void handleInventoryHolderMoveItemsPayload(ServerPlayer player, C2SInventoryHolderMoveItemsPayload c2SInventoryHolderMoveItemsPayload);
+
+    void handleInventoryHolderSaveSlotPayload(ServerPlayer player, C2SInventoryHolderSaveSlotPayload c2SInventoryHolderSaveSlotPayload);
+
+    void handleC2SInventoryHolderSettingsPayload(ServerPlayer player, C2SInventoryHolderSettingsPayload c2SInventoryHolderSettingsPayload);
+
+    void handleC2SItemCollectorSettingsPayload(ServerPlayer player, C2SItemCollectorSettingsPayload c2SItemCollectorSettingsPayload);
 }

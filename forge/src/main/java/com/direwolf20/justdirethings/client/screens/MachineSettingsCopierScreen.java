@@ -5,7 +5,8 @@ import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButton
 import com.direwolf20.justdirethings.client.screens.widgets.BaseButton;
 import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
 import com.direwolf20.justdirethings.common.items.MachineSettingsCopier;
-import com.direwolf20.justdirethings.common.network.data.CopyMachineSettingsPayload;
+import com.direwolf20.justdirethings.network.server.C2SCopyMachineSettingsPayload;
+import com.direwolf20.justdirethings.platform.Services;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,10 +15,9 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class MachineSettingsCopierScreen extends Screen {
-    public static final ResourceLocation SOCIALBACKGROUND = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "background");
+    public static final ResourceLocation SOCIALBACKGROUND = JustDireThings.id("background");
     private ItemStack copyMachineSettingsItemstack;
     boolean area, offset, filter, redstone;
     int topSectionWidth, topSectionHeight, topSectionLeft, topSectionTop;
@@ -76,7 +76,7 @@ public class MachineSettingsCopierScreen extends Screen {
         topSectionTop = getGuiHeight();
     }
 
-    @Override
+//    @Override
     public void renderBackground(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         guiGraphics.blitSprite(SOCIALBACKGROUND, topSectionLeft, topSectionTop - 20, topSectionWidth, 20);
@@ -98,7 +98,7 @@ public class MachineSettingsCopierScreen extends Screen {
     }
 
     public void saveSettings() {
-        PacketDistributor.sendToServer(new CopyMachineSettingsPayload(area, offset, filter, redstone));
+        Services.PLATFORM.sendToServer(new C2SCopyMachineSettingsPayload(area, offset, filter, redstone));
     }
 
     @Override

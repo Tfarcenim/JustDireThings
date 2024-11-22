@@ -9,7 +9,7 @@ import com.direwolf20.justdirethings.common.blockentities.ParadoxMachineBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.FluidMachineBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.PoweredMachineBE;
 import com.direwolf20.justdirethings.common.containers.ParadoxMachineContainer;
-import com.direwolf20.justdirethings.common.network.data.ParadoxMachineSnapshotPayload;
+import com.direwolf20.justdirethings.network.server.C2SParadoxMachineSnapshotPayload;
 import com.direwolf20.justdirethings.common.network.data.ParadoxRenderPayload;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.direwolf20.justdirethings.util.MiscTools;
@@ -51,7 +51,7 @@ public class ParadoxMachineScreen extends BaseMachineScreen<ParadoxMachineContai
 
     public void addSnapshotButton() {
         addRenderableWidget(ToggleButtonFactory.SNAPSHOT_AREA_BUTTON(getGuiLeft() + 116, topSectionTop + 62, b -> {
-            PacketDistributor.sendToServer(new ParadoxMachineSnapshotPayload());
+            PacketDistributor.sendToServer(new C2SParadoxMachineSnapshotPayload());
         }));
     }
 

@@ -6,8 +6,8 @@ import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
 import com.direwolf20.justdirethings.client.screens.widgets.NumberButton;
 import com.direwolf20.justdirethings.common.blockentities.ExperienceHolderBE;
 import com.direwolf20.justdirethings.common.containers.ExperienceHolderContainer;
-import com.direwolf20.justdirethings.common.network.data.ExperienceHolderPayload;
-import com.direwolf20.justdirethings.common.network.data.ExperienceHolderSettingsPayload;
+import com.direwolf20.justdirethings.network.server.C2SExperienceHolderPayload;
+import com.direwolf20.justdirethings.network.server.C2SExperienceHolderSettingsPayload;
 import com.direwolf20.justdirethings.util.ExperienceUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -47,7 +47,7 @@ public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderCo
                 amt = -1;
             else if (Screen.hasShiftDown())
                 amt = amt * 10;
-            PacketDistributor.sendToServer(new ExperienceHolderPayload(true, amt));
+            PacketDistributor.sendToServer(new C2SExperienceHolderPayload(true, amt));
         }));
         addRenderableWidget(ToggleButtonFactory.EXTRACTEXPBUTTON(topSectionLeft + (topSectionWidth / 2) - 15 - 18, topSectionTop + 62, true, b -> {
             int amt = 1;
@@ -55,7 +55,7 @@ public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderCo
                 amt = -1;
             else if (Screen.hasShiftDown())
                 amt = amt * 10;
-            PacketDistributor.sendToServer(new ExperienceHolderPayload(false, amt));
+            PacketDistributor.sendToServer(new C2SExperienceHolderPayload(false, amt));
         }));
         addRenderableWidget(ToggleButtonFactory.TARGETEXPBUTTON(topSectionLeft + (topSectionWidth / 2) - 15 - 42, topSectionTop + 64, targetExp, b -> {
             targetExp = ((NumberButton) b).getValue(); //The value is updated in the mouseClicked method below
@@ -107,6 +107,6 @@ public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderCo
     @Override
     public void saveSettings() {
         super.saveSettings();
-        PacketDistributor.sendToServer(new ExperienceHolderSettingsPayload(targetExp, ownerOnly, collectExp, showParticles));
+        PacketDistributor.sendToServer(new C2SExperienceHolderSettingsPayload(targetExp, ownerOnly, collectExp, showParticles));
     }
 }

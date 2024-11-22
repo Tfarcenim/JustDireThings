@@ -7,8 +7,8 @@ import com.direwolf20.justdirethings.client.screens.widgets.NumberButton;
 import com.direwolf20.justdirethings.client.screens.widgets.ToggleButton;
 import com.direwolf20.justdirethings.common.blockentities.ClickerT1BE;
 import com.direwolf20.justdirethings.common.containers.ClickerT1Container;
+import com.direwolf20.justdirethings.network.server.C2SDirectionSettingPayload;
 import com.direwolf20.justdirethings.network.server.C2SClickerPayload;
-import com.direwolf20.justdirethings.common.network.data.DirectionSettingPayload;
 import com.direwolf20.justdirethings.common.network.data.TickSpeedPayload;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import net.minecraft.network.chat.Component;
@@ -67,7 +67,7 @@ public class ClickerT1Screen extends BaseMachineScreen<ClickerT1Container> {
         super.init();
         addRenderableWidget(ToggleButtonFactory.DIRECTIONBUTTON(getGuiLeft() + 122, topSectionTop + 38, direction, b -> {
             direction = ((ToggleButton) b).getTexturePosition();
-            PacketDistributor.sendToServer(new DirectionSettingPayload(direction));
+            PacketDistributor.sendToServer(new C2SDirectionSettingPayload(direction));
         }));
 
         addRenderableWidget(ToggleButtonFactory.CLICKTARGETBUTTON(getGuiLeft() + 56, topSectionTop + 38, clickTarget, b -> {

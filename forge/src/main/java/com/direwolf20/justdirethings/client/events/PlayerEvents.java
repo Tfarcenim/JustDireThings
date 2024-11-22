@@ -6,8 +6,9 @@ import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.LeftClickableTool;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
 import com.direwolf20.justdirethings.common.items.tools.basetools.BaseHoe;
-import com.direwolf20.justdirethings.common.network.data.LeftClickPayload;
+import com.direwolf20.justdirethings.network.server.C2SLeftClickPayload;
 import com.direwolf20.justdirethings.common.network.data.PortalGunLeftClickPayload;
+import com.direwolf20.justdirethings.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
@@ -20,14 +21,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.Set;
 
-@EventBusSubscriber(modid = JustDireThings.MODID)
+@Mod.EventBusSubscriber(modid = JustDireThings.MODID)
 public class PlayerEvents {
     private static BlockPos destroyPos = BlockPos.ZERO;
     private static int gameTicksMining = 0;
@@ -54,7 +54,7 @@ public class PlayerEvents {
             doExtraCrumblings(event, itemStack, toggleableTool);
         }
         if (itemStack.getItem() instanceof PortalGun && event.getAction().equals(PlayerInteractEvent.LeftClickBlock.Action.START))
-            PacketDistributor.sendToServer(new PortalGunLeftClickPayload());
+            Services.PLATFORM.sendToServer(new PortalGunLeftClickPayload());
     }
 
     private static void doExtraCrumblings(PlayerInteractEvent.LeftClickBlock event, ItemStack itemStack, ToggleableTool toggleableTool) {
@@ -119,12 +119,12 @@ public class PlayerEvents {
             //Do them client side and Server side, since some abilities (like ore scanner) are client side activated.
             if (air) { //Air
                 toggleableTool.useAbility(player.level(), player, hand, false);
-                PacketDistributor.sendToServer(new LeftClickPayload(0, hand == InteractionHand.MAIN_HAND, BlockPos.ZERO, -1, -1, -1, false)); //Type 0 == air
+                Services.PLATFORM.sendToServer(new C2SLeftClickPayload(0, hand == InteractionHand.MAIN_HAND, BlockPos.ZERO, Direction.UP, -1, -1, false)); //Type 0 == air
             } else { //Block - No need for a packet since this will run both client and server side! (See above!)
                 UseOnContext useoncontext = new UseOnContext(player.level(), player, hand, itemStack, new BlockHitResult(Vec3.atCenterOf(blockPos), direction, blockPos, false));
                 toggleableTool.useOnAbility(useoncontext, false);
                 //Don't need the below because this actually runs on both client AND server.
-                //PacketDistributor.SERVER.noArg().send(new LeftClickPayload(1, hand == InteractionHand.MAIN_HAND, blockPos, direction.ordinal(), -1, -1, false)); //Type 1 == Block
+                //PacketDistributor.SERVER.noArg().send(new C2SLeftClickPayload(1, hand == InteractionHand.MAIN_HAND, blockPos, direction.ordinal(), -1, -1, false)); //Type 1 == Block
             }
 
         }

@@ -2,7 +2,7 @@ package com.direwolf20.justdirethings.client.jei.ghostfilters;
 
 import com.direwolf20.justdirethings.client.screens.basescreens.BaseScreen;
 import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
-import com.direwolf20.justdirethings.common.network.data.GhostSlotPayload;
+import com.direwolf20.justdirethings.network.server.C2SGhostSlotPayload;
 import mezz.jei.api.gui.handlers.IGhostIngredientHandler;
 import mezz.jei.api.ingredients.ITypedIngredient;
 import net.minecraft.client.renderer.Rect2i;
@@ -31,7 +31,7 @@ public class GhostFilterBasic implements IGhostIngredientHandler<BaseScreen> {
                     @Override
                     public void accept(I ingredient) {
                         slot.set((ItemStack) ingredient);
-                        PacketDistributor.sendToServer(new GhostSlotPayload(slot.index, (ItemStack) ingredient, ((ItemStack) ingredient).getCount(), -1));
+                        PacketDistributor.sendToServer(new C2SGhostSlotPayload(slot.index, (ItemStack) ingredient, ((ItemStack) ingredient).getCount(), -1));
                     }
                 });
             }

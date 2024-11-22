@@ -4,7 +4,7 @@ import com.direwolf20.justdirethings.client.screens.basescreens.BaseMachineScree
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButtonFactory;
 import com.direwolf20.justdirethings.client.screens.widgets.ToggleButton;
 import com.direwolf20.justdirethings.common.containers.BlockBreakerT2Container;
-import com.direwolf20.justdirethings.common.network.data.DirectionSettingPayload;
+import com.direwolf20.justdirethings.network.server.C2SDirectionSettingPayload;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -28,7 +28,7 @@ public class BlockBreakerT2Screen extends BaseMachineScreen<BlockBreakerT2Contai
         super.init();
         addRenderableWidget(ToggleButtonFactory.DIRECTIONBUTTON(getGuiLeft() + 116, topSectionTop + 62, direction, b -> {
             direction = ((ToggleButton) b).getTexturePosition();
-            PacketDistributor.sendToServer(new DirectionSettingPayload(direction));
+            PacketDistributor.sendToServer(new C2SDirectionSettingPayload(direction));
         }));
     }
 

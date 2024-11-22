@@ -5,7 +5,7 @@ import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButton
 import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
 import com.direwolf20.justdirethings.common.blockentities.EnergyTransmitterBE;
 import com.direwolf20.justdirethings.common.containers.EnergyTransmitterContainer;
-import com.direwolf20.justdirethings.common.network.data.EnergyTransmitterSettingPayload;
+import com.direwolf20.justdirethings.network.server.C2SEnergyTransmitterSettingPayload;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -48,6 +48,6 @@ public class EnergyTransmitterScreen extends BaseMachineScreen<EnergyTransmitter
     @Override
     public void saveSettings() {
         super.saveSettings();
-        PacketDistributor.sendToServer(new EnergyTransmitterSettingPayload(showParticles));
+        PacketDistributor.sendToServer(new C2SEnergyTransmitterSettingPayload(showParticles));
     }
 }

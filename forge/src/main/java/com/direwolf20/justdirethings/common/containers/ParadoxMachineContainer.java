@@ -29,9 +29,5 @@ public class ParadoxMachineContainer extends BaseMachineContainer {
     public ItemStack quickMoveStack(Player playerIn, int index) {
         return super.quickMoveStack(playerIn, index); //Only does filter slots!
     }
-
-    @Override
-    public void removed(Player playerIn) {
-        super.removed(playerIn);
-    }
+    
 }

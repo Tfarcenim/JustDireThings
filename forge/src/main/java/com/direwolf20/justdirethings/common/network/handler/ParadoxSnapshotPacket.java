@@ -2,7 +2,7 @@ package com.direwolf20.justdirethings.common.network.handler;
 
 import com.direwolf20.justdirethings.common.blockentities.ParadoxMachineBE;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseMachineContainer;
-import com.direwolf20.justdirethings.common.network.data.ParadoxMachineSnapshotPayload;
+import com.direwolf20.justdirethings.network.server.C2SParadoxMachineSnapshotPayload;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -14,7 +14,7 @@ public class ParadoxSnapshotPacket {
         return INSTANCE;
     }
 
-    public void handle(final ParadoxMachineSnapshotPayload payload, final IPayloadContext context) {
+    public void handle(final C2SParadoxMachineSnapshotPayload payload, final IPayloadContext context) {
         context.enqueueWork(() -> {
             Player sender = context.player();
             AbstractContainerMenu container = sender.containerMenu;

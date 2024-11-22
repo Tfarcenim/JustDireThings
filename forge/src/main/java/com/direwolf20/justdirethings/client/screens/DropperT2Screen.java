@@ -10,8 +10,8 @@ import com.direwolf20.justdirethings.common.blockentities.DropperT2BE;
 import com.direwolf20.justdirethings.common.blockentities.ItemCollectorBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.AreaAffectingBE;
 import com.direwolf20.justdirethings.common.containers.DropperT2Container;
-import com.direwolf20.justdirethings.common.network.data.DirectionSettingPayload;
-import com.direwolf20.justdirethings.common.network.data.DropperSettingPayload;
+import com.direwolf20.justdirethings.network.server.C2SDirectionSettingPayload;
+import com.direwolf20.justdirethings.network.server.C2SDropperSettingPayload;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -67,7 +67,7 @@ public class DropperT2Screen extends BaseMachineScreen<DropperT2Container> {
         super.init();
         addRenderableWidget(ToggleButtonFactory.DIRECTIONBUTTON(getGuiLeft() + 122, topSectionTop + 38, direction, b -> {
             direction = ((ToggleButton) b).getTexturePosition();
-            PacketDistributor.sendToServer(new DirectionSettingPayload(direction));
+            PacketDistributor.sendToServer(new C2SDirectionSettingPayload(direction));
         }));
 
         addRenderableWidget(new NumberButton(getGuiLeft() + 20, topSectionTop + 41, 24, 12, dropCount, 1, 64, Component.translatable("justdirethings.screen.dropcount"), b -> {
@@ -90,7 +90,7 @@ public class DropperT2Screen extends BaseMachineScreen<DropperT2Container> {
     @Override
     public void saveSettings() {
         super.saveSettings();
-        PacketDistributor.sendToServer(new DropperSettingPayload(dropCount, pickupDelay));
+        PacketDistributor.sendToServer(new C2SDropperSettingPayload(dropCount, pickupDelay));
     }
 
     @Override
