@@ -5,16 +5,16 @@ import com.direwolf20.justdirethings.common.items.interfaces.ToolRecords;
 import com.direwolf20.justdirethings.util.NBTHelpers;
 import com.direwolf20.justdirethings.util.PotionContents;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.SculkSpreader;
 import net.minecraftforge.common.extensions.IForgeItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
+
+import static com.mojang.text2speech.Narrator.LOGGER;
 
 public class JustDireDataComponents {
 
@@ -187,48 +189,27 @@ public class JustDireDataComponents {
     }
 
     public static List<String> getLeftClickAbilities(ItemStack stack) {
-        return getList(stack,STRING,"left_click_abilities");
+        return getList(stack,Codec.STRING,"left_click_abilities");
     }
 
     public static void setLeftClickAbilities(ItemStack stack,@Nullable List<String> list) {
-        setList(stack,list,STRING,"left_click_abilities");
+        setList(stack,list,Codec.STRING,"left_click_abilities");
     }
 
-    static class Bicoder<T>{
-        private final Function<T, Tag> encoder;
-        private final Function<Tag, T> decoder;
-        private final byte b;
-
-        Bicoder(Function<T,Tag> encoder,Function<Tag,T> decoder, byte b) {
-            this.encoder = encoder;
-            this.decoder = decoder;
-            this.b = b;
-        }
-    }
-
-    static final Bicoder<String> STRING = new Bicoder<>(StringTag::valueOf,Tag::getAsString,Tag.TAG_STRING);
-    static final Bicoder<NBTHelpers.PortalDestination> PORTAL_DESTINATION = new Bicoder<>(NBTHelpers.PortalDestination::toNBT,tag -> NBTHelpers.PortalDestination.fromNBT((CompoundTag) tag),Tag.TAG_COMPOUND);
-    static final Bicoder<ItemStack> ITEM_STACK = new Bicoder<>(IForgeItemStack::serializeNBT, tag -> ItemStack.of((CompoundTag) tag),Tag.TAG_COMPOUND);
-
-
-    static <T> List<T> getList(ItemStack stack, Bicoder<T> bicoder, String key) {
+    static <T> List<T> getList(ItemStack stack, Codec<T> codec, String key) {
         if (stack.hasTag() && stack.getTag().contains(key,Tag.TAG_LIST)) {
-            ListTag listTag = stack.getTag().getList(key,bicoder.b);
-            List<T> list = new ArrayList<>();
-            for (Tag tag : listTag) {
-                list.add(bicoder.decoder.apply(tag));
-            }
-            return list;
+            ListTag listTag = (ListTag) stack.getTag().get(key);
+            return codec.listOf().parse(new Dynamic<>(NbtOps.INSTANCE, listTag)).resultOrPartial(LOGGER::error).orElseGet(ArrayList::new);
         }
         return null;
     }
 
-    static <T> void setList(ItemStack stack,List<T> list, Bicoder<T> bicoder, String key) {
+    static <T> void setList(ItemStack stack,List<T> list, Codec<T> codec, String key) {
         if (list == null) {
             stack.removeTagKey(key);
         } else {
             ListTag listTag = new ListTag();
-            list.forEach(s -> listTag.add(bicoder.encoder.apply(s)));
+            codec.listOf().encodeStart(NbtOps.INSTANCE, list).resultOrPartial(LOGGER::error).ifPresent(listTag::add);
             stack.getOrCreateTag().put(key,listTag);
         }
     }
@@ -351,11 +332,11 @@ public class JustDireDataComponents {
     }
 
     static List<NBTHelpers.PortalDestination> getPortalGunFavorites(ItemStack stack) {
-        return getList(stack,PORTAL_DESTINATION,"portal_gun_favorites");
+        return getList(stack, NBTHelpers.PortalDestination.CODEC,"portal_gun_favorites");
     }
 
     static void setPortalGunFavorites(ItemStack stack, @Nullable List<NBTHelpers.PortalDestination> destination) {
-        setList(stack,destination,PORTAL_DESTINATION,"portal_gun_favorites");
+        setList(stack,destination, NBTHelpers.PortalDestination.CODEC,"portal_gun_favorites");
     }
 
     public static NBTHelpers.PortalDestination getPortalGunPrevious(ItemStack stack) {
@@ -406,19 +387,19 @@ public class JustDireDataComponents {
     }
 
     public static List<String> getStupefyTargets(ItemStack stack) {
-        return getList(stack,STRING,"stupefy_targets");
+        return getList(stack,Codec.STRING,"stupefy_targets");
     }
 
     public static void setStupefyTargets(ItemStack stack,List<String> strings) {
-        setList(stack,strings,STRING,"stupefy_targets");
+        setList(stack,strings,Codec.STRING,"stupefy_targets");
     }
 
     static List<ItemStack> getItems(ItemStack stack,String key) {
-        return getList(stack,ITEM_STACK,key);
+        return getList(stack,ItemStack.CODEC,key);
     }
 
     static void setItems(ItemStack stack,List<ItemStack> items,String key) {
-        setList(stack,items,ITEM_STACK,key);
+        setList(stack,items,ItemStack.CODEC,key);
     }
 
     public static List<ItemStack> getItemstackHandler(ItemStack stack) {
