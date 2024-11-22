@@ -298,7 +298,6 @@ public class JustDireThingsForge {
         event.registerBlock(Capabilities.FluidHandler.BLOCK,
                 (level, pos, state, be, side) -> {
                     if (be instanceof ExperienceHolderBE experienceHolderBE) {
-                        return new ExperienceHolderFluidTank(experienceHolderBE, fluidstack -> fluidstack.is(JustDireFluidTags.EXPERIENCE));
                     }
                     return null;
                 },

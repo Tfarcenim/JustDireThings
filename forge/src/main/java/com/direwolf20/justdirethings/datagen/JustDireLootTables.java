@@ -1,22 +1,20 @@
 package com.direwolf20.justdirethings.datagen;
 
 import com.direwolf20.justdirethings.setup.Registration;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.packs.VanillaBlockLoot;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class JustDireLootTables extends VanillaBlockLoot {
 
-    public JustDireLootTables(HolderLookup.Provider p_344962_) {
-        super(p_344962_);
+    public JustDireLootTables() {
+        super();
     }
 
     @Override

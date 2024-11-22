@@ -1,5 +1,7 @@
 package com.direwolf20.justdirethings;
 
+import net.minecraft.resources.ResourceLocation;
+
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
 // import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
 // common compatible binaries. This means common code can not directly use loader specific concepts such as Forge events
@@ -13,5 +15,9 @@ public class JustDireThings {
     // code that gets invoked by the entry point of the loader specific projects.
     public static void init() {
 
+    }
+
+    public static ResourceLocation id(String path) {
+        return new ResourceLocation(MODID,path);
     }
 }

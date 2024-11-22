@@ -1,9 +1,8 @@
 package com.direwolf20.justdirethings.common.entities;
 
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.PotionContents;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,10 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.ZombifiedPiglin;
@@ -26,7 +22,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
@@ -70,13 +65,13 @@ public class JustDireArrow extends AbstractArrow {
         super(p_36858_, p_36859_);
     }
 
-    public JustDireArrow(Level level, double x, double y, double z, ItemStack pickupItemStack, @Nullable ItemStack itemStack) {
-        super(Registration.JustDireArrow.get(), x, y, z, level, pickupItemStack, itemStack);
+    public JustDireArrow(Level level, double x, double y, double z) {
+        super(Registration.JustDireArrow.get(), x, y, z, level);
         this.updateColor();
     }
 
-    public JustDireArrow(Level level, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack itemStack) {
-        super(Registration.JustDireArrow.get(), owner, level, pickupItemStack, itemStack);
+    public JustDireArrow(Level level, LivingEntity owner) {
+        super(Registration.JustDireArrow.get(), owner, level);
         this.updateColor();
     }
 
@@ -154,19 +149,19 @@ public class JustDireArrow extends AbstractArrow {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder p_326324_) {
-        super.defineSynchedData(p_326324_);
-        p_326324_.define(ID_EFFECT_COLOR, -1);
-        p_326324_.define(IS_POTIONARROW, false);
-        p_326324_.define(IS_SPLASH, false);
-        p_326324_.define(IS_LINGERING, false);
-        p_326324_.define(IS_HOMING, false);
-        p_326324_.define(ARROW_STATE, ArrowState.NORMAL.ordinal());
-        p_326324_.define(STATE_TICK_COUNTER, 0);
-        p_326324_.define(ORIGINAL_VELOCITY, 0f);
-        p_326324_.define(IS_EPIC_ARROW, false);
-        p_326324_.define(IS_PHASE, false);
-        p_326324_.define(HOSTILE_ONLY, true);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(ID_EFFECT_COLOR, -1);
+        entityData.define(IS_POTIONARROW, false);
+        entityData.define(IS_SPLASH, false);
+        entityData.define(IS_LINGERING, false);
+        entityData.define(IS_HOMING, false);
+        entityData.define(ARROW_STATE, ArrowState.NORMAL.ordinal());
+        entityData.define(STATE_TICK_COUNTER, 0);
+        entityData.define(ORIGINAL_VELOCITY, 0f);
+        entityData.define(IS_EPIC_ARROW, false);
+        entityData.define(IS_PHASE, false);
+        entityData.define(HOSTILE_ONLY, true);
     }
 
     public static boolean isHostileEntity(LivingEntity entity) {
@@ -286,7 +281,6 @@ public class JustDireArrow extends AbstractArrow {
         } else {
             if (this.inGround && this.inGroundTime != 0 && !this.getPotionContents().equals(PotionContents.EMPTY) && this.inGroundTime >= 600) {
                 this.level().broadcastEntityEvent(this, (byte) 0);
-                this.setPickupItemStack(new ItemStack(Items.ARROW));
             }
         }
     }
@@ -514,7 +508,7 @@ public class JustDireArrow extends AbstractArrow {
                 this.applySplash(
                         potioncontents.getAllEffects(), result.getType() == HitResult.Type.ENTITY ? ((EntityHitResult) result).getEntity() : null
                 );
-                int i = potioncontents.potion().isPresent() && potioncontents.potion().get().value().hasInstantEffects() ? 2007 : 2002;
+                int i = potioncontents.potion().isPresent() && potioncontents.potion().get().hasInstantEffects() ? 2007 : 2002;
                 this.level().levelEvent(i, this.blockPosition(), potioncontents.getColor());
             }
         }
@@ -577,13 +571,13 @@ public class JustDireArrow extends AbstractArrow {
                         }
 
                         for (MobEffectInstance mobeffectinstance : p_330815_) {
-                            Holder<MobEffect> holder = mobeffectinstance.getEffect();
-                            if (holder.value().getCategory() == MobEffectCategory.HARMFUL && getOwner() != null && livingentity.is(getOwner()))
+                            MobEffect holder = mobeffectinstance.getEffect();
+                            if (holder.getCategory() == MobEffectCategory.HARMFUL && getOwner() != null && livingentity.is(getOwner()))
                                 continue;
-                            if (holder.value().getCategory() == MobEffectCategory.BENEFICIAL && getOwner() != null && !livingentity.is(getOwner()))
+                            if (holder.getCategory() == MobEffectCategory.BENEFICIAL && getOwner() != null && !livingentity.is(getOwner()))
                                 continue;
-                            if (holder.value().isInstantenous()) {
-                                holder.value().applyInstantenousEffect(this, this.getOwner(), livingentity, mobeffectinstance.getAmplifier(), d1);
+                            if (holder.isInstantenous()) {
+                                holder.applyInstantenousEffect(this, this.getOwner(), livingentity, mobeffectinstance.getAmplifier(), d1);
                             } else {
                                 int i = mobeffectinstance.mapDuration(p_267930_ -> (int) (d1 * (double) p_267930_ + 0.5));
                                 MobEffectInstance mobeffectinstance1 = new MobEffectInstance(
@@ -601,7 +595,7 @@ public class JustDireArrow extends AbstractArrow {
     }
 
     private void makeAreaOfEffectCloud(PotionContents p_332124_) {
-        JustDireAreaEffectCloud areaeffectcloud = new JustDireAreaEffectCloud(this.level(), this.getX(), this.getY(), this.getZ());
+        AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level(), this.getX(), this.getY(), this.getZ());
         if (this.getOwner() instanceof LivingEntity livingentity) {
             areaeffectcloud.setOwner(livingentity);
         }
@@ -610,7 +604,7 @@ public class JustDireArrow extends AbstractArrow {
         areaeffectcloud.setRadiusOnUse(-0.1F);
         areaeffectcloud.setWaitTime(10);
         areaeffectcloud.setRadiusPerTick(-areaeffectcloud.getRadius() / (float) areaeffectcloud.getDuration());
-        areaeffectcloud.setPotionContents(p_332124_);
+        areaeffectcloud.setPotion(p_332124_.potion().orElse(Potions.EMPTY));
         this.level().addFreshEntity(areaeffectcloud);
     }
 
@@ -622,10 +616,10 @@ public class JustDireArrow extends AbstractArrow {
         Entity entity = this.getEffectSource();
         PotionContents potioncontents = this.getPotionContents();
         if (potioncontents.potion().isPresent()) {
-            for (MobEffectInstance mobeffectinstance : potioncontents.potion().get().value().getEffects()) {
-                if (mobeffectinstance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL && getOwner() != null && living.is(getOwner()))
+            for (MobEffectInstance mobeffectinstance : potioncontents.potion().get().getEffects()) {
+                if (mobeffectinstance.getEffect().getCategory() == MobEffectCategory.HARMFUL && getOwner() != null && living.is(getOwner()))
                     continue;
-                if (mobeffectinstance.getEffect().value().getCategory() == MobEffectCategory.BENEFICIAL && getOwner() != null && !living.is(getOwner()))
+                if (mobeffectinstance.getEffect().getCategory() == MobEffectCategory.BENEFICIAL && getOwner() != null && !living.is(getOwner()))
                     continue;
                 living.addEffect(
                         new MobEffectInstance(
@@ -643,11 +637,6 @@ public class JustDireArrow extends AbstractArrow {
         for (MobEffectInstance mobeffectinstance1 : potioncontents.customEffects()) {
             living.addEffect(mobeffectinstance1, entity);
         }
-    }
-
-    @Override
-    protected ItemStack getDefaultPickupItem() {
-        return new ItemStack(Items.ARROW);
     }
 
     /**

@@ -4,6 +4,8 @@ import com.direwolf20.justdirethings.client.particles.itemparticle.ItemFlowParti
 import com.direwolf20.justdirethings.common.blockentities.basebe.AreaAffectingBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.BaseMachineBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.RedstoneControlledBE;
+import com.direwolf20.justdirethings.common.capabilities.ExperienceHolderFluidTank;
+import com.direwolf20.justdirethings.datagen.JustDireFluidTags;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.ExperienceUtils;
 import com.direwolf20.justdirethings.util.MiscHelpers;
@@ -23,14 +25,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class ExperienceHolderBE extends BaseMachineBE implements AreaAffectingBE, RedstoneControlledBE {
-    protected BlockCapabilityCache<IFluidHandler, Direction> attachedTank;
     public FilterData filterData = new FilterData();
     public AreaAffectingData areaAffectingData = new AreaAffectingData(getBlockState().getValue(BlockStateProperties.FACING).getOpposite());
     public RedstoneControlData redstoneControlData = getDefaultRedstoneData();
@@ -40,6 +44,8 @@ public class ExperienceHolderBE extends BaseMachineBE implements AreaAffectingBE
     public boolean collectExp;
     public boolean ownerOnly;
     public boolean showParticles = true;
+
+    protected IFluidHandler handler = new ExperienceHolderFluidTank(this, fluidstack -> fluidstack.getFluid().is(JustDireFluidTags.EXPERIENCE));
 
     public ExperienceHolderBE(BlockPos pPos, BlockState pBlockState) {
         super(Registration.ExperienceHolderBE.get(), pPos, pBlockState);
@@ -250,20 +256,12 @@ public class ExperienceHolderBE extends BaseMachineBE implements AreaAffectingBE
         }
     }
 
-    private IFluidHandler getAttachedTank() {
-        if (attachedTank == null) {
-            assert this.level != null;
-            BlockState state = level.getBlockState(getBlockPos());
-            Direction facing = state.getValue(BlockStateProperties.FACING);
-            BlockPos inventoryPos = getBlockPos().relative(facing);
-            attachedTank = BlockCapabilityCache.create(
-                    Capabilities.FluidHandler.BLOCK, // capability to cache
-                    (ServerLevel) this.level, // level
-                    inventoryPos, // target position
-                    facing.getOpposite() // context (The side of the block we're trying to pull/push from?)
-            );
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.FLUID_HANDLER) {
+            return LazyOptional.of(() -> handler).cast();
         }
-        return attachedTank.getCapability();
+        return super.getCapability(cap, side);
     }
 
     @Override

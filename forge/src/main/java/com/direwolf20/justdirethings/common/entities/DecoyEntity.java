@@ -88,9 +88,9 @@ public class DecoyEntity extends LivingEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(PLAYER_UUID, Optional.empty());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(PLAYER_UUID, Optional.empty());
     }
 
     @Override

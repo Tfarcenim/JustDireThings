@@ -11,6 +11,7 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.SculkSpreader;
 import net.minecraftforge.common.extensions.IForgeItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -420,9 +421,33 @@ public class JustDireDataComponents {
 
     public static PotionContents getPotionContents(ItemStack stack) {
         if (stack.hasTag() && stack.getTag().contains("potion_contents")) {
-
+            return PotionContents.fromTag(stack.getTagElement("potion_contents"));
         }
         return PotionContents.EMPTY;
+    }
+
+    public static void setPotionContents(ItemStack stack, PotionContents contents) {
+        if (contents == null) {
+            stack.removeTagKey("potion_contents");
+        } else {
+            stack.getOrCreateTag().put("potion_contents",contents.toTag());
+        }
+    }
+
+    public static Integer getPotionAmount(ItemStack stack) {
+        return getInt(stack,"potion_amount");
+    }
+
+    public static void setPotionAmount(ItemStack stack,Integer value) {
+        setInt(stack,value,"potion_amount");
+    }
+
+    public static Boolean isEpicArrow(ItemStack stack){
+        return getBoolean(stack,"epic_arrow");
+    }
+
+    public static void setEpicArrow(ItemStack stack,Boolean value) {
+        setBoolean(stack,value,"epic_arrow");
     }
 
     //public static final DeferredHolder<DataComponentType<?>, DataComponentType<CustomData>> COPIED_MACHINE_DATA = COMPONENTS.register("copied_machine_data", () -> DataComponentType.<CustomData>builder().persistent(CustomData.CODEC).networkSynchronized(CustomData.STREAM_CODEC).build());
@@ -434,11 +459,9 @@ public class JustDireDataComponents {
 
   //  public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemContainerContents>> ITEMSTACK_HANDLER = COMPONENTS.register("itemstack_handler", () -> DataComponentType.<ItemContainerContents>builder().persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC).cacheEncoding().build());
   //  public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemContainerContents>> TOOL_CONTENTS = COMPONENTS.register("tool_contents", () -> DataComponentType.<ItemContainerContents>builder().persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC).cacheEncoding().build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<PotionContents>> POTION_CONTENTS = COMPONENTS.register("potion_contents", () -> DataComponentType.<PotionContents>builder().persistent(PotionContents.CODEC).networkSynchronized(PotionContents.STREAM_CODEC).cacheEncoding().build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> POTION_AMOUNT = COMPONENTS.register("potion_amount", () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> EPIC_ARROW = COMPONENTS.register("epic_arrow", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
+   // public static final DeferredHolder<DataComponentType<?>, DataComponentType<PotionContents>> POTION_CONTENTS = COMPONENTS.register("potion_contents", () -> DataComponentType.<PotionContents>builder().persistent(PotionContents.CODEC).networkSynchronized(PotionContents.STREAM_CODEC).cacheEncoding().build());
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<CustomData>> CUSTOM_DATA_1 = COMPONENTS.register("custom_data_1", () -> DataComponentType.<CustomData>builder().persistent(CustomData.CODEC).networkSynchronized(CustomData.STREAM_CODEC).build());
+   // public static final DeferredHolder<DataComponentType<?>, DataComponentType<CustomData>> CUSTOM_DATA_1 = COMPONENTS.register("custom_data_1", () -> DataComponentType.<CustomData>builder().persistent(CustomData.CODEC).networkSynchronized(CustomData.STREAM_CODEC).build());
 
     public static final Map<Ability, DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>>> ABILITY_TOGGLES = new HashMap<>();
     public static final Map<Ability, DeferredHolder<DataComponentType<?>, DataComponentType<Integer>>> ABILITY_CUSTOM_SETTINGS = new HashMap<>();

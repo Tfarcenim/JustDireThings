@@ -80,7 +80,7 @@ public class BaseBow extends BowItem implements ToggleableTool, LeftClickableToo
         ArrowItem arrowitem = stack.getItem() instanceof ArrowItem arrowitem1 ? arrowitem1 : (ArrowItem) Items.ARROW;
         ToggleableTool toggleableTool = (ToggleableTool) itemStack.getItem();
         if (arrowitem.equals(Items.ARROW)) {
-            JustDireArrow justDireArrow = new JustDireArrow(level, livingEntity, stack, itemStack);
+            JustDireArrow justDireArrow = new JustDireArrow(level, livingEntity);
             if (crit) {
                 justDireArrow.setCritArrow(true);
             }

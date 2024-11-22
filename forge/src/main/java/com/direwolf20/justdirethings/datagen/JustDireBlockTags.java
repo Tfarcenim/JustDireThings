@@ -9,9 +9,9 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.BlockTagsProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -22,18 +22,18 @@ public class JustDireBlockTags extends BlockTagsProvider {
         super(output, lookupProvider, JustDireThings.MODID, existingFileHelper);
     }
 
-    public static final TagKey<Block> LAWNMOWERABLE = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "lawnmowerable"));
-    public static final TagKey<Block> NO_AUTO_CLICK = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "noautoclick"));
-    public static final TagKey<Block> SWAPPERDENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "swapper_deny"));
-    public static final TagKey<Block> ECLISEGATEDENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "eclipsegate_deny"));
-    public static final TagKey<Block> PHASEDENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "phase_deny"));
-    public static final TagKey<Block> TICK_SPEED_DENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "tick_speed_deny"));
-    public static final TagKey<Block> PARADOX_ALLOW = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "paradox_allow"));
-    public static final TagKey<Block> PARADOX_ABSORB_DENY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "paradox_absorb_deny"));
+    public static final TagKey<Block> LAWNMOWERABLE = BlockTags.create(JustDireThings.id("lawnmowerable"));
+    public static final TagKey<Block> NO_AUTO_CLICK = BlockTags.create(JustDireThings.id("noautoclick"));
+    public static final TagKey<Block> SWAPPERDENY = BlockTags.create(JustDireThings.id("swapper_deny"));
+    public static final TagKey<Block> ECLISEGATEDENY = BlockTags.create(JustDireThings.id("eclipsegate_deny"));
+    public static final TagKey<Block> PHASEDENY = BlockTags.create(JustDireThings.id("phase_deny"));
+    public static final TagKey<Block> TICK_SPEED_DENY = BlockTags.create(JustDireThings.id("tick_speed_deny"));
+    public static final TagKey<Block> PARADOX_ALLOW = BlockTags.create(JustDireThings.id("paradox_allow"));
+    public static final TagKey<Block> PARADOX_ABSORB_DENY = BlockTags.create(JustDireThings.id("paradox_absorb_deny"));
     public static final TagKey<Block> CHARCOAL = forgeTag("storage_blocks/charcoal");
 
     private static TagKey<Block> forgeTag(String name) {
-        return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
+        return BlockTags.create(new ResourceLocation("c", name));
     }
 
     @Override
@@ -94,7 +94,6 @@ public class JustDireBlockTags extends BlockTagsProvider {
         tag(LAWNMOWERABLE)
                 .addTag(BlockTags.FLOWERS)
                 .add(Blocks.TALL_GRASS)
-                .add(Blocks.SHORT_GRASS)
                 .add(Blocks.DEAD_BUSH)
                 .add(Blocks.SWEET_BERRY_BUSH)
                 .add(Blocks.FERN)
@@ -135,7 +134,7 @@ public class JustDireBlockTags extends BlockTagsProvider {
         tag(ECLISEGATEDENY)
                 .addTag(BlockTags.PORTALS)
                 .addTag(BlockTags.DOORS)
-                .addOptionalTag(ResourceLocation.fromNamespaceAndPath("powah", "player_transmitters"));
+                .addOptionalTag(new ResourceLocation("powah", "player_transmitters"));
         tag(PHASEDENY)
                 .addTags(BlockTags.PORTALS)
                 .add(Blocks.BARRIER,
@@ -145,14 +144,14 @@ public class JustDireBlockTags extends BlockTagsProvider {
                         Blocks.END_GATEWAY,
                         Blocks.STRUCTURE_BLOCK,
                         Blocks.JIGSAW);
-        tag(Tags.Blocks.BUDDING_BLOCKS)
-                .add(Registration.TimeCrystalBuddingBlock.get());
-        tag(Tags.Blocks.BUDS)
-                .add(Registration.TimeCrystalCluster_Small.get())
-                .add(Registration.TimeCrystalCluster_Medium.get())
-                .add(Registration.TimeCrystalCluster_Large.get());
-        tag(Tags.Blocks.CLUSTERS)
-                .add(Registration.TimeCrystalCluster.get());
+   //     tag(Tags.Blocks.BUDDING_BLOCKS)
+   //             .add(Registration.TimeCrystalBuddingBlock.get());
+   //     tag(Tags.Blocks.BUDS)
+   //             .add(Registration.TimeCrystalCluster_Small.get())
+    //            .add(Registration.TimeCrystalCluster_Medium.get())
+    //            .add(Registration.TimeCrystalCluster_Large.get());
+  //      tag(Tags.Blocks.CLUSTERS)
+   //             .add(Registration.TimeCrystalCluster.get());
         tag(TICK_SPEED_DENY);
         tag(PARADOX_ALLOW)
                 .addTag(Tags.Blocks.ORES);

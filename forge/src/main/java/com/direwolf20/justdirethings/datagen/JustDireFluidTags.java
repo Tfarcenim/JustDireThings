@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -23,7 +23,7 @@ public class JustDireFluidTags extends FluidTagsProvider {
     }
 
     private static TagKey<Fluid> forgeTag(String name) {
-        return FluidTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
+        return FluidTags.create(new ResourceLocation("c", name));
     }
 
     @Override

@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.items.ItemStackHandler;
@@ -42,6 +41,11 @@ public class BaseMachineBE extends BlockEntity {
     protected int operationTicks = -1;
     protected UsefulFakePlayer usefulFakePlayer;
     protected final Map<ChunkPos, Boolean> chunkTestCache = new Object2BooleanOpenHashMap<>();
+
+     protected FilterBasicHandler filterBasicHandler =  new FilterBasicHandler(ANYSIZE_FILTER_SLOTS);
+
+     protected ItemStackHandler machineHandler = new ItemStackHandler(MACHINE_SLOTS);
+
 
     public BaseMachineBE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
@@ -163,7 +167,7 @@ public class BaseMachineBE extends BlockEntity {
     }
 
     public ItemStackHandler getMachineHandler() {
-        return getData(Registration.MACHINE_HANDLER);
+        return machineHandler;
     }
 
     @Override

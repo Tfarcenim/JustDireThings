@@ -740,12 +740,6 @@ public class Registration {
     //Data Attachments
     public static final Supplier<AttachmentType<ItemStackHandler>> HANDLER = ATTACHMENT_TYPES.register(
             "handler", () -> AttachmentType.serializable(() -> new ItemStackHandler(1)).build());
-    public static final Supplier<AttachmentType<ItemStackHandler>> MACHINE_HANDLER = ATTACHMENT_TYPES.register(
-            "machine_handler", () -> AttachmentType.serializable(holder -> {
-                if (holder instanceof BaseMachineBE baseMachineBE)
-                    return new ItemStackHandler(baseMachineBE.MACHINE_SLOTS);
-                return new ItemStackHandler(1);
-            }).build());
     public static final Supplier<AttachmentType<GeneratorItemHandler>> GENERATOR_ITEM_HANDLER = ATTACHMENT_TYPES.register(
             "generator_item_handler", () -> AttachmentType.serializable(holder -> {
                 if (holder instanceof BaseMachineBE baseMachineBE)

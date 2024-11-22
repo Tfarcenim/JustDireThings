@@ -58,9 +58,9 @@ public class PortalProjectile extends Projectile {
     @Override
     public void tick() {
         super.tick();
-        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity, ClipContext.Block.COLLIDER);
-        if (hitresult.getType() != HitResult.Type.MISS && !net.neoforged.neoforge.event.EventHooks.onProjectileImpact(this, hitresult)) {
-            this.hitTargetOrDeflectSelf(hitresult);
+        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        if (hitresult.getType() != HitResult.Type.MISS /*&& !net.minecraftforge.event.ForgeEventFactory.onProjectileImpactResult(this, hitresult)todo*/) {
+            this.onHit(hitresult);
         }
         Vec3 vec3 = this.getDeltaMovement();
         double d0 = this.getX() + vec3.x;
@@ -92,7 +92,7 @@ public class PortalProjectile extends Projectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    protected void defineSynchedData() {
 
     }
 
@@ -127,7 +127,7 @@ public class PortalProjectile extends Projectile {
     protected void linkPortals(MinecraftServer server, PortalEntity portal) {
         List<? extends PortalEntity> matchingPortals = findMatchingPortal(server, !isPrimaryType);
         if (!matchingPortals.isEmpty()) {
-            PortalEntity matchingPortal = matchingPortals.getFirst();
+            PortalEntity matchingPortal = matchingPortals.get(0);
             if (matchingPortal != null) {
                 portal.setLinkedPortal(matchingPortal);
                 matchingPortal.setLinkedPortal(portal);

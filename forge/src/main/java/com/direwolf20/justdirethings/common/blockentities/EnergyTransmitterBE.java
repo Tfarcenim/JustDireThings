@@ -26,6 +26,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
@@ -33,11 +35,11 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EnergyTransmitterBE extends BaseMachineBE implements RedstoneControlledBE, PoweredMachineBE, AreaAffectingBE, FilterableBE {
+public class  EnergyTransmitterBE extends BaseMachineBE implements RedstoneControlledBE, PoweredMachineBE, AreaAffectingBE, FilterableBE {
     public RedstoneControlData redstoneControlData = new RedstoneControlData();
     public final PoweredMachineContainerData poweredMachineData;
-    private final Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> energyHandlers = new HashMap<>();
-    private final Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> transmitterHandlers = new HashMap<>();
+    private final Map<BlockPos,IEnergyStorage> energyHandlers = new HashMap<>();
+    private final Map<BlockPos, IEnergyStorage> transmitterHandlers = new HashMap<>();
     private final Set<BlockPos> blocksToCharge = new HashSet<>();
     private final Set<BlockPos> transmitters = new HashSet<>();
     public AreaAffectingData areaAffectingData = new AreaAffectingData();
@@ -331,7 +333,7 @@ public class EnergyTransmitterBE extends BaseMachineBE implements RedstoneContro
         return amtToSend - (int) (Math.floor(amtToSend * energyLoss));
     }
 
-    public int transmitPowerWithLoss(IEnergyStorage sender, IEnergyStorage receiver, int amtToSend, BlockPos remotePosition) {
+    public int transmitPowerWithLoss(IEnergyStorage sender, IEnergyStorage  receiver, int amtToSend, BlockPos remotePosition) {
         int amtFit = receiver.receiveEnergy(amtToSend, true);
         if (amtFit <= 0) return 0;
         int extractAmt = sender.extractEnergy(amtFit, false);
@@ -359,11 +361,12 @@ public class EnergyTransmitterBE extends BaseMachineBE implements RedstoneContro
                 .forEach(blockPos -> {
                     if (blockPos.equals(getBlockPos())) return; //Already added above!
                     BlockState blockState = level.getBlockState(blockPos);
-                    if (blockState.isAir() || level.getBlockEntity(blockPos) == null) return;
+                    BlockEntity blockEntity = level.getBlockEntity(blockPos);
+                    if (blockState.isAir() || blockEntity == null) return;
 
                     boolean foundAcceptableSide = false;
                     for (Direction direction : Direction.values()) {
-                        var cap = level.getCapability(Capabilities.EnergyStorage.BLOCK, blockPos, direction);
+                        var cap = blockEntity.getCapability(ForgeCapabilities.ENERGY,direction).orElse(null);
                         if (cap != null && cap.canReceive()) {
                             foundAcceptableSide = true;
                             break;

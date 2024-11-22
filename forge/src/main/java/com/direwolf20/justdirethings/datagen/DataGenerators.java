@@ -6,15 +6,15 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = JustDireThings.MODID, bus = EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = JustDireThings.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
@@ -24,7 +24,7 @@ public class DataGenerators {
 
         generator.addProvider(event.includeServer(), new JustDireRecipes(packOutput, event.getLookupProvider()));
         generator.addProvider(event.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(),
-                List.of(new LootTableProvider.SubProviderEntry(JustDireLootTables::new, LootContextParamSets.BLOCK)), event.getLookupProvider()));
+                List.of(new LootTableProvider.SubProviderEntry(JustDireLootTables::new, LootContextParamSets.BLOCK))));
         JustDireBlockTags blockTags = new JustDireBlockTags(packOutput, lookupProvider, event.getExistingFileHelper());
         generator.addProvider(event.includeServer(), blockTags);
         JustDireFluidTags fluidTags = new JustDireFluidTags(packOutput, lookupProvider, event.getExistingFileHelper());

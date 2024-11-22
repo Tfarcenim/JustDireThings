@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.PartEntity;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.entity.PartEntity;
 
@@ -227,8 +228,6 @@ public class ParadoxEntity extends Entity {
         if (entity instanceof Player)
             return false;
         if (entity.getType().is(JustDireEntityTags.PARADOX_ABSORB_DENY))
-            return false;
-        if (entity.getType().is(Tags.EntityTypes.TELEPORTING_NOT_SUPPORTED))
             return false;
         return true;
     }

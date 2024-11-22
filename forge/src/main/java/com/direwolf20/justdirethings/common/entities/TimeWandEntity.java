@@ -59,10 +59,10 @@ public class TimeWandEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(TICKSPEED, 1);
-        builder.define(REMAINING_TIME, 600); //30 Seconds Default
-        builder.define(TOTAL_TIME, 600); //30 Seconds Default
+    protected void defineSynchedData() {
+        entityData.define(TICKSPEED, 1);
+        entityData.define(REMAINING_TIME, 600); //30 Seconds Default
+        entityData.define(TOTAL_TIME, 600); //30 Seconds Default
     }
 
     public int getTickSpeed() {
@@ -111,7 +111,7 @@ public class TimeWandEntity extends Entity {
         if (compound.contains("totalTime"))
             this.entityData.set(TOTAL_TIME, compound.getInt("totalTime"));
         if (compound.contains("blockpos"))
-            this.blockPos = NbtUtils.readBlockPos(compound, "blockpos").orElse(null);
+            this.blockPos = NbtUtils.readBlockPos(compound.getCompound("blockpos"));
     }
 
     @Override

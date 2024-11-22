@@ -1,9 +1,9 @@
 package com.direwolf20.justdirethings.common.entities;
 
 import com.direwolf20.justdirethings.common.items.CreatureCatcher;
+import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.datagen.JustDireEntityTags;
 import com.direwolf20.justdirethings.setup.Registration;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -16,16 +16,13 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.entity.PartEntity;
+import net.minecraftforge.entity.PartEntity;
 import org.joml.Vector3f;
 
-import static com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents.ENTITIYTYPE;
 
 public class CreatureCatcherEntity extends ThrowableItemProjectile {
     private static final EntityDataAccessor<Boolean> HAS_HIT = SynchedEntityData.defineId(CreatureCatcherEntity.class, EntityDataSerializers.BOOLEAN);
@@ -44,15 +41,15 @@ public class CreatureCatcherEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(HAS_HIT, false);
-        builder.define(CAPTURING, false);
-        builder.define(SHRINKING_TIME, 0);
-        builder.define(RETURN_ITEM_STACK, ItemStack.EMPTY);
-        builder.define(ENTITY_POSITION, new Vector3f(0, 0, 0));
-        builder.define(ENTITY_BODY_ROT, 0f);
-        builder.define(ENTITY_HEAD_ROT, 0f);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(HAS_HIT, false);
+        entityData.define(CAPTURING, false);
+        entityData.define(SHRINKING_TIME, 0);
+        entityData.define(RETURN_ITEM_STACK, ItemStack.EMPTY);
+        entityData.define(ENTITY_POSITION, new Vector3f(0, 0, 0));
+        entityData.define(ENTITY_BODY_ROT, 0f);
+        entityData.define(ENTITY_HEAD_ROT, 0f);
 
     }
 
@@ -194,8 +191,8 @@ public class CreatureCatcherEntity extends ThrowableItemProjectile {
         CompoundTag entityData = new CompoundTag();
         entity.save(entityData);
         ItemStack itemStack = new ItemStack(getDefaultItem());
-        itemStack.set(ENTITIYTYPE, EntityType.getKey(entity.getType()).toString());
-        itemStack.set(DataComponents.ENTITY_DATA, CustomData.of(entityData));
+        JustDireDataComponents.setEntityType(itemStack,EntityType.getKey(entity.getType()).toString());
+        itemStack.getTag().put("EntityData", entityData);
         return itemStack;
     }
 
@@ -207,12 +204,13 @@ public class CreatureCatcherEntity extends ThrowableItemProjectile {
     }
 
     public static Mob getEntityFromItemStack(ItemStack itemStack, Level level) {
-        if (!itemStack.has(ENTITIYTYPE)) return null;
-        EntityType<?> type = EntityType.byString(itemStack.get(ENTITIYTYPE)).orElse(null);
+        String entityType = JustDireDataComponents.getEntityType(itemStack);
+        if (entityType == null) return null;
+        EntityType<?> type = EntityType.byString(entityType).orElse(null);
         if (type == null) return null;
         Entity entity = type.create(level);
         if (!(entity instanceof Mob)) return null;
-        entity.load(itemStack.get(DataComponents.ENTITY_DATA).copyTag());
+        entity.load(itemStack.getTagElement("EntityData"));
         return (Mob) entity;
     }
 
@@ -222,8 +220,6 @@ public class CreatureCatcherEntity extends ThrowableItemProjectile {
         if (entity.isMultipartEntity())
             return false;
         if (entity instanceof PartEntity<?>)
-            return false;
-        if (entity.getType().is(Tags.EntityTypes.CAPTURING_NOT_SUPPORTED))
             return false;
         if (entity.getType().is(JustDireEntityTags.CREATURE_CATCHER_DENY))
             return false;

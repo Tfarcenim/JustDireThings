@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.alchemy.Potion;
@@ -78,7 +79,7 @@ public record PotionContents(Optional<Potion> potion, Optional<Integer> customCo
         return this.customColor;
     }
 
-    CompoundTag toTag() {
+    public CompoundTag toTag() {
         CompoundTag tag = new CompoundTag();
         potion.ifPresent(potion1 -> {
             if (potion1 != Potions.EMPTY) {
@@ -86,9 +87,9 @@ public record PotionContents(Optional<Potion> potion, Optional<Integer> customCo
             }
         });
         customColor.ifPresent(integer -> tag.putInt(PotionUtils.TAG_CUSTOM_POTION_COLOR,integer)) ;
-
-
-
+        ListTag listTag = new ListTag();
+        customEffects.forEach(mobEffectInstance -> listTag.add(mobEffectInstance.save(new CompoundTag())));
+        tag.put(PotionUtils.TAG_CUSTOM_POTION_EFFECTS,listTag);
         return tag;
     }
 

@@ -18,8 +18,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.entity.PartEntity;
+import net.minecraftforge.entity.PartEntity;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -185,11 +184,11 @@ public class PortalEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DIRECTION, (byte) 0);
-        builder.define(ALIGNMENT, (byte) Direction.Axis.Z.ordinal());
-        builder.define(ISPRIMARY, false);
-        builder.define(ISDYING, false);
+    protected void defineSynchedData() {
+        entityData.define(DIRECTION, (byte) 0);
+        entityData.define(ALIGNMENT, (byte) Direction.Axis.Z.ordinal());
+        entityData.define(ISPRIMARY, false);
+        entityData.define(ISDYING, false);
     }
 
     @Override
@@ -227,12 +226,12 @@ public class PortalEntity extends Entity {
     }
 
     @Override
-    public void onAddedToLevel() {
-        super.onAddedToLevel();
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
         if (!level().isClientSide) {
             ServerLevel serverLevel = (ServerLevel) this.level();
             ChunkPos chunkPos = new ChunkPos(this.blockPosition());
-            Registration.TICKET_CONTROLLER.forceChunk(serverLevel, this, chunkPos.x, chunkPos.z, true, false);
+            //Registration.TICKET_CONTROLLER.forceChunk(serverLevel, this, chunkPos.x, chunkPos.z, true, false);
 
             level().playSound(
                     null,
@@ -267,7 +266,7 @@ public class PortalEntity extends Entity {
         if (!level().isClientSide) {
             ServerLevel serverLevel = (ServerLevel) this.level();
             ChunkPos chunkPos = new ChunkPos(this.blockPosition());
-            Registration.TICKET_CONTROLLER.forceChunk(serverLevel, this, chunkPos.x, chunkPos.z, false, false);
+        //    Registration.TICKET_CONTROLLER.forceChunk(serverLevel, this, chunkPos.x, chunkPos.z, false, false);
         }
     }
 
@@ -322,7 +321,7 @@ public class PortalEntity extends Entity {
         for (ServerLevel serverLevel : server.getAllLevels()) {
             List<? extends PortalEntity> customEntities = serverLevel.getEntities(Registration.PortalEntity.get(), k -> k.getUUID().equals(this.linkedPortalUUID));
             if (!customEntities.isEmpty())
-                return customEntities.getFirst();
+                return customEntities.get(0);
         }
         return null;
     }
@@ -432,9 +431,7 @@ public class PortalEntity extends Entity {
             return false;
         if (entity instanceof PartEntity<?>)
             return false;
-        if (!entity.canChangeDimensions(level(), getLinkedPortal().level()) && !isSameLevel())
-            return false;
-        if (entity.getType().is(Tags.EntityTypes.TELEPORTING_NOT_SUPPORTED))
+        if (!entity.canChangeDimensions() && !isSameLevel())
             return false;
         return true;
     }
