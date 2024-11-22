@@ -12,8 +12,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.ComponentItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class TooltipHelpers {
         if (!(stack.getItem() instanceof PoweredItem poweredItem))
             return;
 
-        var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        var energy = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
         if (energy == null) {
             return;
         }
@@ -103,10 +102,10 @@ public class TooltipHelpers {
     }
 
     public static void appendGeneratorDetails(ItemStack stack, List<Component> tooltip) {
-        ComponentItemHandler handler = new ComponentItemHandler(stack, JustDireDataComponents.ITEMSTACK_HANDLER.get(), 1);
+        ItemStackNBTHandler handler = new ItemStackNBTHandler(stack, JustDireDataComponents.ITEMSTACK_HANDLER, 1);
         ItemStack fuelStack = handler.getStackInSlot(0);
         if (Screen.hasShiftDown()) {
-            tooltip.add(Component.translatable("justdirethings.pocketgeneratorburntime", stack.getOrDefault(JustDireDataComponents.POCKETGEN_COUNTER, 0), stack.getOrDefault(JustDireDataComponents.POCKETGEN_MAXBURN, 0)).withStyle(ChatFormatting.DARK_RED));
+            tooltip.add(Component.translatable("justdirethings.pocketgeneratorburntime", JustDireDataComponents.getPocketgenCounter(stack), JustDireDataComponents.getPocketgenMaxburn(stack)).withStyle(ChatFormatting.DARK_RED));
             if (fuelStack.isEmpty())
                 tooltip.add(Component.translatable("justdirethings.pocketgeneratornofuel").withStyle(ChatFormatting.RED));
             else

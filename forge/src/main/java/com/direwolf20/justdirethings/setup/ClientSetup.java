@@ -29,6 +29,7 @@ import com.direwolf20.justdirethings.common.items.interfaces.ToggleableItem;
 import com.direwolf20.justdirethings.common.items.tools.basetools.BaseBow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -42,33 +43,32 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.FluidState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterItemDecorationsEvent;
+import net.minecraftforge.client.event.RegisterShadersEvent;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.io.IOException;
 
 import static com.direwolf20.justdirethings.JustDireThings.MODID;
 
-@EventBusSubscriber(modid = JustDireThings.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = JustDireThings.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
     public static void init(final FMLClientSetupEvent event) {
-        NeoForge.EVENT_BUS.addListener(KeyBindings::onClientInput);
+        MinecraftForge.EVENT_BUS.addListener(KeyBindings::onClientInput);
 
         //Register our Render Events Class
-        NeoForge.EVENT_BUS.register(RenderLevelLast.class);
-        NeoForge.EVENT_BUS.register(EventKeyInput.class);
-        NeoForge.EVENT_BUS.register(RenderHighlight.class);
-        NeoForge.EVENT_BUS.register(PlayerEvents.class);
+        MinecraftForge.EVENT_BUS.register(RenderLevelLast.class);
+        MinecraftForge.EVENT_BUS.register(EventKeyInput.class);
+        MinecraftForge.EVENT_BUS.register(RenderHighlight.class);
+        MinecraftForge.EVENT_BUS.register(PlayerEvents.class);
 
         //Item Properties
         event.enqueueWork(() -> {
@@ -78,30 +78,54 @@ public class ClientSetup {
             registerEnabledToolTextures(Registration.Pocket_Generator.get());
             for (var bow : Registration.BOWS.getEntries()) {
                 if (bow.get() instanceof BaseBow baseBow) {
-                    ItemProperties.register(bow.get(), ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "pull"), (stack, level, living, id) -> {
+                    ItemProperties.register(bow.get(), JustDireThings.id( "pull"), (stack, level, living, id) -> {
                         if (living == null || living.getUseItem() != stack) return 0.0F;
-                        return (stack.getUseDuration(living) - (living.getUseItemRemainingTicks() + (20 - baseBow.getMaxDraw()))) / baseBow.getMaxDraw();
+                        return (stack.getUseDuration() - (living.getUseItemRemainingTicks() + (20 - baseBow.getMaxDraw()))) / baseBow.getMaxDraw();
                     });
-                    ItemProperties.register(bow.get(), ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "pulling"), (stack, level, living, id) -> {
+                    ItemProperties.register(bow.get(), JustDireThings.id( "pulling"), (stack, level, living, id) -> {
                         return living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0F : 0.0F;
                     });
                 }
             }
-        });
 
-        event.enqueueWork(() -> {
             ItemProperties.register(Registration.FluidCanister.get(),
-                    ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "fullness"), (stack, level, living, id) -> FluidCanister.getFullness(stack));
-        });
+                    JustDireThings.id( "fullness"), (stack, level, living, id) -> FluidCanister.getFullness(stack));
 
-        event.enqueueWork(() -> {
             ItemProperties.register(Registration.PotionCanister.get(),
-                    ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "potion_fullness"), (stack, level, living, id) -> PotionCanister.getFullness(stack));
-        });
+                    JustDireThings.id( "potion_fullness"), (stack, level, living, id) -> PotionCanister.getFullness(stack));
 
-        event.enqueueWork(() -> {
+            MenuScreens.register(Registration.FuelCanister_Container.get(), FuelCanisterScreen::new);
+            MenuScreens.register(Registration.PocketGenerator_Container.get(), PocketGeneratorScreen::new);
+            MenuScreens.register(Registration.Tool_Settings_Container.get(), ToolSettingScreen::new);
+            MenuScreens.register(Registration.Item_Collector_Container.get(), ItemCollectorScreen::new);
+            MenuScreens.register(Registration.BlockBreakerT1_Container.get(), BlockBreakerT1Screen::new);
+            MenuScreens.register(Registration.BlockBreakerT2_Container.get(), BlockBreakerT2Screen::new);
+            MenuScreens.register(Registration.BlockPlacerT1_Container.get(), BlockPlacerT1Screen::new);
+            MenuScreens.register(Registration.BlockPlacerT2_Container.get(), BlockPlacerT2Screen::new);
+            MenuScreens.register(Registration.ClickerT1_Container.get(), ClickerT1Screen::new);
+            MenuScreens.register(Registration.ClickerT2_Container.get(), ClickerT2Screen::new);
+            MenuScreens.register(Registration.SensorT1_Container.get(), SensorT1Screen::new);
+            MenuScreens.register(Registration.SensorT2_Container.get(), SensorT2Screen::new);
+            MenuScreens.register(Registration.DropperT1_Container.get(), DropperT1Screen::new);
+            MenuScreens.register(Registration.DropperT2_Container.get(), DropperT2Screen::new);
+            MenuScreens.register(Registration.GeneratorT1_Container.get(), GeneratorT1Screen::new);
+            MenuScreens.register(Registration.GeneratorFluidT1_Container.get(), GeneratorFluidT1Screen::new);
+            MenuScreens.register(Registration.EnergyTransmitter_Container.get(), EnergyTransmitterScreen::new);
+            MenuScreens.register(Registration.BlockSwapperT1_Container.get(), BlockSwapperT1Screen::new);
+            MenuScreens.register(Registration.BlockSwapperT2_Container.get(), BlockSwapperT2Screen::new);
+            MenuScreens.register(Registration.PlayerAccessor_Container.get(), PlayerAccessorScreen::new);
+            MenuScreens.register(Registration.FluidPlacerT1_Container.get(), FluidPlacerT1Screen::new);
+            MenuScreens.register(Registration.FluidPlacerT2_Container.get(), FluidPlacerT2Screen::new);
+            MenuScreens.register(Registration.FluidCollectorT1_Container.get(), FluidCollectorT1Screen::new);
+            MenuScreens.register(Registration.FluidCollectorT2_Container.get(), FluidCollectorT2Screen::new);
+            MenuScreens.register(Registration.PotionCanister_Container.get(), PotionCanisterScreen::new);
+            MenuScreens.register(Registration.ParadoxMachine_Container.get(), ParadoxMachineScreen::new);
+            MenuScreens.register(Registration.InventoryHolder_Container.get(), InventoryHolderScreen::new);
+            MenuScreens.register(Registration.Experience_Holder_Container.get(), ExperienceHolderScreen::new);
+
+
             ItemProperties.register(Registration.PortalGunV2.get(),
-                    ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "fullness"), (stack, level, living, id) -> PortalGunV2.getFullness(stack));
+                    JustDireThings.id( "fullness"), (stack, level, living, id) -> PortalGunV2.getFullness(stack));
         });
 
         ItemBlockRenderTypes.setRenderLayer(Registration.UNSTABLE_PORTAL_FLUID_SOURCE.get(), RenderType.translucent());
@@ -112,7 +136,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void registerOverlays(RegisterGuiLayersEvent event) {
-        event.registerAbove(VanillaGuiLayers.HOTBAR, ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "abilitycooldownoverlay"), AbilityCooldownOverlay.INSTANCE);
+        event.registerAbove(VanillaGuiLayers.HOTBAR, JustDireThings.id( "abilitycooldownoverlay"), AbilityCooldownOverlay.INSTANCE);
     }
 
     private static void onTexturesStitched(final TextureAtlasStitchedEvent event) {
@@ -125,7 +149,7 @@ public class ClientSetup {
     public static void registerEnabledToolTextures(Item tool) {
         if (tool instanceof ToggleableItem toggleableItem) {
             ItemProperties.register(tool,
-                    ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "enabled"), (stack, level, living, id) -> {
+                    JustDireThings.id( "enabled"), (stack, level, living, id) -> {
                         if (stack.getItem() instanceof PocketGenerator) {
                             if (!toggleableItem.getEnabled(stack)) return 0.0f;
                             IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
@@ -141,7 +165,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void mrl(ModelEvent.RegisterAdditional e) {
-        e.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "item/creaturecatcher_base")));
+      //todo  e.register(new ModelResourceLocation(JustDireThings.id( "item/creaturecatcher_base")));
     }
 
     @SubscribeEvent
@@ -158,38 +182,6 @@ public class ClientSetup {
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @SubscribeEvent
-    public static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(Registration.FuelCanister_Container.get(), FuelCanisterScreen::new);
-        event.register(Registration.PocketGenerator_Container.get(), PocketGeneratorScreen::new);
-        event.register(Registration.Tool_Settings_Container.get(), ToolSettingScreen::new);
-        event.register(Registration.Item_Collector_Container.get(), ItemCollectorScreen::new);
-        event.register(Registration.BlockBreakerT1_Container.get(), BlockBreakerT1Screen::new);
-        event.register(Registration.BlockBreakerT2_Container.get(), BlockBreakerT2Screen::new);
-        event.register(Registration.BlockPlacerT1_Container.get(), BlockPlacerT1Screen::new);
-        event.register(Registration.BlockPlacerT2_Container.get(), BlockPlacerT2Screen::new);
-        event.register(Registration.ClickerT1_Container.get(), ClickerT1Screen::new);
-        event.register(Registration.ClickerT2_Container.get(), ClickerT2Screen::new);
-        event.register(Registration.SensorT1_Container.get(), SensorT1Screen::new);
-        event.register(Registration.SensorT2_Container.get(), SensorT2Screen::new);
-        event.register(Registration.DropperT1_Container.get(), DropperT1Screen::new);
-        event.register(Registration.DropperT2_Container.get(), DropperT2Screen::new);
-        event.register(Registration.GeneratorT1_Container.get(), GeneratorT1Screen::new);
-        event.register(Registration.GeneratorFluidT1_Container.get(), GeneratorFluidT1Screen::new);
-        event.register(Registration.EnergyTransmitter_Container.get(), EnergyTransmitterScreen::new);
-        event.register(Registration.BlockSwapperT1_Container.get(), BlockSwapperT1Screen::new);
-        event.register(Registration.BlockSwapperT2_Container.get(), BlockSwapperT2Screen::new);
-        event.register(Registration.PlayerAccessor_Container.get(), PlayerAccessorScreen::new);
-        event.register(Registration.FluidPlacerT1_Container.get(), FluidPlacerT1Screen::new);
-        event.register(Registration.FluidPlacerT2_Container.get(), FluidPlacerT2Screen::new);
-        event.register(Registration.FluidCollectorT1_Container.get(), FluidCollectorT1Screen::new);
-        event.register(Registration.FluidCollectorT2_Container.get(), FluidCollectorT2Screen::new);
-        event.register(Registration.PotionCanister_Container.get(), PotionCanisterScreen::new);
-        event.register(Registration.ParadoxMachine_Container.get(), ParadoxMachineScreen::new);
-        event.register(Registration.InventoryHolder_Container.get(), InventoryHolderScreen::new);
-        event.register(Registration.Experience_Holder_Container.get(), ExperienceHolderScreen::new);
     }
 
     @SubscribeEvent

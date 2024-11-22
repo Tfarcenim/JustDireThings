@@ -129,7 +129,7 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
 
             }
         } else if (stateStack.getItem() instanceof BucketItem bucketItem) {
-            BlockState defaultState = bucketItem.content.defaultFluidState().createLegacyBlock();
+            BlockState defaultState = bucketItem.getFluid().defaultFluidState().createLegacyBlock();
             Block block = defaultState.getBlock();
             for (int i = 0; i < listTag.size(); i++) {
                 CompoundTag propertiesTag = listTag.getCompound(i);
@@ -162,9 +162,11 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
         });
     }
 
+    FilterBasicHandler filterBasicHandler = new FilterBasicHandler(ANYSIZE_FILTER_SLOTS);
+
     @Override
     public FilterBasicHandler getFilterHandler() {
-        return getData(Registration.HANDLER_BASIC_FILTER_ANYSIZE);
+        return filterBasicHandler;
     }
 
     @Override
@@ -294,7 +296,7 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
     }
 
     public boolean handleBlockStates(BlockPos blockPos, BlockState blockState, LiquidBlock liquidBlock) {
-        ItemStack blockItemStack = new ItemStack(liquidBlock.fluid.getBucket());
+        ItemStack blockItemStack = new ItemStack(liquidBlock.getFluid().getBucket());
         boolean allowList = filterData.allowlist;
         if (blockStateFilterCache.containsKey(blockState))
             return blockStateFilterCache.get(blockState);
@@ -302,7 +304,7 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
         outerLoop:
         for (Map.Entry<Integer, Map<Property<?>, Comparable<?>>> propertyValues : blockStateProperties.entrySet()) {
             ItemStack filterStack = getFilterHandler().getStackInSlot(propertyValues.getKey());
-            if (!ItemStack.isSameItemSameComponents(filterStack, blockItemStack)) //If the itemstack we are comparing in this slot doesn't match the blockItem
+            if (!ItemStack.isSameItemSameTags(filterStack, blockItemStack)) //If the itemstack we are comparing in this slot doesn't match the blockItem
                 continue;
             for (Map.Entry<Property<?>, Comparable<?>> prop : propertyValues.getValue().entrySet()) {
                 Comparable<?> comparable = blockState.getValue(prop.getKey());
@@ -329,7 +331,7 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
         outerLoop:
         for (Map.Entry<Integer, Map<Property<?>, Comparable<?>>> propertyValues : blockStateProperties.entrySet()) {
             ItemStack filterStack = getFilterHandler().getStackInSlot(propertyValues.getKey());
-            if (!ItemStack.isSameItemSameComponents(filterStack, blockItemStack)) //If the itemstack we are comparing in this slot doesn't match the blockItem
+            if (!ItemStack.isSameItemSameTags(filterStack, blockItemStack)) //If the itemstack we are comparing in this slot doesn't match the blockItem
                 continue;
             for (Map.Entry<Property<?>, Comparable<?>> prop : propertyValues.getValue().entrySet()) {
                 Comparable<?> comparable = blockState.getValue(prop.getKey());

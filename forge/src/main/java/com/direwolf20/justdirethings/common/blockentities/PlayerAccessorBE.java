@@ -126,13 +126,4 @@ public class PlayerAccessorBE extends BaseMachineBE {
         }
         super.load(tag);
     }
-
-    @Override
-    public void markDirtyClient() {
-        //System.out.println("Marking Dirty Client!");
-        if (level != null) {
-            level.invalidateCapabilities(getBlockPos());
-        }
-        super.markDirtyClient();
-    }
 }

@@ -395,20 +395,22 @@ public class JustDireDataComponents {
         setList(stack,strings,Codec.STRING,"stupefy_targets");
     }
 
-    static List<ItemStack> getItems(ItemStack stack,String key) {
+    public static List<ItemStack> getItems(ItemStack stack,String key) {
         return getList(stack,ItemStack.CODEC,key);
     }
 
-    static void setItems(ItemStack stack,List<ItemStack> items,String key) {
+    public static void setItems(ItemStack stack,List<ItemStack> items,String key) {
         setList(stack,items,ItemStack.CODEC,key);
     }
 
+    public static final String ITEMSTACK_HANDLER = "itemstack_handler";
+
     public static List<ItemStack> getItemstackHandler(ItemStack stack) {
-        return getItems(stack,"itemstack_handler");
+        return getItems(stack,ITEMSTACK_HANDLER);
     }
 
     public static void setItemstackHandler(ItemStack stack,List<ItemStack> items) {
-        setItems(stack,items,"itemstack_handler");
+        setItems(stack,items,ITEMSTACK_HANDLER);
     }
 
     public static List<ItemStack> getToolContents(ItemStack stack) {
@@ -463,40 +465,45 @@ public class JustDireDataComponents {
 
    // public static final DeferredHolder<DataComponentType<?>, DataComponentType<CustomData>> CUSTOM_DATA_1 = COMPONENTS.register("custom_data_1", () -> DataComponentType.<CustomData>builder().persistent(CustomData.CODEC).networkSynchronized(CustomData.STREAM_CODEC).build());
 
-    public static final Map<Ability, DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>>> ABILITY_TOGGLES = new HashMap<>();
-    public static final Map<Ability, DeferredHolder<DataComponentType<?>, DataComponentType<Integer>>> ABILITY_CUSTOM_SETTINGS = new HashMap<>();
-    public static final Map<Ability, DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>>> ABILITY_UPGRADE_INSTALLS = new HashMap<>();
-    public static final Map<Ability, DeferredHolder<DataComponentType<?>, DataComponentType<Integer>>> ABILITY_VALUES = new HashMap<>();
-    public static final Map<Ability, DeferredHolder<DataComponentType<?>, DataComponentType<Integer>>> ABILITY_BINDING_MODES = new HashMap<>();
 
-    public static void genAbilityData() {
-        for (Ability ability : Ability.values()) {
-            DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> ABILITY_TOGGLE = COMPONENTS.register(ability.getName() + "_toggle", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL.orElse(true)).networkSynchronized(ByteBufCodecs.BOOL).build());
-            DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ABILITY_VALUE = COMPONENTS.register(ability.getName() + "_value", () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
-            DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ABILITY_BINDING_MODE = COMPONENTS.register(ability.getName() + "_bindingmode", () -> DataComponentType.<Integer>builder().persistent(Codec.INT.orElse(0)).networkSynchronized(ByteBufCodecs.VAR_INT).build());
-            ABILITY_TOGGLES.put(ability, ABILITY_TOGGLE);
-            ABILITY_VALUES.put(ability, ABILITY_VALUE);
-            ABILITY_BINDING_MODES.put(ability, ABILITY_BINDING_MODE);
-            if (ability.hasCustomSetting()) {
-                DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ABILITY_CUSTOM_SETTING = COMPONENTS.register(ability.getName() + "_custom_setting", () -> DataComponentType.<Integer>builder().persistent(Codec.INT.orElse(0)).networkSynchronized(ByteBufCodecs.VAR_INT).build());
-                ABILITY_CUSTOM_SETTINGS.put(ability, ABILITY_CUSTOM_SETTING);
-            }
-            if (ability.requiresUpgrade()) {
-                DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> ABILITY_UPGRADE_INSTALLED = COMPONENTS.register(ability.getName() + "_upgrade_installed", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL.orElse(true)).networkSynchronized(ByteBufCodecs.BOOL).build());
-                ABILITY_UPGRADE_INSTALLS.put(ability, ABILITY_UPGRADE_INSTALLED);
-            }
-        }
+    public static Boolean getAbilityToggle(ItemStack stack,Ability ability) {
+        return getBoolean(stack,ability+"_toggle");
     }
 
-    private static @NotNull <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, final Codec<T> codec) {
-        return register(name, codec, null);
+    public static void setAbilityToggle(ItemStack stack,Boolean value,Ability ability) {
+        setBoolean(stack,value,ability+"_toggle");
     }
 
-    private static @NotNull <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, final Codec<T> codec, @Nullable final StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
-        if (streamCodec == null) {
-            return COMPONENTS.register(name, () -> DataComponentType.<T>builder().persistent(codec).build());
-        } else {
-            return COMPONENTS.register(name, () -> DataComponentType.<T>builder().persistent(codec).networkSynchronized(streamCodec).build());
-        }
+    public static Integer getAbilityValue(ItemStack stack,Ability ability) {
+        return getInt(stack,ability+"_value");
+    }
+
+    public static void setAbilityValue(ItemStack stack,Integer value,Ability ability) {
+        setInt(stack,value,ability+"_value");
+    }
+
+    public static Integer getAbilityBindingmode(ItemStack stack,Ability ability) {
+        return getInt(stack,ability+"_bindingmode");
+    }
+
+    public static void setAbilityBindingmode(ItemStack stack,Integer value,Ability ability) {
+        setInt(stack,value,ability+"_bindingmode");
+    }
+
+    public static Integer getAbilityCustomSetting(ItemStack stack,Ability ability) {
+        return getInt(stack,ability+"_custom_setting");
+    }
+
+    public static void setAbilityCustomSetting(ItemStack stack,Integer value,Ability ability) {
+        setInt(stack,value,ability+"_custom_setting");
+    }
+
+
+    public static Boolean getAbilityUpgradeInstalled(ItemStack stack,Ability ability) {
+        return getBoolean(stack,ability+"_upgrade_installed");
+    }
+
+    public static void setAbilityUpgradeInstalled(ItemStack stack,Boolean value,Ability ability) {
+        setBoolean(stack,value,ability+"_upgrade_installed");
     }
 }

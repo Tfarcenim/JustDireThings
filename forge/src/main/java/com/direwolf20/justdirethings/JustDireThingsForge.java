@@ -295,13 +295,5 @@ public class JustDireThingsForge {
                 },
                 Registration.ParadoxMachine.get()
         );
-        event.registerBlock(Capabilities.FluidHandler.BLOCK,
-                (level, pos, state, be, side) -> {
-                    if (be instanceof ExperienceHolderBE experienceHolderBE) {
-                    }
-                    return null;
-                },
-                Registration.ExperienceHolder.get()
-        );
     }
 }

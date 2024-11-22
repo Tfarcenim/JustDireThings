@@ -16,10 +16,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.event.level.BlockDropsEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.minecraftforge.common.ToolActions;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,21 +30,21 @@ public class BlockEvents {
     @SubscribeEvent
     public static void BlockToolModificationEvent(BlockEvent.BlockToolModificationEvent event) {
         ItemStack heldItem = event.getHeldItemStack();
-        if (event.getItemAbility().equals(ItemAbilities.HOE_TILL) && heldItem.getItem() instanceof ToggleableItem toggleableItem) {
+        if (event.getToolAction().equals(ToolActions.HOE_TILL) && heldItem.getItem() instanceof ToggleableItem toggleableItem) {
             if (heldItem.getItem() instanceof FerricoreHoe && toggleableItem.getEnabled(heldItem)) {
-                BlockState modifiedState = event.getState().getBlock().getToolModifiedState(event.getState(), event.getContext(), event.getItemAbility(), true);
+                BlockState modifiedState = event.getState().getBlock().getToolModifiedState(event.getState(), event.getContext(), event.getToolAction(), true);
                 if (modifiedState != null && modifiedState.is(Blocks.FARMLAND))
                     event.setFinalState(Registration.GooSoil_Tier1.get().defaultBlockState());
             } else if (heldItem.getItem() instanceof BlazegoldHoe && toggleableItem.getEnabled(heldItem)) {
-                BlockState modifiedState = event.getState().getBlock().getToolModifiedState(event.getState(), event.getContext(), event.getItemAbility(), true);
+                BlockState modifiedState = event.getState().getBlock().getToolModifiedState(event.getState(), event.getContext(), event.getToolAction(), true);
                 if (modifiedState != null && modifiedState.is(Blocks.FARMLAND))
                     event.setFinalState(Registration.GooSoil_Tier2.get().defaultBlockState());
             } else if (heldItem.getItem() instanceof CelestigemHoe && toggleableItem.getEnabled(heldItem)) {
-                BlockState modifiedState = event.getState().getBlock().getToolModifiedState(event.getState(), event.getContext(), event.getItemAbility(), true);
+                BlockState modifiedState = event.getState().getBlock().getToolModifiedState(event.getState(), event.getContext(), event.getToolAction(), true);
                 if (modifiedState != null && modifiedState.is(Blocks.FARMLAND))
                     event.setFinalState(Registration.GooSoil_Tier3.get().defaultBlockState());
             } else if (heldItem.getItem() instanceof EclipseAlloyHoe && toggleableItem.getEnabled(heldItem)) {
-                BlockState modifiedState = event.getState().getBlock().getToolModifiedState(event.getState(), event.getContext(), event.getItemAbility(), true);
+                BlockState modifiedState = event.getState().getBlock().getToolModifiedState(event.getState(), event.getContext(), event.getToolAction(), true);
                 if (modifiedState != null && modifiedState.is(Blocks.FARMLAND))
                     event.setFinalState(Registration.GooSoil_Tier4.get().defaultBlockState());
             }
@@ -63,7 +62,7 @@ public class BlockEvents {
         }
     }
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public static void BlockDrops(BlockDropsEvent event) {
         ItemStack itemStack = event.getTool();
         Entity breaker = event.getBreaker();
@@ -79,5 +78,5 @@ public class BlockEvents {
             event.getState().spawnAfterBreak(event.getLevel(), event.getPos(), itemStack, false);
             event.setCanceled(true);
         }
-    }
+    }*///todo
 }

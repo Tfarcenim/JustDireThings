@@ -13,7 +13,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -49,9 +48,7 @@ public class InventoryHolder extends BaseMachineBlock {
     @Override
     public void openMenu(Player player, BlockPos blockPos) {
         player.openMenu(new SimpleMenuProvider(
-                (windowId, playerInventory, playerEntity) -> new InventoryHolderContainer(windowId, playerInventory, blockPos), Component.translatable("")), (buf -> {
-            buf.writeBlockPos(blockPos);
-        }));
+                (windowId, playerInventory, playerEntity) -> new InventoryHolderContainer(windowId, playerInventory, blockPos), Component.empty()));
     }
 
     @Override
@@ -69,14 +66,12 @@ public class InventoryHolder extends BaseMachineBlock {
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, @org.jetbrains.annotations.Nullable LivingEntity entity, ItemStack stack) {
         super.setPlacedBy(world, pos, state, entity, stack);
-        if (!world.isClientSide && entity instanceof Player player) {
+        if (!world.isClientSide && entity instanceof Player) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof InventoryHolderBE inventoryHolderBE) {
-                if (stack.has(JustDireDataComponents.CUSTOM_DATA_1)) {
-                    CompoundTag compound = stack.get(JustDireDataComponents.CUSTOM_DATA_1).copyTag();
-                    if (!compound.isEmpty()) {
-                        inventoryHolderBE.loadInventory(compound, world.registryAccess());
-                    }
+                CompoundTag customData1 = stack.getTagElement("custom_data_1");
+                if (customData1!=null) {
+                        inventoryHolderBE.loadInventory(customData1);
                 }
             }
         }
@@ -91,9 +86,9 @@ public class InventoryHolder extends BaseMachineBlock {
             ItemStack itemStack = new ItemStack(Item.byBlock(this));
             CompoundTag compoundTag = new CompoundTag();
             ((BaseMachineBE) blockEntity).saveAdditional(compoundTag);
-            ((InventoryHolderBE) blockEntity).saveInventory(compoundTag, builder.getLevel().registryAccess());
+            ((InventoryHolderBE) blockEntity).saveInventory(compoundTag);
             if (!compoundTag.isEmpty()) {
-                itemStack.set(JustDireDataComponents.CUSTOM_DATA_1, CustomData.of(compoundTag));
+                itemStack.getOrCreateTag().put("custom_data_1",compoundTag);
             }
             drops.clear(); // Clear any default drops
             drops.add(itemStack); // Add your custom item stack with NBT data

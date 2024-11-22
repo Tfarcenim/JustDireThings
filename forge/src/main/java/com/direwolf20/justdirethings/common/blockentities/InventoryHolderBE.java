@@ -6,12 +6,11 @@ import com.direwolf20.justdirethings.common.containers.handlers.FilterBasicHandl
 import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.ItemStackKey;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,14 +128,14 @@ public class InventoryHolderBE extends BaseMachineBE {
         return true;
     }
 
-    public void saveInventory(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.put("storedItems", getMachineHandler().serializeNBT(provider));
+    public void saveInventory(CompoundTag tag) {
+        tag.put("storedItems", getMachineHandler().serializeNBT());
     }
 
-    public void loadInventory(CompoundTag tag, HolderLookup.Provider provider) {
+    public void loadInventory(CompoundTag tag) {
         if (tag.contains("storedItems")) {
             CompoundTag filteredItems = tag.getCompound("storedItems");
-            getMachineHandler().deserializeNBT(provider, filteredItems);
+            getMachineHandler().deserializeNBT( filteredItems);
             rebuildFilterCache();
         }
     }
@@ -152,7 +151,7 @@ public class InventoryHolderBE extends BaseMachineBE {
         tag.putBoolean("renderPlayer", renderPlayer);
         tag.putInt("renderedSlot", renderedSlot);
         // Create a new CompoundTag to hold all saved items
-        tag.put("filteredItems", filterBasicHandler.serializeNBT(provider));
+        tag.put("filteredItems", filterBasicHandler.serializeNBT());
     }
 
     @Override
@@ -169,7 +168,7 @@ public class InventoryHolderBE extends BaseMachineBE {
             renderedSlot = tag.getInt("renderedSlot");
         if (tag.contains("filteredItems")) {
             CompoundTag filteredItems = tag.getCompound("filteredItems");
-            filterBasicHandler.deserializeNBT(provider, filteredItems);
+            filterBasicHandler.deserializeNBT(filteredItems);
             rebuildFilterCache();
         }
     }

@@ -3,17 +3,16 @@ package com.direwolf20.justdirethings.common.blockentities;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.NBTHelpers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 
 public class GooSoilBE extends BlockEntity {
     private NBTHelpers.BoundInventory boundInventory;
-    protected BlockCapabilityCache<IItemHandler, Direction> attachedInventory;
+    protected IItemHandler attachedInventory;
 
     public GooSoilBE(BlockPos pos, BlockState state) {
         super(Registration.GooSoilBE.get(), pos, state);
@@ -29,14 +28,12 @@ public class GooSoilBE extends BlockEntity {
         if (attachedInventory == null) {
             ServerLevel boundLevel = serverLevel.getServer().getLevel(boundInventory.globalPos().dimension());
             if (boundLevel == null) return null;
-            attachedInventory = BlockCapabilityCache.create(
-                    Capabilities.ItemHandler.BLOCK, // capability to cache
-                    boundLevel, // level
-                    boundInventory.globalPos().pos(), // target position
-                    boundInventory.direction() // context (The side of the block we're trying to pull/push from?)
-            );
+            BlockEntity attachedBE = boundLevel.getBlockEntity(boundInventory.globalPos().pos());
+            if (attachedBE == null) return null;
+
+            attachedInventory = attachedBE.getCapability(ForgeCapabilities.ITEM_HANDLER,boundInventory.direction()).orElse(null);
         }
-        return attachedInventory.getCapability();
+        return attachedInventory;
     }
 
     @Override
