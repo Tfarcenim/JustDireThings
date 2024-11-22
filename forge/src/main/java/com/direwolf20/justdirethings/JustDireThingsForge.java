@@ -65,9 +65,9 @@ public class JustDireThingsForge {
         event.add(EntityType.PLAYER, Registration.PHASE);
     }
 
-    private void registerChunkLoaders(RegisterTicketControllersEvent event) {
-        event.register(Registration.TICKET_CONTROLLER);
-    }
+//    private void registerChunkLoaders(RegisterTicketControllersEvent event) {
+   //     event.register(Registration.TICKET_CONTROLLER);
+   // }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         //Items
