@@ -1,5 +1,6 @@
 package com.direwolf20.justdirethings;
 
+import com.direwolf20.justdirethings.network.PacketHandler;
 import net.minecraft.resources.ResourceLocation;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
@@ -14,7 +15,7 @@ public class JustDireThings {
     // write the majority of your code here and load it from your loader specific projects. This example has some
     // code that gets invoked by the entry point of the loader specific projects.
     public static void init() {
-
+        PacketHandler.registerPackets();
     }
 
     public static ResourceLocation id(String path) {

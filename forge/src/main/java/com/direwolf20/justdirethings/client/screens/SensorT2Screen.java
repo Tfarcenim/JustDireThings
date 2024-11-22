@@ -12,7 +12,7 @@ import com.direwolf20.justdirethings.common.blockentities.basebe.FilterableBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.PoweredMachineBE;
 import com.direwolf20.justdirethings.common.containers.SensorT2Container;
 import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
-import com.direwolf20.justdirethings.common.network.data.BlockStateFilterPayload;
+import com.direwolf20.justdirethings.network.server.C2SBlockStateFilterPayload;
 import com.direwolf20.justdirethings.common.network.data.SensorPayload;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.direwolf20.justdirethings.util.MiscTools;
@@ -155,7 +155,7 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
         CompoundTag tag = new CompoundTag();
         ListTag listTag = SensorT1BE.saveBlockStateProperty(props);
         tag.put("tagList", listTag);
-        PacketDistributor.sendToServer(new BlockStateFilterPayload(slot, tag));
+        PacketDistributor.sendToServer(new C2SBlockStateFilterPayload(slot, tag));
     }
 
     @Override

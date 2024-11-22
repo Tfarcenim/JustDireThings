@@ -1,5 +1,15 @@
 package com.direwolf20.justdirethings.platform.services;
 
+import com.direwolf20.justdirethings.network.client.S2CModPacket;
+import com.direwolf20.justdirethings.network.server.C2SBlockStateFilterPayload;
+import com.direwolf20.justdirethings.network.server.C2SAreaAffectingPayload;
+import com.direwolf20.justdirethings.network.server.C2SClickerPayload;
+import com.direwolf20.justdirethings.network.server.C2SModPacket;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+
+import java.util.function.Function;
+
 public interface IPlatformHelper {
 
     /**
@@ -33,4 +43,15 @@ public interface IPlatformHelper {
 
         return isDevelopmentEnvironment() ? "development" : "production";
     }
+
+    <MSG extends S2CModPacket> void registerClientPacket(Class<MSG> packetLocation, Function<FriendlyByteBuf,MSG> reader);
+    <MSG extends C2SModPacket> void registerServerPacket(Class<MSG> packetLocation, Function<FriendlyByteBuf,MSG> reader);
+    void sendToClient(S2CModPacket msg, ServerPlayer player);
+    void sendToServer(C2SModPacket msg);
+
+    void handleC2SAreaEffectingPayload(ServerPlayer player,C2SAreaAffectingPayload payload);
+
+    void handleC2SBlockStateFilterPayload(ServerPlayer player, C2SBlockStateFilterPayload blockStateFilterPayload);
+
+    void handleC2SClickerPayload(ServerPlayer player, C2SClickerPayload c2SClickerPayload);
 }

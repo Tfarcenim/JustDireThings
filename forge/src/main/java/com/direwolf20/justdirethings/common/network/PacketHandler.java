@@ -1,19 +1,13 @@
 package com.direwolf20.justdirethings.common.network;
 
-import com.direwolf20.justdirethings.JustDireThings;
-import com.direwolf20.justdirethings.common.network.data.*;
-import com.direwolf20.justdirethings.common.network.handler.*;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-
 public class PacketHandler {
-    public static void registerNetworking(final RegisterPayloadHandlersEvent event) {
+   /* public static void registerNetworking(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar(JustDireThings.MODID);
 
         //Going to Server
-        registrar.playToServer(AreaAffectingPayload.TYPE, AreaAffectingPayload.STREAM_CODEC, AreaAffectingPacket.get()::handle);
-        registrar.playToServer(BlockStateFilterPayload.TYPE, BlockStateFilterPayload.STREAM_CODEC, BlockStateFilterPacket.get()::handle);
-        registrar.playToServer(ClickerPayload.TYPE, ClickerPayload.STREAM_CODEC, ClickerPacket.get()::handle);
+        registrar.playToServer(C2SAreaAffectingPayload.TYPE, C2SAreaAffectingPayload.STREAM_CODEC, AreaAffectingPacket.get()::handle);
+        registrar.playToServer(C2SBlockStateFilterPayload.TYPE, C2SBlockStateFilterPayload.STREAM_CODEC, BlockStateFilterPacket.get()::handle);
+        registrar.playToServer(C2SClickerPayload.TYPE, C2SClickerPayload.STREAM_CODEC, ClickerPacket.get()::handle);
         registrar.playToServer(CopyMachineSettingsPayload.TYPE, CopyMachineSettingsPayload.STREAM_CODEC, CopyMachineSettingsPacket.get()::handle);
         registrar.playToServer(DirectionSettingPayload.TYPE, DirectionSettingPayload.STREAM_CODEC, DirectionSettingPacket.get()::handle);
         registrar.playToServer(DropperSettingPayload.TYPE, DropperSettingPayload.STREAM_CODEC, DropperSettingPacket.get()::handle);
@@ -46,5 +40,5 @@ public class PacketHandler {
         //Going to Client
         registrar.playToClient(ClientSoundPayload.TYPE, ClientSoundPayload.STREAM_CODEC, ClientSoundPacket.get()::handle);
         registrar.playToClient(ParadoxSyncPayload.TYPE, ParadoxSyncPayload.STREAM_CODEC, ParadoxSyncPacket.get()::handle);
-    }
+    }*/
 }

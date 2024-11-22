@@ -7,7 +7,7 @@ import com.direwolf20.justdirethings.client.screens.widgets.NumberButton;
 import com.direwolf20.justdirethings.client.screens.widgets.ToggleButton;
 import com.direwolf20.justdirethings.common.blockentities.ClickerT2BE;
 import com.direwolf20.justdirethings.common.containers.ClickerT2Container;
-import com.direwolf20.justdirethings.common.network.data.ClickerPayload;
+import com.direwolf20.justdirethings.network.server.C2SClickerPayload;
 import com.direwolf20.justdirethings.common.network.data.DirectionSettingPayload;
 import com.direwolf20.justdirethings.common.network.data.TickSpeedPayload;
 import net.minecraft.network.chat.Component;
@@ -120,6 +120,6 @@ public class ClickerT2Screen extends BaseMachineScreen<ClickerT2Container> {
     @Override
     public void saveSettings() {
         super.saveSettings();
-        PacketDistributor.sendToServer(new ClickerPayload(clickType, clickTarget, sneaking, showFakePlayer, maxHoldTicks));
+        PacketDistributor.sendToServer(new C2SClickerPayload(clickType, clickTarget, sneaking, showFakePlayer, maxHoldTicks));
     }
 }

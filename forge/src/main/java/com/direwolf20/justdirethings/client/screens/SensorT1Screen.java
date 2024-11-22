@@ -9,7 +9,7 @@ import com.direwolf20.justdirethings.common.blockentities.SensorT1BE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.FilterableBE;
 import com.direwolf20.justdirethings.common.containers.SensorT1Container;
 import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
-import com.direwolf20.justdirethings.common.network.data.BlockStateFilterPayload;
+import com.direwolf20.justdirethings.network.server.C2SBlockStateFilterPayload;
 import com.direwolf20.justdirethings.common.network.data.SensorPayload;
 import com.direwolf20.justdirethings.util.MiscTools;
 import net.minecraft.ChatFormatting;
@@ -138,7 +138,7 @@ public class SensorT1Screen extends BaseMachineScreen<SensorT1Container> impleme
         CompoundTag tag = new CompoundTag();
         ListTag listTag = SensorT1BE.saveBlockStateProperty(props);
         tag.put("tagList", listTag);
-        PacketDistributor.sendToServer(new BlockStateFilterPayload(slot, tag));
+        PacketDistributor.sendToServer(new C2SBlockStateFilterPayload(slot, tag));
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.direwolf20.justdirethings.client.screens.widgets.NumberButton;
 import com.direwolf20.justdirethings.client.screens.widgets.ToggleButton;
 import com.direwolf20.justdirethings.common.blockentities.ClickerT1BE;
 import com.direwolf20.justdirethings.common.containers.ClickerT1Container;
-import com.direwolf20.justdirethings.common.network.data.ClickerPayload;
+import com.direwolf20.justdirethings.network.server.C2SClickerPayload;
 import com.direwolf20.justdirethings.common.network.data.DirectionSettingPayload;
 import com.direwolf20.justdirethings.common.network.data.TickSpeedPayload;
 import com.direwolf20.justdirethings.util.MiscHelpers;
@@ -128,6 +128,6 @@ public class ClickerT1Screen extends BaseMachineScreen<ClickerT1Container> {
     @Override
     public void saveSettings() {
         super.saveSettings();
-        PacketDistributor.sendToServer(new ClickerPayload(clickType, clickTarget, sneaking, showFakePlayer, maxHoldTicks));
+        PacketDistributor.sendToServer(new C2SClickerPayload(clickType, clickTarget, sneaking, showFakePlayer, maxHoldTicks));
     }
 }
