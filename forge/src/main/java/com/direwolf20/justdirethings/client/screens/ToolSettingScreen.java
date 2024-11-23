@@ -7,9 +7,10 @@ import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
 import com.direwolf20.justdirethings.client.screens.widgets.ToggleButton;
 import com.direwolf20.justdirethings.common.containers.ToolSettingContainer;
 import com.direwolf20.justdirethings.common.items.interfaces.*;
-import com.direwolf20.justdirethings.common.network.data.ToggleToolLeftRightClickPayload;
-import com.direwolf20.justdirethings.common.network.data.ToggleToolRefreshSlots;
-import com.direwolf20.justdirethings.common.network.data.ToggleToolSlotPayload;
+import com.direwolf20.justdirethings.network.server.C2SToggleToolLeftRightClickPayload;
+import com.direwolf20.justdirethings.network.server.C2SToggleToolRefreshSlotPayload;
+import com.direwolf20.justdirethings.network.server.C2SToggleToolSlotPayload;
+import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.util.MiscTools;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -28,15 +29,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.gui.widget.ExtendedSlider;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 
 public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContainer> {
-    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/settings.png");
-    protected final ResourceLocation JUSTSLOT = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/justslot.png");
+    private final ResourceLocation GUI = JustDireThings.id("textures/gui/settings.png");
+    protected final ResourceLocation JUSTSLOT = JustDireThings.id( "textures/gui/justslot.png");
 
     protected final ToolSettingContainer container;
     Player player;
@@ -216,7 +215,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
     }
 
     protected void sendBinding(String abilityName, int buttonType, int keyCode, boolean isMouse) {
-        PacketDistributor.sendToServer(new ToggleToolLeftRightClickPayload(toolSlot, abilityName, buttonType, keyCode, isMouse, requireEquipped));
+        PacketDistributor.sendToServer(new C2SToggleToolLeftRightClickPayload(toolSlot, abilityName, buttonType, keyCode, isMouse, requireEquipped));
     }
 
     protected void collectButtonsToRemove() {
@@ -228,19 +227,19 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
     }
 
     public void toggleSetting(String settingName) {
-        PacketDistributor.sendToServer(new ToggleToolSlotPayload(settingName, toolSlot, 0, -1));
+        Services.PLATFORM.sendToServer(new C2SToggleToolSlotPayload(settingName, toolSlot, 0, -1));
     }
 
     public void cycleSetting(String settingName) {
-        PacketDistributor.sendToServer(new ToggleToolSlotPayload(settingName, toolSlot, 1, -1));
+        Services.PLATFORM.sendToServer(new C2SToggleToolSlotPayload(settingName, toolSlot, 1, -1));
     }
 
     public void setSetting(String settingName, int value) {
-        PacketDistributor.sendToServer(new ToggleToolSlotPayload(settingName, toolSlot, 2, value));
+        Services.PLATFORM.sendToServer(new C2SToggleToolSlotPayload(settingName, toolSlot, 2, value));
     }
 
     public void toggleRender(String settingName, int value) {
-        PacketDistributor.sendToServer(new ToggleToolSlotPayload(settingName, toolSlot, 3, value));
+        Services.PLATFORM.sendToServer(new C2SToggleToolSlotPayload(settingName, toolSlot, 3, value));
     }
 
     @Override
@@ -253,7 +252,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
             int j1 = x + y * this.imageWidth;
             int k = tool.getMaxStackSize();
             String s = ChatFormatting.YELLOW.toString() + k;
-            guiGraphics.renderFakeItem(tool, x, y, j1);
+            guiGraphics.renderFakeItem(tool, x, y);
             guiGraphics.renderItemDecorations(this.font, tool, x, y, null);
         }
     }
@@ -281,11 +280,6 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
                     pGuiGraphics.renderTooltip(font, button.getLocalization(), pX, pY);
             }
         }
-    }
-
-    @Override
-    protected void renderSlot(GuiGraphics pGuiGraphics, Slot pSlot) {
-        super.renderSlot(pGuiGraphics, pSlot);
     }
 
     @Override
@@ -412,7 +406,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
 
     public void refreshToolAndSlots() {
         this.container.refreshSlots(tool);
-        PacketDistributor.sendToServer(new ToggleToolRefreshSlots(toolSlot));
+        Services.PLATFORM.sendToServer(new C2SToggleToolRefreshSlotPayload(toolSlot));
     }
 
     public void updateRenderables() {
@@ -455,7 +449,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double pScrollX, double pScrollY) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double pScrollY) {
         this.sliders.forEach((button, slider) -> {
             if (slider.isMouseOver(mouseX, mouseY)) {
                 slider.setValue(slider.getValueInt() + (pScrollY > 0 ? 1 : -1));

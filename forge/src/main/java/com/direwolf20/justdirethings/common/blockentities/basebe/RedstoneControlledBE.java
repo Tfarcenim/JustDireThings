@@ -12,8 +12,8 @@ public interface RedstoneControlledBE {
 
     BlockEntity getBlockEntity();
 
-    default void setRedstoneSettings(int redstoneMode) {
-        getRedstoneControlData().redstoneMode = MiscHelpers.RedstoneMode.values()[redstoneMode];
+    default void setRedstoneSettings(MiscHelpers.RedstoneMode redstoneMode) {
+        getRedstoneControlData().redstoneMode = redstoneMode;
         if (getBlockEntity() instanceof BaseMachineBE baseMachineBE)
             baseMachineBE.markDirtyClient();
         BlockState blockState = getBlockEntity().getBlockState();

@@ -23,7 +23,7 @@ import java.awt.*;
 import java.util.List;
 
 public class FuelCanisterScreen extends AbstractContainerScreen<FuelCanisterContainer> {
-    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/fuelcanister.png");
+    private final ResourceLocation GUI = JustDireThings.id("textures/gui/fuelcanister.png");
 
     protected final FuelCanisterContainer container;
     private ItemStack fuelCanister;
@@ -110,20 +110,6 @@ public class FuelCanisterScreen extends AbstractContainerScreen<FuelCanisterCont
         }
 
         return super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
-    }
-
-    @Override
-    public boolean mouseClicked(double x, double y, int btn) {
-        return super.mouseClicked(x, y, btn);
-    }
-
-    public boolean mouseReleased(double p_mouseReleased_1_, double p_mouseReleased_3_, int p_mouseReleased_5_) {
-        return super.mouseReleased(p_mouseReleased_1_, p_mouseReleased_3_, p_mouseReleased_5_);
-    }
-
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double pScrollX, double pScrollY) {
-        return super.mouseScrolled(mouseX, mouseY, pScrollX, pScrollY);
     }
 
     private static MutableComponent getTrans(String key, Object... args) {

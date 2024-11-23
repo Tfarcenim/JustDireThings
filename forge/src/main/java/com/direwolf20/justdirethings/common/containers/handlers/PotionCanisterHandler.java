@@ -1,14 +1,15 @@
 package com.direwolf20.justdirethings.common.containers.handlers;
 
 import com.direwolf20.justdirethings.common.items.PotionCanister;
+import com.direwolf20.justdirethings.util.ItemStackNBTHandler;
 import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
 
-public class PotionCanisterHandler extends ComponentItemHandler {
+public class PotionCanisterHandler extends ItemStackNBTHandler {
     private final ItemStack potionStack;
 
-    public PotionCanisterHandler(ItemStack parent, DataComponentType<ItemContainerContents> component, int size) {
+    public PotionCanisterHandler(ItemStack parent, String component, int size) {
         super(parent, component, size);
         potionStack = parent;
     }

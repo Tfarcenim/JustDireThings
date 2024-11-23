@@ -6,7 +6,6 @@ import com.direwolf20.justdirethings.common.blockentities.basebe.FluidMachineBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.PoweredMachineBE;
 import com.direwolf20.justdirethings.common.capabilities.EnergyStorageItemStackNoReceive;
 import com.direwolf20.justdirethings.common.capabilities.EnergyStorageItemstack;
-import com.direwolf20.justdirethings.common.capabilities.ExperienceHolderFluidTank;
 import com.direwolf20.justdirethings.common.containers.handlers.PotionCanisterHandler;
 import com.direwolf20.justdirethings.common.entities.DecoyEntity;
 import com.direwolf20.justdirethings.common.items.FluidCanister;
@@ -14,8 +13,6 @@ import com.direwolf20.justdirethings.common.items.PortalGunV2;
 import com.direwolf20.justdirethings.common.items.TimeWand;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredItem;
-import com.direwolf20.justdirethings.common.network.PacketHandler;
-import com.direwolf20.justdirethings.datagen.JustDireFluidTags;
 import com.direwolf20.justdirethings.setup.ClientSetup;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.setup.ModSetup;
@@ -46,8 +43,7 @@ public class JustDireThingsForge {
         modEventBus.addListener(ModSetup::init);
         ModSetup.CREATIVE_MODE_TABS.register(modEventBus);
         modEventBus.addListener(this::registerCapabilities);
-        modEventBus.addListener(PacketHandler::registerNetworking);
-        modEventBus.addListener(this::registerChunkLoaders);
+        //modEventBus.addListener(this::registerChunkLoaders);
         modEventBus.addListener(this::registerEntityAttributes);
         modEventBus.addListener(this::registerCustomAttributes);
         if (FMLLoader.getDist().isClient()) {
@@ -62,7 +58,7 @@ public class JustDireThingsForge {
     }
 
     private void registerCustomAttributes(EntityAttributeModificationEvent event) {
-        event.add(EntityType.PLAYER, Registration.PHASE);
+        event.add(EntityType.PLAYER, Registration.PHASE.get());
     }
 
 //    private void registerChunkLoaders(RegisterTicketControllersEvent event) {

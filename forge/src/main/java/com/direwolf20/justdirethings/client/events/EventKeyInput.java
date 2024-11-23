@@ -9,8 +9,9 @@ import com.direwolf20.justdirethings.common.items.interfaces.LeftClickableTool;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableItem;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
 import com.direwolf20.justdirethings.network.server.C2SLeftClickPayload;
-import com.direwolf20.justdirethings.common.network.data.ToggleToolPayload;
-import com.direwolf20.justdirethings.common.network.data.ToolSettingsGUIPayload;
+import com.direwolf20.justdirethings.network.server.C2SMiscPayload;
+import com.direwolf20.justdirethings.network.server.C2SToggleToolPayload;
+import com.direwolf20.justdirethings.platform.Services;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -22,29 +23,28 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.settings.KeyModifier;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.settings.KeyModifier;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
 import static com.direwolf20.justdirethings.util.MiscTools.getHitResult;
 
-@EventBusSubscriber(modid = JustDireThings.MODID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = JustDireThings.MODID, value = Dist.CLIENT)
 public class EventKeyInput {
 
     @SubscribeEvent
-    public static void handleEventInput(ClientTickEvent.Post event) {
+    public static void handleEventInput(TickEvent.ClientTickEvent event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null)
             return;
 
         if (KeyBindings.toolUI.consumeClick()) {
-            PacketDistributor.sendToServer(new ToolSettingsGUIPayload());
+            C2SMiscPayload.send(C2SMiscPayload.Action.TOOL_SETTINGS_GUI);
         }
 
         KeyMapping keyMapping = KeyBindings.toggleTool;
@@ -59,7 +59,7 @@ public class EventKeyInput {
         ItemStack toggleableItem = ToggleableItem.getToggleableItem(mc.player);
         if (!toggleableItem.isEmpty()) {
             if (KeyBindings.toggleTool.consumeClick()) {
-                PacketDistributor.sendToServer(new ToggleToolPayload("enabled"));
+                Services.PLATFORM.sendToServer(new C2SToggleToolPayload("enabled"));
             }
         }
     }
@@ -119,7 +119,7 @@ public class EventKeyInput {
                 UseOnContext useoncontext = new UseOnContext(player.level(), player, InteractionHand.MAIN_HAND, itemStack, blockHitResult);
                 toggleableTool.useOnAbility(useoncontext, itemStack, key, isMouse);
             }
-            PacketDistributor.sendToServer(new C2SLeftClickPayload(0, false, BlockPos.ZERO, Direction.UP, invSlot, key, isMouse)); //Type 0 == air
+            Services.PLATFORM.sendToServer(new C2SLeftClickPayload(0, false, BlockPos.ZERO, Direction.UP, invSlot, key, isMouse)); //Type 0 == air
         }
     }
 }

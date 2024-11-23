@@ -3,36 +3,36 @@ package com.direwolf20.justdirethings.platform;
 import com.direwolf20.justdirethings.common.PacketHandlerForge;
 import com.direwolf20.justdirethings.common.blockentities.*;
 import com.direwolf20.justdirethings.common.blockentities.basebe.AreaAffectingBE;
-import com.direwolf20.justdirethings.common.blockentities.basebe.BaseMachineBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.FilterableBE;
+import com.direwolf20.justdirethings.common.blockentities.basebe.RedstoneControlledBE;
 import com.direwolf20.justdirethings.common.containers.ExperienceHolderContainer;
 import com.direwolf20.justdirethings.common.containers.InventoryHolderContainer;
 import com.direwolf20.justdirethings.common.containers.ItemCollectorContainer;
+import com.direwolf20.justdirethings.common.containers.ToolSettingContainer;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseMachineContainer;
 import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
 import com.direwolf20.justdirethings.common.items.MachineSettingsCopier;
 import com.direwolf20.justdirethings.common.items.PortalGun;
 import com.direwolf20.justdirethings.common.items.PortalGunV2;
-import com.direwolf20.justdirethings.common.items.interfaces.LeftClickableTool;
-import com.direwolf20.justdirethings.common.items.interfaces.ToggleableItem;
-import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
+import com.direwolf20.justdirethings.common.items.interfaces.*;
 import com.direwolf20.justdirethings.network.client.S2CModPacket;
 import com.direwolf20.justdirethings.network.client.S2CParadoxSyncPayload;
 import com.direwolf20.justdirethings.network.server.*;
 import com.direwolf20.justdirethings.platform.services.IPlatformHelper;
+import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.NBTHelpers;
 import com.direwolf20.justdirethings.util.interfacehelpers.FilterData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -46,6 +46,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -306,14 +307,19 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public void handleC2SPortalGunLeftClickPayload(ServerPlayer player, PortalGunLeftClickPayload portalGunLeftClickPayload) {
-        ItemStack itemStack = player.getMainHandItem();
-        if (!(itemStack.getItem() instanceof PortalGun))
-            itemStack = player.getOffhandItem();
-        if (!(itemStack.getItem() instanceof PortalGun))
-            return;
+    public void handleC2SMiscPayload(ServerPlayer player, C2SMiscPayload miscPayload) {
 
-        PortalGun.spawnProjectile(player.level(), player, itemStack, true);
+        switch (miscPayload.action()) {
+            case LEFT_CLICK_PORTAL_GUN -> {
+                ItemStack itemStack = player.getMainHandItem();
+                if (!(itemStack.getItem() instanceof PortalGun))
+                    itemStack = player.getOffhandItem();
+                if (!(itemStack.getItem() instanceof PortalGun))
+                    return;
+                PortalGun.spawnProjectile(player.level(), player, itemStack, true);
+            }
+            case TOOL_SETTINGS_GUI -> player.openMenu(new SimpleMenuProvider(ToolSettingContainer::new, Component.empty()));
+        }
     }
 
     @Override
@@ -341,6 +347,92 @@ public class ForgePlatformHelper implements IPlatformHelper {
                 NBTHelpers.PortalDestination newDestination = new NBTHelpers.PortalDestination(new NBTHelpers.GlobalVec3(dimension, position), facing, payload.name());
                 PortalGunV2.addFavorite(itemStack, payload.favorite(), newDestination);
             }
+        }
+    }
+
+    @Override
+    public void handleC2SRedstoneSettingPayload(ServerPlayer player, C2SRedstoneSettingPayload payload) {
+        AbstractContainerMenu container = player.containerMenu;
+
+        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof RedstoneControlledBE redstoneControlledBE) {
+            redstoneControlledBE.setRedstoneSettings(payload.redstoneMode());
+        }
+    }
+
+    @Override
+    public void handleC2SSensorPayload(ServerPlayer player, C2SSensorPayload payload) {
+        AbstractContainerMenu container = player.containerMenu;
+
+        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof SensorT1BE sensor) {
+            sensor.setSensorSettings(payload.senseTarget(), payload.strongSignal(), payload.senseCount(), payload.equality());
+        }
+    }
+
+    @Override
+    public void handleC2SSwapperPayload(ServerPlayer player, C2SSwapperPayload payload) {
+        AbstractContainerMenu container = player.containerMenu;
+
+        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof BlockSwapperT1BE swapper) {
+            swapper.setSwapperSettings(payload.swapBlocks(), payload.swap_entity_type());
+        }
+    }
+
+    @Override
+    public void handleTickSpeedPayload(ServerPlayer player, C2STickSpeedPayload payload) {
+        AbstractContainerMenu container = player.containerMenu;
+
+        if (container instanceof BaseMachineContainer baseMachineContainer) {
+            baseMachineContainer.baseMachineBE.setTickSpeed(Math.min(Math.max(payload.tickSpeed(), Config.MINIMUM_MACHINE_TICK_SPEED.get()), 1200));
+        }
+    }
+
+    @Override
+    public void handleC2SToggleToolLeftRightClickPayload(ServerPlayer player, C2SToggleToolLeftRightClickPayload payload) {
+        ItemStack stack = player.getInventory().getItem(payload.slot());
+        if (stack.getItem() instanceof LeftClickableTool) {
+            Ability ability = Ability.valueOf(payload.abilityName().toUpperCase(Locale.ROOT));
+            LeftClickableTool.setBindingMode(stack, ability, payload.button());
+            if (payload.button() == 0) //Right Click
+                LeftClickableTool.removeFromLeftClickList(stack, ability);
+            else if (payload.button() == 1) //Left Click
+                LeftClickableTool.addToLeftClickList(stack, ability);
+            else if (payload.button() == 2) { //Custom Keybind
+                if (payload.keyCode() == -1)
+                    LeftClickableTool.removeFromCustomBindingList(stack, ability);
+                else
+                    LeftClickableTool.addToCustomBindingList(stack, new ToolRecords.AbilityBinding(payload.abilityName(), payload.keyCode(), payload.isMouse(), payload.requireEquipped()));
+            }
+        }
+    }
+
+    @Override
+    public void handleC2SToolTogglePayload(ServerPlayer player, C2SToggleToolPayload c2SToggleToolPayload) {
+        ItemStack toggleableItem = ToggleableItem.getToggleableItem(player);
+        if (toggleableItem.getItem() instanceof ToggleableItem toggleableTool) {
+            toggleableTool.toggleEnabled(toggleableItem, player);
+        }
+    }
+
+    @Override
+    public void handleC2SToggleToolRefreshSlotPayload(ServerPlayer player, C2SToggleToolRefreshSlotPayload payload) {
+        ItemStack stack = player.getInventory().getItem(payload.slot());
+        if (player.containerMenu instanceof ToolSettingContainer container) {
+            container.refreshSlots(stack);
+        }
+    }
+
+    @Override
+    public void handleC2SToggleToolSlotPayload(ServerPlayer player, C2SToggleToolSlotPayload payload) {
+        ItemStack stack = player.getInventory().getItem(payload.slot());
+        if (stack.getItem() instanceof ToggleableTool) {
+            if (payload.typeTool() == 0) //Toggle
+                ToggleableTool.toggleSetting(stack, payload.settingName());
+            else if (payload.typeTool() == 1) //Cycle
+                ToggleableTool.cycleSetting(stack, payload.settingName());
+            else if (payload.typeTool() == 2) //Slider
+                ToggleableTool.setToolValue(stack, payload.settingName(), payload.value());
+            else if (payload.typeTool() == 3) //Render
+                ToggleableTool.setCustomSetting(stack, payload.settingName(), payload.value());
         }
     }
 }

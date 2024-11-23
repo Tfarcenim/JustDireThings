@@ -12,10 +12,8 @@ import com.direwolf20.justdirethings.common.blockentities.basebe.*;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseMachineContainer;
 import com.direwolf20.justdirethings.common.containers.handlers.FilterBasicHandler;
 import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
-import com.direwolf20.justdirethings.common.network.data.*;
-import com.direwolf20.justdirethings.network.server.C2SAreaAffectingPayload;
-import com.direwolf20.justdirethings.network.server.C2SGhostSlotPayload;
-import com.direwolf20.justdirethings.network.server.C2SFilterSettingPayload;
+import com.direwolf20.justdirethings.network.server.*;
+import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.MiscTools;
@@ -37,21 +35,20 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.items.SlotItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends BaseScreen<T> {
-    protected final ResourceLocation JUSTSLOT = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/justslot.png");
-    protected final ResourceLocation POWERBAR = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/powerbar.png");
-    protected final ResourceLocation FLUIDBAR = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/fluidbar.png");
-    protected final ResourceLocation SOCIALBACKGROUND = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "background");
+    protected final ResourceLocation JUSTSLOT = JustDireThings.id("textures/gui/justslot.png");
+    protected final ResourceLocation POWERBAR = JustDireThings.id("textures/gui/powerbar.png");
+    protected final ResourceLocation FLUIDBAR = JustDireThings.id("textures/gui/fluidbar.png");
+    protected final ResourceLocation SOCIALBACKGROUND = JustDireThings.id("background");
     protected BaseMachineContainer container;
     protected BaseMachineBE baseMachineBE;
     protected double xRadius = 3, yRadius = 3, zRadius = 3;
@@ -128,7 +125,7 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
     public void addTickSpeedButton() {
         addRenderableWidget(ToggleButtonFactory.TICKSPEEDBUTTON(getGuiLeft() + 144, topSectionTop + 40, tickSpeed, b -> {
             tickSpeed = ((NumberButton) b).getValue(); //The value is updated in the mouseClicked method below
-            PacketDistributor.sendToServer(new TickSpeedPayload(tickSpeed));
+            PacketDistributor.sendToServer(new C2STickSpeedPayload(tickSpeed));
         }));
     }
 
@@ -342,8 +339,8 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
         int textureHeight = fluidStillSprite.contents().height();
 
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder vertexBuffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-
+        BufferBuilder vertexBuffer = tesselator.getBuilder();
+        vertexBuffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         int yOffset = 0;
         while (yOffset < height) {
             int drawHeight = Math.min(textureHeight, height - yOffset);
@@ -357,17 +354,17 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
 
                 float uMaxAdjusted = uMin + (uMax - uMin) * ((float) drawWidth / textureWidth);
 
-                vertexBuffer.addVertex(poseStack.last().pose(), startX + xOffset, drawY + drawHeight, zLevel).setUv(uMin, vMaxAdjusted);
-                vertexBuffer.addVertex(poseStack.last().pose(), startX + xOffset + drawWidth, drawY + drawHeight, zLevel).setUv(uMaxAdjusted, vMaxAdjusted);
-                vertexBuffer.addVertex(poseStack.last().pose(), startX + xOffset + drawWidth, drawY, zLevel).setUv(uMaxAdjusted, vMin);
-                vertexBuffer.addVertex(poseStack.last().pose(), startX + xOffset, drawY, zLevel).setUv(uMin, vMin);
+                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset, drawY + drawHeight, zLevel).uv(uMin, vMaxAdjusted);
+                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset + drawWidth, drawY + drawHeight, zLevel).uv(uMaxAdjusted, vMaxAdjusted);
+                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset + drawWidth, drawY, zLevel).uv(uMaxAdjusted, vMin);
+                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset, drawY, zLevel).uv(uMin, vMin);
 
                 xOffset += drawWidth;
             }
             yOffset += drawHeight;
         }
 
-        BufferUploader.drawWithShader(vertexBuffer.buildOrThrow());
+        BufferUploader.drawWithShader(vertexBuffer.end());
         poseStack.popPose();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.applyModelViewMatrix();
@@ -393,11 +390,11 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
             if (MiscTools.inBounds(topSectionLeft + getFluidBarOffset(), topSectionTop + 5, 18, 72, pX, pY)) {
                 if (hasShiftDown())
                     pGuiGraphics.renderTooltip(font, Language.getInstance().getVisualOrder(Arrays.asList(
-                            Component.translatable("justdirethings.screen.fluid", this.container.getFluidStack().getHoverName(), MagicHelpers.formatted(this.container.getFluidAmount()), MagicHelpers.formatted(fluidMachineBE.getMaxMB()))
+                            Component.translatable("justdirethings.screen.fluid", this.container.getFluidStack().getDisplayName(), MagicHelpers.formatted(this.container.getFluidAmount()), MagicHelpers.formatted(fluidMachineBE.getMaxMB()))
                     )), pX, pY);
                 else
                     pGuiGraphics.renderTooltip(font, Language.getInstance().getVisualOrder(Arrays.asList(
-                            Component.translatable("justdirethings.screen.fluid", this.container.getFluidStack().getHoverName(), MagicHelpers.withSuffix(this.container.getFluidAmount()), MagicHelpers.withSuffix(fluidMachineBE.getMaxMB()))
+                            Component.translatable("justdirethings.screen.fluid", this.container.getFluidStack().getDisplayName(), MagicHelpers.withSuffix(this.container.getFluidAmount()), MagicHelpers.withSuffix(fluidMachineBE.getMaxMB()))
                     )), pX, pY);
             }
         }
@@ -424,7 +421,7 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
                 ItemStack stack = this.menu.getCarried();// getMinecraft().player.inventoryMenu.getCarried();
                 stack = stack.copy().split(hoveredSlot.getMaxStackSize()); // Limit to slot limit
                 hoveredSlot.set(stack); // Temporarily update the client for continuity purposes
-                PacketDistributor.sendToServer(new C2SGhostSlotPayload(hoveredSlot.index, stack, stack.getCount(), -1));
+                Services.PLATFORM.sendToServer(new C2SGhostSlotPayload(hoveredSlot.index, stack, stack.getCount(), -1));
                 return true;
             }
         }
@@ -466,10 +463,10 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
 
     public void saveSettings() {
         if (baseMachineBE instanceof AreaAffectingBE)
-            PacketDistributor.sendToServer(new C2SAreaAffectingPayload(xRadius, yRadius, zRadius, xOffset, yOffset, zOffset, renderArea));
+            Services.PLATFORM.sendToServer(new C2SAreaAffectingPayload(xRadius, yRadius, zRadius, xOffset, yOffset, zOffset, renderArea));
         if (baseMachineBE instanceof FilterableBE)
-            PacketDistributor.sendToServer(new C2SFilterSettingPayload(filterData.allowlist, filterData.compareNBT, filterData.blockItemFilter));
+            Services.PLATFORM.sendToServer(new C2SFilterSettingPayload(filterData.allowlist, filterData.compareNBT, filterData.blockItemFilter));
         if (baseMachineBE instanceof RedstoneControlledBE)
-            PacketDistributor.sendToServer(new RedstoneSettingPayload(redstoneMode.ordinal()));
+            Services.PLATFORM.sendToServer(new C2SRedstoneSettingPayload(redstoneMode));
     }
 }

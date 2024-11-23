@@ -12,7 +12,7 @@ import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataCom
 import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.util.MiningCollect;
-import com.direwolf20.justdirethings.util.MiscHelpers;
+import com.direwolf20.justdirethings.util.MiscForgeHelpers;
 import com.direwolf20.justdirethings.util.NBTHelpers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -593,7 +593,7 @@ public interface ToggleableTool extends ToggleableItem {
     static IItemHandler getBoundHandler(ServerLevel serverLevel, ItemStack stack) {
         NBTHelpers.BoundInventory boundInventory = getBoundInventory(stack);
         if (boundInventory != null)
-            return MiscHelpers.getAttachedInventory(serverLevel.getServer().getLevel(boundInventory.globalPos().dimension()), boundInventory.globalPos().pos(), boundInventory.direction());
+            return MiscForgeHelpers.getAttachedInventory(serverLevel.getServer().getLevel(boundInventory.globalPos().dimension()), boundInventory.globalPos().pos(), boundInventory.direction());
         return null;
     }
 

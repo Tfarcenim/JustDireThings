@@ -3,6 +3,7 @@ package com.direwolf20.justdirethings.common.items;
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.FluidContainingItem;
+import com.direwolf20.justdirethings.util.FillMode;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -37,39 +38,18 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.SimpleFluidContent;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.common.SoundActions;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class FluidCanister extends Item implements FluidContainingItem {
-    public enum FillMode {
-        NONE("none"),
-        JDTONLY("jdtonly"),
-        ALL("all");
-
-        private final String baseName;
-
-        FillMode(String baseName) {
-            this.baseName = baseName;
-        }
-
-        public Component getTooltip() {
-            return Component.translatable(JustDireThings.MODID + ".fillmode." + baseName);
-        }
-
-        public FillMode next() {
-            FillMode[] values = values();
-            int nextOrdinal = (this.ordinal() + 1) % values.length;
-            return values[nextOrdinal];
-        }
-    }
 
     public FluidCanister() {
         super(new Properties()
@@ -111,14 +91,14 @@ public class FluidCanister extends Item implements FluidContainingItem {
         FillMode fillMode = getFillMode(itemStack);
         if (fillMode == FillMode.NONE) return;
         if (entity instanceof Player player) {
-            IFluidHandlerItem fluidHandler = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+            IFluidHandlerItem fluidHandler = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
             if (fluidHandler == null || fluidHandler.getFluidInTank(0).isEmpty()) return;
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack slotStack = player.getInventory().getItem(i);
                 if (slotStack.getItem() instanceof FluidCanister) continue;
                 if (fillMode == FillMode.JDTONLY && !slotStack.getItem().getCreatorModId(slotStack).equals(JustDireThings.MODID))
                     continue;
-                IFluidHandlerItem slotFluidHandler = slotStack.getCapability(Capabilities.FluidHandler.ITEM);
+                IFluidHandlerItem slotFluidHandler = slotStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
                 if (slotFluidHandler != null) {
                     FluidStack fluidStack = fluidHandler.getFluidInTank(0);
                     int amtToFill = Math.min(fluidStack.getAmount(), 100);
@@ -132,15 +112,15 @@ public class FluidCanister extends Item implements FluidContainingItem {
         }
     }
 
+
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        Level level = context.level();
+    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltip, TooltipFlag p_41424_) {
+        super.appendHoverText(stack, level, tooltip, p_41424_);
         if (level == null) {
             return;
         }
 
-        IFluidHandlerItem fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler == null) {
             return;
         }
@@ -150,17 +130,16 @@ public class FluidCanister extends Item implements FluidContainingItem {
 // Creating a Style with the fluid color
         Style fluidStyle = Style.EMPTY.withColor(TextColor.fromRgb(fluidColor));
 
-        tooltip.add(Component.translatable("justdirethings.fluidname").withStyle(ChatFormatting.GRAY).append(Component.translatable(fluidStack.getHoverName().getString()).withStyle(fluidStyle)));
+        tooltip.add(Component.translatable("justdirethings.fluidname").withStyle(ChatFormatting.GRAY).append(Component.translatable(fluidStack.getDisplayName().getString()).withStyle(fluidStyle)));
         tooltip.add(Component.translatable("justdirethings.fluidamt").withStyle(ChatFormatting.GRAY).append(Component.literal(MagicHelpers.formatted(fluidStack.getAmount()) + "/" + MagicHelpers.formatted(getMaxMB())).withStyle(ChatFormatting.GREEN)));
         tooltip.add(Component.translatable("justdirethings.fillmode").withStyle(ChatFormatting.GRAY).append(Component.translatable(getFillMode(stack).getTooltip().getString()).withStyle(ChatFormatting.GREEN)));
     }
-
 
     public boolean placeFluid(Level level, Player player, ItemStack itemStack, BlockHitResult blockhitresult) {
         BlockPos blockpos = blockhitresult.getBlockPos();
         BlockState blockstate = level.getBlockState(blockpos);
         if (blockstate.getBlock() instanceof LiquidBlock && !player.isShiftKeyDown()) return false;
-        IFluidHandlerItem fluidHandler = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler == null) return false;
         FluidStack fluidStack = fluidHandler.getFluidInTank(0);
         if (fluidStack.isEmpty() || fluidStack.getAmount() < 1000) return false;
@@ -179,16 +158,16 @@ public class FluidCanister extends Item implements FluidContainingItem {
         BlockPos blockpos = blockhitresult.getBlockPos();
         BlockState blockstate1 = level.getBlockState(blockpos);
         if (blockstate1.getBlock() instanceof LiquidBlock liquidBlock) {
-            IFluidHandlerItem fluidHandler = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+            IFluidHandlerItem fluidHandler = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
             if (fluidHandler == null) return false;
-            Fluid fluid = liquidBlock.fluid;
+            Fluid fluid = liquidBlock.getFluid();
             FluidStack fluidStack = fluidHandler.getFluidInTank(0);
-            if (!liquidBlock.fluid.isSource(liquidBlock.fluid.getSource(false)) || (!fluidStack.isEmpty() && !fluidStack.is(fluid)))
+            if (!liquidBlock.getFluid().isSource(liquidBlock.getFluid().getSource(false)) || (!fluidStack.isEmpty() && !fluidStack.getFluid().isSame(fluid)))
                 return false;
 
             int filledAmt = fluidHandler.fill(new FluidStack(fluid, 1000), IFluidHandler.FluidAction.SIMULATE);
             if (filledAmt == 1000) {
-                ItemStack itemstack2 = liquidBlock.pickupBlock(player, level, blockpos, blockstate1);
+                ItemStack itemstack2 = liquidBlock.pickupBlock(level, blockpos, blockstate1);
                 fluidHandler.fill(new FluidStack(fluid, 1000), IFluidHandler.FluidAction.EXECUTE);
                 liquidBlock.getPickupSound(blockstate1).ifPresent(p_150709_ -> player.playSound(p_150709_, 1.0F, 1.0F));
                 if (!level.isClientSide) {
@@ -200,8 +179,8 @@ public class FluidCanister extends Item implements FluidContainingItem {
         return false;
     }
 
-    public boolean emptyContents(@Nullable Player player, Level level, BlockPos pos, @Nullable ItemStack container) {
-        SimpleFluidContent fluidData = getFluidData(container);
+    public boolean emptyContents(@Nullable Player player, Level level, BlockPos pos, ItemStack container) {
+        FluidStack fluidData = getFluidData(container);
         if (fluidData == null || fluidData.isEmpty()) return false;
 
         Fluid fluid = fluidData.getFluid();
@@ -212,7 +191,7 @@ public class FluidCanister extends Item implements FluidContainingItem {
         boolean canBeReplaced = blockState.canBeReplaced(fluid);
 
         if (!blockState.isAir() && !canBeReplaced) {
-            if (block instanceof LiquidBlockContainer liquidBlockContainer && liquidBlockContainer.canPlaceLiquid(player, level, pos, blockState, fluid)) {
+            if (block instanceof LiquidBlockContainer liquidBlockContainer && liquidBlockContainer.canPlaceLiquid(level, pos, blockState, fluid)) {
                 liquidBlockContainer.placeLiquid(level, pos, blockState, flowingFluid.getSource(false));
                 playEmptySound(player, level, pos, fluid);
                 return true;
@@ -237,7 +216,7 @@ public class FluidCanister extends Item implements FluidContainingItem {
     }
 
     protected void playEmptySound(@Nullable Player pPlayer, LevelAccessor pLevel, BlockPos pPos, Fluid fluid) {
-        SoundEvent soundevent = fluid.getFluidType().getSound(pPlayer, pLevel, pPos, net.neoforged.neoforge.common.SoundActions.BUCKET_EMPTY);
+        SoundEvent soundevent = fluid.getFluidType().getSound(pPlayer, pLevel, pPos, SoundActions.BUCKET_EMPTY);
         if (soundevent == null)
             soundevent = fluid.is(FluidTags.LAVA) ? SoundEvents.BUCKET_EMPTY_LAVA : SoundEvents.BUCKET_EMPTY;
         pLevel.playSound(pPlayer, pPos, soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -253,15 +232,15 @@ public class FluidCanister extends Item implements FluidContainingItem {
     }
 
     protected boolean canBlockContainFluid(@Nullable Player player, Level worldIn, BlockPos posIn, BlockState blockstate, Fluid fluid) {
-        return blockstate.getBlock() instanceof LiquidBlockContainer && ((LiquidBlockContainer) blockstate.getBlock()).canPlaceLiquid(player, worldIn, posIn, blockstate, fluid);
+        return blockstate.getBlock() instanceof LiquidBlockContainer && ((LiquidBlockContainer) blockstate.getBlock()).canPlaceLiquid(worldIn, posIn, blockstate, fluid);
     }
 
-    public static SimpleFluidContent getFluidData(ItemStack itemStack) {
-        return itemStack.get(JustDireDataComponents.FLUID_CONTAINER);
+    public static FluidStack getFluidData(ItemStack itemStack) {
+        return JustDireDataComponents.getFluidContainer(itemStack);
     }
 
     public static Fluid getFluid(ItemStack itemStack) {
-        SimpleFluidContent fluidData = getFluidData(itemStack);
+        FluidStack fluidData = getFluidData(itemStack);
         if (fluidData != null && !fluidData.isEmpty()) {
             return fluidData.getFluid();
         }
@@ -269,7 +248,7 @@ public class FluidCanister extends Item implements FluidContainingItem {
     }
 
     public static int getFullness(ItemStack itemStack) {
-        SimpleFluidContent fluidData = getFluidData(itemStack);
+        FluidStack fluidData = getFluidData(itemStack);
         if (fluidData != null && !fluidData.isEmpty()) {
             int mb = fluidData.getAmount();
             return (int) Math.ceil((double) mb / 1000);
@@ -278,20 +257,21 @@ public class FluidCanister extends Item implements FluidContainingItem {
     }
 
     public static int getFluidColor(ItemStack itemStack) {
-        SimpleFluidContent fluidData = getFluidData(itemStack);
+        FluidStack fluidData = getFluidData(itemStack);
         if (fluidData != null && !fluidData.isEmpty()) {
             if (fluidData.getFluid().isSame(Fluids.LAVA)) //Special case lava
                 return 0xFFFF4500;
-            return IClientFluidTypeExtensions.of(fluidData.getFluidType()).getTintColor(fluidData.copy());
+            return IClientFluidTypeExtensions.of(fluidData.getFluid()).getTintColor(fluidData.copy());
         }
         return 0xFFFFFFFF;
     }
 
     public static FillMode getFillMode(ItemStack itemStack) {
-        return FillMode.values()[itemStack.getOrDefault(JustDireDataComponents.FLUID_CANISTER_MODE, 0)];
+        FillMode fluidCanisterMode = JustDireDataComponents.getFluidCanisterMode(itemStack);
+        return fluidCanisterMode == null ? FillMode.NONE: fluidCanisterMode;
     }
 
     public static void nextFillMode(ItemStack itemStack) {
-        itemStack.set(JustDireDataComponents.FLUID_CANISTER_MODE, getFillMode(itemStack).next().ordinal());
+        JustDireDataComponents.cycleFluidCanisterMode(itemStack);
     }
 }

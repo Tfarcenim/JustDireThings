@@ -7,7 +7,7 @@ import com.direwolf20.justdirethings.common.items.interfaces.LeftClickableTool;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
 import com.direwolf20.justdirethings.common.items.tools.basetools.BaseHoe;
 import com.direwolf20.justdirethings.network.server.C2SLeftClickPayload;
-import com.direwolf20.justdirethings.network.server.PortalGunLeftClickPayload;
+import com.direwolf20.justdirethings.network.server.C2SMiscPayload;
 import com.direwolf20.justdirethings.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -39,7 +39,7 @@ public class PlayerEvents {
             activateAbilities(itemStack, toggleableTool, event.getEntity(), event.getHand(), true, BlockPos.ZERO, Direction.DOWN);
         }
         if (itemStack.getItem() instanceof PortalGun)
-            PacketDistributor.sendToServer(new PortalGunLeftClickPayload());
+            Services.PLATFORM.sendToServer(new C2SMiscPayload(C2SMiscPayload.Action.LEFT_CLICK_PORTAL_GUN));
     }
 
     @SubscribeEvent
@@ -54,7 +54,7 @@ public class PlayerEvents {
             doExtraCrumblings(event, itemStack, toggleableTool);
         }
         if (itemStack.getItem() instanceof PortalGun && event.getAction().equals(PlayerInteractEvent.LeftClickBlock.Action.START))
-            Services.PLATFORM.sendToServer(new PortalGunLeftClickPayload());
+            C2SMiscPayload.send(C2SMiscPayload.Action.LEFT_CLICK_PORTAL_GUN);
     }
 
     private static void doExtraCrumblings(PlayerInteractEvent.LeftClickBlock event, ItemStack itemStack, ToggleableTool toggleableTool) {

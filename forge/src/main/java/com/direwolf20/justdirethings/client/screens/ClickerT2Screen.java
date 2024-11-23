@@ -9,7 +9,7 @@ import com.direwolf20.justdirethings.common.blockentities.ClickerT2BE;
 import com.direwolf20.justdirethings.common.containers.ClickerT2Container;
 import com.direwolf20.justdirethings.network.server.C2SDirectionSettingPayload;
 import com.direwolf20.justdirethings.network.server.C2SClickerPayload;
-import com.direwolf20.justdirethings.common.network.data.TickSpeedPayload;
+import com.direwolf20.justdirethings.network.server.C2STickSpeedPayload;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -49,12 +49,12 @@ public class ClickerT2Screen extends BaseMachineScreen<ClickerT2Container> {
         if (clickType == 2) {
             tickSpeedButton = ToggleButtonFactory.TICKSPEEDBUTTON(getGuiLeft() + 144, topSectionTop + 40, tickSpeed, maxHoldTicks + 1, b -> {
                 tickSpeed = ((NumberButton) b).getValue(); //The value is updated in the mouseClicked method below
-                PacketDistributor.sendToServer(new TickSpeedPayload(tickSpeed));
+                PacketDistributor.sendToServer(new C2STickSpeedPayload(tickSpeed));
             });
         } else {
             tickSpeedButton = ToggleButtonFactory.TICKSPEEDBUTTON(getGuiLeft() + 144, topSectionTop + 40, tickSpeed, b -> {
                 tickSpeed = ((NumberButton) b).getValue(); //The value is updated in the mouseClicked method below
-                PacketDistributor.sendToServer(new TickSpeedPayload(tickSpeed));
+                PacketDistributor.sendToServer(new C2STickSpeedPayload(tickSpeed));
             });
         }
         widgetsToAdd.add(tickSpeedButton);
@@ -78,7 +78,7 @@ public class ClickerT2Screen extends BaseMachineScreen<ClickerT2Container> {
             clickType = ((ToggleButton) b).getTexturePosition();
             if (clickType == 2) {
                 tickSpeed = Math.max(tickSpeed, maxHoldTicks + 1);
-                PacketDistributor.sendToServer(new TickSpeedPayload(tickSpeed));
+                PacketDistributor.sendToServer(new C2STickSpeedPayload(tickSpeed));
             }
             addTickSpeedButton();
             saveSettings();
@@ -89,7 +89,7 @@ public class ClickerT2Screen extends BaseMachineScreen<ClickerT2Container> {
             maxHoldTicks = ((NumberButton) b).getValue(); //The value is updated in the mouseClicked method below
             if (clickType == 2) {
                 tickSpeed = Math.max(tickSpeed, maxHoldTicks + 1);
-                PacketDistributor.sendToServer(new TickSpeedPayload(tickSpeed));
+                PacketDistributor.sendToServer(new C2STickSpeedPayload(tickSpeed));
             }
             addTickSpeedButton();
             saveSettings();

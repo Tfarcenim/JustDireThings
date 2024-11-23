@@ -8,9 +8,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
 
-public abstract class RefinedT4Fuel extends BaseFlowingFluid implements RefinedFuel {
+public abstract class RefinedT4Fuel extends ForgeFlowingFluid implements RefinedFuel {
     public static final Properties PROPERTIES = new Properties(
             Registration.REFINED_T4_FLUID_TYPE,
             Registration.REFINED_T4_FLUID_FLOWING,

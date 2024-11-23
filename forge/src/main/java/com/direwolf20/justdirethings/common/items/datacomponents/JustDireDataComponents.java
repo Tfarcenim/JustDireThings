@@ -1,7 +1,10 @@
 package com.direwolf20.justdirethings.common.items.datacomponents;
 
+import com.direwolf20.justdirethings.common.items.FluidCanister;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.ToolRecords;
+import com.direwolf20.justdirethings.util.FillMode;
+import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.NBTHelpers;
 import com.direwolf20.justdirethings.util.PotionContents;
 import com.mojang.serialization.Codec;
@@ -52,6 +55,31 @@ public class JustDireDataComponents {
             stack.getOrCreateTag().putInt(key,value);
         }
     }
+
+
+    static  <E extends Enum<E>> E getEnum(ItemStack stack,String key,Class<E> clazz) {
+        E[] constants = clazz.getEnumConstants();
+        return stack.hasTag() && stack.getTag().contains(key,Tag.TAG_INT) ? constants[stack.getTag().getInt(key)] : null;
+    }
+
+    static <E extends Enum<E>> void setEnum(ItemStack stack,E value,String key) {
+        if (value == null) {
+            stack.removeTagKey(key);
+        } else {
+            stack.getOrCreateTag().putInt(key,value.ordinal());
+        }
+    }
+
+    static <E extends Enum<E>> void cycleEnum(ItemStack stack,String key,Class<E> clazz) {
+        E e;
+        if (stack.hasTag() && stack.getTag().contains(key,Tag.TAG_INT)) {
+            e = getEnum(stack, key, clazz);
+        } else {
+            e = clazz.getEnumConstants()[0];
+        }
+        setEnum(stack, MiscHelpers.cycle(e),key);
+    }
+
 
     static Double getDouble(ItemStack stack,String key) {
         return stack.hasTag() && stack.getTag().contains(key,Tag.TAG_DOUBLE) ? stack.getTag().getDouble(key) : null;
@@ -379,12 +407,16 @@ public class JustDireDataComponents {
         setInt(stack,value,"forge_energy");
     }
 
-    public static Integer getFluidCanisterMode(ItemStack stack) {
-        return getInt(stack,"fluid_canister_mode");
+    public static FillMode getFluidCanisterMode(ItemStack stack) {
+        return getEnum(stack,"fluid_canister_mode", FillMode.class);
     }
 
-    public static void setFluidCanisterMode(ItemStack stack,Integer value) {
-        setInt(stack,value,"fluid_canister_mode");
+    public static void setFluidCanisterMode(ItemStack stack,FillMode value) {
+        setEnum(stack,value,"fluid_canister_mode");
+    }
+
+    public static void cycleFluidCanisterMode(ItemStack stack) {
+        cycleEnum(stack,"fluid_canister_mode", FillMode.class);
     }
 
     public static List<String> getStupefyTargets(ItemStack stack) {

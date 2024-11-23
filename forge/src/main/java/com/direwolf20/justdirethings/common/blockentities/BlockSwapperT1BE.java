@@ -6,6 +6,7 @@ import com.direwolf20.justdirethings.datagen.JustDireBlockTags;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.NBTHelpers;
+import com.direwolf20.justdirethings.util.SwapEntityType;
 import com.direwolf20.justdirethings.util.interfacehelpers.RedstoneControlData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -45,26 +46,8 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
     public List<BlockPos> thisValidationList = new ArrayList<>();
     public List<BlockPos> thatValidationList = new ArrayList<>();
     public boolean swapBlocks = true;
-    public SWAP_ENTITY_TYPE swap_entity_type = SWAP_ENTITY_TYPE.NONE;
+    public SwapEntityType swap_entity_type = SwapEntityType.NONE;
     public List<Entity> entities = new ArrayList<>();
-
-    public enum SWAP_ENTITY_TYPE {
-        NONE,
-        HOSTILE,
-        PASSIVE,
-        ADULT,
-        CHILD,
-        PLAYER,
-        LIVING,
-        ITEM,
-        ALL;
-
-        public SWAP_ENTITY_TYPE next() {
-            SWAP_ENTITY_TYPE[] values = values();
-            int nextOrdinal = (this.ordinal() + 1) % values.length;
-            return values[nextOrdinal];
-        }
-    }
 
     @Override
     public RedstoneControlData getDefaultRedstoneData() {
@@ -102,9 +85,9 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
         this(Registration.BlockSwapperT1BE.get(), pPos, pBlockState);
     }
 
-    public void setSwapperSettings(boolean swapBlocks, int swap_entity_type) {
+    public void setSwapperSettings(boolean swapBlocks, SwapEntityType swap_entity_type) {
         this.swapBlocks = swapBlocks;
-        this.swap_entity_type = SWAP_ENTITY_TYPE.values()[swap_entity_type];
+        this.swap_entity_type = swap_entity_type;
         markDirtyClient();
     }
 
@@ -265,7 +248,7 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
 
         if (swapBlocks)
             positions = findSpotsToSwap();
-        if (!swap_entity_type.equals(SWAP_ENTITY_TYPE.NONE))
+        if (!swap_entity_type.equals(SwapEntityType.NONE))
             entities = findEntitiesToSwap(getAABB());
         if (positions.isEmpty() && entities.isEmpty())
             return;
@@ -322,17 +305,17 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
         if (!entity.canChangeDimensions() && !isSameLevel())
             return false;
 
-        if (swap_entity_type.equals(SWAP_ENTITY_TYPE.HOSTILE) && !(entity instanceof Monster))
+        if (swap_entity_type.equals(SwapEntityType.HOSTILE) && !(entity instanceof Monster))
             return false;
-        if (((swap_entity_type.equals(SWAP_ENTITY_TYPE.PASSIVE)) || (swap_entity_type.equals(SWAP_ENTITY_TYPE.ADULT)) || (swap_entity_type.equals(SWAP_ENTITY_TYPE.CHILD))) && !(entity instanceof Animal))
+        if (((swap_entity_type.equals(SwapEntityType.PASSIVE)) || (swap_entity_type.equals(SwapEntityType.ADULT)) || (swap_entity_type.equals(SwapEntityType.CHILD))) && !(entity instanceof Animal))
             return false;
-        if (swap_entity_type.equals(SWAP_ENTITY_TYPE.ADULT) && (entity instanceof Animal animal) && (animal.isBaby()))
+        if (swap_entity_type.equals(SwapEntityType.ADULT) && (entity instanceof Animal animal) && (animal.isBaby()))
             return false;
-        if (swap_entity_type.equals(SWAP_ENTITY_TYPE.CHILD) && (entity instanceof Animal animal) && !(animal.isBaby()))
+        if (swap_entity_type.equals(SwapEntityType.CHILD) && (entity instanceof Animal animal) && !(animal.isBaby()))
             return false;
-        if (swap_entity_type.equals(SWAP_ENTITY_TYPE.PLAYER) && !(entity instanceof Player))
+        if (swap_entity_type.equals(SwapEntityType.PLAYER) && !(entity instanceof Player))
             return false;
-        if (swap_entity_type.equals(SWAP_ENTITY_TYPE.ITEM) && !(entity instanceof ItemEntity))
+        if (swap_entity_type.equals(SwapEntityType.ITEM) && !(entity instanceof ItemEntity))
             return false;
         return true;
     }
@@ -479,7 +462,7 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
             return false;
         if (!swapBlocks)
             return false;
-        if (!swap_entity_type.equals(SWAP_ENTITY_TYPE.NONE))
+        if (!swap_entity_type.equals(SwapEntityType.NONE))
             return false;
         return true;
     }
@@ -507,6 +490,6 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
         }
         if (tag.contains("swapBlocks"))
             swapBlocks = tag.getBoolean("swapBlocks");
-        swap_entity_type = SWAP_ENTITY_TYPE.values()[tag.getInt("swap_entity_type")];
+        swap_entity_type = SwapEntityType.values()[tag.getInt("swap_entity_type")];
     }
 }

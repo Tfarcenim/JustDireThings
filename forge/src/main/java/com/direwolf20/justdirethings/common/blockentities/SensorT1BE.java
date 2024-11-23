@@ -4,6 +4,7 @@ import com.direwolf20.justdirethings.common.blockentities.basebe.BaseMachineBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.FilterableBE;
 import com.direwolf20.justdirethings.common.containers.handlers.FilterBasicHandler;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.SenseTarget;
 import com.direwolf20.justdirethings.util.interfacehelpers.FilterData;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -32,7 +33,7 @@ import java.util.*;
 public class SensorT1BE extends BaseMachineBE implements FilterableBE {
     public FilterData filterData = new FilterData();
     protected List<BlockPos> positions = new ArrayList<>();
-    public SENSE_TARGET sense_target = SENSE_TARGET.BLOCK;
+    public SenseTarget sense_target = SenseTarget.BLOCK;
     public boolean emitRedstone = false;
     public boolean strongSignal = false;
     public boolean newlyLoaded = true;
@@ -40,24 +41,6 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
     public final Map<BlockState, Boolean> blockStateFilterCache = new Object2BooleanOpenHashMap<>();
     public int senseAmount = 0;
     public int equality = 0; //greaterthan, lessthan, equals
-
-    public enum SENSE_TARGET {
-        BLOCK,
-        AIR,
-        HOSTILE,
-        PASSIVE,
-        ADULT,
-        CHILD,
-        PLAYER,
-        LIVING,
-        ITEM;
-
-        public SENSE_TARGET next() {
-            SENSE_TARGET[] values = values();
-            int nextOrdinal = (this.ordinal() + 1) % values.length;
-            return values[nextOrdinal];
-        }
-    }
 
     public SensorT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
@@ -179,8 +162,8 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
         return this;
     }
 
-    public void setSensorSettings(int senseTarget, boolean strongSignal, int senseAmount, int equality) {
-        this.sense_target = SENSE_TARGET.values()[senseTarget];
+    public void setSensorSettings(SenseTarget senseTarget, boolean strongSignal, int senseAmount, int equality) {
+        this.sense_target = senseTarget;
         setRedstone(emitRedstone, strongSignal); //Gonna wanna update the neighbors if strongSignal changed
         this.senseAmount = senseAmount;
         this.equality = equality;
@@ -234,7 +217,7 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
     public void sense() {
         if (!canRun()) return;
         if (!canSense()) return;
-        if ((sense_target.equals(SENSE_TARGET.BLOCK) || sense_target.equals(SENSE_TARGET.AIR))) {
+        if ((sense_target.equals(SenseTarget.BLOCK) || sense_target.equals(SenseTarget.AIR))) {
             if (positions.isEmpty())
                 positions = findPositions();
             if (positions.isEmpty())
@@ -264,17 +247,17 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
     }
 
     public boolean isValidEntity(Entity entity) {
-        if (sense_target.equals(SENSE_TARGET.HOSTILE) && !(entity instanceof Monster))
+        if (sense_target.equals(SenseTarget.HOSTILE) && !(entity instanceof Monster))
             return false;
-        if (((sense_target.equals(SENSE_TARGET.PASSIVE)) || (sense_target.equals(SENSE_TARGET.ADULT)) || (sense_target.equals(SENSE_TARGET.CHILD))) && !(entity instanceof Animal))
+        if (((sense_target.equals(SenseTarget.PASSIVE)) || (sense_target.equals(SenseTarget.ADULT)) || (sense_target.equals(SenseTarget.CHILD))) && !(entity instanceof Animal))
             return false;
-        if (sense_target.equals(SENSE_TARGET.ADULT) && (entity instanceof Animal animal) && (animal.isBaby()))
+        if (sense_target.equals(SenseTarget.ADULT) && (entity instanceof Animal animal) && (animal.isBaby()))
             return false;
-        if (sense_target.equals(SENSE_TARGET.CHILD) && (entity instanceof Animal animal) && !(animal.isBaby()))
+        if (sense_target.equals(SenseTarget.CHILD) && (entity instanceof Animal animal) && !(animal.isBaby()))
             return false;
-        if (sense_target.equals(SENSE_TARGET.PLAYER) && !(entity instanceof Player))
+        if (sense_target.equals(SenseTarget.PLAYER) && !(entity instanceof Player))
             return false;
-        if (sense_target.equals(SENSE_TARGET.ITEM) && !(entity instanceof ItemEntity))
+        if (sense_target.equals(SenseTarget.ITEM) && !(entity instanceof ItemEntity))
             return false;
         return isEntityValidFilter(entity, this.level);
     }
@@ -286,7 +269,7 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
 
     public boolean senseBlock(BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
-        if (sense_target.equals(SENSE_TARGET.AIR))
+        if (sense_target.equals(SenseTarget.AIR))
             return blockState.isAir();
         if (blockState.isAir()) //Checked above if we're sensing for air, so if its air, false!
             return false;
@@ -365,7 +348,7 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
     public boolean isDefaultSettings() {
         if (!super.isDefaultSettings())
             return false;
-        if (!sense_target.equals(SENSE_TARGET.BLOCK))
+        if (!sense_target.equals(SenseTarget.BLOCK))
             return false;
         if (strongSignal)
             return false;
@@ -390,7 +373,7 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
 
     @Override
     public void load(CompoundTag tag) {
-        this.sense_target = SENSE_TARGET.values()[tag.getInt("senseTarget")];
+        this.sense_target = SenseTarget.values()[tag.getInt("senseTarget")];
         this.strongSignal = tag.getBoolean("strongSignal");
         this.senseAmount = tag.getInt("senseAmount");
         this.equality = tag.getInt("equality");

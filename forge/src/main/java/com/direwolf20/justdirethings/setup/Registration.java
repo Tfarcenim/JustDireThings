@@ -655,13 +655,7 @@ public class Registration {
                     .clientTrackingRange(4)
                     .updateInterval(10)
                     .build("decoy_entity"));
-    public static final RegistryObject<EntityType<JustDireAreaEffectCloud>> JustDireAreaEffectCloud = ENTITY_TYPES.register("justdireareaeffectcloud",
-            () -> EntityType.Builder.<JustDireAreaEffectCloud>of(JustDireAreaEffectCloud::new, MobCategory.MISC)
-                    .fireImmune()
-                    .sized(6.0F, 0.5F)
-                    .clientTrackingRange(10)
-                    .updateInterval(Integer.MAX_VALUE)
-                    .build("justdireareaeffectcloud"));
+
     public static final RegistryObject<EntityType<TimeWandEntity>> TimeWandEntity = ENTITY_TYPES.register("time_wand_entity",
             () -> EntityType.Builder.<TimeWandEntity>of(TimeWandEntity::new, MobCategory.MISC)
                     .sized(1F, 1F)
@@ -676,7 +670,7 @@ public class Registration {
                     .build("paradox_entity"));
 
     //Attributes
-    public static final Holder<Attribute> PHASE = ATTRIBUTES.register("phase", () -> new RangedAttribute("justdirethings.phase", 0D, 0D, Double.MAX_VALUE).setSyncable(true));
+    public static final RegistryObject<Attribute> PHASE = ATTRIBUTES.register("phase", () -> new RangedAttribute("justdirethings.phase", 0D, 0D, Double.MAX_VALUE).setSyncable(true));
 
 
     //Containers

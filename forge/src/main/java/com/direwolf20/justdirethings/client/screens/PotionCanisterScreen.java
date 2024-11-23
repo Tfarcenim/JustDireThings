@@ -18,20 +18,17 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanisterContainer> {
-    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/fuelcanister.png");
-    protected final ResourceLocation FLUIDBAR = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/fluidbar.png");
-    ResourceLocation potionOverlay = ResourceLocation.fromNamespaceAndPath("minecraft", "item/potion_overlay");
+    private final ResourceLocation GUI = JustDireThings.id("textures/gui/fuelcanister.png");
+    protected final ResourceLocation FLUIDBAR = JustDireThings.id("textures/gui/fluidbar.png");
+    ResourceLocation potionOverlay = new ResourceLocation("item/potion_overlay");
 
 
     protected final PotionCanisterContainer container;
@@ -53,16 +50,6 @@ public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanister
     protected void renderTooltip(GuiGraphics pGuiGraphics, int pX, int pY) {
         super.renderTooltip(pGuiGraphics, pX, pY);
         fluidBarTooltip(pGuiGraphics, pX, pY);
-    }
-
-    @Override
-    protected void renderSlot(GuiGraphics pGuiGraphics, Slot pSlot) {
-        super.renderSlot(pGuiGraphics, pSlot);
-    }
-
-    @Override
-    public void init() {
-        super.init();
     }
 
     @Override
@@ -128,10 +115,10 @@ public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanister
 
                 float uMaxAdjusted = uMin + (uMax - uMin) * ((float) drawWidth / textureWidth);
 
-                vertexBuffer.addVertex(poseStack.last().pose(), startX + xOffset, drawY + drawHeight, zLevel).setUv(uMin, vMaxAdjusted);
-                vertexBuffer.addVertex(poseStack.last().pose(), startX + xOffset + drawWidth, drawY + drawHeight, zLevel).setUv(uMaxAdjusted, vMaxAdjusted);
-                vertexBuffer.addVertex(poseStack.last().pose(), startX + xOffset + drawWidth, drawY, zLevel).setUv(uMaxAdjusted, vMin);
-                vertexBuffer.addVertex(poseStack.last().pose(), startX + xOffset, drawY, zLevel).setUv(uMin, vMin);
+                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset, drawY + drawHeight, zLevel).setUv(uMin, vMaxAdjusted);
+                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset + drawWidth, drawY + drawHeight, zLevel).setUv(uMaxAdjusted, vMaxAdjusted);
+                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset + drawWidth, drawY, zLevel).setUv(uMaxAdjusted, vMin);
+                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset, drawY, zLevel).setUv(uMin, vMin);
 
                 xOffset += drawWidth;
             }
@@ -187,10 +174,6 @@ public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanister
         return super.mouseReleased(p_mouseReleased_1_, p_mouseReleased_3_, p_mouseReleased_5_);
     }
 
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double pScrollX, double pScrollY) {
-        return super.mouseScrolled(mouseX, mouseY, pScrollX, pScrollY);
-    }
 
     private static MutableComponent getTrans(String key, Object... args) {
         return Component.translatable(JustDireThings.MODID + "." + key, args);

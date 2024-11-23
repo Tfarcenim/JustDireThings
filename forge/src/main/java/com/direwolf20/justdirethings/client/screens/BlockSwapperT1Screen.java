@@ -6,9 +6,11 @@ import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButton
 import com.direwolf20.justdirethings.client.screens.widgets.ToggleButton;
 import com.direwolf20.justdirethings.common.blockentities.BlockSwapperT1BE;
 import com.direwolf20.justdirethings.common.containers.BlockSwapperT1Container;
-import com.direwolf20.justdirethings.common.network.data.SwapperPayload;
+import com.direwolf20.justdirethings.network.server.C2SSwapperPayload;
+import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.MiscTools;
+import com.direwolf20.justdirethings.util.SwapEntityType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.GlobalPos;
@@ -16,17 +18,16 @@ import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.Arrays;
 
 public class BlockSwapperT1Screen extends BaseMachineScreen<BlockSwapperT1Container> {
-    protected final ResourceLocation ACTIVE = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/active.png");
-    protected final ResourceLocation INACTIVE = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/inactive.png");
+    protected final ResourceLocation ACTIVE = JustDireThings.id("textures/gui/buttons/active.png");
+    protected final ResourceLocation INACTIVE = JustDireThings.id("textures/gui/buttons/inactive.png");
     public GlobalPos boundTo;
     public BlockSwapperT1BE be;
     BlockSwapperT1Container container;
-    public int swap_entity_type;
+    public SwapEntityType swap_entity_type;
     public boolean swapBlocks;
     public int activeX;
     public int activeY;
@@ -37,7 +38,7 @@ public class BlockSwapperT1Screen extends BaseMachineScreen<BlockSwapperT1Contai
         if (container.baseMachineBE instanceof BlockSwapperT1BE blockSwapper) {
             boundTo = blockSwapper.boundTo;
             be = blockSwapper;
-            swap_entity_type = blockSwapper.swap_entity_type.ordinal();
+            swap_entity_type = blockSwapper.swap_entity_type;
             swapBlocks = blockSwapper.swapBlocks;
         }
     }
@@ -45,8 +46,8 @@ public class BlockSwapperT1Screen extends BaseMachineScreen<BlockSwapperT1Contai
     @Override
     public void init() {
         super.init();
-        addRenderableWidget(ToggleButtonFactory.SWAPPERENTITYBUTTON(getGuiLeft() + 106, topSectionTop + 38, swap_entity_type, b -> {
-            swap_entity_type = ((ToggleButton) b).getTexturePosition();
+        addRenderableWidget(ToggleButtonFactory.SWAPPERENTITYBUTTON(getGuiLeft() + 106, topSectionTop + 38, swap_entity_type.ordinal(), b -> {
+            swap_entity_type = SwapEntityType.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));
         addRenderableWidget(ToggleButtonFactory.SWAPPERBLOCKBUTTON(getGuiLeft() + 88, topSectionTop + 38, swapBlocks ? 0 : 1, b -> {
@@ -107,6 +108,6 @@ public class BlockSwapperT1Screen extends BaseMachineScreen<BlockSwapperT1Contai
     @Override
     public void saveSettings() {
         super.saveSettings();
-        PacketDistributor.sendToServer(new SwapperPayload(swapBlocks, swap_entity_type));
+        Services.PLATFORM.sendToServer(new C2SSwapperPayload(swapBlocks, swap_entity_type));
     }
 }

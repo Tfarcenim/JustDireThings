@@ -1,6 +1,5 @@
 package com.direwolf20.justdirethings.common.events;
 
-import com.direwolf20.justdirethings.common.items.interfaces.AbilityMethods;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableItem;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
 import com.direwolf20.justdirethings.common.items.tools.BlazegoldHoe;
@@ -9,19 +8,12 @@ import com.direwolf20.justdirethings.common.items.tools.EclipseAlloyHoe;
 import com.direwolf20.justdirethings.common.items.tools.FerricoreHoe;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BlockEvents {
     public static boolean alreadyBreaking = false;

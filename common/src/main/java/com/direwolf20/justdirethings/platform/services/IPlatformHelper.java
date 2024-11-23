@@ -85,7 +85,23 @@ public interface IPlatformHelper {
 
     void handleC2SPortalGunFavoritePayload(ServerPlayer player, C2SPortalGunFavoritePayload c2SPortalGunFavoritePayload);
 
-    void handleC2SPortalGunLeftClickPayload(ServerPlayer player, PortalGunLeftClickPayload portalGunLeftClickPayload);
+    void handleC2SMiscPayload(ServerPlayer player, C2SMiscPayload miscPayload);
 
     void handleC2SPortalGunFavoriteChangePayload(ServerPlayer player, C2SPortalGunFavoriteChangePayload c2SPortalGunFavoriteChangePayload);
+
+    void handleC2SRedstoneSettingPayload(ServerPlayer player, C2SRedstoneSettingPayload redstoneSettingPayload);
+
+    void handleC2SSensorPayload(ServerPlayer player, C2SSensorPayload c2SSensorPayload);
+
+    void handleTickSpeedPayload(ServerPlayer player, C2STickSpeedPayload c2STickSpeedPayload);
+
+    void handleC2SSwapperPayload(ServerPlayer player, C2SSwapperPayload c2SSwapperPayload);
+
+    void handleC2SToggleToolLeftRightClickPayload(ServerPlayer player, C2SToggleToolLeftRightClickPayload c2SToggleToolLeftRightClickPayload);
+
+    void handleC2SToolTogglePayload(ServerPlayer player, C2SToggleToolPayload c2SToggleToolPayload);
+
+    void handleC2SToggleToolRefreshSlotPayload(ServerPlayer player, C2SToggleToolRefreshSlotPayload c2SToggleToolRefreshSlotPayload);
+
+    void handleC2SToggleToolSlotPayload(ServerPlayer player, C2SToggleToolSlotPayload c2SToggleToolSlotPayload);
 }

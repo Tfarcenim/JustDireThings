@@ -13,9 +13,11 @@ import com.direwolf20.justdirethings.common.blockentities.basebe.PoweredMachineB
 import com.direwolf20.justdirethings.common.containers.SensorT2Container;
 import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
 import com.direwolf20.justdirethings.network.server.C2SBlockStateFilterPayload;
-import com.direwolf20.justdirethings.common.network.data.SensorPayload;
+import com.direwolf20.justdirethings.network.server.C2SSensorPayload;
+import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.direwolf20.justdirethings.util.MiscTools;
+import com.direwolf20.justdirethings.util.SenseTarget;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.locale.Language;
@@ -26,12 +28,11 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.*;
 
 public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> implements SensorScreenInterface {
-    public int senseTarget;
+    public SenseTarget senseTarget;
     public boolean strongSignal;
     public boolean showBlockStates;
     public int blockStateSlot = -1;
@@ -47,7 +48,7 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
         super(container, inv, name);
         if (baseMachineBE instanceof SensorT2BE sensor) {
             this.sensorT2BE = sensor;
-            senseTarget = sensor.sense_target.ordinal();
+            senseTarget = sensor.sense_target;
             strongSignal = sensor.strongSignal;
             blockStateProperties = sensor.blockStateProperties;
             this.senseAmount = sensor.senseAmount;
@@ -67,8 +68,8 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
     @Override
     public void init() {
         super.init();
-        addRenderableWidget(ToggleButtonFactory.SENSORTARGETBUTTON(getGuiLeft() + 26, topSectionTop + 62, senseTarget, b -> {
-            senseTarget = ((ToggleButton) b).getTexturePosition();
+        addRenderableWidget(ToggleButtonFactory.SENSORTARGETBUTTON(getGuiLeft() + 26, topSectionTop + 62, senseTarget.ordinal(), b -> {
+            senseTarget = SenseTarget.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));
         addRenderableWidget(ToggleButtonFactory.STRONGWEAKREDSTONEBUTTON(getGuiLeft() + 44, topSectionTop + 62, strongSignal ? 1 : 0, b -> {
@@ -105,7 +106,7 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
     @Override
     public void saveSettings() {
         super.saveSettings();
-        PacketDistributor.sendToServer(new SensorPayload(senseTarget, strongSignal, senseAmount, equality));
+        Services.PLATFORM.sendToServer(new C2SSensorPayload(senseTarget, strongSignal, senseAmount, equality));
     }
 
     public Comparable<?> getValue(Property<?> property) {
@@ -141,7 +142,7 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
         for (int i = 0; i < container.FILTER_SLOTS; i++) {
             ItemStack stack = container.filterHandler.getStackInSlot(i);
             ItemStack cachedStack = itemStackCache.get(i);
-            if (!ItemStack.isSameItemSameComponents(stack, cachedStack)) { //If the stack has changed, clear the props!
+            if (!ItemStack.isSameItemSameTags(stack, cachedStack)) { //If the stack has changed, clear the props!
                 clearStateProperties(i);
                 saveBlockStateData(i);
                 itemStackCache.put(i, stack);
@@ -155,7 +156,7 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
         CompoundTag tag = new CompoundTag();
         ListTag listTag = SensorT1BE.saveBlockStateProperty(props);
         tag.put("tagList", listTag);
-        PacketDistributor.sendToServer(new C2SBlockStateFilterPayload(slot, tag));
+        Services.PLATFORM.sendToServer(new C2SBlockStateFilterPayload(slot, tag));
     }
 
     @Override
