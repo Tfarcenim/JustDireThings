@@ -13,8 +13,9 @@ import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButton
 import com.direwolf20.justdirethings.client.screens.widgets.BaseButton;
 import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
 import com.direwolf20.justdirethings.common.items.PortalGunV2;
-import com.direwolf20.justdirethings.common.network.data.PortalGunFavoriteChangePayload;
-import com.direwolf20.justdirethings.common.network.data.PortalGunFavoritePayload;
+import com.direwolf20.justdirethings.network.server.C2SPortalGunFavoriteChangePayload;
+import com.direwolf20.justdirethings.network.server.C2SPortalGunFavoritePayload;
+import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.NBTHelpers;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -30,16 +31,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.joml.Matrix4f;
 
 import java.awt.*;
 
 public class AdvPortalRadialMenu extends Screen {
-    ToggleButtonFactory.TextureLocalization ADD_BUTTON = new ToggleButtonFactory.TextureLocalization(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/add.png"), Component.translatable("justdirethings.screen.add_favorite"));
-    ToggleButtonFactory.TextureLocalization REMOVE_BUTTON = new ToggleButtonFactory.TextureLocalization(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/remove.png"), Component.translatable("justdirethings.screen.remove_favorite"));
-    ToggleButtonFactory.TextureLocalization EDIT_BUTTON = new ToggleButtonFactory.TextureLocalization(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/matchnbttrue.png"), Component.translatable("justdirethings.screen.edit_favorite"));
-    ToggleButtonFactory.TextureLocalization STAYOPEN_BUTTON = new ToggleButtonFactory.TextureLocalization(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/buttons/area.png"), Component.translatable("justdirethings.screen.stay_open"));
+    ToggleButtonFactory.TextureLocalization ADD_BUTTON = new ToggleButtonFactory.TextureLocalization(JustDireThings.id("textures/gui/buttons/add.png"), Component.translatable("justdirethings.screen.add_favorite"));
+    ToggleButtonFactory.TextureLocalization REMOVE_BUTTON = new ToggleButtonFactory.TextureLocalization(JustDireThings.id("textures/gui/buttons/remove.png"), Component.translatable("justdirethings.screen.remove_favorite"));
+    ToggleButtonFactory.TextureLocalization EDIT_BUTTON = new ToggleButtonFactory.TextureLocalization(JustDireThings.id("textures/gui/buttons/matchnbttrue.png"), Component.translatable("justdirethings.screen.edit_favorite"));
+    ToggleButtonFactory.TextureLocalization STAYOPEN_BUTTON = new ToggleButtonFactory.TextureLocalization(JustDireThings.id("textures/gui/buttons/area.png"), Component.translatable("justdirethings.screen.stay_open"));
     private static final int SEGMENTS = PortalGunV2.MAX_FAVORITES;
 
     private int timeIn = 0;
@@ -65,9 +65,7 @@ public class AdvPortalRadialMenu extends Screen {
         return my < y ? 360F - ang : ang;
     }
 
-    @Override
-    public void renderBackground(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-    }
+
 
     @Override
     public void init() {
@@ -157,8 +155,8 @@ public class AdvPortalRadialMenu extends Screen {
                 float yp = (float) (y + Math.sin(rad) * radius);
 
                 Matrix4f pose = matrices.last().pose();
-                buffer.addVertex(pose, (float) (x + Math.cos(rad) * radius / 2.3F), (float) (y + Math.sin(rad) * radius / 2.3F), 0).setColor(r, g, b, a);
-                buffer.addVertex(xp, yp, 0).setColor(r, g, b, a);
+                buffer.vertex(pose, (float) (x + Math.cos(rad) * radius / 2.3F), (float) (y + Math.sin(rad) * radius / 2.3F), 0).color(r, g, b, a);
+                buffer.vertex(xp, yp, 0).color(r, g, b, a);
             }
 
             bufferSource.endBatch(OurRenderTypes.TRIANGLE_STRIP);
@@ -252,17 +250,17 @@ public class AdvPortalRadialMenu extends Screen {
 
     public void saveFavorite() {
         slotSelected = slotHovered;
-        PacketDistributor.sendToServer(new PortalGunFavoritePayload(slotSelected, staysOpen));
+        Services.PLATFORM.sendToServer(new C2SPortalGunFavoritePayload(slotSelected, staysOpen));
         OurSounds.playSound(Registration.BEEP.get());
     }
 
     public void addFavorite() {
-        PacketDistributor.sendToServer(new PortalGunFavoriteChangePayload(slotSelected, true, "UNNAMED", false, Vec3.ZERO));
+        Services.PLATFORM.sendToServer(new C2SPortalGunFavoriteChangePayload(slotSelected, true, "UNNAMED", false, Vec3.ZERO));
         OurSounds.playSound(Registration.BEEP.get());
     }
 
     public void removeFavorite() {
-        PacketDistributor.sendToServer(new PortalGunFavoriteChangePayload(slotSelected, false, "NOTNEEDED", false, Vec3.ZERO));
+        Services.PLATFORM.sendToServer(new C2SPortalGunFavoriteChangePayload(slotSelected, false, "NOTNEEDED", false, Vec3.ZERO));
         OurSounds.playSound(Registration.BEEP.get());
     }
 

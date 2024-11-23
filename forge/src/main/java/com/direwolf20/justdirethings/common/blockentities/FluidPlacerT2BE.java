@@ -17,6 +17,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Comparator;
 import java.util.List;
@@ -42,9 +43,11 @@ public class FluidPlacerT2BE extends FluidPlacerT1BE implements PoweredMachineBE
         return poweredMachineData;
     }
 
+    MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+
     @Override
     public MachineEnergyStorage getEnergyStorage() {
-        return getData(Registration.ENERGYSTORAGE_MACHINES);
+        return energyStorage;
     }
 
     @Override
@@ -57,9 +60,11 @@ public class FluidPlacerT2BE extends FluidPlacerT1BE implements PoweredMachineBE
         return areaAffectingData;
     }
 
+    protected FilterBasicHandler filterBasicHandler =  new FilterBasicHandler(9);
+
     @Override
     public FilterBasicHandler getFilterHandler() {
-        return getData(Registration.HANDLER_BASIC_FILTER);
+        return filterBasicHandler;
     }
 
     @Override

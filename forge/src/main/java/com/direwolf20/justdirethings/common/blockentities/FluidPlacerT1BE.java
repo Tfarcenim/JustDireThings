@@ -19,8 +19,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -82,7 +84,7 @@ public class FluidPlacerT1BE extends BaseMachineBE implements RedstoneControlled
         if (isFull()) return;
         ItemStack itemStack = getItemStack();
         if (!isStackValid(itemStack)) return;
-        IFluidHandlerItem fluidHandlerItem = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandlerItem = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         FluidStack testExtract = fluidHandlerItem.drain(1000, IFluidHandler.FluidAction.SIMULATE);
         int insertAmt = getFluidTank().fill(testExtract, IFluidHandler.FluidAction.SIMULATE);
         if (insertAmt > 0) {
@@ -100,7 +102,7 @@ public class FluidPlacerT1BE extends BaseMachineBE implements RedstoneControlled
     public boolean isStackValid(ItemStack itemStack) {
         if (itemStack.isEmpty())
             return false;
-        IFluidHandlerItem fluidHandlerItem = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandlerItem = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandlerItem == null)
             return false;
         FluidStack fluidStack = fluidHandlerItem.drain(1000, IFluidHandler.FluidAction.SIMULATE);
@@ -115,8 +117,10 @@ public class FluidPlacerT1BE extends BaseMachineBE implements RedstoneControlled
         return getFluidTank().getFluid();
     }
 
+    JustDireFluidTank fluidTank = new JustDireFluidTank(getMaxMB());
+
     public JustDireFluidTank getFluidTank() {
-        return getData(Registration.MACHINE_FLUID_HANDLER);
+        return fluidTank;
     }
 
     public boolean isStackValid(FluidStack fluidStack) {
@@ -160,7 +164,7 @@ public class FluidPlacerT1BE extends BaseMachineBE implements RedstoneControlled
         if (positionsToPlace.isEmpty())
             return;
         if (canRun()) {
-            BlockPos blockPos = positionsToPlace.removeFirst();
+            BlockPos blockPos = positionsToPlace.remove(0);
             placeFluid(placeStack, blockPos);
         }
     }

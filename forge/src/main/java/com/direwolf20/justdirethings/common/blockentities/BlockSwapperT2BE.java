@@ -36,9 +36,11 @@ public class BlockSwapperT2BE extends BlockSwapperT1BE implements PoweredMachine
         return poweredMachineData;
     }
 
+    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+
     @Override
     public MachineEnergyStorage getEnergyStorage() {
-        return getData(Registration.ENERGYSTORAGE_MACHINES);
+        return energyStorage;
     }
 
     @Override
@@ -55,9 +57,11 @@ public class BlockSwapperT2BE extends BlockSwapperT1BE implements PoweredMachine
         return areaAffectingData;
     }
 
+    protected FilterBasicHandler filterHandler = new FilterBasicHandler(9);
+
     @Override
     public FilterBasicHandler getFilterHandler() {
-        return getData(Registration.HANDLER_BASIC_FILTER);
+        return filterHandler;
     }
 
     @Override

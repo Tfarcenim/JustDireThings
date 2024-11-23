@@ -1,6 +1,7 @@
 package com.direwolf20.justdirethings.platform.services;
 
 import com.direwolf20.justdirethings.network.client.S2CModPacket;
+import com.direwolf20.justdirethings.network.client.S2CParadoxSyncPayload;
 import com.direwolf20.justdirethings.network.server.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -75,4 +76,16 @@ public interface IPlatformHelper {
     void handleC2SInventoryHolderSettingsPayload(ServerPlayer player, C2SInventoryHolderSettingsPayload c2SInventoryHolderSettingsPayload);
 
     void handleC2SItemCollectorSettingsPayload(ServerPlayer player, C2SItemCollectorSettingsPayload c2SItemCollectorSettingsPayload);
+
+    void handleC2SParadoxRenderPayload(ServerPlayer player, C2SParadoxRenderPayload c2SParadoxRenderPayload);
+
+    void handleS2CParadoxSyncPayload(S2CParadoxSyncPayload s2CParadoxSyncPayload);
+
+    void handleC2SPlayerAccessorPayload(ServerPlayer player, C2SPlayerAccessorPayload c2SPlayerAccessorPayload);
+
+    void handleC2SPortalGunFavoritePayload(ServerPlayer player, C2SPortalGunFavoritePayload c2SPortalGunFavoritePayload);
+
+    void handleC2SPortalGunLeftClickPayload(ServerPlayer player, PortalGunLeftClickPayload portalGunLeftClickPayload);
+
+    void handleC2SPortalGunFavoriteChangePayload(ServerPlayer player, C2SPortalGunFavoriteChangePayload c2SPortalGunFavoriteChangePayload);
 }

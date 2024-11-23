@@ -11,15 +11,25 @@ import com.direwolf20.justdirethings.common.containers.ItemCollectorContainer;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseMachineContainer;
 import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
 import com.direwolf20.justdirethings.common.items.MachineSettingsCopier;
+import com.direwolf20.justdirethings.common.items.PortalGun;
+import com.direwolf20.justdirethings.common.items.PortalGunV2;
 import com.direwolf20.justdirethings.common.items.interfaces.LeftClickableTool;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableItem;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
 import com.direwolf20.justdirethings.network.client.S2CModPacket;
+import com.direwolf20.justdirethings.network.client.S2CParadoxSyncPayload;
 import com.direwolf20.justdirethings.network.server.*;
 import com.direwolf20.justdirethings.platform.services.IPlatformHelper;
+import com.direwolf20.justdirethings.util.MiscHelpers;
+import com.direwolf20.justdirethings.util.NBTHelpers;
 import com.direwolf20.justdirethings.util.interfacehelpers.FilterData;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +37,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -250,6 +262,85 @@ public class ForgePlatformHelper implements IPlatformHelper {
 
         if (container instanceof ItemCollectorContainer itemCollectorContainer && itemCollectorContainer.baseMachineBE instanceof ItemCollectorBE itemCollectorBE) {
             itemCollectorBE.setSettings(payload.respectPickupDelay(), payload.showParticles());
+        }
+    }
+
+    @Override
+    public void handleC2SParadoxRenderPayload(ServerPlayer player, C2SParadoxRenderPayload payload) {
+        AbstractContainerMenu container = player.containerMenu;
+
+        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof ParadoxMachineBE paradoxMachineBE) {
+            paradoxMachineBE.setRenderParadox(payload.renderParadox(), payload.targetType());
+        }
+    }
+
+    @Override
+    public void handleS2CParadoxSyncPayload(S2CParadoxSyncPayload payload) {
+        ClientLevel level = Minecraft.getInstance().level;
+        if (level == null) return;
+        BlockEntity blockEntity = level.getBlockEntity(payload.blockPos());
+        if (blockEntity instanceof ParadoxMachineBE paradoxMachineBE) {
+            paradoxMachineBE.receiveRunTime(payload.runtime());
+        }
+    }
+
+    @Override
+    public void handleC2SPlayerAccessorPayload(ServerPlayer player, C2SPlayerAccessorPayload payload) {
+        AbstractContainerMenu container = player.containerMenu;
+
+        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof PlayerAccessorBE playerAccessorBE) {
+            playerAccessorBE.updateSidedInventory(payload.direction(), payload.accessType());
+        }
+    }
+
+    @Override
+    public void handleC2SPortalGunFavoritePayload(ServerPlayer player, C2SPortalGunFavoritePayload payload) {
+        ItemStack itemStack = player.getMainHandItem();
+        if (!(itemStack.getItem() instanceof PortalGunV2))
+            itemStack = player.getOffhandItem();
+        if (!(itemStack.getItem() instanceof PortalGunV2))
+            return;
+
+        PortalGunV2.setFavoritePosition(itemStack, payload.favorite());
+        PortalGunV2.setStayOpen(itemStack, payload.staysOpen());
+    }
+
+    @Override
+    public void handleC2SPortalGunLeftClickPayload(ServerPlayer player, PortalGunLeftClickPayload portalGunLeftClickPayload) {
+        ItemStack itemStack = player.getMainHandItem();
+        if (!(itemStack.getItem() instanceof PortalGun))
+            itemStack = player.getOffhandItem();
+        if (!(itemStack.getItem() instanceof PortalGun))
+            return;
+
+        PortalGun.spawnProjectile(player.level(), player, itemStack, true);
+    }
+
+    @Override
+    public void handleC2SPortalGunFavoriteChangePayload(ServerPlayer player, C2SPortalGunFavoriteChangePayload payload) {
+        ItemStack itemStack = player.getMainHandItem();
+        if (!(itemStack.getItem() instanceof PortalGunV2))
+            itemStack = player.getOffhandItem();
+        if (!(itemStack.getItem() instanceof PortalGunV2))
+            return;
+
+        Level level = player.level();
+        if (!payload.add())
+            PortalGunV2.removeFavorite(itemStack, payload.favorite());
+        else {
+            NBTHelpers.PortalDestination portalDestination = PortalGunV2.getFavorite(itemStack, payload.favorite());
+            if (!payload.editing()) {
+                Vec3 position = player.position();
+                Direction facing = MiscHelpers.getFacingDirection(player);
+                portalDestination = new NBTHelpers.PortalDestination(new NBTHelpers.GlobalVec3(level.dimension(), position), facing, payload.name());
+                PortalGunV2.addFavorite(itemStack, payload.favorite(), portalDestination);
+            } else {
+                Vec3 position = payload.coordinates().equals(Vec3.ZERO) ? player.position() : payload.coordinates();
+                Direction facing = portalDestination == null || portalDestination.equals(NBTHelpers.PortalDestination.EMPTY) ? MiscHelpers.getFacingDirection(player) : portalDestination.direction();
+                ResourceKey<Level> dimension = portalDestination == null || portalDestination.equals(NBTHelpers.PortalDestination.EMPTY) ? level.dimension() : portalDestination.globalVec3().dimension();
+                NBTHelpers.PortalDestination newDestination = new NBTHelpers.PortalDestination(new NBTHelpers.GlobalVec3(dimension, position), facing, payload.name());
+                PortalGunV2.addFavorite(itemStack, payload.favorite(), newDestination);
+            }
         }
     }
 }

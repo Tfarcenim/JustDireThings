@@ -4,9 +4,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 
@@ -47,7 +47,7 @@ public abstract class BaseContainer extends AbstractContainerMenu {
 
     protected ItemStack quickMoveBasicFilter(ItemStack currentStack, int startSlot, int SLOTS) {
         for (int i = startSlot; i < startSlot + SLOTS; i++) { //Prevents the same item from going in there more than once.
-            if (ItemStack.isSameItemSameComponents(this.slots.get(i).getItem(), currentStack)) //Don't limit tags
+            if (ItemStack.isSameItemSameTags(this.slots.get(i).getItem(), currentStack)) //Don't limit tags
                 return ItemStack.EMPTY;
         }
         if (!this.moveItemStackTo(currentStack, startSlot, startSlot + SLOTS, false)) {

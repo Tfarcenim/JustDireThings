@@ -1,6 +1,7 @@
 package com.direwolf20.justdirethings.network;
 
 import com.direwolf20.justdirethings.JustDireThings;
+import com.direwolf20.justdirethings.network.client.S2CParadoxSyncPayload;
 import com.direwolf20.justdirethings.network.server.*;
 import com.direwolf20.justdirethings.platform.Services;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +25,12 @@ public class PacketHandler {
         Services.PLATFORM.registerServerPacket(C2SInventoryHolderSettingsPayload.class, C2SInventoryHolderSettingsPayload::new);
         Services.PLATFORM.registerServerPacket(C2SItemCollectorSettingsPayload.class,C2SItemCollectorSettingsPayload::new);
         Services.PLATFORM.registerServerPacket(C2SLeftClickPayload.class, C2SLeftClickPayload::new);
+        Services.PLATFORM.registerServerPacket(C2SParadoxRenderPayload.class,C2SParadoxRenderPayload::new);
+        Services.PLATFORM.registerServerPacket(C2SPlayerAccessorPayload.class,C2SPlayerAccessorPayload::new);
+        Services.PLATFORM.registerServerPacket(C2SPortalGunFavoriteChangePayload.class,C2SPortalGunFavoriteChangePayload::new);
+        Services.PLATFORM.registerServerPacket(C2SPortalGunFavoritePayload.class,C2SPortalGunFavoritePayload::new);
+
+        Services.PLATFORM.registerClientPacket(S2CParadoxSyncPayload.class,S2CParadoxSyncPayload::new);
 
     }
 

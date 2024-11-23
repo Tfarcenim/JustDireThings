@@ -7,7 +7,7 @@ import com.direwolf20.justdirethings.common.items.interfaces.LeftClickableTool;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
 import com.direwolf20.justdirethings.common.items.tools.basetools.BaseHoe;
 import com.direwolf20.justdirethings.network.server.C2SLeftClickPayload;
-import com.direwolf20.justdirethings.common.network.data.PortalGunLeftClickPayload;
+import com.direwolf20.justdirethings.network.server.PortalGunLeftClickPayload;
 import com.direwolf20.justdirethings.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,5 +1,7 @@
 package com.direwolf20.justdirethings.common.containers;
 
+import com.direwolf20.justdirethings.common.blockentities.EnergyTransmitterBE;
+import com.direwolf20.justdirethings.common.blockentities.ParadoxMachineBE;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseMachineContainer;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.BlockPos;
@@ -26,12 +28,22 @@ public class EnergyTransmitterContainer extends BaseMachineContainer {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
-        return super.quickMoveStack(playerIn, index); //Only does filter slots!
+    public boolean clickMenuButton(Player player, int value) {
+        Button button = Button.values()[value];
+        switch (button) {
+            case TOGGLE_PARTICLES ->  {
+                if (baseMachineBE instanceof EnergyTransmitterBE energyTransmitterBE) {
+                    energyTransmitterBE.showParticles = !energyTransmitterBE.showParticles;
+                    energyTransmitterBE.setChanged();
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    @Override
-    public void removed(Player playerIn) {
-        super.removed(playerIn);
+
+    public enum Button {
+        TOGGLE_PARTICLES
     }
 }

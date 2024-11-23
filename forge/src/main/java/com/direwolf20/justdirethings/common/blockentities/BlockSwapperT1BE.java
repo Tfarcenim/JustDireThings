@@ -28,9 +28,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.entity.PartEntity;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.entity.PartEntity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -320,10 +319,9 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
             return false;
         if (entity instanceof PartEntity<?>)
             return false;
-        if (!entity.canChangeDimensions(level, getPartnerBE().level) && !isSameLevel())
+        if (!entity.canChangeDimensions() && !isSameLevel())
             return false;
-        if (entity.getType().is(Tags.EntityTypes.TELEPORTING_NOT_SUPPORTED))
-            return false;
+
         if (swap_entity_type.equals(SWAP_ENTITY_TYPE.HOSTILE) && !(entity instanceof Monster))
             return false;
         if (((swap_entity_type.equals(SWAP_ENTITY_TYPE.PASSIVE)) || (swap_entity_type.equals(SWAP_ENTITY_TYPE.ADULT)) || (swap_entity_type.equals(SWAP_ENTITY_TYPE.CHILD))) && !(entity instanceof Animal))
@@ -362,11 +360,11 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
         CompoundTag thatNBT = new CompoundTag();
 
         if (thisBE != null) {
-            thisNBT = thisBE.saveWithFullMetadata(level.registryAccess());
+            thisNBT = thisBE.saveWithFullMetadata();
         }
 
         if (thatBE != null) {
-            thatNBT = thatBE.saveWithFullMetadata(level.registryAccess());
+            thatNBT = thatBE.saveWithFullMetadata();
         }
 
         //Remove existing blocks and BE's
@@ -379,7 +377,7 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
                 BlockEntity newBE = partnerLevel.getBlockEntity(remoteSwapPos);
                 if (newBE != null) {
                     try {
-                        newBE.loadCustomOnly(thisNBT, level.registryAccess());
+                        newBE.load(thisNBT);
                     } catch (Exception e) {
                         System.out.println("Failed to restore tile data for block at: " + remoteSwapPos + " with NBT: " + thisNBT + ". Consider adding it to the blacklist");
                     }
@@ -394,7 +392,7 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
                 BlockEntity newBE = level.getBlockEntity(blockPos);
                 if (newBE != null) {
                     try {
-                        newBE.loadCustomOnly(thatNBT, level.registryAccess());
+                        newBE.load(thatNBT);
                     } catch (Exception e) {
                         System.out.println("Failed to restore tile data for block at: " + blockPos + " with NBT: " + thatNBT + ". Consider adding it to the blacklist");
                     }
@@ -434,7 +432,7 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
 
     public boolean isBlockPosValid(ServerLevel serverLevel, BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
-        if (blockState.is(Tags.Blocks.RELOCATION_NOT_SUPPORTED) || blockState.is(JustDireBlockTags.SWAPPERDENY))
+        if (blockState.is(JustDireBlockTags.SWAPPERDENY))
             return false;
         if (blockState.getDestroySpeed(level, blockPos) < 0)
             return false;

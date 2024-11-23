@@ -2,7 +2,7 @@ package com.direwolf20.justdirethings.client.screens;
 
 import com.direwolf20.justdirethings.client.KeyBindings;
 import com.direwolf20.justdirethings.common.items.PortalGunV2;
-import com.direwolf20.justdirethings.common.network.data.PortalGunFavoriteChangePayload;
+import com.direwolf20.justdirethings.network.server.C2SPortalGunFavoriteChangePayload;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.NBTHelpers;
 import net.minecraft.client.Minecraft;
@@ -135,7 +135,7 @@ public class AdvPortalEditMenu extends Screen {
                 portalDestination = new NBTHelpers.PortalDestination(new NBTHelpers.GlobalVec3(player.level().dimension(), position), facing, "UNNAMED");
             }
             Vec3 coords = portalDestination.globalVec3().position();
-            PacketDistributor.sendToServer(new PortalGunFavoriteChangePayload(slotSelected, true, nameField.getValue(), true, coords));
+            PacketDistributor.sendToServer(new C2SPortalGunFavoriteChangePayload(slotSelected, true, nameField.getValue(), true, coords));
             this.onClose();
         } catch (NumberFormatException e) {
             System.out.println("Error: Invalid format for the validFormattedX string");

@@ -5,7 +5,8 @@ import com.direwolf20.justdirethings.common.blockentities.basebe.*;
 import com.direwolf20.justdirethings.common.capabilities.JustDireFluidTank;
 import com.direwolf20.justdirethings.common.capabilities.MachineEnergyStorage;
 import com.direwolf20.justdirethings.common.entities.ParadoxEntity;
-import com.direwolf20.justdirethings.common.network.data.ParadoxSyncPayload;
+import com.direwolf20.justdirethings.common.fluids.timefluid.TimeFluid;
+import com.direwolf20.justdirethings.network.client.S2CParadoxSyncPayload;
 import com.direwolf20.justdirethings.datagen.JustDireBlockTags;
 import com.direwolf20.justdirethings.datagen.JustDireEntityTags;
 import com.direwolf20.justdirethings.setup.Config;
@@ -34,13 +35,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -189,7 +188,7 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
             return;
         } else {
             if (timeRunning % 20 == 0 && !(timeRunning >= getRunTime())) {
-                PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, level.getChunk(getBlockPos()).getPos(), new ParadoxSyncPayload(getBlockPos(), timeRunning));
+                PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, level.getChunk(getBlockPos()).getPos(), new S2CParadoxSyncPayload(getBlockPos(), timeRunning));
             }
             if (timeRunning % 100 == 0 && !(timeRunning >= getRunTime())) {
                 level.playSound(null, getBlockPos(), SoundEvents.PORTAL_AMBIENT, SoundSource.BLOCKS, 0.5F, 0.25F);
@@ -323,9 +322,11 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
         return Config.PARADOX_TOTAL_FLUID_CAPACITY.get();
     }
 
+    protected JustDireFluidTank justDireFluidTank = new JustDireFluidTank(getMaxMB(), fluidstack -> fluidstack.getFluid() instanceof TimeFluid);
+
     @Override
     public JustDireFluidTank getFluidTank() {
-        return getData(Registration.PARADOX_FLUID_HANDLER);
+        return justDireFluidTank;
     }
 
     @Override
@@ -353,9 +354,11 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
         return poweredMachineData;
     }
 
+    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+
     @Override
     public MachineEnergyStorage getEnergyStorage() {
-        return getData(Registration.ENERGYSTORAGE_MACHINES);
+        return energyStorage;
     }
 
     @Override
@@ -460,7 +463,7 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
         ListTag blockDataList = snapshotData.getList("blocks", 10); // 10 indicates a CompoundTag
         for (int i = 0; i < blockDataList.size(); i++) {
             CompoundTag blockTag = blockDataList.getCompound(i);
-            BlockPos relativePos = NbtUtils.readBlockPos(blockTag, "pos").orElse(null);
+            BlockPos relativePos = NbtUtils.readBlockPos(blockTag.getCompound("pos"));
             if (relativePos == null) continue;
             BlockPos worldPos = relativePos.offset(machinePos); // Convert relative to world position
             BlockState blockState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), blockTag.getCompound("state"));
@@ -529,7 +532,7 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
         CompoundTag santizedData = Config.PARADOX_RESTRICTED_MOBS.get() ? sanitizeEntityData(entityData) : sanitizeEntityDataDeny(entityData);
         entity.load(santizedData);
         if (entity instanceof Mob mob && level instanceof ServerLevel serverLevel)
-            EventHooks.finalizeMobSpawn(mob, serverLevel, level.getCurrentDifficultyAt(getBlockPos()), MobSpawnType.SPAWNER, null);
+            ForgeEventFactory.onFinalizeSpawn(mob, serverLevel, level.getCurrentDifficultyAt(getBlockPos()), MobSpawnType.SPAWNER, null,null);
         //mob.finalizeSpawn(serverLevel, level.getCurrentDifficultyAt(getBlockPos()), MobSpawnType.SPAWNER, null);
 
         entity.moveTo(worldPos.x, worldPos.y, worldPos.z, entity.getYRot(), entity.getXRot());
@@ -653,8 +656,7 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
             return false;
         if (entity instanceof PartEntity<?>)
             return false;
-        if (entity.getType().is(Tags.EntityTypes.TELEPORTING_NOT_SUPPORTED))
-            return false;
+
         if (entity.getType().is(JustDireEntityTags.PARADOX_DENY))
             return false;
         if (entity instanceof Player)

@@ -15,9 +15,9 @@ public class PacketHandler {
         registrar.playToServer(C2SFilterSettingPayload.TYPE, C2SFilterSettingPayload.STREAM_CODEC, FilterSettingPacket.get()::handle);
         registrar.playToServer(C2SGhostSlotPayload.TYPE, C2SGhostSlotPayload.STREAM_CODEC, GhostSlotPacket.get()::handle);
         registrar.playToServer(C2SLeftClickPayload.TYPE, C2SLeftClickPayload.STREAM_CODEC, LeftClickPacket.get()::handle);
-        registrar.playToServer(PlayerAccessorPayload.TYPE, PlayerAccessorPayload.STREAM_CODEC, PlayerAccessorPacket.get()::handle);
-        registrar.playToServer(PortalGunFavoritePayload.TYPE, PortalGunFavoritePayload.STREAM_CODEC, PortalGunFavoritePacket.get()::handle);
-        registrar.playToServer(PortalGunFavoriteChangePayload.TYPE, PortalGunFavoriteChangePayload.STREAM_CODEC, PortalGunFavoriteChangePacket.get()::handle);
+        registrar.playToServer(C2SPlayerAccessorPayload.TYPE, C2SPlayerAccessorPayload.STREAM_CODEC, PlayerAccessorPacket.get()::handle);
+        registrar.playToServer(C2SPortalGunFavoritePayload.TYPE, C2SPortalGunFavoritePayload.STREAM_CODEC, PortalGunFavoritePacket.get()::handle);
+        registrar.playToServer(C2SPortalGunFavoriteChangePayload.TYPE, C2SPortalGunFavoriteChangePayload.STREAM_CODEC, PortalGunFavoriteChangePacket.get()::handle);
         registrar.playToServer(PortalGunLeftClickPayload.TYPE, PortalGunLeftClickPayload.STREAM_CODEC, PortalGunLeftClickPacket.get()::handle);
         registrar.playToServer(RedstoneSettingPayload.TYPE, RedstoneSettingPayload.STREAM_CODEC, RedstoneSettingPacket.get()::handle);
         registrar.playToServer(SensorPayload.TYPE, SensorPayload.STREAM_CODEC, SensorPacket.get()::handle);
@@ -28,7 +28,7 @@ public class PacketHandler {
         registrar.playToServer(ToggleToolSlotPayload.TYPE, ToggleToolSlotPayload.STREAM_CODEC, ToggleToolSlotPacket.get()::handle);
         registrar.playToServer(ToggleToolRefreshSlots.TYPE, ToggleToolRefreshSlots.STREAM_CODEC, ToggleToolRefreshSlotsPacket.get()::handle);
         registrar.playToServer(C2SParadoxMachineSnapshotPayload.TYPE, C2SParadoxMachineSnapshotPayload.STREAM_CODEC, ParadoxSnapshotPacket.get()::handle);
-        registrar.playToServer(ParadoxRenderPayload.TYPE, ParadoxRenderPayload.STREAM_CODEC, ParadoxRenderPacket.get()::handle);
+        registrar.playToServer(C2SParadoxRenderPayload.TYPE, C2SParadoxRenderPayload.STREAM_CODEC, ParadoxRenderPacket.get()::handle);
         registrar.playToServer(C2SInventoryHolderSaveSlotPayload.TYPE, C2SInventoryHolderSaveSlotPayload.STREAM_CODEC, InventoryHolderSaveSlotPacket.get()::handle);
         registrar.playToServer(C2SInventoryHolderSettingsPayload.TYPE, C2SInventoryHolderSettingsPayload.STREAM_CODEC, InventoryHolderSettingsPacket.get()::handle);
         registrar.playToServer(C2SInventoryHolderMoveItemsPayload.TYPE, C2SInventoryHolderMoveItemsPayload.STREAM_CODEC, InventoryHolderMoveItemsPacket.get()::handle);
@@ -39,6 +39,6 @@ public class PacketHandler {
 
         //Going to Client
         registrar.playToClient(ClientSoundPayload.TYPE, ClientSoundPayload.STREAM_CODEC, ClientSoundPacket.get()::handle);
-        registrar.playToClient(ParadoxSyncPayload.TYPE, ParadoxSyncPayload.STREAM_CODEC, ParadoxSyncPacket.get()::handle);
+        registrar.playToClient(S2CParadoxSyncPayload.TYPE, S2CParadoxSyncPayload.STREAM_CODEC, ParadoxSyncPacket.get()::handle);
     }*/
 }

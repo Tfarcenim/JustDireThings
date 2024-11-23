@@ -5,10 +5,8 @@ import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButton
 import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
 import com.direwolf20.justdirethings.common.blockentities.EnergyTransmitterBE;
 import com.direwolf20.justdirethings.common.containers.EnergyTransmitterContainer;
-import com.direwolf20.justdirethings.network.server.C2SEnergyTransmitterSettingPayload;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class EnergyTransmitterScreen extends BaseMachineScreen<EnergyTransmitterContainer> {
     public boolean showParticles;
@@ -45,9 +43,13 @@ public class EnergyTransmitterScreen extends BaseMachineScreen<EnergyTransmitter
         //No-Op
     }
 
+    private void sendButtonToServer(EnergyTransmitterContainer.Button action) {
+        this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, action.ordinal());
+    }
+
     @Override
     public void saveSettings() {
         super.saveSettings();
-        PacketDistributor.sendToServer(new C2SEnergyTransmitterSettingPayload(showParticles));
+        sendButtonToServer(EnergyTransmitterContainer.Button.TOGGLE_PARTICLES);
     }
 }
