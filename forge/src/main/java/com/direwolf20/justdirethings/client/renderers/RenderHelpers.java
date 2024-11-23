@@ -40,30 +40,30 @@ public class RenderHelpers {
         PoseStack.Pose matrix3f = matrix.last();
         int colorRGB = color.getRGB();
 
-        builder.vertex(matrix4f, x, y, z).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, y, z).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, x, y, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, x, dy, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, x, y, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, x, y, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, dx, y, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, z).setColor(colorRGB).setNormal(matrix3f, -1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, x, dy, z).setColor(colorRGB).setNormal(matrix3f, -1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, x, dy, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, x, dy, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, x, dy, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, -1.0F, 0.0F);
-        builder.vertex(matrix4f, x, y, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, -1.0F, 0.0F);
-        builder.vertex(matrix4f, x, y, dz).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, y, dz).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, y, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, -1.0F);
-        builder.vertex(matrix4f, dx, y, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, -1.0F);
-        builder.vertex(matrix4f, x, dy, dz).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, dz).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, y, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, dx, dy, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, x, y, z).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, y, z).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, x, y, z).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, x, dy, z).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, x, y, z).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, x, y, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, dx, y, z).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, z).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, z).color(colorRGB).setNormal(matrix3f, -1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, x, dy, z).color(colorRGB).setNormal(matrix3f, -1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, x, dy, z).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, x, dy, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, x, dy, dz).color(colorRGB).setNormal(matrix3f, 0.0F, -1.0F, 0.0F);
+        builder.vertex(matrix4f, x, y, dz).color(colorRGB).setNormal(matrix3f, 0.0F, -1.0F, 0.0F);
+        builder.vertex(matrix4f, x, y, dz).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, y, dz).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, y, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, -1.0F);
+        builder.vertex(matrix4f, dx, y, z).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, -1.0F);
+        builder.vertex(matrix4f, x, dy, dz).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, dz).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, y, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, z).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, dx, dy, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
 
         matrix.popPose();
     }
@@ -84,30 +84,30 @@ public class RenderHelpers {
         PoseStack.Pose matrix3f = matrix.last();
         int colorRGB = color.getRGB();
 
-        builder.vertex(matrix4f, x, y, z).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, y, z).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, x, y, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, x, dy, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, x, y, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, x, y, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, dx, y, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, z).setColor(colorRGB).setNormal(matrix3f, -1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, x, dy, z).setColor(colorRGB).setNormal(matrix3f, -1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, x, dy, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, x, dy, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, x, dy, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, -1.0F, 0.0F);
-        builder.vertex(matrix4f, x, y, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, -1.0F, 0.0F);
-        builder.vertex(matrix4f, x, y, dz).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, y, dz).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, y, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, -1.0F);
-        builder.vertex(matrix4f, dx, y, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, -1.0F);
-        builder.vertex(matrix4f, x, dy, dz).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, dz).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, y, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, dx, dy, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, x, y, z).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, y, z).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, x, y, z).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, x, dy, z).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, x, y, z).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, x, y, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, dx, y, z).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, z).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, z).color(colorRGB).setNormal(matrix3f, -1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, x, dy, z).color(colorRGB).setNormal(matrix3f, -1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, x, dy, z).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, x, dy, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, x, dy, dz).color(colorRGB).setNormal(matrix3f, 0.0F, -1.0F, 0.0F);
+        builder.vertex(matrix4f, x, y, dz).color(colorRGB).setNormal(matrix3f, 0.0F, -1.0F, 0.0F);
+        builder.vertex(matrix4f, x, y, dz).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, y, dz).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, y, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, -1.0F);
+        builder.vertex(matrix4f, dx, y, z).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, -1.0F);
+        builder.vertex(matrix4f, x, dy, dz).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, dz).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, y, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, z).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, dx, dy, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
 
         matrix.popPose();
     }
@@ -128,30 +128,30 @@ public class RenderHelpers {
         PoseStack.Pose matrix3f = matrix.last();
         int colorRGB = color.getRGB();
 
-        builder.vertex(matrix4f, x, y, z).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, y, z).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, x, y, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, x, dy, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, x, y, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, x, y, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, dx, y, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, z).setColor(colorRGB).setNormal(matrix3f, -1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, x, dy, z).setColor(colorRGB).setNormal(matrix3f, -1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, x, dy, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, x, dy, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, x, dy, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, -1.0F, 0.0F);
-        builder.vertex(matrix4f, x, y, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, -1.0F, 0.0F);
-        builder.vertex(matrix4f, x, y, dz).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, y, dz).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, y, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, -1.0F);
-        builder.vertex(matrix4f, dx, y, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, -1.0F);
-        builder.vertex(matrix4f, x, dy, dz).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, dz).setColor(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
-        builder.vertex(matrix4f, dx, y, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
-        builder.vertex(matrix4f, dx, dy, z).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
-        builder.vertex(matrix4f, dx, dy, dz).setColor(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, x, y, z).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, y, z).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, x, y, z).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, x, dy, z).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, x, y, z).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, x, y, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, dx, y, z).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, z).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, z).color(colorRGB).setNormal(matrix3f, -1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, x, dy, z).color(colorRGB).setNormal(matrix3f, -1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, x, dy, z).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, x, dy, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, x, dy, dz).color(colorRGB).setNormal(matrix3f, 0.0F, -1.0F, 0.0F);
+        builder.vertex(matrix4f, x, y, dz).color(colorRGB).setNormal(matrix3f, 0.0F, -1.0F, 0.0F);
+        builder.vertex(matrix4f, x, y, dz).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, y, dz).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, y, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, -1.0F);
+        builder.vertex(matrix4f, dx, y, z).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, -1.0F);
+        builder.vertex(matrix4f, x, dy, dz).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, dz).color(colorRGB).setNormal(matrix3f, 1.0F, 0.0F, 0.0F);
+        builder.vertex(matrix4f, dx, y, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+        builder.vertex(matrix4f, dx, dy, z).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
+        builder.vertex(matrix4f, dx, dy, dz).color(colorRGB).setNormal(matrix3f, 0.0F, 0.0F, 1.0F);
 
         buffer.endBatch(OurRenderTypes.lines()); // @mcp: draw = finish
         matrix.popPose();
@@ -240,40 +240,40 @@ public class RenderHelpers {
         float endZ = (float) zEnd;
 
         //down
-        builder.vertex(matrix, startX, startY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, startY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, startY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, startY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, startY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, startY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, startY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, startY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
 
         //up
-        builder.vertex(matrix, startX, endY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, endY, endZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, endY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, endY, startZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, endY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, endY, endZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, endY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, endY, startZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
 
         //east
-        builder.vertex(matrix, startX, startY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, endY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, endY, startZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, startY, startZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, startY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, endY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, endY, startZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, startY, startZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
 
         //west
-        builder.vertex(matrix, startX, startY, endZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, startY, endZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, endY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, endY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, startY, endZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, startY, endZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, endY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, endY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
 
         //south
-        builder.vertex(matrix, endX, startY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, endY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, endY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, startY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, startY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, endY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, endY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, startY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
 
         //north
-        builder.vertex(matrix, startX, startY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, startY, endZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, endY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, endY, startZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, startY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, startY, endZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, endY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, endY, startZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
     }
 
     //This one blocks water
@@ -290,40 +290,40 @@ public class RenderHelpers {
         float endZ = (float) zEnd;
 
         //down
-        builder.vertex(matrix, startX, startY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, startY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, startY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, startY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, startY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, startY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, startY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, startY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
 
         //up
-        builder.vertex(matrix, startX, endY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, endY, endZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, endY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, endY, startZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, endY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, endY, endZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, endY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, endY, startZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
 
         //east
-        builder.vertex(matrix, startX, startY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, endY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, endY, startZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, startY, startZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, startY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, endY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, endY, startZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, startY, startZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
 
         //west
-        builder.vertex(matrix, startX, startY, endZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, startY, endZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, endY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, endY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, startY, endZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, startY, endZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, endY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, endY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
 
         //south
-        builder.vertex(matrix, endX, startY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, endY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, endY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, endX, startY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, startY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, endY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, endY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, endX, startY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
 
         //north
-        builder.vertex(matrix, startX, startY, startZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, startY, endZ).setColor(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, endY, endZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
-        builder.vertex(matrix, startX, endY, startZ).setColor(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, startY, startZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, startY, endZ).color(red, green, blue, alpha).setUv(dummyU0, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, endY, endZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
+        builder.vertex(matrix, startX, endY, startZ).color(red, green, blue, alpha).setUv(dummyU1, dummyV0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(LightTexture.FULL_BRIGHT).setNormal(pose, 0F, 0F, 1F);
     }
 
     public static void captureDummySprite(TextureAtlas atlas) {

@@ -620,7 +620,7 @@ public class JustDireRecipes extends RecipeProvider {
                 .pattern("fbf")
                 .pattern("   ")
                 .define('b', Registration.UPGRADE_BASE.get())
-                .define('f', Items.SHORT_GRASS)
+                .define('f', Items.GRASS)
                 .unlockedBy("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
                 .save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.UPGRADE_SKYSWEEPER.get())
@@ -1026,27 +1026,27 @@ public class JustDireRecipes extends RecipeProvider {
                 .save(consumer, JustDireThings.id("budding_time_timeblock"));
 
         //FluidDrop Recipes
-        FluidDropRecipeBuilder.shapeless(JustDireThings.id("polymorphic_fluid"), Blocks.WATER.defaultBlockState(), Registration.POLYMORPHIC_FLUID_BLOCK.get().defaultBlockState(), Registration.PolymorphicCatalyst.get())
+        FluidDropRecipeBuilder.shapeless( Blocks.WATER.defaultBlockState(), Registration.POLYMORPHIC_FLUID_BLOCK.get().defaultBlockState(), Registration.PolymorphicCatalyst.get())
                 .group("justdirethings")
                 .unlockedBy("has_polymorphic_catalyst", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.PolymorphicCatalyst.get()))
                 .save(consumer);
-        FluidDropRecipeBuilder.shapeless(JustDireThings.id("unstable_portal_fluid"), Registration.POLYMORPHIC_FLUID_BLOCK.get().defaultBlockState(), Registration.UNSTABLE_PORTAL_FLUID_BLOCK.get().defaultBlockState(), Registration.PortalFluidCatalyst.get())
+        FluidDropRecipeBuilder.shapeless(Registration.POLYMORPHIC_FLUID_BLOCK.get().defaultBlockState(), Registration.UNSTABLE_PORTAL_FLUID_BLOCK.get().defaultBlockState(), Registration.PortalFluidCatalyst.get())
                 .group("justdirethings")
                 .unlockedBy("has_portal_catalyst", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.PortalFluidCatalyst.get()))
                 .save(consumer);
-        FluidDropRecipeBuilder.shapeless(JustDireThings.id("unrefined_t2_fluid"), Registration.POLYMORPHIC_FLUID_BLOCK.get().defaultBlockState(), Registration.UNREFINED_T2_FLUID_BLOCK.get().defaultBlockState(), Registration.Coal_T2.get())
+        FluidDropRecipeBuilder.shapeless(Registration.POLYMORPHIC_FLUID_BLOCK.get().defaultBlockState(), Registration.UNREFINED_T2_FLUID_BLOCK.get().defaultBlockState(), Registration.Coal_T2.get())
                 .group("justdirethings")
                 .unlockedBy("has_coal_t2", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.Coal_T2.get()))
                 .save(consumer);
-        FluidDropRecipeBuilder.shapeless(JustDireThings.id("unrefined_t3_fluid"), Registration.REFINED_T2_FLUID_BLOCK.get().defaultBlockState(), Registration.UNREFINED_T3_FLUID_BLOCK.get().defaultBlockState(), Registration.Coal_T3.get())
+        FluidDropRecipeBuilder.shapeless(Registration.REFINED_T2_FLUID_BLOCK.get().defaultBlockState(), Registration.UNREFINED_T3_FLUID_BLOCK.get().defaultBlockState(), Registration.Coal_T3.get())
                 .group("justdirethings")
                 .unlockedBy("has_coal_t3", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.Coal_T3.get()))
                 .save(consumer);
-        FluidDropRecipeBuilder.shapeless(JustDireThings.id("unrefined_t4_fluid"), Registration.REFINED_T3_FLUID_BLOCK.get().defaultBlockState(), Registration.UNREFINED_T4_FLUID_BLOCK.get().defaultBlockState(), Registration.Coal_T4.get())
+        FluidDropRecipeBuilder.shapeless( Registration.REFINED_T3_FLUID_BLOCK.get().defaultBlockState(), Registration.UNREFINED_T4_FLUID_BLOCK.get().defaultBlockState(), Registration.Coal_T4.get())
                 .group("justdirethings")
                 .unlockedBy("has_coal_t4", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.Coal_T4.get()))
                 .save(consumer);
-        FluidDropRecipeBuilder.shapeless(JustDireThings.id("time_fluid"), Registration.POLYMORPHIC_FLUID_BLOCK.get().defaultBlockState(), Registration.TIME_FLUID_BLOCK.get().defaultBlockState(), Registration.TimeCrystal.get())
+        FluidDropRecipeBuilder.shapeless( Registration.POLYMORPHIC_FLUID_BLOCK.get().defaultBlockState(), Registration.TIME_FLUID_BLOCK.get().defaultBlockState(), Registration.TimeCrystal.get())
                 .group("justdirethings")
                 .unlockedBy("has_time_crystal", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.TimeCrystal.get()))
                 .save(consumer);

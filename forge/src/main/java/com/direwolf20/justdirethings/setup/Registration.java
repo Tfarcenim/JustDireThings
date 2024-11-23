@@ -98,6 +98,16 @@ import static com.direwolf20.justdirethings.client.particles.ModParticles.PARTIC
 public class Registration {
     //public static final TicketController TICKET_CONTROLLER = new TicketController(JustDireThings.id("chunk_loader"), null);
 
+    //Coal_T1.getId(), new FurnaceFuel(4800), false)
+    //                .add(Registration.CoalBlock_T1.getId(), new FurnaceFuel(48000), false)
+    //                .add(Registration.Coal_T2.getId(), new FurnaceFuel(14400), false)
+    //                .add(Registration.CoalBlock_T2.getId(), new FurnaceFuel(144000), false)
+    //                .add(Registration.Coal_T3.getId(), new FurnaceFuel(43200), false)
+    //                .add(Registration.CoalBlock_T3.getId(), new FurnaceFuel(432000), false)
+    //                .add(Registration.Coal_T4.getId(), new FurnaceFuel(129600), false)
+    //                .add(Registration.CoalBlock_T4.getId(), new FurnaceFuel(1296000), false)
+    //                .add(Registration.CharcoalBlock.getId(), new FurnaceFuel(16000), false);
+
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     public static final DeferredRegister<Block> FLUID_BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, MODID);
@@ -392,7 +402,7 @@ public class Registration {
     public static final RegistryObject<BlockItem> TimeCrystalBlock_ITEM = ITEMS.register("time_crystal_block", () -> new BlockItem(TimeCrystalBlock.get(), new Item.Properties()));
     public static final RegistryObject<TimeCrystalBuddingBlock> TimeCrystalBuddingBlock = BLOCKS.register("time_crystal_budding_block", TimeCrystalBuddingBlock::new);
     public static final RegistryObject<BlockItem> TimeCrystalBuddingBlock_ITEM = ITEMS.register("time_crystal_budding_block", () -> new BlockItem(TimeCrystalBuddingBlock.get(), new Item.Properties()));
-    public static final RegistryObject<TimeCrystalCluster> TimeCrystalCluster = BLOCKS.register("time_crystal_cluster", () -> new TimeCrystalCluster(
+    public static final RegistryObject<TimeCrystalClusterBlock> TimeCrystalCluster = BLOCKS.register("time_crystal_cluster", () -> new TimeCrystalClusterBlock(
             7.0F,
             3.0F,
             BlockBehaviour.Properties.of()
@@ -403,13 +413,13 @@ public class Registration {
                     .lightLevel(p_152632_ -> 5)
                     .pushReaction(PushReaction.DESTROY)
     ));
-    public static final RegistryObject<TimeCrystalCluster> TimeCrystalCluster_Small = BLOCKS.register("time_crystal_cluster_small", () -> new TimeCrystalCluster(
+    public static final RegistryObject<TimeCrystalClusterBlock> TimeCrystalCluster_Small = BLOCKS.register("time_crystal_cluster_small", () -> new TimeCrystalClusterBlock(
             3.0F, 4.0F, BlockBehaviour.Properties.copy(TimeCrystalCluster.get()).sound(SoundType.SMALL_AMETHYST_BUD).lightLevel(p_187409_ -> 1)
     ));
-    public static final RegistryObject<TimeCrystalCluster> TimeCrystalCluster_Medium = BLOCKS.register("time_crystal_cluster_medium", () -> new TimeCrystalCluster(
+    public static final RegistryObject<TimeCrystalClusterBlock> TimeCrystalCluster_Medium = BLOCKS.register("time_crystal_cluster_medium", () -> new TimeCrystalClusterBlock(
             4.0F, 3.0F, BlockBehaviour.Properties.copy(TimeCrystalCluster.get()).sound(SoundType.MEDIUM_AMETHYST_BUD).lightLevel(p_152617_ -> 2)
     ));
-    public static final RegistryObject<TimeCrystalCluster> TimeCrystalCluster_Large = BLOCKS.register("time_crystal_cluster_large", () -> new TimeCrystalCluster(
+    public static final RegistryObject<TimeCrystalClusterBlock> TimeCrystalCluster_Large = BLOCKS.register("time_crystal_cluster_large", () -> new TimeCrystalClusterBlock(
             5.0F, 3.0F, BlockBehaviour.Properties.copy(TimeCrystalCluster.get()).sound(SoundType.LARGE_AMETHYST_BUD).lightLevel(p_152629_ -> 4)
     ));
 

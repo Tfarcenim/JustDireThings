@@ -87,8 +87,8 @@ public class TimeCrystalBuddingBlock extends BuddingAmethystBlock {
 
             if (block != null) {
                 BlockState blockstate1 = block.defaultBlockState()
-                        .setValue(TimeCrystalCluster.FACING, direction)
-                        .setValue(TimeCrystalCluster.WATERLOGGED, Boolean.valueOf(blockstate.getFluidState().getType() == Fluids.WATER));
+                        .setValue(TimeCrystalClusterBlock.FACING, direction)
+                        .setValue(TimeCrystalClusterBlock.WATERLOGGED, Boolean.valueOf(blockstate.getFluidState().getType() == Fluids.WATER));
                 level.setBlockAndUpdate(blockpos, blockstate1);
 
                 if (state.getValue(STAGE) == 3 && level.random.nextFloat() < 0.05f) {

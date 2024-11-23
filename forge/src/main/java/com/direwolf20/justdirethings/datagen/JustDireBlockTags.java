@@ -136,7 +136,7 @@ public class JustDireBlockTags extends BlockTagsProvider {
     //            .add(Registration.TimeCrystalCluster_Medium.get())
     //            .add(Registration.TimeCrystalCluster_Large.get());
   //      tag(Tags.Blocks.CLUSTERS)
-   //             .add(Registration.TimeCrystalCluster.get());
+   //             .add(Registration.TimeCrystalClusterBlock.get());
         tag(JustDireTags.Blocks.TICK_SPEED_DENY);
         tag(JustDireTags.Blocks.PARADOX_ALLOW)
                 .addTag(Tags.Blocks.ORES);

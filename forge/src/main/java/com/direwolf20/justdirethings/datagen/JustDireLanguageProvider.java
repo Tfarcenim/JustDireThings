@@ -5,9 +5,10 @@ import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.setup.ModSetup;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.data.PackOutput;
+import net.minecraftforge.common.data.LanguageProvider;
 
 
-public class JustDireLanguageProvider extends net.neoforged.neoforge.common.data.LanguageProvider {
+public class JustDireLanguageProvider extends LanguageProvider {
     public JustDireLanguageProvider(PackOutput output, String locale) {
         super(output, JustDireThings.MODID, locale);
     }

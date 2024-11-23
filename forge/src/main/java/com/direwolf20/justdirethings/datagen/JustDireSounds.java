@@ -3,9 +3,9 @@ package com.direwolf20.justdirethings.datagen;
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.common.data.SoundDefinition;
-import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.SoundDefinition;
+import net.minecraftforge.common.data.SoundDefinitionsProvider;
 
 public class JustDireSounds extends SoundDefinitionsProvider {
     public JustDireSounds(PackOutput output, ExistingFileHelper existingFileHelper) {

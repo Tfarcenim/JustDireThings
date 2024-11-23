@@ -75,7 +75,7 @@ public class FluidDropRecipeCategory implements IRecipeCategory<FluidDropRecipe>
         IRecipeSlotBuilder inputSlotBuilder = builder.addSlot(RecipeIngredientRole.INPUT, 9, 20);
         if (input.getBlock() instanceof LiquidBlock liquidBlock) {
             inputSlotBuilder
-                    .addFluidStack(liquidBlock.fluid, 1000);
+                    .addFluidStack(liquidBlock.getFluid(), 1000);
         }
         builder.addSlot(RecipeIngredientRole.CATALYST, 9, 0)
                 .addItemStack(new ItemStack(recipe.getCatalyst()));
@@ -83,7 +83,7 @@ public class FluidDropRecipeCategory implements IRecipeCategory<FluidDropRecipe>
         BlockState output = recipe.getOutput();
         if (output.getBlock() instanceof LiquidBlock liquidBlock) {
             builder.addSlot(RecipeIngredientRole.OUTPUT, 68, 20)
-                    .addFluidStack(liquidBlock.fluid, 1000);
+                    .addFluidStack(liquidBlock.getFluid(), 1000);
         } else {
             builder.addSlot(RecipeIngredientRole.OUTPUT, 68, 20)
                     .addItemStack(new ItemStack(output.getBlock()));

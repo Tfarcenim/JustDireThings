@@ -10,12 +10,11 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.internal.versions.neoforge.NeoForgeVersion;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class JustDireItemModels extends ItemModelProvider {
     public JustDireItemModels(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -142,9 +141,9 @@ public class JustDireItemModels extends ItemModelProvider {
 
     public void buckets() {
         for (var bucket : Registration.BUCKET_ITEMS.getEntries()) {
-            withExistingParent(bucket.getId().getPath(), ResourceLocation.fromNamespaceAndPath(NeoForgeVersion.MOD_ID, "item/bucket"))
+            withExistingParent(bucket.getId().getPath(), new ResourceLocation("forge", "item/bucket"))
                     .customLoader(DynamicFluidContainerModelBuilder::begin)
-                    .fluid(((BucketItem) bucket.get()).content);
+                    .fluid(((BucketItem) bucket.get()).getFluid());
 
         }
     }
@@ -179,7 +178,7 @@ public class JustDireItemModels extends ItemModelProvider {
             String trimId = trimModelData.name(armorItem.getMaterial());
             ItemModelBuilder override = withExistingParent(builder.getLocation().withSuffix("_" + trimId + "_trim").getPath(), "item/generated")
                     .texture("layer0", texture)
-                    .texture("layer1", ResourceLocation.withDefaultNamespace("trims/items/" + armorItem.getType().getName() + "_trim_" + trimId));
+                    .texture("layer1", new ResourceLocation("trims/items/" + armorItem.getType().getName() + "_trim_" + trimId));
             builder.override()
                     .predicate(ItemModelGenerators.TRIM_TYPE_PREDICATE_ID, trimModelData.itemModelIndex())
                     .model(override);
@@ -196,7 +195,7 @@ public class JustDireItemModels extends ItemModelProvider {
                 .parent(getExistingFile(mcLoc("item/handheld")))
                 .texture("layer0", defaultModelPath)
                 .override()
-                .predicate(ResourceLocation.fromNamespaceAndPath("justdirethings", "enabled"), 1.0F) // Using custom property
+                .predicate(JustDireThings.id( "enabled"), 1.0F) // Using custom property
                 .model(singleTexture(path + "_active", mcLoc("item/handheld"), "layer0", enabledModelPath))
                 .end();
     }

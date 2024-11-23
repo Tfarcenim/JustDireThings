@@ -10,9 +10,9 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.BlockTagsProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -38,7 +38,7 @@ public class JustDireItemTags extends ItemTagsProvider {
 
 
     private static TagKey<Item> forgeTag(String name) {
-        return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
+        return ItemTags.create(new ResourceLocation("c", name));
     }
 
     public static final TagKey<Item> FUEL_CANISTER_DENY = ItemTags.create(JustDireThings.id("deny_fuel_canister"));
@@ -106,47 +106,27 @@ public class JustDireItemTags extends ItemTagsProvider {
                 .add(Registration.BlazeGoldBlock_ITEM.get())
                 .add(Registration.CelestigemBlock_ITEM.get())
                 .add(Registration.EclipseAlloyBlock_ITEM.get());
-        tag(ItemTags.FOOT_ARMOR)
+        tag(Tags.Items.ARMORS_BOOTS)
                 .add(Registration.FerricoreBoots.get())
                 .add(Registration.BlazegoldBoots.get())
                 .add(Registration.CelestigemBoots.get())
                 .add(Registration.EclipseAlloyBoots.get());
-        tag(ItemTags.LEG_ARMOR)
+        tag(Tags.Items.ARMORS_LEGGINGS)
                 .add(Registration.FerricoreLeggings.get())
                 .add(Registration.BlazegoldLeggings.get())
                 .add(Registration.CelestigemLeggings.get())
                 .add(Registration.EclipseAlloyLeggings.get());
-        tag(ItemTags.CHEST_ARMOR)
+        tag(Tags.Items.ARMORS_CHESTPLATES)
                 .add(Registration.FerricoreChestplate.get())
                 .add(Registration.BlazegoldChestplate.get())
                 .add(Registration.CelestigemChestplate.get())
                 .add(Registration.EclipseAlloyChestplate.get());
-        tag(ItemTags.HEAD_ARMOR)
+        tag(Tags.Items.ARMORS_HELMETS)
                 .add(Registration.FerricoreHelmet.get())
                 .add(Registration.BlazegoldHelmet.get())
                 .add(Registration.CelestigemHelmet.get())
                 .add(Registration.EclipseAlloyHelmet.get());
-        tag(ItemTags.FOOT_ARMOR_ENCHANTABLE)
-                .add(Registration.FerricoreBoots.get())
-                .add(Registration.BlazegoldBoots.get())
-                .add(Registration.CelestigemBoots.get())
-                .add(Registration.EclipseAlloyBoots.get());
-        tag(ItemTags.LEG_ARMOR_ENCHANTABLE)
-                .add(Registration.FerricoreLeggings.get())
-                .add(Registration.BlazegoldLeggings.get())
-                .add(Registration.CelestigemLeggings.get())
-                .add(Registration.EclipseAlloyLeggings.get());
-        tag(ItemTags.CHEST_ARMOR_ENCHANTABLE)
-                .add(Registration.FerricoreChestplate.get())
-                .add(Registration.BlazegoldChestplate.get())
-                .add(Registration.CelestigemChestplate.get())
-                .add(Registration.EclipseAlloyChestplate.get());
-        tag(ItemTags.HEAD_ARMOR_ENCHANTABLE)
-                .add(Registration.FerricoreHelmet.get())
-                .add(Registration.BlazegoldHelmet.get())
-                .add(Registration.CelestigemHelmet.get())
-                .add(Registration.EclipseAlloyHelmet.get());
-        tag(ItemTags.BOW_ENCHANTABLE)
+        tag(Tags.Items.TOOLS_BOWS)
                 .add(Registration.FerricoreBow.get())
                 .add(Registration.BlazegoldBow.get())
                 .add(Registration.CelestigemBow.get())

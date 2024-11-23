@@ -95,7 +95,7 @@ public abstract class BaseToggleableToolItem extends BasePoweredItem implements 
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<T> onBroken) {
         if (stack.getItem() instanceof PoweredItem) {
             IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
             if (energyStorage == null) return amount;
