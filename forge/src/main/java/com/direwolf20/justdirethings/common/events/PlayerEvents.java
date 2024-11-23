@@ -29,9 +29,9 @@ import static com.direwolf20.justdirethings.common.items.interfaces.ToggleableTo
 import static com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool.getToolValue;
 
 public class PlayerEvents {
-    public static final AttributeModifier stepHeight = new AttributeModifier(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "justdirestepassist"), 1.0, AttributeModifier.Operation.ADD_VALUE);
-    public static final AttributeModifier creativeFlight = new AttributeModifier(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "justdireflight"), 1.0, AttributeModifier.Operation.ADD_VALUE);
-    public static final AttributeModifier phase = new AttributeModifier(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "justdirephase"), 1.0, AttributeModifier.Operation.ADD_VALUE);
+    public static final AttributeModifier stepHeight = new AttributeModifier(JustDireThings.id("justdirestepassist"), 1.0, AttributeModifier.Operation.ADD_VALUE);
+    public static final AttributeModifier creativeFlight = new AttributeModifier(JustDireThings.id("justdireflight"), 1.0, AttributeModifier.Operation.ADD_VALUE);
+    public static final AttributeModifier phase = new AttributeModifier(JustDireThings.id("justdirephase"), 1.0, AttributeModifier.Operation.ADD_VALUE);
 
     @SubscribeEvent
     public static void PlayerDestroyItem(PlayerDestroyItemEvent event) {

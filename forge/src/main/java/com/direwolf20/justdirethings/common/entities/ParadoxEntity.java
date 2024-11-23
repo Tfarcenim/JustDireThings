@@ -1,10 +1,10 @@
 package com.direwolf20.justdirethings.common.entities;
 
 import com.direwolf20.justdirethings.client.particles.paradoxparticle.ParadoxParticleData;
-import com.direwolf20.justdirethings.datagen.JustDireBlockTags;
 import com.direwolf20.justdirethings.datagen.JustDireEntityTags;
 import com.direwolf20.justdirethings.datagen.JustDireItemTags;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.JustDireTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -285,7 +285,7 @@ public class ParadoxEntity extends Entity {
         BlockState blockState = level().getBlockState(blockPos);
         if (blockState.isAir())
             return false;
-        if (blockState.is(JustDireBlockTags.PARADOX_ABSORB_DENY))
+        if (blockState.is(JustDireTags.Blocks.PARADOX_ABSORB_DENY))
             return false;
         if (blocksToAbsorb.containsKey(blockPos))
             return false;

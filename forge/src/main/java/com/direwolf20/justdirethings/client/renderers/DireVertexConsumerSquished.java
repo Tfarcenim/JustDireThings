@@ -77,7 +77,7 @@ public class DireVertexConsumerSquished extends VertexConsumerWrapper {
     }
 
     @Override
-    public VertexConsumer addVertex(float x, float y, float z) {
+    public VertexConsumer vertex(float x, float y, float z) {
         Matrix4f inverseMatrix = new Matrix4f(matrix4f);
         inverseMatrix.invert();
 
@@ -87,7 +87,7 @@ public class DireVertexConsumerSquished extends VertexConsumerWrapper {
         float adjustedZ = originalVector.z * (maxZ - minZ) + minZ;
 
         Vector4f vector4f = matrix4f.transform(new Vector4f(adjustedX, adjustedY, adjustedZ, 1.0F));
-        parent.addVertex(vector4f.x, vector4f.y, vector4f.z);
+        parent.vertex(vector4f.x, vector4f.y, vector4f.z);
         return this;
     }
 

@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -44,7 +44,8 @@ public class GooBlock_Base extends Block implements EntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+        ItemStack itemStack = player.getItemInHand(hand);
         // Check if the item in hand is sugar and the block is in the dead state
         if (!state.getValue(ALIVE) && validRevivalItem(itemStack)) {
             if (!level.isClientSide) {
@@ -68,10 +69,10 @@ public class GooBlock_Base extends Block implements EntityBlock {
                     itemStack.shrink(1);
                 }
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
-        return super.useItemOn(itemStack, state, level, pos, player, hand, blockHitResult);
+        return super.use(state, level, pos, player, hand, blockHitResult);
     }
 
     protected boolean validRevivalItem(ItemStack itemStack) {

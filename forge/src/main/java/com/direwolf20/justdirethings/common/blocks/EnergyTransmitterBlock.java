@@ -5,8 +5,8 @@ import com.direwolf20.justdirethings.common.blocks.baseblocks.BaseMachineBlock;
 import com.direwolf20.justdirethings.common.containers.EnergyTransmitterContainer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
 
-public class EnergyTransmitter extends BaseMachineBlock {
+public class EnergyTransmitterBlock extends BaseMachineBlock {
     protected static final VoxelShape[] shapes = new VoxelShape[]{
             Stream.of(
                     Block.box(4, 0, 4, 12, 1, 12),
@@ -90,7 +90,7 @@ public class EnergyTransmitter extends BaseMachineBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
-    public EnergyTransmitter() {
+    public EnergyTransmitterBlock() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)
@@ -107,7 +107,7 @@ public class EnergyTransmitter extends BaseMachineBlock {
     }
 
     @Override
-    public void openMenu(Player player, BlockPos blockPos) {
+    public void openMenu(ServerPlayer player, BlockPos blockPos) {
         player.openMenu(new SimpleMenuProvider(
                 (windowId, playerInventory, playerEntity) -> new EnergyTransmitterContainer(windowId, playerInventory, blockPos), Component.empty()));
     }

@@ -18,9 +18,8 @@ public class PolymorphicCatalyst extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        Level level = context.level();
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         if (level == null) {
             return;
         }

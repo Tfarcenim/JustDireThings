@@ -2,8 +2,8 @@ package com.direwolf20.justdirethings.common.blockentities;
 
 import com.direwolf20.justdirethings.common.blockentities.basebe.BaseMachineBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.RedstoneControlledBE;
-import com.direwolf20.justdirethings.datagen.JustDireBlockTags;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.JustDireTags;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.NBTHelpers;
 import com.direwolf20.justdirethings.util.SwapEntityType;
@@ -415,7 +415,7 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
 
     public boolean isBlockPosValid(ServerLevel serverLevel, BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
-        if (blockState.is(JustDireBlockTags.SWAPPERDENY))
+        if (blockState.is(JustDireTags.Blocks.SWAPPERDENY))
             return false;
         if (blockState.getDestroySpeed(level, blockPos) < 0)
             return false;

@@ -7,7 +7,7 @@ import com.direwolf20.justdirethings.common.blockentities.GeneratorT1BE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.PoweredMachineBE;
 import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock_T1;
 import com.direwolf20.justdirethings.common.containers.GeneratorT1Container;
-import com.direwolf20.justdirethings.common.items.FuelCanister;
+import com.direwolf20.justdirethings.common.items.FuelCanisterItem;
 import com.direwolf20.justdirethings.common.items.resources.Coal_T1;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.direwolf20.justdirethings.util.MiscHelpers;
@@ -113,8 +113,8 @@ public class GeneratorT1Screen extends BaseMachineScreen<GeneratorT1Container> {
                     fuelBurnMultiplier = direCoal.getBurnSpeedMultiplier();
                 } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock) {
                     fuelBurnMultiplier = coalBlock.getBurnSpeedMultiplier();
-                } else if (fuelStack.getItem() instanceof FuelCanister) {
-                    fuelBurnMultiplier = FuelCanister.getBurnSpeedMultiplier(fuelStack);
+                } else if (fuelStack.getItem() instanceof FuelCanisterItem) {
+                    fuelBurnMultiplier = FuelCanisterItem.getBurnSpeedMultiplier(fuelStack);
                 }
                 List<Component> tooltip = this.getTooltipFromContainerItem(fuelStack);
                 tooltip.add(Component.translatable("justdirethings.screen.burnspeedmultiplier", fuelBurnMultiplier).withStyle(ChatFormatting.RED));

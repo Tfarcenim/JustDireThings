@@ -1,6 +1,7 @@
 package com.direwolf20.justdirethings.common.items;
 
 import com.direwolf20.justdirethings.common.entities.CreatureCatcherEntity;
+import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -16,10 +17,8 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-import static com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents.ENTITIYTYPE;
-
-public class CreatureCatcher extends Item {
-    public CreatureCatcher() {
+public class CreatureCatcherItem extends Item {
+    public CreatureCatcherItem() {
         super(new Properties());
     }
 
@@ -52,13 +51,12 @@ public class CreatureCatcher extends Item {
     }
 
     public static boolean hasEntity(ItemStack itemStack) {
-        return itemStack.has(ENTITIYTYPE);
+        return JustDireDataComponents.getEntityType(itemStack) !=null;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        Level level = context.level();
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         if (level == null) {
             return;
         }

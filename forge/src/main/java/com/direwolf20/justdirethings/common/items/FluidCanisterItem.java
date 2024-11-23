@@ -49,9 +49,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class FluidCanister extends Item implements FluidContainingItem {
+public class FluidCanisterItem extends Item implements FluidContainingItem {
 
-    public FluidCanister() {
+    public FluidCanisterItem() {
         super(new Properties()
                 .stacksTo(1));
     }
@@ -95,7 +95,7 @@ public class FluidCanister extends Item implements FluidContainingItem {
             if (fluidHandler == null || fluidHandler.getFluidInTank(0).isEmpty()) return;
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack slotStack = player.getInventory().getItem(i);
-                if (slotStack.getItem() instanceof FluidCanister) continue;
+                if (slotStack.getItem() instanceof FluidCanisterItem) continue;
                 if (fillMode == FillMode.JDTONLY && !slotStack.getItem().getCreatorModId(slotStack).equals(JustDireThings.MODID))
                     continue;
                 IFluidHandlerItem slotFluidHandler = slotStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);

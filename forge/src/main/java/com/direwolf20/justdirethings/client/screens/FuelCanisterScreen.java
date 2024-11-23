@@ -2,7 +2,7 @@ package com.direwolf20.justdirethings.client.screens;
 
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.containers.FuelCanisterContainer;
-import com.direwolf20.justdirethings.common.items.FuelCanister;
+import com.direwolf20.justdirethings.common.items.FuelCanisterItem;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -40,9 +40,9 @@ public class FuelCanisterScreen extends AbstractContainerScreen<FuelCanisterCont
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
-        MutableComponent msg = Component.translatable("justdirethings.fuelcanisteritemsamt", MagicHelpers.formatted((float) FuelCanister.getFuelLevel(fuelCanister) / 200));
+        MutableComponent msg = Component.translatable("justdirethings.fuelcanisteritemsamt", MagicHelpers.formatted((float) FuelCanisterItem.getFuelLevel(fuelCanister) / 200));
         guiGraphics.drawString(font, msg, this.getGuiLeft() + this.imageWidth / 2 - font.width(msg) / 2, getGuiTop() + 5, Color.DARK_GRAY.getRGB(), false);
-        msg = Component.translatable("justdirethings.fuelcanisteramt", MagicHelpers.formatted(FuelCanister.getFuelLevel(fuelCanister)));
+        msg = Component.translatable("justdirethings.fuelcanisteramt", MagicHelpers.formatted(FuelCanisterItem.getFuelLevel(fuelCanister)));
         guiGraphics.drawString(font, msg, (this.getGuiLeft() + this.imageWidth / 2) - font.width(msg) / 2, getGuiTop() + 15, Color.DARK_GRAY.getRGB(), false);
     }
 

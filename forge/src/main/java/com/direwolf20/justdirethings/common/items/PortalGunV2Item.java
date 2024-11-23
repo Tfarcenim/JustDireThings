@@ -34,6 +34,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -43,11 +47,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PortalGunV2 extends BasePoweredItem implements PoweredItem, FluidContainingItem {
+public class PortalGunV2Item extends BasePoweredItem implements PoweredItem, FluidContainingItem {
     public static final int MAX_FAVORITES = 12;
     public static final int maxMB = 8000;
 
-    public PortalGunV2() {
+    public PortalGunV2Item() {
         super(new Properties()
                 .stacksTo(1));
     }
@@ -72,13 +76,12 @@ public class PortalGunV2 extends BasePoweredItem implements PoweredItem, FluidCo
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        Level level = context.level();
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         if (level == null) {
             return;
         }
-        IFluidHandlerItem fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler == null) {
             return;
         }
@@ -89,11 +92,11 @@ public class PortalGunV2 extends BasePoweredItem implements PoweredItem, FluidCo
         BlockPos blockpos = blockhitresult.getBlockPos();
         BlockState blockstate1 = level.getBlockState(blockpos);
         if (blockstate1.getBlock() instanceof PortalFluidBlock portalFluidBlock) {
-            IFluidHandlerItem fluidHandler = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+            IFluidHandlerItem fluidHandler = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
             if (fluidHandler == null) return true;
             int filledAmt = fluidHandler.fill(new FluidStack(Registration.PORTAL_FLUID_SOURCE.get(), 1000), IFluidHandler.FluidAction.SIMULATE);
             if (filledAmt == 1000) {
-                ItemStack itemstack2 = portalFluidBlock.pickupBlock(player, level, blockpos, blockstate1);
+                ItemStack itemstack2 = portalFluidBlock.pickupBlock(level, blockpos, blockstate1);
                 fluidHandler.fill(new FluidStack(Registration.PORTAL_FLUID_SOURCE.get(), 1000), IFluidHandler.FluidAction.EXECUTE);
                 portalFluidBlock.getPickupSound(blockstate1).ifPresent(p_150709_ -> player.playSound(p_150709_, 1.0F, 1.0F));
                 if (!level.isClientSide) {
@@ -247,10 +250,10 @@ public class PortalGunV2 extends BasePoweredItem implements PoweredItem, FluidCo
 
     public static ItemStack getPortalGunv2(Player player) {
         ItemStack mainHand = player.getMainHandItem();
-        if (mainHand.getItem() instanceof PortalGunV2)
+        if (mainHand.getItem() instanceof PortalGunV2Item)
             return mainHand;
         ItemStack offHand = player.getOffhandItem();
-        if (offHand.getItem() instanceof PortalGunV2)
+        if (offHand.getItem() instanceof PortalGunV2Item)
             return offHand;
         return ItemStack.EMPTY;
     }

@@ -2,7 +2,7 @@ package com.direwolf20.justdirethings.common.blockentities.basebe;
 
 import com.direwolf20.justdirethings.common.containers.handlers.FilterBasicHandler;
 import com.direwolf20.justdirethings.common.entities.CreatureCatcherEntity;
-import com.direwolf20.justdirethings.common.items.CreatureCatcher;
+import com.direwolf20.justdirethings.common.items.CreatureCatcherItem;
 import com.direwolf20.justdirethings.util.ItemStackKey;
 import com.direwolf20.justdirethings.util.interfacehelpers.FilterData;
 import net.minecraft.nbt.CompoundTag;
@@ -81,7 +81,7 @@ public interface FilterableBE {
                     getFilterData().entityCache.put(entity, getFilterData().allowlist);
                     return getFilterData().allowlist;
                 }
-            } else if (stack.getItem() instanceof CreatureCatcher creatureCatcher) {
+            } else if (stack.getItem() instanceof CreatureCatcherItem creatureCatcherItem) {
                 Mob mob = CreatureCatcherEntity.getEntityFromItemStack(stack, level);
                 if (mob == null)
                     continue;

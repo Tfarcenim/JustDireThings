@@ -59,14 +59,11 @@ import com.direwolf20.justdirethings.common.items.abilityupgrades.Upgrade;
 import com.direwolf20.justdirethings.common.items.abilityupgrades.UpgradeBlank;
 import com.direwolf20.justdirethings.common.items.abilityupgrades.UpgradeTemplate;
 import com.direwolf20.justdirethings.common.items.armors.*;
-import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.resources.*;
 import com.direwolf20.justdirethings.common.items.tools.*;
 import com.direwolf20.justdirethings.datagen.recipes.*;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -92,11 +89,6 @@ import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
-import net.neoforged.neoforge.common.world.chunk.TicketController;
-import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
@@ -104,7 +96,7 @@ import static com.direwolf20.justdirethings.JustDireThings.MODID;
 import static com.direwolf20.justdirethings.client.particles.ModParticles.PARTICLE_TYPES;
 
 public class Registration {
-    //public static final TicketController TICKET_CONTROLLER = new TicketController(ResourceLocation.fromNamespaceAndPath(MODID, "chunk_loader"), null);
+    //public static final TicketController TICKET_CONTROLLER = new TicketController(JustDireThings.id("chunk_loader"), null);
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     public static final DeferredRegister<Block> FLUID_BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
@@ -125,11 +117,11 @@ public class Registration {
 
 
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, MODID);
-    public static final Supplier<RecipeType<GooSpreadRecipe>> GOO_SPREAD_RECIPE_TYPE = RECIPE_TYPES.register("goospreadrecipe", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MODID, "goospreadrecipe")));
-    public static final Supplier<RecipeType<GooSpreadRecipeTag>> GOO_SPREAD_RECIPE_TYPE_TAG = RECIPE_TYPES.register("goospreadrecipe_tag", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MODID, "goospreadrecipe_tag")));
-    public static final Supplier<RecipeType<FluidDropRecipe>> FLUID_DROP_RECIPE_TYPE = RECIPE_TYPES.register("fluiddroprecipe", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MODID, "fluiddroprecipe")));
-    public static final Supplier<RecipeType<AbilityRecipe>> ABILITY_RECIPE_TYPE = RECIPE_TYPES.register("abilityrecipe", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MODID, "abilityrecipe")));
-    public static final Supplier<RecipeType<PaxelRecipe>> PAXEL_RECIPE_TYPE = RECIPE_TYPES.register("paxelrecipe", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MODID, "paxelrecipe")));
+    public static final Supplier<RecipeType<GooSpreadRecipe>> GOO_SPREAD_RECIPE_TYPE = RECIPE_TYPES.register("goospreadrecipe", () -> RecipeType.simple(JustDireThings.id("goospreadrecipe")));
+    public static final Supplier<RecipeType<GooSpreadRecipeTag>> GOO_SPREAD_RECIPE_TYPE_TAG = RECIPE_TYPES.register("goospreadrecipe_tag", () -> RecipeType.simple(JustDireThings.id("goospreadrecipe_tag")));
+    public static final Supplier<RecipeType<FluidDropRecipe>> FLUID_DROP_RECIPE_TYPE = RECIPE_TYPES.register("fluiddroprecipe", () -> RecipeType.simple(JustDireThings.id("fluiddroprecipe")));
+    public static final Supplier<RecipeType<AbilityRecipe>> ABILITY_RECIPE_TYPE = RECIPE_TYPES.register("abilityrecipe", () -> RecipeType.simple(JustDireThings.id("abilityrecipe")));
+    public static final Supplier<RecipeType<PaxelRecipe>> PAXEL_RECIPE_TYPE = RECIPE_TYPES.register("paxelrecipe", () -> RecipeType.simple(JustDireThings.id("paxelrecipe")));
 
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, JustDireThings.MODID);
     public static final Supplier<GooSpreadRecipe.Serializer> GOO_SPREAD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("goospread", GooSpreadRecipe.Serializer::new);
@@ -139,10 +131,10 @@ public class Registration {
     public static final Supplier<PaxelRecipe.Serializer> PAXEL_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("paxel", PaxelRecipe.Serializer::new);
 
     private static final DeferredRegister<SoundEvent> SOUND_REGISTRY = DeferredRegister.create(Registries.SOUND_EVENT, JustDireThings.MODID);
-    public static final Supplier<SoundEvent> BEEP = SOUND_REGISTRY.register("beep", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "beep")));
-    public static final Supplier<SoundEvent> PORTAL_GUN_CLOSE = SOUND_REGISTRY.register("portal_gun_close", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "portal_gun_close")));
-    public static final Supplier<SoundEvent> PORTAL_GUN_OPEN = SOUND_REGISTRY.register("portal_gun_open", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "portal_gun_open")));
-    public static final Supplier<SoundEvent> PARADOX_AMBIENT = SOUND_REGISTRY.register("paradox_ambient", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "paradox_ambient")));
+    public static final Supplier<SoundEvent> BEEP = SOUND_REGISTRY.register("beep", () -> SoundEvent.createVariableRangeEvent(JustDireThings.id( "beep")));
+    public static final Supplier<SoundEvent> PORTAL_GUN_CLOSE = SOUND_REGISTRY.register("portal_gun_close", () -> SoundEvent.createVariableRangeEvent(JustDireThings.id( "portal_gun_close")));
+    public static final Supplier<SoundEvent> PORTAL_GUN_OPEN = SOUND_REGISTRY.register("portal_gun_open", () -> SoundEvent.createVariableRangeEvent(JustDireThings.id( "portal_gun_open")));
+    public static final Supplier<SoundEvent> PARADOX_AMBIENT = SOUND_REGISTRY.register("paradox_ambient", () -> SoundEvent.createVariableRangeEvent(JustDireThings.id( "paradox_ambient")));
 
 
     public static void init(IEventBus eventBus) {
@@ -166,10 +158,6 @@ public class Registration {
         SOUND_REGISTRY.register(eventBus);
         ATTRIBUTES.register(eventBus);
         UPGRADES.register(eventBus);
-
-        JustDireDataComponents.genAbilityData();
-        JustDireDataComponents.COMPONENTS.register(eventBus);
-
     }
 
     //Gooblocks
@@ -341,7 +329,7 @@ public class Registration {
     public static final RegistryObject<BlockItem> BlockPlacerT1_ITEM = ITEMS.register("blockplacert1", () -> new BlockItem(BlockPlacerT1.get(), new Item.Properties()));
     public static final RegistryObject<BlockPlacerT2> BlockPlacerT2 = SIDEDBLOCKS.register("blockplacert2", BlockPlacerT2::new);
     public static final RegistryObject<BlockItem> BlockPlacerT2_ITEM = ITEMS.register("blockplacert2", () -> new BlockItem(BlockPlacerT2.get(), new Item.Properties()));
-    public static final RegistryObject<ClickerT1> ClickerT1 = SIDEDBLOCKS.register("clickert1", ClickerT1::new);
+    public static final RegistryObject<ClickerT1Block> ClickerT1 = SIDEDBLOCKS.register("clickert1", ClickerT1Block::new);
     public static final RegistryObject<BlockItem> ClickerT1_ITEM = ITEMS.register("clickert1", () -> new BlockItem(ClickerT1.get(), new Item.Properties()));
     public static final RegistryObject<ClickerT2> ClickerT2 = SIDEDBLOCKS.register("clickert2", ClickerT2::new);
     public static final RegistryObject<BlockItem> ClickerT2_ITEM = ITEMS.register("clickert2", () -> new BlockItem(ClickerT2.get(), new Item.Properties()));
@@ -349,9 +337,9 @@ public class Registration {
     public static final RegistryObject<BlockItem> SensorT1_ITEM = ITEMS.register("sensort1", () -> new BlockItem(SensorT1.get(), new Item.Properties()));
     public static final RegistryObject<SensorT2> SensorT2 = SIDEDBLOCKS.register("sensort2", SensorT2::new);
     public static final RegistryObject<BlockItem> SensorT2_ITEM = ITEMS.register("sensort2", () -> new BlockItem(SensorT2.get(), new Item.Properties()));
-    public static final RegistryObject<DropperT1> DropperT1 = SIDEDBLOCKS.register("droppert1", DropperT1::new);
+    public static final RegistryObject<DropperT1Block> DropperT1 = SIDEDBLOCKS.register("droppert1", DropperT1Block::new);
     public static final RegistryObject<BlockItem> DropperT1_ITEM = ITEMS.register("droppert1", () -> new BlockItem(DropperT1.get(), new Item.Properties()));
-    public static final RegistryObject<DropperT2> DropperT2 = SIDEDBLOCKS.register("droppert2", DropperT2::new);
+    public static final RegistryObject<DropperT2Block> DropperT2 = SIDEDBLOCKS.register("droppert2", DropperT2Block::new);
     public static final RegistryObject<BlockItem> DropperT2_ITEM = ITEMS.register("droppert2", () -> new BlockItem(DropperT2.get(), new Item.Properties()));
     public static final RegistryObject<BlockSwapperT1> BlockSwapperT1 = SIDEDBLOCKS.register("blockswappert1", BlockSwapperT1::new);
     public static final RegistryObject<BlockItem> BlockSwapperT1_ITEM = ITEMS.register("blockswappert1", () -> new BlockItem(BlockSwapperT1.get(), new Item.Properties()));
@@ -363,24 +351,24 @@ public class Registration {
     public static final RegistryObject<BlockItem> FluidPlacerT1_ITEM = ITEMS.register("fluidplacert1", () -> new BlockItem(FluidPlacerT1.get(), new Item.Properties()));
     public static final RegistryObject<FluidPlacerT2> FluidPlacerT2 = SIDEDBLOCKS.register("fluidplacert2", FluidPlacerT2::new);
     public static final RegistryObject<BlockItem> FluidPlacerT2_ITEM = ITEMS.register("fluidplacert2", () -> new BlockItem(FluidPlacerT2.get(), new Item.Properties()));
-    public static final RegistryObject<FluidCollectorT1> FluidCollectorT1 = SIDEDBLOCKS.register("fluidcollectort1", FluidCollectorT1::new);
+    public static final RegistryObject<FluidCollectorT1Block> FluidCollectorT1 = SIDEDBLOCKS.register("fluidcollectort1", FluidCollectorT1Block::new);
     public static final RegistryObject<BlockItem> FluidCollectorT1_ITEM = ITEMS.register("fluidcollectort1", () -> new BlockItem(FluidCollectorT1.get(), new Item.Properties()));
-    public static final RegistryObject<FluidCollectorT2> FluidCollectorT2 = SIDEDBLOCKS.register("fluidcollectort2", FluidCollectorT2::new);
+    public static final RegistryObject<FluidCollectorT2Block> FluidCollectorT2 = SIDEDBLOCKS.register("fluidcollectort2", FluidCollectorT2Block::new);
     public static final RegistryObject<BlockItem> FluidCollectorT2_ITEM = ITEMS.register("fluidcollectort2", () -> new BlockItem(FluidCollectorT2.get(), new Item.Properties()));
     public static final RegistryObject<ParadoxMachine> ParadoxMachine = SIDEDBLOCKS.register("paradoxmachine", ParadoxMachine::new);
     public static final RegistryObject<BlockItem> ParadoxMachine_ITEM = ITEMS.register("paradoxmachine", () -> new BlockItem(ParadoxMachine.get(), new Item.Properties()));
     public static final RegistryObject<InventoryHolder> InventoryHolder = BLOCKS.register("inventory_holder", InventoryHolder::new);
     public static final RegistryObject<BlockItem> InventoryHolder_ITEM = ITEMS.register("inventory_holder", () -> new BlockItem(InventoryHolder.get(), new Item.Properties()));
-    public static final RegistryObject<ExperienceHolder> ExperienceHolder = BLOCKS.register("experienceholder", ExperienceHolder::new);
+    public static final RegistryObject<ExperienceHolderBlock> ExperienceHolder = BLOCKS.register("experienceholder", ExperienceHolderBlock::new);
     public static final RegistryObject<BlockItem> ExperienceHolder_ITEM = ITEMS.register("experienceholder", () -> new BlockItem(ExperienceHolder.get(), new Item.Properties()));
 
 
     //Power Machines
-    public static final RegistryObject<GeneratorT1> GeneratorT1 = BLOCKS.register("generatort1", GeneratorT1::new);
+    public static final RegistryObject<GeneratorT1Block> GeneratorT1 = BLOCKS.register("generatort1", GeneratorT1Block::new);
     public static final RegistryObject<GeneratorFluidT1> GeneratorFluidT1 = BLOCKS.register("generatorfluidt1", GeneratorFluidT1::new);
     public static final RegistryObject<BlockItem> GeneratorT1_ITEM = ITEMS.register("generatort1", () -> new BlockItem(GeneratorT1.get(), new Item.Properties()));
     public static final RegistryObject<BlockItem> GeneratorFluidT1_ITEM = ITEMS.register("generatorfluidt1", () -> new BlockItem(GeneratorFluidT1.get(), new Item.Properties()));
-    public static final RegistryObject<EnergyTransmitter> EnergyTransmitter = BLOCKS.register("energytransmitter", EnergyTransmitter::new);
+    public static final RegistryObject<EnergyTransmitterBlock> EnergyTransmitter = BLOCKS.register("energytransmitter", EnergyTransmitterBlock::new);
     public static final RegistryObject<BlockItem> EnergyTransmitter_ITEM = ITEMS.register("energytransmitter", () -> new BlockItem(EnergyTransmitter.get(), new Item.Properties()));
 
     //Blocks - Raw Resources
@@ -493,28 +481,28 @@ public class Registration {
     public static final RegistryObject<Coal_T3> Coal_T3 = ITEMS.register("coal_t3", Coal_T3::new);
     public static final RegistryObject<Coal_T4> Coal_T4 = ITEMS.register("coal_t4", Coal_T4::new);
     public static final RegistryObject<PolymorphicCatalyst> PolymorphicCatalyst = ITEMS.register("polymorphic_catalyst", PolymorphicCatalyst::new);
-    public static final RegistryObject<PortalFluidCatalyst> PortalFluidCatalyst = ITEMS.register("portal_fluid_catalyst", PortalFluidCatalyst::new);
+    public static final RegistryObject<Item> PortalFluidCatalyst = ITEMS.register("portal_fluid_catalyst", () -> new Item(new Item.Properties()));
     public static final RegistryObject<TimeCrystal> TimeCrystal = ITEMS.register("time_crystal", TimeCrystal::new);
 
     //Items
-    public static final RegistryObject<FuelCanister> Fuel_Canister = ITEMS.register("fuel_canister", FuelCanister::new);
-    public static final RegistryObject<PocketGenerator> Pocket_Generator = ITEMS.register("pocket_generator", PocketGenerator::new);
-    public static final RegistryObject<FerricoreWrench> FerricoreWrench = ITEMS.register("ferricore_wrench", FerricoreWrench::new);
-    public static final RegistryObject<TotemOfDeathRecall> TotemOfDeathRecall = ITEMS.register("totem_of_death_recall", TotemOfDeathRecall::new);
-    public static final RegistryObject<BlazejetWand> BlazejetWand = ITEMS.register("blazejet_wand", BlazejetWand::new);
+    public static final RegistryObject<FuelCanisterItem> Fuel_Canister = ITEMS.register("fuel_canister", FuelCanisterItem::new);
+    public static final RegistryObject<PocketGeneratorItem> Pocket_Generator = ITEMS.register("pocket_generator", PocketGeneratorItem::new);
+    public static final RegistryObject<FerricoreWrenchItem> FerricoreWrench = ITEMS.register("ferricore_wrench", FerricoreWrenchItem::new);
+    public static final RegistryObject<TotemOfDeathRecallItem> TotemOfDeathRecall = ITEMS.register("totem_of_death_recall", TotemOfDeathRecallItem::new);
+    public static final RegistryObject<BlazejetWandItem> BlazejetWand = ITEMS.register("blazejet_wand", BlazejetWandItem::new);
     public static final RegistryObject<VoidshiftWand> VoidshiftWand = ITEMS.register("voidshift_wand", VoidshiftWand::new);
     public static final RegistryObject<EclipsegateWand> EclipsegateWand = ITEMS.register("eclipsegate_wand", EclipsegateWand::new);
-    public static final RegistryObject<TimeWand> TimeWand = ITEMS.register("time_wand", TimeWand::new);
-    public static final RegistryObject<CreatureCatcher> CreatureCatcher = ITEMS.register("creaturecatcher", CreatureCatcher::new);
-    public static final RegistryObject<MachineSettingsCopier> MachineSettingsCopier = ITEMS.register("machinesettingscopier", MachineSettingsCopier::new);
-    public static final RegistryObject<PortalGun> PortalGun = ITEMS.register("portalgun", PortalGun::new);
-    public static final RegistryObject<PortalGunV2> PortalGunV2 = ITEMS.register("portalgun_v2", PortalGunV2::new);
-    public static final RegistryObject<FluidCanister> FluidCanister = ITEMS.register("fluid_canister", FluidCanister::new);
-    public static final RegistryObject<PotionCanister> PotionCanister = ITEMS.register("potion_canister", PotionCanister::new);
-    public static final RegistryObject<FerricoreBow> FerricoreBow = BOWS.register("bow_ferricore", FerricoreBow::new);
-    public static final RegistryObject<BlazegoldBow> BlazegoldBow = BOWS.register("bow_blazegold", BlazegoldBow::new);
-    public static final RegistryObject<CelestigemBow> CelestigemBow = BOWS.register("bow_celestigem", CelestigemBow::new);
-    public static final RegistryObject<EclipseAlloyBow> EclipseAlloyBow = BOWS.register("bow_eclipsealloy", EclipseAlloyBow::new);
+    public static final RegistryObject<TimeWandItem> TimeWand = ITEMS.register("time_wand", TimeWandItem::new);
+    public static final RegistryObject<CreatureCatcherItem> CreatureCatcher = ITEMS.register("creaturecatcher", CreatureCatcherItem::new);
+    public static final RegistryObject<MachineSettingsCopierItem> MachineSettingsCopier = ITEMS.register("machinesettingscopier", MachineSettingsCopierItem::new);
+    public static final RegistryObject<PortalGunItem> PortalGun = ITEMS.register("portalgun", PortalGunItem::new);
+    public static final RegistryObject<PortalGunV2Item> PortalGunV2 = ITEMS.register("portalgun_v2", PortalGunV2Item::new);
+    public static final RegistryObject<FluidCanisterItem> FluidCanister = ITEMS.register("fluid_canister", FluidCanisterItem::new);
+    public static final RegistryObject<PotionCanisterItem> PotionCanister = ITEMS.register("potion_canister", PotionCanisterItem::new);
+    public static final RegistryObject<FerricoreBowItem> FerricoreBow = BOWS.register("bow_ferricore", FerricoreBowItem::new);
+    public static final RegistryObject<BlazegoldBowItem> BlazegoldBow = BOWS.register("bow_blazegold", BlazegoldBowItem::new);
+    public static final RegistryObject<CelestigemBowItem> CelestigemBow = BOWS.register("bow_celestigem", CelestigemBowItem::new);
+    public static final RegistryObject<EclipseAlloyBowItem> EclipseAlloyBow = BOWS.register("bow_eclipsealloy", EclipseAlloyBowItem::new);
 
     //Items - Tools
     public static final RegistryObject<FerricoreSword> FerricoreSword = TOOLS.register("ferricore_sword", FerricoreSword::new);
@@ -777,7 +765,7 @@ public class Registration {
                     int capacity = energyTransmitterBE.getMaxEnergy(); //Default
                     return new TransmitterEnergyStorage(capacity, energyTransmitterBE);
                 } else {
-                    throw new IllegalStateException("Cannot attach energy handler item to a non-EnergyTransmitter.");
+                    throw new IllegalStateException("Cannot attach energy handler item to a non-EnergyTransmitterBlock.");
                 }
             }).build());
     public static final Supplier<AttachmentType<EnergyStorageNoReceive>> ENERGYSTORAGE_GENERATORS = ATTACHMENT_TYPES.register(

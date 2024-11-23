@@ -7,7 +7,7 @@ import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock_T1;
 import com.direwolf20.justdirethings.common.capabilities.EnergyStorageNoReceive;
 import com.direwolf20.justdirethings.common.capabilities.GeneratorItemHandler;
 import com.direwolf20.justdirethings.common.capabilities.MachineEnergyStorage;
-import com.direwolf20.justdirethings.common.items.FuelCanister;
+import com.direwolf20.justdirethings.common.items.FuelCanisterItem;
 import com.direwolf20.justdirethings.common.items.resources.Coal_T1;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.setup.Registration;
@@ -173,8 +173,8 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
             this.fuelBurnMultiplier = direCoal.getBurnSpeedMultiplier();
         } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock) {
             this.fuelBurnMultiplier = coalBlock.getBurnSpeedMultiplier();
-        } else if (fuelStack.getItem() instanceof FuelCanister fuelCanister) {
-            this.fuelBurnMultiplier = FuelCanister.getBurnSpeedMultiplier(fuelStack);
+        } else if (fuelStack.getItem() instanceof FuelCanisterItem fuelCanister) {
+            this.fuelBurnMultiplier = FuelCanisterItem.getBurnSpeedMultiplier(fuelStack);
         } else {
             fuelBurnMultiplier = 1;
         }

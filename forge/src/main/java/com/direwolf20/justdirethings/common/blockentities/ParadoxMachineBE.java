@@ -7,10 +7,10 @@ import com.direwolf20.justdirethings.common.capabilities.MachineEnergyStorage;
 import com.direwolf20.justdirethings.common.entities.ParadoxEntity;
 import com.direwolf20.justdirethings.common.fluids.timefluid.TimeFluid;
 import com.direwolf20.justdirethings.network.client.S2CParadoxSyncPayload;
-import com.direwolf20.justdirethings.datagen.JustDireBlockTags;
 import com.direwolf20.justdirethings.datagen.JustDireEntityTags;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.JustDireTags;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.NBTHelpers;
 import com.direwolf20.justdirethings.util.UsefulFakePlayer;
@@ -450,7 +450,7 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
 
     public boolean isBlockPosValid(ServerLevel serverLevel, BlockPos blockPos) {
         BlockState blockState = serverLevel.getBlockState(blockPos);
-        return blockState.is(JustDireBlockTags.PARADOX_ALLOW);
+        return blockState.is(JustDireTags.Blocks.PARADOX_ALLOW);
     }
 
     public Map<BlockPos, BlockState> getBlocksFromNBT() {

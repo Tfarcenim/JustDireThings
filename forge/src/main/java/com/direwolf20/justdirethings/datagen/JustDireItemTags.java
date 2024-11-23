@@ -41,14 +41,14 @@ public class JustDireItemTags extends ItemTagsProvider {
         return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
     }
 
-    public static final TagKey<Item> FUEL_CANISTER_DENY = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "deny_fuel_canister"));
-    public static final TagKey<Item> AUTO_SMELT_DENY = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "auto_smelt_deny"));
-    public static final TagKey<Item> AUTO_SMOKE_DENY = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "auto_smoke_deny"));
-    public static final TagKey<Item> GOO_REVIVE_TIER_1 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "goo_revive_tier_1"));
-    public static final TagKey<Item> GOO_REVIVE_TIER_2 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "goo_revive_tier_2"));
-    public static final TagKey<Item> GOO_REVIVE_TIER_3 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "goo_revive_tier_3"));
-    public static final TagKey<Item> GOO_REVIVE_TIER_4 = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "goo_revive_tier_4"));
-    public static final TagKey<Item> PARADOX_DENY = ItemTags.create(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "paradox_deny"));
+    public static final TagKey<Item> FUEL_CANISTER_DENY = ItemTags.create(JustDireThings.id("deny_fuel_canister"));
+    public static final TagKey<Item> AUTO_SMELT_DENY = ItemTags.create(JustDireThings.id("auto_smelt_deny"));
+    public static final TagKey<Item> AUTO_SMOKE_DENY = ItemTags.create(JustDireThings.id("auto_smoke_deny"));
+    public static final TagKey<Item> GOO_REVIVE_TIER_1 = ItemTags.create(JustDireThings.id("goo_revive_tier_1"));
+    public static final TagKey<Item> GOO_REVIVE_TIER_2 = ItemTags.create(JustDireThings.id("goo_revive_tier_2"));
+    public static final TagKey<Item> GOO_REVIVE_TIER_3 = ItemTags.create(JustDireThings.id("goo_revive_tier_3"));
+    public static final TagKey<Item> GOO_REVIVE_TIER_4 = ItemTags.create(JustDireThings.id("goo_revive_tier_4"));
+    public static final TagKey<Item> PARADOX_DENY = ItemTags.create(JustDireThings.id("paradox_deny"));
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {

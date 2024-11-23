@@ -4,7 +4,7 @@ import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButtonFactory;
 import com.direwolf20.justdirethings.client.screens.widgets.BaseButton;
 import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
-import com.direwolf20.justdirethings.common.items.MachineSettingsCopier;
+import com.direwolf20.justdirethings.common.items.MachineSettingsCopierItem;
 import com.direwolf20.justdirethings.network.server.C2SCopyMachineSettingsPayload;
 import com.direwolf20.justdirethings.platform.Services;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -25,10 +25,10 @@ public class MachineSettingsCopierScreen extends Screen {
     public MachineSettingsCopierScreen(ItemStack itemStack) {
         super(Component.literal(""));
         this.copyMachineSettingsItemstack = itemStack;
-        area = MachineSettingsCopier.getCopyArea(itemStack);
-        offset = MachineSettingsCopier.getCopyOffset(itemStack);
-        filter = MachineSettingsCopier.getCopyFilter(itemStack);
-        redstone = MachineSettingsCopier.getCopyRedstone(itemStack);
+        area = MachineSettingsCopierItem.getCopyArea(itemStack);
+        offset = MachineSettingsCopierItem.getCopyOffset(itemStack);
+        filter = MachineSettingsCopierItem.getCopyFilter(itemStack);
+        redstone = MachineSettingsCopierItem.getCopyRedstone(itemStack);
     }
 
     @Override

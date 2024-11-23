@@ -96,7 +96,7 @@ public class GooSpreadRecipe implements CraftingRecipe {
 
 
     public static class Serializer implements RecipeSerializer<GooSpreadRecipe> {
-        private static final net.minecraft.resources.ResourceLocation NAME = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "goospread");
+        private static final net.minecraft.resources.ResourceLocation NAME = JustDireThings.id("goospread");
         private static final MapCodec<GooSpreadRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 p_311734_ -> p_311734_.group(
                                 ResourceLocation.CODEC.fieldOf("id").forGetter(p_301134_ -> p_301134_.id),

@@ -24,8 +24,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-public class FerricoreWrench extends Item {
-    public FerricoreWrench() {
+public class FerricoreWrenchItem extends Item {
+    public FerricoreWrenchItem() {
         super(new Properties()
                 .stacksTo(1));
     }
@@ -102,21 +102,20 @@ public class FerricoreWrench extends Item {
     }
 
     public static GlobalPos getBoundTo(ItemStack stack) {
-        return stack.getOrDefault(JustDireDataComponents.BOUND_GLOBAL_POS, null);
+        return JustDireDataComponents.getBoundGlobalPos(stack);
     }
 
     public static void setBoundTo(ItemStack stack, GlobalPos globalPos) {
-        stack.set(JustDireDataComponents.BOUND_GLOBAL_POS, globalPos);
+        JustDireDataComponents.setBoundGlobalPos(stack, globalPos);
     }
 
     public static void removeBoundTo(ItemStack stack) {
-        stack.remove(JustDireDataComponents.BOUND_GLOBAL_POS);
+        setBoundTo(stack,null);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        Level level = context.level();
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         if (level == null) {
             return;
         }

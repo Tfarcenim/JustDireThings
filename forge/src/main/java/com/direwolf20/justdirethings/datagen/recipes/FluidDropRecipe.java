@@ -108,7 +108,7 @@ public class FluidDropRecipe implements CraftingRecipe {
 
 
     public static class Serializer implements RecipeSerializer<FluidDropRecipe> {
-        private static final ResourceLocation NAME = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "fluiddrop");
+        private static final ResourceLocation NAME = JustDireThings.id("fluiddrop");
         private static final MapCodec<FluidDropRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 p_311734_ -> p_311734_.group(
                                 ResourceLocation.CODEC.fieldOf("id").forGetter(p_301134_ -> p_301134_.id),

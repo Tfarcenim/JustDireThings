@@ -1,7 +1,7 @@
 package com.direwolf20.justdirethings.mixin;
 
-import com.direwolf20.justdirethings.datagen.JustDireBlockTags;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.JustDireTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -53,7 +53,7 @@ public interface CollisionMixin {
         Level level = player.level();
         BlockPos blockPos = new BlockPos((int) shape.min(Direction.Axis.X), (int) shape.min(Direction.Axis.Y), (int) shape.min(Direction.Axis.Z));
         BlockState blockState = level.getBlockState(blockPos);
-        if (blockState.getDestroySpeed(level, blockPos) < 0 || blockState.is(JustDireBlockTags.PHASEDENY))
+        if (blockState.getDestroySpeed(level, blockPos) < 0 || blockState.is(JustDireTags.Blocks.PHASEDENY))
             return true;
         double maxY = shape.max(Direction.Axis.Y);
         double minY = collisionBox.minY;
@@ -63,6 +63,6 @@ public interface CollisionMixin {
     }
 
     default boolean shouldPassThroughWalls(Player player) {
-        return player.getAttributeValue(Registration.PHASE) > 0;
+        return player.getAttributeValue(Registration.PHASE.get()) > 0;
     }
 }

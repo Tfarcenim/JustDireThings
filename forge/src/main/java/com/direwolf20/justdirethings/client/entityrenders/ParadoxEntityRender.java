@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class ParadoxEntityRender extends EntityRenderer<ParadoxEntity> {
     private static final Random random = new Random();  // Use entity's tickCount to seed the randomness
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/entity/vortex1.png");
+    private static final ResourceLocation TEXTURE = JustDireThings.id("textures/entity/vortex1.png");
 
     private float savedPulseScale = -1;
 
@@ -119,14 +119,14 @@ public class ParadoxEntityRender extends EntityRenderer<ParadoxEntity> {
                 Vector3f normal = new Vector3f(0.0F, 1.0F, 0.0F);
 
                 // Draw the lightning arc segment
-                vertexConsumer.addVertex(matrix, startX, startY, startZ)
+                vertexConsumer.vertex(matrix, startX, startY, startZ)
                         .setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
                         .setUv(0.0F, 0.0F)
                         .setOverlay(OverlayTexture.NO_OVERLAY)
                         .setLight(packedLightIn)
                         .setNormal(matrixStackIn.last(), normal.x(), normal.y(), normal.z());
 
-                vertexConsumer.addVertex(matrix, x, y, z)
+                vertexConsumer.vertex(matrix, x, y, z)
                         .setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
                         .setUv(1.0F, 1.0F)
                         .setOverlay(OverlayTexture.NO_OVERLAY)
@@ -164,14 +164,14 @@ public class ParadoxEntityRender extends EntityRenderer<ParadoxEntity> {
         Matrix4f matrix = matrixStackIn.last().pose();
 
         // Draw the branch
-        vertexConsumer.addVertex(matrix, startX, startY, startZ)
+        vertexConsumer.vertex(matrix, startX, startY, startZ)
                 .setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
                 .setUv(0.0F, 0.0F)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
                 .setLight(packedLightIn)
                 .setNormal(matrixStackIn.last(), normal.x(), normal.y(), normal.z());
 
-        vertexConsumer.addVertex(matrix, bx, by, bz)
+        vertexConsumer.vertex(matrix, bx, by, bz)
                 .setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
                 .setUv(1.0F, 1.0F)
                 .setOverlay(OverlayTexture.NO_OVERLAY)

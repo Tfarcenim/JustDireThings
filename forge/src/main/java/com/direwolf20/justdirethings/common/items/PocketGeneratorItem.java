@@ -8,6 +8,7 @@ import com.direwolf20.justdirethings.common.items.interfaces.PoweredItem;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableItem;
 import com.direwolf20.justdirethings.common.items.resources.Coal_T1;
 import com.direwolf20.justdirethings.setup.Config;
+import com.direwolf20.justdirethings.util.ItemStackNBTHandler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,17 +19,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.items.ComponentItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import static com.direwolf20.justdirethings.util.TooltipHelpers.*;
 
-public class PocketGenerator extends Item implements PoweredItem, ToggleableItem {
-    public PocketGenerator() {
+public class PocketGeneratorItem extends Item implements PoweredItem, ToggleableItem {
+    public PocketGeneratorItem() {
         super(new Properties()
                 .stacksTo(1));
     }
@@ -51,14 +51,14 @@ public class PocketGenerator extends Item implements PoweredItem, ToggleableItem
     public void inventoryTick(@NotNull ItemStack itemStack, @NotNull Level world, @NotNull Entity entity, int itemSlot, boolean isSelected) {
         if (world.isClientSide) return;
         if (entity instanceof Player player && itemStack.getItem() instanceof ToggleableItem toggleableItem && toggleableItem.getEnabled(itemStack)) {
-            IEnergyStorage energyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
+            IEnergyStorage energyStorage = itemStack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
             if (energyStorage == null) return;
             if (energyStorage instanceof EnergyStorageItemStackNoReceive EnergyStorageItemStackNoReceive) {
                 tryBurn(EnergyStorageItemStackNoReceive, itemStack);
                 if (energyStorage.getEnergyStored() >= (getFEPerTick() / 10)) { //If we have 1/10th the max transfer speed, go ahead and let it rip
                     for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                         ItemStack slotStack = player.getInventory().getItem(i);
-                        IEnergyStorage slotEnergy = slotStack.getCapability(Capabilities.EnergyStorage.ITEM);
+                        IEnergyStorage slotEnergy = slotStack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
                         if (slotEnergy != null) {
                             int acceptedEnergy = slotEnergy.receiveEnergy(getFEPerTick(), true);
                             if (acceptedEnergy > 0) {
@@ -99,7 +99,7 @@ public class PocketGenerator extends Item implements PoweredItem, ToggleableItem
     }
 
     private boolean initBurn(ItemStack itemStack) {
-        ComponentItemHandler handler = new ComponentItemHandler(itemStack, JustDireDataComponents.ITEMSTACK_HANDLER.get(), 1);
+        ItemStackNBTHandler handler = new ItemStackNBTHandler(itemStack, JustDireDataComponents.ITEMSTACK_HANDLER, 1);
         ItemStack fuelStack = handler.getStackInSlot(0);
 
         int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING);
@@ -108,8 +108,8 @@ public class PocketGenerator extends Item implements PoweredItem, ToggleableItem
                 setFuelMultiplier(itemStack, direCoal.getBurnSpeedMultiplier());
             } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock) {
                 setFuelMultiplier(itemStack, coalBlock.getBurnSpeedMultiplier());
-            } else if (fuelStack.getItem() instanceof FuelCanister) {
-                setFuelMultiplier(itemStack, FuelCanister.getBurnSpeedMultiplier(fuelStack));
+            } else if (fuelStack.getItem() instanceof FuelCanisterItem) {
+                setFuelMultiplier(itemStack, FuelCanisterItem.getBurnSpeedMultiplier(fuelStack));
             } else {
                 setFuelMultiplier(itemStack, 1);
             }
@@ -123,17 +123,16 @@ public class PocketGenerator extends Item implements PoweredItem, ToggleableItem
 
             int counter = (int) (Math.floor(burnTime) / getBurnSpeedMultiplier(itemStack));
             int maxBurn = counter;
-            itemStack.set(JustDireDataComponents.POCKETGEN_COUNTER, counter);
-            itemStack.set(JustDireDataComponents.POCKETGEN_MAXBURN, maxBurn);
+            JustDireDataComponents.setPocketgenCounter(itemStack, counter);
+            JustDireDataComponents.setPocketgenMaxburn(itemStack, maxBurn);
             return true;
         }
         return false;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        Level level = context.level();
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         if (level == null) {
             return;
         }

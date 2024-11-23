@@ -1,21 +1,16 @@
 package com.direwolf20.justdirethings.common.blocks;
 
-import com.direwolf20.justdirethings.common.blockentities.FluidCollectorT2BE;
 import com.direwolf20.justdirethings.common.blocks.baseblocks.BaseMachineBlock;
-import com.direwolf20.justdirethings.common.containers.FluidCollectorT2Container;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -24,27 +19,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
-import javax.annotation.Nullable;
-
-public class FluidCollectorT2 extends BaseMachineBlock {
-    public FluidCollectorT2() {
-        super(Properties.of()
-                .sound(SoundType.METAL)
-                .strength(2.0f)
-                .isRedstoneConductor(BaseMachineBlock::never)
-        );
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new FluidCollectorT2BE(pos, state);
-    }
-
-    @Override
-    public void openMenu(Player player, BlockPos blockPos) {
-        player.openMenu(new SimpleMenuProvider(
-                (windowId, playerInventory, playerEntity) -> new FluidCollectorT2Container(windowId, playerInventory, blockPos), Component.empty()));
+public abstract class FluidCollectorBlock extends BaseMachineBlock {
+    public FluidCollectorBlock(Properties p_49795_) {
+        super(p_49795_);
     }
 
     @Override
@@ -85,11 +62,6 @@ public class FluidCollectorT2 extends BaseMachineBlock {
                 }
             }
         }
-        return InteractionResult.PASS;
-    }
+        return InteractionResult.PASS;    }
 
-    @Override
-    public boolean isValidBE(BlockEntity blockEntity) {
-        return blockEntity instanceof FluidCollectorT2BE;
-    }
 }

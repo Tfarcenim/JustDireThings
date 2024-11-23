@@ -5,6 +5,7 @@ import com.direwolf20.justdirethings.common.blocks.baseblocks.BaseMachineBlock;
 import com.direwolf20.justdirethings.common.containers.GeneratorFluidT1Container;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -97,7 +98,7 @@ public class GeneratorFluidT1 extends BaseMachineBlock {
     }
 
     @Override
-    public void openMenu(Player player, BlockPos blockPos) {
+    public void openMenu(ServerPlayer player, BlockPos blockPos) {
         player.openMenu(new SimpleMenuProvider(
                 (windowId, playerInventory, playerEntity) -> new GeneratorFluidT1Container(windowId, playerInventory, blockPos), Component.translatable("")), (buf -> {
             buf.writeBlockPos(blockPos);

@@ -2,11 +2,11 @@ package com.direwolf20.justdirethings.common.blockentities;
 
 import com.direwolf20.justdirethings.client.particles.itemparticle.ItemFlowParticleData;
 import com.direwolf20.justdirethings.common.blockentities.basebe.*;
-import com.direwolf20.justdirethings.common.blocks.EnergyTransmitter;
+import com.direwolf20.justdirethings.common.blocks.EnergyTransmitterBlock;
 import com.direwolf20.justdirethings.common.capabilities.EnergyStorageItemStackNoReceive;
 import com.direwolf20.justdirethings.common.capabilities.TransmitterEnergyStorage;
 import com.direwolf20.justdirethings.common.containers.handlers.FilterBasicHandler;
-import com.direwolf20.justdirethings.common.items.PocketGenerator;
+import com.direwolf20.justdirethings.common.items.PocketGeneratorItem;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.interfacehelpers.AreaAffectingData;
@@ -233,7 +233,7 @@ public class  EnergyTransmitterBE extends BaseMachineBE implements RedstoneContr
         Vec3 sourceVec = new Vec3(sourcePos.getX() + 0.5f - (0.3 * sourceFacing.getStepX()), sourcePos.getY() + 0.5f - (0.3 * sourceFacing.getStepY()), sourcePos.getZ() + 0.5f - (0.3 * sourceFacing.getStepZ()));
         BlockState targetState = level.getBlockState(targetPos);
         Vec3 targetVec = new Vec3(0, 0, 0);
-        if (targetState.getBlock() instanceof EnergyTransmitter) {
+        if (targetState.getBlock() instanceof EnergyTransmitterBlock) {
             Direction targetFacing = targetState.getValue(BlockStateProperties.FACING);
             targetVec = new Vec3(targetPos.getX() + 0.5f - (0.3 * targetFacing.getStepX()), targetPos.getY() + 0.5f - (0.3 * targetFacing.getStepY()), targetPos.getZ() + 0.5f - (0.3 * targetFacing.getStepZ()));
         } else {
@@ -256,8 +256,8 @@ public class  EnergyTransmitterBE extends BaseMachineBE implements RedstoneContr
         if (itemStack.isEmpty()) return;
         IEnergyStorage energyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
         if (energyStorage == null) return;
-        if (itemStack.getItem() instanceof PocketGenerator pocketGenerator) {
-            pocketGenerator.tryBurn((EnergyStorageItemStackNoReceive) energyStorage, itemStack);
+        if (itemStack.getItem() instanceof PocketGeneratorItem pocketGeneratorItem) {
+            pocketGeneratorItem.tryBurn((EnergyStorageItemStackNoReceive) energyStorage, itemStack);
         }
         if (getEnergyStorage().getEnergyStored() >= getEnergyStorage().getMaxEnergyStored())
             return; //Don't do anything if already full...
@@ -378,7 +378,7 @@ public class  EnergyTransmitterBE extends BaseMachineBE implements RedstoneContr
                     ItemStack blockItemStack = blockState.getBlock().getCloneItemStack(level, blockPos, blockState);
                     if (!isStackValidFilter(blockItemStack)) return;
 
-                    if (blockState.getBlock() instanceof EnergyTransmitter)
+                    if (blockState.getBlock() instanceof EnergyTransmitterBlock)
                         transmitters.add(blockPos);
                     else
                         blocksToCharge.add(blockPos);

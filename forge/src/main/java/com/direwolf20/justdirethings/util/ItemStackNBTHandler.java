@@ -2,6 +2,7 @@ package com.direwolf20.justdirethings.util;
 
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
@@ -41,29 +42,89 @@ public class ItemStackNBTHandler implements IItemHandlerModifiable {
     }
 
     @Override
-    public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        return null;
+    public ItemStack insertItem(int slot, ItemStack toInsert, boolean simulate) {
+        this.validateSlotIndex(slot);
+
+        if (toInsert.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+
+        if (!this.isItemValid(slot, toInsert)) {
+            return toInsert;
+        }
+
+        List<ItemStack> contents = this.getContents();
+        ItemStack existing = contents.get(slot);
+        // Max amount of the stack that could be inserted
+        int insertLimit = Math.min(this.getSlotLimit(slot), toInsert.getMaxStackSize());
+
+        if (!existing.isEmpty()) {
+            if (!ItemStack.isSameItemSameTags(toInsert, existing)) {
+                return toInsert;
+            }
+
+            insertLimit -= existing.getCount();
+        }
+
+        if (insertLimit <= 0) {
+            return toInsert;
+        }
+
+        int inserted = Math.min(insertLimit, toInsert.getCount());
+
+        if (!simulate) {
+            this.updateContents(contents, toInsert.copyWithCount(existing.getCount() + inserted), slot);
+        }
+
+        return toInsert.copyWithCount(toInsert.getCount() - inserted);
     }
 
     @Override
-    public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-        return null;
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+        this.validateSlotIndex(slot);
+
+        if (amount == 0) {
+            return ItemStack.EMPTY;
+        }
+
+        List<ItemStack> contents = this.getContents();
+        ItemStack existing = contents.get(slot);
+
+        if (existing.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+
+        int toExtract = Math.min(amount, existing.getMaxStackSize());
+
+        if (!simulate) {
+            this.updateContents(contents, existing.copyWithCount(existing.getCount() - toExtract), slot);
+        }
+
+        return existing.copyWithCount(toExtract);
     }
+
 
     @Override
     public int getSlotLimit(int slot) {
-        return 0;
+        return Item.MAX_STACK_SIZE;
     }
 
     protected void updateContents(List<ItemStack> contents, ItemStack stack, int slot) {
         this.validateSlotIndex(slot);
         // Use the max of the contents slots and the capability slots to avoid truncating
-        NonNullList<ItemStack> list = NonNullList.withSize(Math.max(contents.getSlots(), this.getSlots()), ItemStack.EMPTY);
-        contents.copyInto(list);
+        NonNullList<ItemStack> list = NonNullList.withSize(Math.max(contents.size(), this.getSlots()), ItemStack.EMPTY);
+        for (int i = 0; i < list.size();i++) {
+            list.set(i,contents.get(i));
+        }
+
         ItemStack oldStack = list.get(slot);
         list.set(slot, stack);
-        this.parent.set(this.component, ItemContainerContents.fromItems(list));
+        JustDireDataComponents.setItems(stack,list,target);
         this.onContentsChanged(slot, oldStack, stack);
+    }
+
+    protected void onContentsChanged(int slot, ItemStack oldStack, ItemStack stack) {
+
     }
 
     @Override

@@ -1,10 +1,11 @@
 package com.direwolf20.justdirethings.common.items.tools.basetools;
 
 import com.direwolf20.justdirethings.common.entities.JustDireArrow;
-import com.direwolf20.justdirethings.common.items.PotionCanister;
+import com.direwolf20.justdirethings.common.items.PotionCanisterItem;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.*;
 import com.direwolf20.justdirethings.setup.Config;
+import com.direwolf20.justdirethings.util.PotionContents;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -19,19 +20,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.items.ComponentItemHandler;
-import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,11 +39,11 @@ import java.util.stream.Collectors;
 
 import static com.direwolf20.justdirethings.util.TooltipHelpers.*;
 
-public class BaseBow extends BowItem implements ToggleableTool, LeftClickableTool {
+public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickableTool {
     protected final EnumSet<Ability> abilities = EnumSet.noneOf(Ability.class);
     protected final Map<Ability, AbilityParams> abilityParams = new EnumMap<>(Ability.class);
 
-    public BaseBow(Properties properties) {
+    public BaseBowItem(Properties properties) {
         super(properties);
     }
 
@@ -118,9 +113,9 @@ public class BaseBow extends BowItem implements ToggleableTool, LeftClickableToo
                 PotionContents potionContents = PotionContents.EMPTY;
                 for (int slot = 0; slot < componentItemHandler.getSlots(); slot++) {
                     ItemStack potionCanister = componentItemHandler.getStackInSlot(slot);
-                    if (potionCanister.getItem() instanceof PotionCanister) {
-                        int potionAmt = PotionCanister.getPotionAmount(potionCanister);
-                        PotionContents slotPotionContents = PotionCanister.getPotionContents(potionCanister);
+                    if (potionCanister.getItem() instanceof PotionCanisterItem) {
+                        int potionAmt = PotionCanisterItem.getPotionAmount(potionCanister);
+                        PotionContents slotPotionContents = PotionCanisterItem.getPotionContents(potionCanister);
                         if (!slotPotionContents.equals(PotionContents.EMPTY)) {
                             int neededAmt = 0;
                             if (canUseAbilityAndDurability(itemStack, Ability.POTIONARROW))
@@ -132,7 +127,7 @@ public class BaseBow extends BowItem implements ToggleableTool, LeftClickableToo
                             if (potionAmt >= neededAmt) {
                                 for (MobEffectInstance mobEffectInstance : slotPotionContents.getAllEffects())
                                     potionContents = potionContents.withEffectAdded(mobEffectInstance);
-                                PotionCanister.setPotionAmount(potionCanister, potionAmt - neededAmt);
+                                PotionCanisterItem.setPotionAmount(potionCanister, potionAmt - neededAmt);
                                 componentItemHandler.setStackInSlot(slot, potionCanister);
                             }
                         }

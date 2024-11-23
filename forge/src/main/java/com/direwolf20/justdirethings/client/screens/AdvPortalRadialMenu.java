@@ -12,7 +12,7 @@ import com.direwolf20.justdirethings.client.renderers.OurRenderTypes;
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButtonFactory;
 import com.direwolf20.justdirethings.client.screens.widgets.BaseButton;
 import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
-import com.direwolf20.justdirethings.common.items.PortalGunV2;
+import com.direwolf20.justdirethings.common.items.PortalGunV2Item;
 import com.direwolf20.justdirethings.network.server.C2SPortalGunFavoriteChangePayload;
 import com.direwolf20.justdirethings.network.server.C2SPortalGunFavoritePayload;
 import com.direwolf20.justdirethings.platform.Services;
@@ -28,7 +28,6 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
@@ -40,7 +39,7 @@ public class AdvPortalRadialMenu extends Screen {
     ToggleButtonFactory.TextureLocalization REMOVE_BUTTON = new ToggleButtonFactory.TextureLocalization(JustDireThings.id("textures/gui/buttons/remove.png"), Component.translatable("justdirethings.screen.remove_favorite"));
     ToggleButtonFactory.TextureLocalization EDIT_BUTTON = new ToggleButtonFactory.TextureLocalization(JustDireThings.id("textures/gui/buttons/matchnbttrue.png"), Component.translatable("justdirethings.screen.edit_favorite"));
     ToggleButtonFactory.TextureLocalization STAYOPEN_BUTTON = new ToggleButtonFactory.TextureLocalization(JustDireThings.id("textures/gui/buttons/area.png"), Component.translatable("justdirethings.screen.stay_open"));
-    private static final int SEGMENTS = PortalGunV2.MAX_FAVORITES;
+    private static final int SEGMENTS = PortalGunV2Item.MAX_FAVORITES;
 
     private int timeIn = 0;
     private int slotHovered = -1;
@@ -53,8 +52,8 @@ public class AdvPortalRadialMenu extends Screen {
     public AdvPortalRadialMenu(ItemStack stack) {
         super(Component.literal(""));
         portalGun = stack;
-        slotSelected = PortalGunV2.getFavoritePosition(portalGun);
-        this.staysOpen = PortalGunV2.getStayOpen(portalGun);
+        slotSelected = PortalGunV2Item.getFavoritePosition(portalGun);
+        this.staysOpen = PortalGunV2Item.getStayOpen(portalGun);
     }
 
     private static float mouseAngle(int x, int y, int mx, int my) {
@@ -95,7 +94,7 @@ public class AdvPortalRadialMenu extends Screen {
     @Override
     public void render(GuiGraphics guiGraphics, int mx, int my, float partialTicks) {
         renderTooltip(guiGraphics, mx, my);
-        portalGun = PortalGunV2.getPortalGunv2(Minecraft.getInstance().player);
+        portalGun = PortalGunV2Item.getPortalGunv2(Minecraft.getInstance().player);
         PoseStack matrices = guiGraphics.pose();
         float speedOfButtonGrowth = 5f; // How fast the buttons move during initial window opening
         float fract = Math.min(speedOfButtonGrowth, this.timeIn + partialTicks) / speedOfButtonGrowth;
@@ -270,7 +269,7 @@ public class AdvPortalRadialMenu extends Screen {
     }
 
     public NBTHelpers.PortalDestination getFavorite(int slot) {
-        return PortalGunV2.getFavorite(portalGun, slot);
+        return PortalGunV2Item.getFavorite(portalGun, slot);
     }
 
     private static class Vector2f {

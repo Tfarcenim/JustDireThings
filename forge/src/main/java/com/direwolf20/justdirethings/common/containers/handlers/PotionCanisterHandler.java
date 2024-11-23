@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.containers.handlers;
 
-import com.direwolf20.justdirethings.common.items.PotionCanister;
+import com.direwolf20.justdirethings.common.items.PotionCanisterItem;
 import com.direwolf20.justdirethings.util.ItemStackNBTHandler;
 import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +17,7 @@ public class PotionCanisterHandler extends ItemStackNBTHandler {
     @Override
     protected void onContentsChanged(int slot, ItemStack oldStack, ItemStack newStack) {
         if (!newStack.isEmpty() && newStack.getItem() instanceof PotionItem) {
-            PotionCanister.attemptFill(potionStack);
+            PotionCanisterItem.attemptFill(potionStack);
         }
     }
 

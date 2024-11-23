@@ -2,9 +2,10 @@ package com.direwolf20.justdirethings.client.screens;
 
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.containers.PotionCanisterContainer;
-import com.direwolf20.justdirethings.common.items.PotionCanister;
+import com.direwolf20.justdirethings.common.items.PotionCanisterItem;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.direwolf20.justdirethings.util.MiscTools;
+import com.direwolf20.justdirethings.util.PotionContents;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,17 +68,17 @@ public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanister
 
         int offset = 5;
         guiGraphics.blit(FLUIDBAR, getGuiLeft() + offset, getGuiTop() + 5, 0, 0, 18, 72, 36, 72);
-        int maxMB = PotionCanister.getMaxMB(), height = 70;
+        int maxMB = PotionCanisterItem.getMaxMB(), height = 70;
         if (maxMB > 0) {
-            int remaining = (PotionCanister.getPotionAmount(potionCanister) * height) / maxMB;
+            int remaining = (PotionCanisterItem.getPotionAmount(potionCanister) * height) / maxMB;
             renderFluid(guiGraphics, getGuiLeft() + offset + 1, getGuiTop() + 5 + 72 - 1, 16, remaining, potionCanister);
         }
         guiGraphics.blit(FLUIDBAR, getGuiLeft() + offset, getGuiTop() + 5, 18, 0, 18, 72, 36, 72);
     }
 
     public void renderFluid(GuiGraphics guiGraphics, int startX, int startY, int width, int height, ItemStack potionCanister) {
-        PotionContents potionContents = PotionCanister.getPotionContents(potionCanister);
-        if (potionContents.equals(PotionContents.EMPTY) || PotionCanister.getPotionAmount(potionCanister) <= 0) return;
+        PotionContents potionContents = PotionCanisterItem.getPotionContents(potionCanister);
+        if (potionContents.equals(PotionContents.EMPTY) || PotionCanisterItem.getPotionAmount(potionCanister) <= 0) return;
         ResourceLocation fluidStill = IClientFluidTypeExtensions.of(Fluids.WATER).getStillTexture();
         TextureAtlasSprite fluidStillSprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidStill);
         int fluidColor = potionContents.getColor();
@@ -100,7 +102,8 @@ public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanister
         int textureHeight = fluidStillSprite.contents().height();
 
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder vertexBuffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        BufferBuilder vertexBuffer = tesselator.getBuilder();
+        vertexBuffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
         int yOffset = 0;
         while (yOffset < height) {
@@ -115,30 +118,30 @@ public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanister
 
                 float uMaxAdjusted = uMin + (uMax - uMin) * ((float) drawWidth / textureWidth);
 
-                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset, drawY + drawHeight, zLevel).setUv(uMin, vMaxAdjusted);
-                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset + drawWidth, drawY + drawHeight, zLevel).setUv(uMaxAdjusted, vMaxAdjusted);
-                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset + drawWidth, drawY, zLevel).setUv(uMaxAdjusted, vMin);
-                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset, drawY, zLevel).setUv(uMin, vMin);
+                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset, drawY + drawHeight, zLevel).uv(uMin, vMaxAdjusted);
+                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset + drawWidth, drawY + drawHeight, zLevel).uv(uMaxAdjusted, vMaxAdjusted);
+                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset + drawWidth, drawY, zLevel).uv(uMaxAdjusted, vMin);
+                vertexBuffer.vertex(poseStack.last().pose(), startX + xOffset, drawY, zLevel).uv(uMin, vMin);
 
                 xOffset += drawWidth;
             }
             yOffset += drawHeight;
         }
 
-        BufferUploader.drawWithShader(vertexBuffer.buildOrThrow());
+        BufferUploader.drawWithShader(vertexBuffer.end());
         poseStack.popPose();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.applyModelViewMatrix();
     }
 
     public void fluidBarTooltip(GuiGraphics pGuiGraphics, int pX, int pY) {
-        PotionContents potionContents = PotionCanister.getPotionContents(potionCanister);
-        int potionAmt = PotionCanister.getPotionAmount(potionCanister);
+        PotionContents potionContents = PotionCanisterItem.getPotionContents(potionCanister);
+        int potionAmt = PotionCanisterItem.getPotionAmount(potionCanister);
         if (potionAmt == 0 || potionContents.equals(PotionContents.EMPTY)) return;
         if (MiscTools.inBounds(getGuiLeft() + 5, getGuiTop() + 5, 18, 72, pX, pY)) {
             List<Component> components = new ArrayList<>();
-            components.add(Component.literal(MagicHelpers.formatted(potionAmt) + "/" + MagicHelpers.formatted(PotionCanister.getMaxMB())));
-            potionContents.addPotionTooltip(components::add, 1, 20);
+            components.add(Component.literal(MagicHelpers.formatted(potionAmt) + "/" + MagicHelpers.formatted(PotionCanisterItem.getMaxMB())));
+            potionContents.addPotionTooltip(components, 1);
             pGuiGraphics.renderTooltip(font, components, Optional.empty(), pX, pY);
         }
     }

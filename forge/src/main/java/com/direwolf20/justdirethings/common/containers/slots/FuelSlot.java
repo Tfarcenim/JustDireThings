@@ -1,10 +1,9 @@
 package com.direwolf20.justdirethings.common.containers.slots;
 
+import com.direwolf20.justdirethings.util.ItemHandlerCopySlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.items.IItemHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemHandlerCopySlot;
 
 import javax.annotation.Nonnull;
 

@@ -22,8 +22,8 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.UUID;
 
-public class PortalGun extends BasePoweredItem implements PoweredItem {
-    public PortalGun() {
+public class PortalGunItem extends BasePoweredItem implements PoweredItem {
+    public PortalGunItem() {
         super(new Properties()
                 .stacksTo(1));
     }
@@ -70,7 +70,7 @@ public class PortalGun extends BasePoweredItem implements PoweredItem {
     public static void spawnProjectile(Level level, Player player, ItemStack itemStack, boolean isPrimaryType) {
         if (!PoweredItem.consumeEnergy(itemStack, Config.PORTAL_GUN_V1_RF_COST.get())) {
             player.displayClientMessage(Component.translatable("justdirethings.lowenergy"), true);
-            player.playNotifySound(SoundEvents.VAULT_INSERT_ITEM_FAIL, SoundSource.PLAYERS, 1.0F, 1.0F);
+            player.playNotifySound(SoundEvents.ALLAY_DEATH, SoundSource.PLAYERS, 1.0F, 1.0F);
             return;
         }
         PortalProjectile projectile = new PortalProjectile(level, player, getUUID(itemStack), isPrimaryType, false);
@@ -88,15 +88,15 @@ public class PortalGun extends BasePoweredItem implements PoweredItem {
         return false;
     }
 
-    public static UUID setUUID(ItemStack itemStack) {
+    public static UUID setRandomUUID(ItemStack itemStack) {
         UUID uuid = UUID.randomUUID();
-        itemStack.set(JustDireDataComponents.PORTALGUN_UUID, uuid);
+        JustDireDataComponents.setPortalgunUUID(itemStack,uuid);
         return uuid;
     }
 
     public static UUID getUUID(ItemStack itemStack) {
-        if (!itemStack.has(JustDireDataComponents.PORTALGUN_UUID))
-            return setUUID(itemStack);
-        return itemStack.get(JustDireDataComponents.PORTALGUN_UUID);
+        UUID existing = JustDireDataComponents.getPortalgunUUID(itemStack);
+        if (existing != null) return existing;
+        return setRandomUUID(itemStack);
     }
 }

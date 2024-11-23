@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.events;
 
-import com.direwolf20.justdirethings.common.items.TotemOfDeathRecall;
+import com.direwolf20.justdirethings.common.items.TotemOfDeathRecallItem;
 import com.direwolf20.justdirethings.common.items.armors.utils.ArmorTiers;
 import com.direwolf20.justdirethings.common.items.interfaces.*;
 import com.direwolf20.justdirethings.setup.Registration;
@@ -244,7 +244,7 @@ public class LivingEntityEvents {
 
     private static ItemStack findTotem(ServerPlayer player) {
         for (ItemStack itemStack : player.getInventory().items) {
-            if (itemStack.getItem() == Registration.TotemOfDeathRecall.get() && TotemOfDeathRecall.getBoundTo(itemStack) == null) {
+            if (itemStack.getItem() == Registration.TotemOfDeathRecall.get() && TotemOfDeathRecallItem.getBoundTo(itemStack) == null) {
                 return itemStack;
             }
         }
@@ -261,7 +261,7 @@ public class LivingEntityEvents {
         if (deathData.contains("direDeathData")) {
             NBTHelpers.GlobalVec3 boundTo = NBTHelpers.nbtToGlobalVec3(deathData.getCompound("direDeathData"));
             ItemStack totemStack = new ItemStack(Registration.TotemOfDeathRecall.get());
-            TotemOfDeathRecall.setBoundTo(totemStack, boundTo);
+            TotemOfDeathRecallItem.setBoundTo(totemStack, boundTo);
             newPlayer.getInventory().add(totemStack);
         }
     }

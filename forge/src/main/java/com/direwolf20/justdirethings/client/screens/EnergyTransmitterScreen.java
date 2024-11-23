@@ -3,7 +3,6 @@ package com.direwolf20.justdirethings.client.screens;
 import com.direwolf20.justdirethings.client.screens.basescreens.BaseMachineScreen;
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButtonFactory;
 import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
-import com.direwolf20.justdirethings.common.blockentities.EnergyTransmitterBE;
 import com.direwolf20.justdirethings.common.containers.EnergyTransmitterContainer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -12,9 +11,7 @@ public class EnergyTransmitterScreen extends BaseMachineScreen<EnergyTransmitter
     public boolean showParticles;
     public EnergyTransmitterScreen(EnergyTransmitterContainer container, Inventory inv, Component name) {
         super(container, inv, name);
-        if (container.baseMachineBE instanceof EnergyTransmitterBE energyTransmitterBE) {
-            showParticles = energyTransmitterBE.showParticles;
-        }
+        showParticles = container.baseMachineBE.showParticles;
     }
 
     @Override

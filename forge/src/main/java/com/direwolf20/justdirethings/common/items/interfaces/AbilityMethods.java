@@ -6,9 +6,9 @@ import com.direwolf20.justdirethings.common.entities.DecoyEntity;
 import com.direwolf20.justdirethings.common.events.BlockEvents;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
-import com.direwolf20.justdirethings.datagen.JustDireBlockTags;
 import com.direwolf20.justdirethings.datagen.JustDireEntityTags;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.JustDireTags;
 import com.direwolf20.justdirethings.util.MiscTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -200,7 +200,7 @@ public class AbilityMethods {
         if (blockState.is(Registration.EclipseGateBlock.get())) return false;
         if (blockState.isAir()) return false;
         if (blockState.getDestroySpeed(serverLevel, blockPos) < 0) return false;
-        if (blockState.is(JustDireBlockTags.ECLISEGATEDENY)) return false;
+        if (blockState.is(JustDireTags.Blocks.ECLISEGATEDENY)) return false;
         if (blockState.is(Tags.Blocks.RELOCATION_NOT_SUPPORTED)) return false;
         return true;
     }
@@ -315,7 +315,7 @@ public class AbilityMethods {
     public static boolean lawnmower(Level level, Player player, ItemStack itemStack) {
         if (!level.isClientSide) {
             List<TagKey<Block>> tags = new ArrayList<>();
-            tags.add(JustDireBlockTags.LAWNMOWERABLE);
+            tags.add(JustDireTags.Blocks.LAWNMOWERABLE);
             Set<BlockPos> breakBlocks = findTaggedBlocks(level, tags, player.getOnPos(), 64, 5);
             List<ItemStack> drops = new ArrayList<>();
             for (BlockPos breakPos : breakBlocks) {

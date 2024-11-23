@@ -34,11 +34,11 @@ import java.util.stream.Collectors;
 
 import static com.direwolf20.justdirethings.util.TooltipHelpers.*;
 
-public abstract class BaseToggleableTool extends BasePoweredItem implements ToggleableTool {
+public abstract class BaseToggleableToolItem extends BasePoweredItem implements ToggleableTool {
     protected final EnumSet<Ability> abilities = EnumSet.noneOf(Ability.class);
     protected final Map<Ability, AbilityParams> abilityParams = new EnumMap<>(Ability.class);
 
-    public BaseToggleableTool(Properties pProperties) {
+    public BaseToggleableToolItem(Properties pProperties) {
         super(pProperties);
     }
 

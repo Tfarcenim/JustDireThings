@@ -22,7 +22,7 @@ public class DataGenerators {
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), new JustDireRecipes(packOutput, event.getLookupProvider()));
+        generator.addProvider(event.includeServer(), new JustDireRecipes(packOutput));
         generator.addProvider(event.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(),
                 List.of(new LootTableProvider.SubProviderEntry(JustDireLootTables::new, LootContextParamSets.BLOCK))));
         JustDireBlockTags blockTags = new JustDireBlockTags(packOutput, lookupProvider, event.getExistingFileHelper());

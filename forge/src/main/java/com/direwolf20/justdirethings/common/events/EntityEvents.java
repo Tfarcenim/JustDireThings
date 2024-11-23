@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.events;
 
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseBow;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BaseBowItem;
 import com.direwolf20.justdirethings.datagen.recipes.FluidDropRecipe;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.BlockPos;
@@ -37,8 +37,8 @@ public class EntityEvents {
 
     @SubscribeEvent
     public static void livingUseItem(LivingEntityUseItemEvent.Start event) {
-        if (event.getEntity() instanceof Player && event.getItem().getItem() instanceof BaseBow baseBow) {
-            event.setDuration(event.getDuration() - (20 - (int) baseBow.getMaxDraw()));
+        if (event.getEntity() instanceof Player && event.getItem().getItem() instanceof BaseBowItem baseBowItem) {
+            event.setDuration(event.getDuration() - (20 - (int) baseBowItem.getMaxDraw()));
         }
     }
 

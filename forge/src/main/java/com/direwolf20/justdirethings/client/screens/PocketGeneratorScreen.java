@@ -3,8 +3,8 @@ package com.direwolf20.justdirethings.client.screens;
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock_T1;
 import com.direwolf20.justdirethings.common.containers.PocketGeneratorContainer;
-import com.direwolf20.justdirethings.common.items.FuelCanister;
-import com.direwolf20.justdirethings.common.items.PocketGenerator;
+import com.direwolf20.justdirethings.common.items.FuelCanisterItem;
+import com.direwolf20.justdirethings.common.items.PocketGeneratorItem;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.resources.Coal_T1;
 import com.direwolf20.justdirethings.util.MagicHelpers;
@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGeneratorContainer> {
-    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "textures/gui/pocketgenerator.png");
+    private final ResourceLocation GUI = JustDireThings.id("textures/gui/pocketgenerator.png");
 
     protected final PocketGeneratorContainer container;
     private ItemStack pocketGenerator;
@@ -49,7 +49,7 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
         if (mouseX > (leftPos + 7) && mouseX < (leftPos + 7) + 18 && mouseY > (topPos + 7) && mouseY < (topPos + 7) + 73) {
             int counter = pocketGenerator.getOrDefault(JustDireDataComponents.POCKETGEN_COUNTER, 0);
             int feBurnPerTick = 0;
-            if (pocketGenerator.getItem() instanceof PocketGenerator pocketGeneratorItem) {
+            if (pocketGenerator.getItem() instanceof PocketGeneratorItem pocketGeneratorItem) {
                 feBurnPerTick = pocketGeneratorItem.getFePerFuelTick() * pocketGeneratorItem.getBurnSpeedMultiplier(pocketGenerator);
             }
             if (hasShiftDown())
@@ -86,8 +86,8 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
                     fuelBurnMultiplier = direCoal.getBurnSpeedMultiplier();
                 } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock) {
                     fuelBurnMultiplier = coalBlock.getBurnSpeedMultiplier();
-                } else if (fuelStack.getItem() instanceof FuelCanister) {
-                    fuelBurnMultiplier = FuelCanister.getBurnSpeedMultiplier(fuelStack);
+                } else if (fuelStack.getItem() instanceof FuelCanisterItem) {
+                    fuelBurnMultiplier = FuelCanisterItem.getBurnSpeedMultiplier(fuelStack);
                 }
                 List<Component> tooltip = this.getTooltipFromContainerItem(fuelStack);
                 tooltip.add(Component.translatable("justdirethings.screen.burnspeedmultiplier", fuelBurnMultiplier).withStyle(ChatFormatting.RED));
@@ -121,7 +121,7 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
         guiGraphics.blit(GUI, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
 
         this.pocketGenerator = container.playerEntity.getMainHandItem();
-        if (pocketGenerator.isEmpty() || !(pocketGenerator.getItem() instanceof PocketGenerator))
+        if (pocketGenerator.isEmpty() || !(pocketGenerator.getItem() instanceof PocketGeneratorItem))
             return;
         this.energyStorage = pocketGenerator.getCapability(Capabilities.EnergyStorage.ITEM);
         if (energyStorage == null)

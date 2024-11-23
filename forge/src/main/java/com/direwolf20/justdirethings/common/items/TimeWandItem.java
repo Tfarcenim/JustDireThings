@@ -31,17 +31,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import java.util.List;
 import java.util.Optional;
 
-public class TimeWand extends BasePoweredItem implements PoweredItem, FluidContainingItem {
-    public TimeWand() {
+public class TimeWandItem extends BasePoweredItem implements PoweredItem, FluidContainingItem {
+    public TimeWandItem() {
         super(new Properties()
                 .stacksTo(1));
     }
@@ -142,11 +142,11 @@ public class TimeWand extends BasePoweredItem implements PoweredItem, FluidConta
         BlockPos blockpos = blockhitresult.getBlockPos();
         BlockState blockstate1 = level.getBlockState(blockpos);
         if (blockstate1.getBlock() instanceof TimeFluidBlock timeFluidBlock) {
-            IFluidHandlerItem fluidHandler = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+            IFluidHandlerItem fluidHandler = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
             if (fluidHandler == null) return true;
             int filledAmt = fluidHandler.fill(new FluidStack(Registration.TIME_FLUID_SOURCE.get(), 1000), IFluidHandler.FluidAction.SIMULATE);
             if (filledAmt == 1000) {
-                ItemStack itemstack2 = timeFluidBlock.pickupBlock(player, level, blockpos, blockstate1);
+                ItemStack itemstack2 = timeFluidBlock.pickupBlock(level, blockpos, blockstate1);
                 fluidHandler.fill(new FluidStack(Registration.TIME_FLUID_SOURCE.get(), 1000), IFluidHandler.FluidAction.EXECUTE);
                 timeFluidBlock.getPickupSound(blockstate1).ifPresent(p_150709_ -> player.playSound(p_150709_, 1.0F, 1.0F));
                 if (!level.isClientSide) {
@@ -193,13 +193,12 @@ public class TimeWand extends BasePoweredItem implements PoweredItem, FluidConta
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        Level level = context.level();
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         if (level == null) {
             return;
         }
-        IFluidHandlerItem fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler == null) {
             return;
         }

@@ -37,7 +37,8 @@ import net.minecraft.world.level.block.StainedGlassPaneBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.client.model.data.ModelData;
 
 import java.util.BitSet;
 import java.util.List;
@@ -153,7 +154,7 @@ public class GooBlockRender_Base<T extends GooBlockBE_Base> implements BlockEnti
             boolean flag = displayContext == ItemDisplayContext.GUI || displayContext == ItemDisplayContext.GROUND || displayContext == ItemDisplayContext.FIXED;
             boolean isBlockItem = itemStack.getItem() instanceof BlockItem;
 
-            p_model = net.neoforged.neoforge.client.ClientHooks.handleCameraTransforms(poseStack, p_model, displayContext, leftHand);
+            //todo p_model = net.neoforged.neoforge.client.ClientHooks.handleCameraTransforms(poseStack, p_model, displayContext, leftHand);
             poseStack.translate(-0.5F, -0.5F, -0.5F);
             if (!p_model.isCustomRenderer() && (!itemStack.is(Items.TRIDENT) || flag)) {
                 boolean flag1;
@@ -175,7 +176,7 @@ public class GooBlockRender_Base<T extends GooBlockBE_Base> implements BlockEnti
                     }
                 }
             } else {
-                net.neoforged.neoforge.client.extensions.common.IClientItemExtensions.of(itemStack).getCustomRenderer().renderByItem(itemStack, displayContext, poseStack, buffer, combinedLight, combinedOverlay);
+                IClientItemExtensions.of(itemStack).getCustomRenderer().renderByItem(itemStack, displayContext, poseStack, buffer, combinedLight, combinedOverlay);
             }
 
             poseStack.popPose();

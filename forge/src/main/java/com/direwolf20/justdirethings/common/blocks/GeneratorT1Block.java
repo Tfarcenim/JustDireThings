@@ -5,8 +5,8 @@ import com.direwolf20.justdirethings.common.blocks.baseblocks.BaseMachineBlock;
 import com.direwolf20.justdirethings.common.containers.GeneratorT1Container;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -24,14 +24,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
 
-public class GeneratorT1 extends BaseMachineBlock {
+public class GeneratorT1Block extends BaseMachineBlock {
     static final VoxelShape SHAPE = Stream.of(
             Block.box(2, 11, 2, 14, 14, 14),
             Block.box(0, 0, 0, 16, 11, 16),
             Block.box(0, 14, 0, 16, 16, 16)
     ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
-    public GeneratorT1() {
+    public GeneratorT1Block() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)
@@ -46,7 +46,7 @@ public class GeneratorT1 extends BaseMachineBlock {
     }
 
     @Override
-    public void openMenu(Player player, BlockPos blockPos) {
+    public void openMenu(ServerPlayer player, BlockPos blockPos) {
         player.openMenu(new SimpleMenuProvider(
                 (windowId, playerInventory, playerEntity) -> new GeneratorT1Container(windowId, playerInventory, blockPos), Component.empty()));
     }

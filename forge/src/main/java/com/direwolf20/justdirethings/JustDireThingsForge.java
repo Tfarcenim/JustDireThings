@@ -8,9 +8,9 @@ import com.direwolf20.justdirethings.common.capabilities.EnergyStorageItemStackN
 import com.direwolf20.justdirethings.common.capabilities.EnergyStorageItemstack;
 import com.direwolf20.justdirethings.common.containers.handlers.PotionCanisterHandler;
 import com.direwolf20.justdirethings.common.entities.DecoyEntity;
-import com.direwolf20.justdirethings.common.items.FluidCanister;
-import com.direwolf20.justdirethings.common.items.PortalGunV2;
-import com.direwolf20.justdirethings.common.items.TimeWand;
+import com.direwolf20.justdirethings.common.items.FluidCanisterItem;
+import com.direwolf20.justdirethings.common.items.PortalGunV2Item;
+import com.direwolf20.justdirethings.common.items.TimeWandItem;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredItem;
 import com.direwolf20.justdirethings.setup.ClientSetup;
@@ -131,8 +131,8 @@ public class JustDireThingsForge {
         );
 
         event.registerItem(Capabilities.FluidHandler.ITEM, (itemStack, context) -> {
-                    if (itemStack.getItem() instanceof PortalGunV2) {
-                        return new FluidHandlerItemStack(JustDireDataComponents.FLUID_CONTAINER, itemStack, PortalGunV2.maxMB) {
+                    if (itemStack.getItem() instanceof PortalGunV2Item) {
+                        return new FluidHandlerItemStack(JustDireDataComponents.FLUID_CONTAINER, itemStack, PortalGunV2Item.maxMB) {
                             @Override
                             public boolean isFluidValid(int tank, FluidStack stack) {
                                 return stack.is(Registration.PORTAL_FLUID_TYPE.get());
@@ -145,8 +145,8 @@ public class JustDireThingsForge {
 
                         };
                     }
-                    if (itemStack.getItem() instanceof TimeWand timeWand) {
-                        return new FluidHandlerItemStack(JustDireDataComponents.FLUID_CONTAINER, itemStack, timeWand.getMaxMB()) {
+                    if (itemStack.getItem() instanceof TimeWandItem timeWandItem) {
+                        return new FluidHandlerItemStack(JustDireDataComponents.FLUID_CONTAINER, itemStack, timeWandItem.getMaxMB()) {
                             @Override
                             public boolean isFluidValid(int tank, FluidStack stack) {
                                 return stack.is(Registration.TIME_FLUID_TYPE.get());
@@ -159,8 +159,8 @@ public class JustDireThingsForge {
 
                         };
                     }
-                    if (itemStack.getItem() instanceof FluidCanister fluidCanister) {
-                        return new FluidHandlerItemStack(JustDireDataComponents.FLUID_CONTAINER, itemStack, fluidCanister.getMaxMB());
+                    if (itemStack.getItem() instanceof FluidCanisterItem fluidCanisterItem) {
+                        return new FluidHandlerItemStack(JustDireDataComponents.FLUID_CONTAINER, itemStack, fluidCanisterItem.getMaxMB());
                     }
                     return null;
                 },

@@ -93,7 +93,7 @@ public class GooSpreadRecipeTagBuilder implements RecipeBuilder {
     }
 
     public void save(RecipeOutput pRecipeOutput) {
-        this.save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, BuiltInRegistries.BLOCK.getKey(this.output.getBlock()).getPath() + "-goospread_tag"));
+        this.save(pRecipeOutput, JustDireThings.id(BuiltInRegistries.BLOCK.getKey(this.output.getBlock()).getPath() + "-goospread_tag"));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.util;
 
-import com.direwolf20.justdirethings.datagen.JustDireBlockTags;
+import com.direwolf20.justdirethings.platform.Services;
 import com.mojang.math.Axis;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -54,7 +54,7 @@ public class MiscTools {
             if (ticker == null)
                 return false;
         }
-        if (blockState.is(JustDireBlockTags.TICK_SPEED_DENY))
+        if (blockState.is(JustDireTags.Blocks.TICK_SPEED_DENY))
             return false;
         return true;
     }
@@ -64,7 +64,7 @@ public class MiscTools {
     public static BlockHitResult getHitResult(Player player) {
         var playerLook = new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
         var lookVec = player.getViewVector(1.0F);
-        double reach = player.getBlockReach();
+        double reach = Services.PLATFORM.getBlockReach(player);
         var endLook = playerLook.add(lookVec.x * reach, lookVec.y * reach, lookVec.z * reach);
         BlockHitResult hitResult = player.level().clip(new ClipContext(playerLook, endLook, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
         return hitResult;
@@ -115,7 +115,7 @@ public class MiscTools {
                 double distanceToHitVec = start.distanceTo(hitVec);
 
                 if (distanceToHitVec < closestDistance || closestDistance == 0.0D) {
-                    if (entity.getRootVehicle() == player.getRootVehicle() && !entity.canRiderInteract()) {
+                    if (entity.getRootVehicle() == player.getRootVehicle() /*todo&& !entity.canRiderInteract()*/) {
                         if (closestDistance == 0.0D) {
                             closestEntity = entity;
                             hitLocation = hitVec;

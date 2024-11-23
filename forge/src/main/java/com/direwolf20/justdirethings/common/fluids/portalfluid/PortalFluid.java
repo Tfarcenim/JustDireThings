@@ -6,10 +6,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
 
-public abstract class PortalFluid extends BaseFlowingFluid {
-    public static final BaseFlowingFluid.Properties PROPERTIES = new BaseFlowingFluid.Properties(
+public abstract class PortalFluid extends ForgeFlowingFluid {
+    public static final Properties PROPERTIES = new Properties(
             Registration.PORTAL_FLUID_TYPE,
             Registration.PORTAL_FLUID_FLOWING,
             Registration.PORTAL_FLUID_SOURCE

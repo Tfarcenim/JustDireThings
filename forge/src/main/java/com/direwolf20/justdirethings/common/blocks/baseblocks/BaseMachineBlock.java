@@ -3,11 +3,12 @@ package com.direwolf20.justdirethings.common.blocks.baseblocks;
 import com.direwolf20.justdirethings.common.blockentities.basebe.AreaAffectingBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.BaseMachineBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.RedstoneControlledBE;
-import com.direwolf20.justdirethings.common.items.FerricoreWrench;
-import com.direwolf20.justdirethings.common.items.MachineSettingsCopier;
+import com.direwolf20.justdirethings.common.items.FerricoreWrenchItem;
+import com.direwolf20.justdirethings.common.items.MachineSettingsCopierItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -67,19 +68,19 @@ public abstract class BaseMachineBlock extends Block implements EntityBlock {
             return InteractionResult.SUCCESS;
 
         ItemStack itemStack = player.getMainHandItem();
-        if (itemStack.getItem() instanceof MachineSettingsCopier || itemStack.getItem() instanceof FerricoreWrench)
+        if (itemStack.getItem() instanceof MachineSettingsCopierItem || itemStack.getItem() instanceof FerricoreWrenchItem)
             return InteractionResult.PASS;
 
         BlockEntity te = level.getBlockEntity(blockPos);
         if (!isValidBE(te))
             return InteractionResult.FAIL;
 
-        openMenu(player, blockPos);
+        openMenu((ServerPlayer) player, blockPos);
 
         return InteractionResult.SUCCESS;
     }
 
-    public abstract void openMenu(Player player, BlockPos blockPos);
+    public abstract void openMenu(ServerPlayer player, BlockPos blockPos);
 
     public abstract boolean isValidBE(BlockEntity blockEntity);
 

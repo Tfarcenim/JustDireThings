@@ -15,7 +15,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,10 +23,10 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseMachineContainer extends BaseContainer {
+public abstract class BaseMachineContainer<B extends BaseMachineBE> extends BaseContainer {
     public int FILTER_SLOTS = 0;
     public int MACHINE_SLOTS = 0;
-    public BaseMachineBE baseMachineBE;
+    public B baseMachineBE;
     public FilterBasicHandler filterHandler;
     public ItemStackHandler machineHandler;
     protected Player player;
@@ -39,23 +38,20 @@ public abstract class BaseMachineContainer extends BaseContainer {
         super(menuType, windowId);
         this.pos = blockPos;
         this.player = playerInventory.player;
-        BlockEntity blockEntity = player.level().getBlockEntity(pos);
-        if (blockEntity instanceof BaseMachineBE baseMachineBE) {
-            this.baseMachineBE = baseMachineBE;
-            this.MACHINE_SLOTS = baseMachineBE.MACHINE_SLOTS;
-        }
+        baseMachineBE = (B) player.level().getBlockEntity(pos);
+        this.MACHINE_SLOTS = baseMachineBE.MACHINE_SLOTS;
         if (MACHINE_SLOTS > 0)
             addMachineSlots();
-        if (blockEntity instanceof FilterableBE filterableBE) {
+        if (baseMachineBE instanceof FilterableBE filterableBE) {
             filterHandler = filterableBE.getFilterHandler();
             FILTER_SLOTS = filterHandler.getSlots();
             addFilterSlots();
         }
-        if (blockEntity instanceof PoweredMachineBE poweredMachineBE) {
+        if (baseMachineBE instanceof PoweredMachineBE poweredMachineBE) {
             data = poweredMachineBE.getContainerData();
             addDataSlots(data);
         }
-        if (blockEntity instanceof FluidMachineBE fluidMachineBE) {
+        if (baseMachineBE instanceof FluidMachineBE fluidMachineBE) {
             fluidData = fluidMachineBE.getFluidContainerData();
             addDataSlots(fluidData);
         }

@@ -2,7 +2,7 @@ package com.direwolf20.justdirethings.common.items;
 
 import com.direwolf20.justdirethings.common.items.interfaces.*;
 
-public class VoidshiftWand extends BaseToggleableTool implements PoweredItem, LeftClickableTool {
+public class VoidshiftWand extends BaseToggleableToolItem implements PoweredItem, LeftClickableTool {
     public VoidshiftWand() {
         super(new Properties()
                 .durability(200)

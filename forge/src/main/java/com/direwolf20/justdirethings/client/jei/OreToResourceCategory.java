@@ -25,7 +25,7 @@ public class OreToResourceCategory implements IRecipeCategory<OreToResourceRecip
     private final IDrawable icon;
     private final IDrawable pickaxeIcon;
     private final IDrawableAnimated animatedArrow;
-    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "ore_to_resource");
+    public static final ResourceLocation UID = JustDireThings.id("ore_to_resource");
 
     public OreToResourceCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createBlankDrawable(120, 30);  // Adjust size as needed

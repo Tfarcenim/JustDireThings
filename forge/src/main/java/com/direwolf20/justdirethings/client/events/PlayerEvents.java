@@ -1,7 +1,7 @@
 package com.direwolf20.justdirethings.client.events;
 
 import com.direwolf20.justdirethings.JustDireThings;
-import com.direwolf20.justdirethings.common.items.PortalGun;
+import com.direwolf20.justdirethings.common.items.PortalGunItem;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.LeftClickableTool;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
@@ -38,7 +38,7 @@ public class PlayerEvents {
         if (itemStack.getItem() instanceof ToggleableTool toggleableTool && itemStack.getItem() instanceof LeftClickableTool) {
             activateAbilities(itemStack, toggleableTool, event.getEntity(), event.getHand(), true, BlockPos.ZERO, Direction.DOWN);
         }
-        if (itemStack.getItem() instanceof PortalGun)
+        if (itemStack.getItem() instanceof PortalGunItem)
             Services.PLATFORM.sendToServer(new C2SMiscPayload(C2SMiscPayload.Action.LEFT_CLICK_PORTAL_GUN));
     }
 
@@ -53,7 +53,7 @@ public class PlayerEvents {
         if (itemStack.getItem() instanceof ToggleableTool toggleableTool && !(itemStack.getItem() instanceof BaseHoe) && toggleableTool.hasAbility(Ability.HAMMER) && event.getFace() != null) {
             doExtraCrumblings(event, itemStack, toggleableTool);
         }
-        if (itemStack.getItem() instanceof PortalGun && event.getAction().equals(PlayerInteractEvent.LeftClickBlock.Action.START))
+        if (itemStack.getItem() instanceof PortalGunItem && event.getAction().equals(PlayerInteractEvent.LeftClickBlock.Action.START))
             C2SMiscPayload.send(C2SMiscPayload.Action.LEFT_CLICK_PORTAL_GUN);
     }
 

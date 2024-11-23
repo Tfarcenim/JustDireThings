@@ -2,7 +2,7 @@ package com.direwolf20.justdirethings.client.renderers;
 
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.entities.CreatureCatcherEntity;
-import com.direwolf20.justdirethings.common.items.CreatureCatcher;
+import com.direwolf20.justdirethings.common.items.CreatureCatcherItem;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -28,13 +28,13 @@ public class JustDireItemRenderer extends BlockEntityWithoutLevelRenderer {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
     }
 
-    private static final ModelResourceLocation CREATURE_CATCHER_BASE = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "item/creaturecatcher_base"));
+    private static final ModelResourceLocation CREATURE_CATCHER_BASE = ModelResourceLocation.standalone(JustDireThings.id("item/creaturecatcher_base"));
 
 
 
     @Override
     public void renderByItem(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        if (pStack.getItem() instanceof CreatureCatcher) {
+        if (pStack.getItem() instanceof CreatureCatcherItem) {
             ItemRenderer irenderer = Minecraft.getInstance().getItemRenderer();
             BakedModel base = irenderer.getItemModelShaper().getModelManager().getModel(CREATURE_CATCHER_BASE);
             pPoseStack.pushPose();

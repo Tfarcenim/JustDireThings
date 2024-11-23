@@ -20,13 +20,13 @@ import com.direwolf20.justdirethings.client.renderers.JustDireItemRenderer;
 import com.direwolf20.justdirethings.client.renderers.RenderHelpers;
 import com.direwolf20.justdirethings.client.renderers.shader.DireRenderTypes;
 import com.direwolf20.justdirethings.client.screens.*;
-import com.direwolf20.justdirethings.common.items.FluidCanister;
-import com.direwolf20.justdirethings.common.items.PocketGenerator;
-import com.direwolf20.justdirethings.common.items.PortalGunV2;
-import com.direwolf20.justdirethings.common.items.PotionCanister;
+import com.direwolf20.justdirethings.common.items.FluidCanisterItem;
+import com.direwolf20.justdirethings.common.items.PocketGeneratorItem;
+import com.direwolf20.justdirethings.common.items.PortalGunV2Item;
+import com.direwolf20.justdirethings.common.items.PotionCanisterItem;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableItem;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseBow;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BaseBowItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -36,7 +36,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
@@ -77,10 +76,10 @@ public class ClientSetup {
             }
             registerEnabledToolTextures(Registration.Pocket_Generator.get());
             for (var bow : Registration.BOWS.getEntries()) {
-                if (bow.get() instanceof BaseBow baseBow) {
+                if (bow.get() instanceof BaseBowItem baseBowItem) {
                     ItemProperties.register(bow.get(), JustDireThings.id( "pull"), (stack, level, living, id) -> {
                         if (living == null || living.getUseItem() != stack) return 0.0F;
-                        return (stack.getUseDuration() - (living.getUseItemRemainingTicks() + (20 - baseBow.getMaxDraw()))) / baseBow.getMaxDraw();
+                        return (stack.getUseDuration() - (living.getUseItemRemainingTicks() + (20 - baseBowItem.getMaxDraw()))) / baseBowItem.getMaxDraw();
                     });
                     ItemProperties.register(bow.get(), JustDireThings.id( "pulling"), (stack, level, living, id) -> {
                         return living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0F : 0.0F;
@@ -89,10 +88,10 @@ public class ClientSetup {
             }
 
             ItemProperties.register(Registration.FluidCanister.get(),
-                    JustDireThings.id( "fullness"), (stack, level, living, id) -> FluidCanister.getFullness(stack));
+                    JustDireThings.id( "fullness"), (stack, level, living, id) -> FluidCanisterItem.getFullness(stack));
 
             ItemProperties.register(Registration.PotionCanister.get(),
-                    JustDireThings.id( "potion_fullness"), (stack, level, living, id) -> PotionCanister.getFullness(stack));
+                    JustDireThings.id( "potion_fullness"), (stack, level, living, id) -> PotionCanisterItem.getFullness(stack));
 
             MenuScreens.register(Registration.FuelCanister_Container.get(), FuelCanisterScreen::new);
             MenuScreens.register(Registration.PocketGenerator_Container.get(), PocketGeneratorScreen::new);
@@ -125,7 +124,7 @@ public class ClientSetup {
 
 
             ItemProperties.register(Registration.PortalGunV2.get(),
-                    JustDireThings.id( "fullness"), (stack, level, living, id) -> PortalGunV2.getFullness(stack));
+                    JustDireThings.id( "fullness"), (stack, level, living, id) -> PortalGunV2Item.getFullness(stack));
         });
 
         ItemBlockRenderTypes.setRenderLayer(Registration.UNSTABLE_PORTAL_FLUID_SOURCE.get(), RenderType.translucent());
@@ -150,7 +149,7 @@ public class ClientSetup {
         if (tool instanceof ToggleableItem toggleableItem) {
             ItemProperties.register(tool,
                     JustDireThings.id( "enabled"), (stack, level, living, id) -> {
-                        if (stack.getItem() instanceof PocketGenerator) {
+                        if (stack.getItem() instanceof PocketGeneratorItem) {
                             if (!toggleableItem.getEnabled(stack)) return 0.0f;
                             IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
                             if (energyStorage == null) return 0.0f;
@@ -596,15 +595,15 @@ public class ClientSetup {
         }
 
         colors.register((stack, index) -> {
-            if (index == 1 && stack.getItem() instanceof FluidCanister) {
-                return FluidCanister.getFluidColor(stack);
+            if (index == 1 && stack.getItem() instanceof FluidCanisterItem) {
+                return FluidCanisterItem.getFluidColor(stack);
             }
             return 0xFFFFFFFF;
         }, Registration.FluidCanister.get());
 
         colors.register((stack, index) -> {
-            if (index == 1 && stack.getItem() instanceof PotionCanister) {
-                return PotionCanister.getPotionColor(stack);
+            if (index == 1 && stack.getItem() instanceof PotionCanisterItem) {
+                return PotionCanisterItem.getPotionColor(stack);
             }
             return 0xFFFFFFFF;
         }, Registration.PotionCanister.get());

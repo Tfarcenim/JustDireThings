@@ -105,7 +105,7 @@ public class AbilityRecipe implements SmithingRecipe {
 
 
     public static class Serializer implements RecipeSerializer<AbilityRecipe> {
-        private static final ResourceLocation NAME = ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "ability");
+        private static final ResourceLocation NAME = JustDireThings.id("ability");
         private static final MapCodec<AbilityRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 p_311734_ -> p_311734_.group(
                                 Ingredient.CODEC.fieldOf("template").forGetter(p_301070_ -> p_301070_.template),

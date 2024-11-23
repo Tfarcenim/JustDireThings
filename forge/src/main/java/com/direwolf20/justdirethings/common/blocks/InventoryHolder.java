@@ -4,10 +4,10 @@ import com.direwolf20.justdirethings.common.blockentities.InventoryHolderBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.BaseMachineBE;
 import com.direwolf20.justdirethings.common.blocks.baseblocks.BaseMachineBlock;
 import com.direwolf20.justdirethings.common.containers.InventoryHolderContainer;
-import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -46,7 +46,7 @@ public class InventoryHolder extends BaseMachineBlock {
     }
 
     @Override
-    public void openMenu(Player player, BlockPos blockPos) {
+    public void openMenu(ServerPlayer player, BlockPos blockPos) {
         player.openMenu(new SimpleMenuProvider(
                 (windowId, playerInventory, playerEntity) -> new InventoryHolderContainer(windowId, playerInventory, blockPos), Component.empty()));
     }

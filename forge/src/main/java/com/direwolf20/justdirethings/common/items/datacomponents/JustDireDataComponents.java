@@ -1,6 +1,5 @@
 package com.direwolf20.justdirethings.common.items.datacomponents;
 
-import com.direwolf20.justdirethings.common.items.FluidCanister;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.ToolRecords;
 import com.direwolf20.justdirethings.util.FillMode;
@@ -12,21 +11,13 @@ import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.*;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.level.block.SculkSpreader;
-import net.minecraftforge.common.extensions.IForgeItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Function;
 
 import static com.mojang.text2speech.Narrator.LOGGER;
 

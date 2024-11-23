@@ -1,7 +1,7 @@
 package com.direwolf20.justdirethings.client.screens;
 
 import com.direwolf20.justdirethings.client.KeyBindings;
-import com.direwolf20.justdirethings.common.items.PortalGunV2;
+import com.direwolf20.justdirethings.common.items.PortalGunV2Item;
 import com.direwolf20.justdirethings.network.server.C2SPortalGunFavoriteChangePayload;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.NBTHelpers;
@@ -127,7 +127,7 @@ public class AdvPortalEditMenu extends Screen {
             //double xValue = Double.parseDouble(xPos.getValue());
             //double yValue = Double.parseDouble(yPos.getValue());
             //double zValue = Double.parseDouble(zPos.getValue());
-            NBTHelpers.PortalDestination portalDestination = PortalGunV2.getFavorite(portalGun, slotSelected);
+            NBTHelpers.PortalDestination portalDestination = PortalGunV2Item.getFavorite(portalGun, slotSelected);
             if (portalDestination == null || portalDestination.equals(NBTHelpers.PortalDestination.EMPTY)) {
                 Player player = Minecraft.getInstance().player;
                 Vec3 position = player.position();
@@ -143,7 +143,7 @@ public class AdvPortalEditMenu extends Screen {
     }
 
     public void updateNameField() {
-        NBTHelpers.PortalDestination portalDestination = PortalGunV2.getFavorite(portalGun, slotSelected);
+        NBTHelpers.PortalDestination portalDestination = PortalGunV2Item.getFavorite(portalGun, slotSelected);
         Player player = Minecraft.getInstance().player;
         if (portalDestination == null || portalDestination.equals(NBTHelpers.PortalDestination.EMPTY)) {
             Vec3 position = player.position();

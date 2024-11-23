@@ -6,28 +6,33 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
 
-public record PotionContents(Optional<Potion> potion, Optional<Integer> customColor,
+public record PotionContents(Optional<Potion> potion, OptionalInt customColor,
                              List<MobEffectInstance> customEffects) {
 
-    public static final PotionContents EMPTY = new PotionContents(Optional.empty(), Optional.empty(), List.of());
+    public static final PotionContents EMPTY = new PotionContents(Optional.empty(), OptionalInt.empty(), List.of());
 
     public PotionContents(Potion potion) {
-        this(Optional.of(potion), Optional.empty(), List.of());
+        this(Optional.of(potion), OptionalInt.empty(), List.of());
     }
 
 
-    public Iterable<MobEffectInstance> getAllEffects() {
+    public List<MobEffectInstance> getAllEffects() {
         return this.potion.map(potionHolder -> this.customEffects.isEmpty() ? potionHolder.getEffects() : Iterables.concat(potionHolder.getEffects(), this.customEffects)).orElse(this.customEffects);
     }
 
@@ -75,7 +80,7 @@ public record PotionContents(Optional<Potion> potion, Optional<Integer> customCo
         return this.potion;
     }
 
-    public Optional<Integer> customColor() {
+    public OptionalInt customColor() {
         return this.customColor;
     }
 
@@ -95,10 +100,32 @@ public record PotionContents(Optional<Potion> potion, Optional<Integer> customCo
 
     public static PotionContents fromTag(CompoundTag tag) {
         Potion potion = PotionUtils.getPotion(tag);
-        Optional<Integer> color = Optional.ofNullable(tag.contains(PotionUtils.TAG_CUSTOM_POTION_COLOR) ? tag.getInt(PotionUtils.TAG_CUSTOM_POTION_COLOR) : null);
+        OptionalInt color = tag.contains(PotionUtils.TAG_CUSTOM_POTION_COLOR) ? OptionalInt.of(tag.getInt(PotionUtils.TAG_CUSTOM_POTION_COLOR)) : OptionalInt.empty();
         List<MobEffectInstance> effects = PotionUtils.getCustomEffects(tag);
         return new PotionContents(Optional.of(potion),color,effects);
     }
 
+    public void addPotionTooltip(List<Component> tooltipAdder, float durationFactor) {
+        addPotionTooltip(this.getAllEffects(), tooltipAdder, durationFactor);
+    }
+
+    public static PotionContents fromItem(ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (stack.getItem() instanceof PotionItem) {
+            Potion potion = PotionUtils.getPotion(stack);
+            OptionalInt color = OptionalInt.empty();
+            if (tag != null && tag.contains(PotionUtils.TAG_CUSTOM_POTION_COLOR, Tag.TAG_ANY_NUMERIC)) {
+                color = OptionalInt.of(tag.getInt(PotionUtils.TAG_CUSTOM_POTION_COLOR));
+            }
+
+            List<MobEffectInstance> list = PotionUtils.getCustomEffects(tag);
+            return new PotionContents(Optional.of(potion),color,list);
+        }
+        return EMPTY;
+    }
+
+    public static void addPotionTooltip(List<MobEffectInstance> effects, List<Component> tooltipAdder, float durationFactor) {
+        PotionUtils.addPotionTooltip(effects,tooltipAdder,durationFactor);
+    }
 }
 

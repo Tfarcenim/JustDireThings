@@ -2,12 +2,11 @@ package com.direwolf20.justdirethings.datagen;
 
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.JustDireTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
@@ -20,20 +19,6 @@ public class JustDireBlockTags extends BlockTagsProvider {
 
     public JustDireBlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, JustDireThings.MODID, existingFileHelper);
-    }
-
-    public static final TagKey<Block> LAWNMOWERABLE = BlockTags.create(JustDireThings.id("lawnmowerable"));
-    public static final TagKey<Block> NO_AUTO_CLICK = BlockTags.create(JustDireThings.id("noautoclick"));
-    public static final TagKey<Block> SWAPPERDENY = BlockTags.create(JustDireThings.id("swapper_deny"));
-    public static final TagKey<Block> ECLISEGATEDENY = BlockTags.create(JustDireThings.id("eclipsegate_deny"));
-    public static final TagKey<Block> PHASEDENY = BlockTags.create(JustDireThings.id("phase_deny"));
-    public static final TagKey<Block> TICK_SPEED_DENY = BlockTags.create(JustDireThings.id("tick_speed_deny"));
-    public static final TagKey<Block> PARADOX_ALLOW = BlockTags.create(JustDireThings.id("paradox_allow"));
-    public static final TagKey<Block> PARADOX_ABSORB_DENY = BlockTags.create(JustDireThings.id("paradox_absorb_deny"));
-    public static final TagKey<Block> CHARCOAL = forgeTag("storage_blocks/charcoal");
-
-    private static TagKey<Block> forgeTag(String name) {
-        return BlockTags.create(new ResourceLocation("c", name));
     }
 
     @Override
@@ -91,7 +76,7 @@ public class JustDireBlockTags extends BlockTagsProvider {
                 .add(Registration.InventoryHolder.get())
                 .add(Registration.ExperienceHolder.get())
                 .add(Registration.CharcoalBlock.get());
-        tag(LAWNMOWERABLE)
+        tag(JustDireTags.Blocks.LAWNMOWERABLE)
                 .addTag(BlockTags.FLOWERS)
                 .add(Blocks.TALL_GRASS)
                 .add(Blocks.DEAD_BUSH)
@@ -121,8 +106,8 @@ public class JustDireBlockTags extends BlockTagsProvider {
                 .add(Registration.GooSoil_Tier2.get())
                 .add(Registration.GooSoil_Tier3.get())
                 .add(Registration.GooSoil_Tier4.get());
-        tag(NO_AUTO_CLICK);
-        tag(SWAPPERDENY)
+        tag(JustDireTags.Blocks.NO_AUTO_CLICK);
+        tag(JustDireTags.Blocks.SWAPPERDENY)
                 .add(Blocks.PISTON_HEAD)
                 .add(Blocks.MOVING_PISTON)
                 .add(Blocks.BEDROCK)
@@ -131,11 +116,11 @@ public class JustDireBlockTags extends BlockTagsProvider {
                 .addTag(BlockTags.BEDS)
                 .addTag(BlockTags.PORTALS)
                 .addTag(BlockTags.DOORS);
-        tag(ECLISEGATEDENY)
+        tag(JustDireTags.Blocks.ECLISEGATEDENY)
                 .addTag(BlockTags.PORTALS)
                 .addTag(BlockTags.DOORS)
                 .addOptionalTag(new ResourceLocation("powah", "player_transmitters"));
-        tag(PHASEDENY)
+        tag(JustDireTags.Blocks.PHASEDENY)
                 .addTags(BlockTags.PORTALS)
                 .add(Blocks.BARRIER,
                         Blocks.BEDROCK,
@@ -152,12 +137,12 @@ public class JustDireBlockTags extends BlockTagsProvider {
     //            .add(Registration.TimeCrystalCluster_Large.get());
   //      tag(Tags.Blocks.CLUSTERS)
    //             .add(Registration.TimeCrystalCluster.get());
-        tag(TICK_SPEED_DENY);
-        tag(PARADOX_ALLOW)
+        tag(JustDireTags.Blocks.TICK_SPEED_DENY);
+        tag(JustDireTags.Blocks.PARADOX_ALLOW)
                 .addTag(Tags.Blocks.ORES);
-        tag(PARADOX_ABSORB_DENY)
+        tag(JustDireTags.Blocks.PARADOX_ABSORB_DENY)
                 .add(Blocks.BEDROCK);
-        tag(CHARCOAL)
+        tag(JustDireTags.Blocks.CHARCOAL)
                 .add(Registration.CharcoalBlock.get());
     }
 

@@ -23,8 +23,8 @@ import net.minecraft.world.phys.Vec3;
 import java.util.HashSet;
 import java.util.List;
 
-public class TotemOfDeathRecall extends Item {
-    public TotemOfDeathRecall() {
+public class TotemOfDeathRecallItem extends Item {
+    public TotemOfDeathRecallItem() {
         super(new Properties()
                 .stacksTo(1));
     }
@@ -45,20 +45,18 @@ public class TotemOfDeathRecall extends Item {
     @Override
     public void releaseUsing(ItemStack stack, Level world, LivingEntity entityLiving, int timeLeft) {
         if (entityLiving instanceof Player player) {
-            int usedDuration = this.getUseDuration(stack, entityLiving) - timeLeft;
+            int usedDuration = this.getUseDuration(stack) - timeLeft;
             if (usedDuration >= 20) {  // 60 ticks = 3 seconds
                 // Retrieve death location from NBT and teleport
                 if (!world.isClientSide) {
-                    if (stack.has(JustDireDataComponents.BOUND_GLOBAL_VEC3)) {
-                        NBTHelpers.GlobalVec3 globalPos = getBoundTo(stack);
-                        if (globalPos == null) return;
-                        Vec3 position = globalPos.position();
-                        ServerLevel targetLevel = world.getServer().getLevel(globalPos.dimension());
-                        if (targetLevel != null) {
-                            player.teleportTo(targetLevel, position.x(), position.y(), position.z(), new HashSet<>(), player.getYRot(), player.getXRot());
-                            stack.shrink(1);
-                            world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
-                        }
+                    NBTHelpers.GlobalVec3 globalPos = getBoundTo(stack);
+                    if (globalPos == null) return;
+                    Vec3 position = globalPos.position();
+                    ServerLevel targetLevel = world.getServer().getLevel(globalPos.dimension());
+                    if (targetLevel != null) {
+                        player.teleportTo(targetLevel, position.x(), position.y(), position.z(), new HashSet<>(), player.getYRot(), player.getXRot());
+                        stack.shrink(1);
+                        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
                     }
                 }
             }
@@ -66,7 +64,7 @@ public class TotemOfDeathRecall extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack, LivingEntity livingEntity) {
+    public int getUseDuration(ItemStack stack) {
         return 72000;  // Max duration (arbitrary large number)
     }
 
@@ -75,19 +73,16 @@ public class TotemOfDeathRecall extends Item {
     }
 
     public static NBTHelpers.GlobalVec3 getBoundTo(ItemStack stack) {
-        if (stack.has(JustDireDataComponents.BOUND_GLOBAL_VEC3))
-            return stack.get(JustDireDataComponents.BOUND_GLOBAL_VEC3);
-        return null;
+        return JustDireDataComponents.getBoundGlobalVec3(stack);
     }
 
     public static void setBoundTo(ItemStack stack, NBTHelpers.GlobalVec3 globalPos) {
-        stack.set(JustDireDataComponents.BOUND_GLOBAL_VEC3, globalPos);
+        JustDireDataComponents.setBoundGlobalVec3(stack,globalPos);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        Level level = context.level();
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         if (level == null) {
             return;
         }

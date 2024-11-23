@@ -9,6 +9,7 @@ import com.direwolf20.justdirethings.util.MagicHelpers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -20,20 +21,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class FuelCanister extends Item {
-    public FuelCanister() {
+public class FuelCanisterItem extends Item {
+    public FuelCanisterItem() {
         super(new Properties()
                 .stacksTo(1));
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        Level level = context.level();
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         if (level == null) {
             return;
         }
@@ -50,10 +51,9 @@ public class FuelCanister extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (level.isClientSide()) return new InteractionResultHolder<>(InteractionResult.PASS, itemstack);
-
-        player.openMenu(new SimpleMenuProvider(
+        NetworkHooks.openScreen((ServerPlayer) player,new SimpleMenuProvider(
                 (windowId, playerInventory, playerEntity) -> new FuelCanisterContainer(windowId, playerInventory, player, itemstack), Component.translatable("")), (buf -> {
-            ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, itemstack);
+            buf.writeItem(itemstack);
         }));
 
         return new InteractionResultHolder<>(InteractionResult.PASS, itemstack);
@@ -77,15 +77,17 @@ public class FuelCanister extends Item {
     }
 
     public static int getFuelLevel(ItemStack stack) {
-        return stack.getOrDefault(JustDireDataComponents.FUELCANISTER_FUELLEVEL, 0);
+        Integer fuelLevel = JustDireDataComponents.getFuelCanisterFuelLevel(stack);
+        return fuelLevel == null ? 0 : fuelLevel;
     }
 
     public static void setFuelLevel(ItemStack stack, int fuelLevel) {
-        stack.set(JustDireDataComponents.FUELCANISTER_FUELLEVEL, fuelLevel);
+        JustDireDataComponents.setFuelcanisterFuellevel(stack,fuelLevel);
     }
 
     public static double getBurnSpeed(ItemStack stack) {
-        return stack.getOrDefault(JustDireDataComponents.FUELCANISTER_BURNSPEED, 1.0);
+        Double burnSpeed = JustDireDataComponents.getFuelCanisterBurnspeed(stack);
+        return burnSpeed == null ? 1 : burnSpeed;
     }
 
     public static int getBurnSpeedMultiplier(ItemStack stack) {
@@ -94,7 +96,7 @@ public class FuelCanister extends Item {
     }
 
     public static void setBurnSpeed(ItemStack stack, double burnSpeed) {
-        stack.set(JustDireDataComponents.FUELCANISTER_BURNSPEED, burnSpeed);
+        JustDireDataComponents.setFuelcanisterBurnspeed(stack,burnSpeed);
     }
 
     public static void decrementFuel(ItemStack stack) {

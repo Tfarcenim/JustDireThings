@@ -3,11 +3,11 @@ package com.direwolf20.justdirethings.common.items.tools;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.AbilityParams;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredTool;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseBow;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BaseBowItem;
 import net.minecraft.world.item.ItemStack;
 
-public class EclipseAlloyBow extends BaseBow implements PoweredTool {
-    public EclipseAlloyBow() {
+public class EclipseAlloyBowItem extends BaseBowItem implements PoweredTool {
+    public EclipseAlloyBowItem() {
         super(new Properties().durability(450).fireResistant());
         registerAbility(Ability.POTIONARROW);
         registerAbility(Ability.SPLASH);

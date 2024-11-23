@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.entities;
 
-import com.direwolf20.justdirethings.common.items.CreatureCatcher;
+import com.direwolf20.justdirethings.common.items.CreatureCatcherItem;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.datagen.JustDireEntityTags;
 import com.direwolf20.justdirethings.setup.Registration;
@@ -104,7 +104,7 @@ public class CreatureCatcherEntity extends ThrowableItemProjectile {
         if (!hasHitEntity()) return;
         if (!level().isClientSide) {
             if (hitEntity != null && !hitEntity.isDeadOrDying() && shrinkingTime() > 1) {
-                if (CreatureCatcher.hasEntity(getReturnStack())) {
+                if (CreatureCatcherItem.hasEntity(getReturnStack())) {
                     hitEntity.remove(RemovalReason.DISCARDED);
                 }
             }
@@ -128,7 +128,7 @@ public class CreatureCatcherEntity extends ThrowableItemProjectile {
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
         ItemStack itemStack = getItem();
-        if (level().isClientSide || CreatureCatcher.hasEntity(itemStack)) return;
+        if (level().isClientSide || CreatureCatcherItem.hasEntity(itemStack)) return;
         Entity entity = pResult.getEntity();
         if (entity instanceof Mob mob && canCapture(mob)) {
             this.entityData.set(HAS_HIT, true);
@@ -150,7 +150,7 @@ public class CreatureCatcherEntity extends ThrowableItemProjectile {
         if (level().isClientSide) return;
         super.onHitBlock(pResult);
         ItemStack itemStack = getItem();
-        if (CreatureCatcher.hasEntity(itemStack)) {
+        if (CreatureCatcherItem.hasEntity(itemStack)) {
             this.entityData.set(HAS_HIT, true);
             setDeltaMovement(new Vec3(0, 0, 0));
             setNoGravity(true);

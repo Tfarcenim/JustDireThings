@@ -5,6 +5,7 @@ import com.direwolf20.justdirethings.network.client.S2CParadoxSyncPayload;
 import com.direwolf20.justdirethings.network.server.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.function.Function;
 
@@ -41,6 +42,8 @@ public interface IPlatformHelper {
 
         return isDevelopmentEnvironment() ? "development" : "production";
     }
+
+    double getBlockReach(Player player);
 
     <MSG extends S2CModPacket> void registerClientPacket(Class<MSG> packetLocation, Function<FriendlyByteBuf,MSG> reader);
     <MSG extends C2SModPacket> void registerServerPacket(Class<MSG> packetLocation, Function<FriendlyByteBuf,MSG> reader);

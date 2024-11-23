@@ -5,16 +5,17 @@ import com.direwolf20.justdirethings.common.blocks.baseblocks.BaseMachineBlock;
 import com.direwolf20.justdirethings.common.containers.ClickerT1Container;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class ClickerT1 extends BaseMachineBlock {
-    public ClickerT1() {
+public class ClickerT1Block extends BaseMachineBlock {
+    public ClickerT1Block() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)
@@ -29,9 +30,9 @@ public class ClickerT1 extends BaseMachineBlock {
     }
 
     @Override
-    public void openMenu(Player player, BlockPos blockPos) {
-        player.openMenu(new SimpleMenuProvider(
-                (windowId, playerInventory, playerEntity) -> new ClickerT1Container(windowId, playerInventory, blockPos), Component.empty()));
+    public void openMenu(ServerPlayer player, BlockPos blockPos) {
+        NetworkHooks.openScreen(player,new SimpleMenuProvider(
+                (windowId, playerInventory, playerEntity) -> new ClickerT1Container(windowId, playerInventory, blockPos), Component.empty()),blockPos);
     }
 
     @Override

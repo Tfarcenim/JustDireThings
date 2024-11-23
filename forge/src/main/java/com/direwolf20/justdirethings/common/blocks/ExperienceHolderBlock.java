@@ -5,6 +5,7 @@ import com.direwolf20.justdirethings.common.blocks.baseblocks.BaseMachineBlock;
 import com.direwolf20.justdirethings.common.containers.ExperienceHolderContainer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -37,7 +38,7 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
 
-public class ExperienceHolder extends BaseMachineBlock {
+public class ExperienceHolderBlock extends BaseMachineBlock {
     protected static final VoxelShape[] shapes = new VoxelShape[]{
             Stream.of(
                     Block.box(4, 0, 4, 12, 1, 12),
@@ -103,7 +104,7 @@ public class ExperienceHolder extends BaseMachineBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
-    public ExperienceHolder() {
+    public ExperienceHolderBlock() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)
@@ -120,7 +121,7 @@ public class ExperienceHolder extends BaseMachineBlock {
     }
 
     @Override
-    public void openMenu(Player player, BlockPos blockPos) {
+    public void openMenu(ServerPlayer player, BlockPos blockPos) {
         player.openMenu(new SimpleMenuProvider(
                 (windowId, playerInventory, playerEntity) -> new ExperienceHolderContainer(windowId, playerInventory, blockPos), Component.translatable("")));
     }

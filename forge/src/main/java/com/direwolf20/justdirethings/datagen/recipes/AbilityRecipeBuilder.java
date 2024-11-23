@@ -90,7 +90,7 @@ public class AbilityRecipeBuilder implements RecipeBuilder {
         String armorName = BuiltInRegistries.ITEM.getKey(this.base.getItems()[0].getItem()).getPath();
         String abilityItemPath = BuiltInRegistries.ITEM.getKey(this.addition.getItems()[0].getItem()).getPath();
         String abilityName = abilityItemPath.substring(abilityItemPath.indexOf("_") + 1);
-        this.save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, armorName + "-" + abilityName));
+        this.save(pRecipeOutput, JustDireThings.id(armorName + "-" + abilityName));
     }
 
     @Override

@@ -35,7 +35,7 @@ public class JEIIntegration implements IModPlugin {
     @Nonnull
     @Override
     public ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(JustDireThings.MODID, "jei_plugin");
+        return JustDireThings.id("jei_plugin");
     }
 
     @Override

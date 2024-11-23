@@ -2,7 +2,7 @@ package com.direwolf20.justdirethings.common.items;
 
 import com.direwolf20.justdirethings.common.items.interfaces.*;
 
-public class EclipsegateWand extends BaseToggleableTool implements PoweredItem, LeftClickableTool {
+public class EclipsegateWand extends BaseToggleableToolItem implements PoweredItem, LeftClickableTool {
     public EclipsegateWand() {
         super(new Properties()
                 .durability(200)
