@@ -15,9 +15,13 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.crafting.BlockTagIngredient;
@@ -43,7 +47,7 @@ public class GooSpreadRecipeTagCategory implements IRecipeCategory<GooSpreadReci
         slot = guiHelper.getSlotDrawable();
         icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.GooBlock_Tier1.get()));
         localizedName = Component.translatable("justdirethings.goospreadrecipetag.title");
-        this.arrow = guiHelper.getRecipeArrow();
+        this.arrow = guiHelper.  ;
     }
 
     @Override
@@ -76,9 +80,12 @@ public class GooSpreadRecipeTagCategory implements IRecipeCategory<GooSpreadReci
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, GooSpreadRecipeTag recipe, IFocusGroup focuses) {
-        BlockTagIngredient input = recipe.getInput();
+        TagKey<Block> input = recipe.getInput();
         IRecipeSlotBuilder inputSlotBuilder = builder.addSlot(RecipeIngredientRole.INPUT, 9, 12);
-        List<ItemStack> itemstacks = input.getItems().toList();
+        List<ItemStack> itemstacks = new ArrayList<>();
+        BuiltInRegistries.BLOCK.getTag(input).get().forEach(blockHolder -> {
+            itemstacks.add(blockHolder.value().asItem().getDefaultInstance());
+        });
         inputSlotBuilder.addItemStacks(itemstacks);
         /*if (input.getBlock().asItem() != Items.AIR) {
             inputSlotBuilder
@@ -106,7 +113,7 @@ public class GooSpreadRecipeTagCategory implements IRecipeCategory<GooSpreadReci
                     .addItemStack(new ItemStack(output.getBlock()));
         } else if (output.getBlock() instanceof LiquidBlock liquidBlock) {
             builder.addSlot(RecipeIngredientRole.OUTPUT, 88, 12)
-                    .addFluidStack(liquidBlock.fluid, 1000);
+                    .addFluidStack(liquidBlock.getFluid(), 1000);
         }
     }
 }

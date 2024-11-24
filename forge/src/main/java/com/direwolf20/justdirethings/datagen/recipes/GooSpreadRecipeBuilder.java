@@ -1,6 +1,7 @@
 package com.direwolf20.justdirethings.datagen.recipes;
 
 import com.direwolf20.justdirethings.JustDireThings;
+import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -8,20 +9,21 @@ import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 
 public class GooSpreadRecipeBuilder implements RecipeBuilder {
@@ -33,8 +35,7 @@ public class GooSpreadRecipeBuilder implements RecipeBuilder {
     protected final BlockState output;
     protected final int tierRequirement;
     protected final int craftingDuration;
-    private final NonNullList<Ingredient> ingredients = NonNullList.create();
-    private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
+    private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
 
     public GooSpreadRecipeBuilder(ResourceLocation id, BlockState input, BlockState output, int tierRequirement, int craftingDuration) {
         this.id = id;
@@ -46,34 +47,6 @@ public class GooSpreadRecipeBuilder implements RecipeBuilder {
 
     public static GooSpreadRecipeBuilder shapeless(ResourceLocation id, BlockState input, BlockState output, int tierRequirement, int craftingDuration) {
         return new GooSpreadRecipeBuilder(id, input, output, tierRequirement, craftingDuration);
-    }
-
-    public GooSpreadRecipeBuilder requires(TagKey<Item> pTag) {
-        return this.requires(Ingredient.of(pTag));
-    }
-
-    public GooSpreadRecipeBuilder requires(ItemLike pItem) {
-        return this.requires(pItem, 1);
-    }
-
-    public GooSpreadRecipeBuilder requires(ItemLike pItem, int pQuantity) {
-        for (int i = 0; i < pQuantity; ++i) {
-            this.requires(Ingredient.of(pItem));
-        }
-
-        return this;
-    }
-
-    public GooSpreadRecipeBuilder requires(Ingredient pIngredient) {
-        return this.requires(pIngredient, 1);
-    }
-
-    public GooSpreadRecipeBuilder requires(Ingredient pIngredient, int pQuantity) {
-        for (int i = 0; i < pQuantity; ++i) {
-            this.ingredients.add(pIngredient);
-        }
-
-        return this;
     }
 
     public GooSpreadRecipeBuilder unlockedBy(String pName, Criterion<?> pCriterion) {
@@ -91,12 +64,13 @@ public class GooSpreadRecipeBuilder implements RecipeBuilder {
         return ItemStack.EMPTY.getItem();
     }
 
-    public void save(RecipeOutput pRecipeOutput) {
+    @Override
+    public void save(Consumer<FinishedRecipe> pRecipeOutput) {
         this.save(pRecipeOutput, JustDireThings.id(BuiltInRegistries.BLOCK.getKey(this.output.getBlock()).getPath() + "-goospread"));
     }
 
     @Override
-    public void save(RecipeOutput pRecipeOutput, ResourceLocation pId) {
+    public void save(Consumer<FinishedRecipe> pRecipeOutput, ResourceLocation pId) {
         this.ensureValid(pId);
         Advancement.Builder advancement$builder = pRecipeOutput.advancement()
                 .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pId))
@@ -118,4 +92,35 @@ public class GooSpreadRecipeBuilder implements RecipeBuilder {
             throw new IllegalStateException("No way of obtaining recipe " + pId);
         }
     }
+
+    public static class Result implements FinishedRecipe {
+
+        @Override
+        public void serializeRecipeData(JsonObject p_125967_) {
+
+        }
+
+        @Override
+        public ResourceLocation getId() {
+            return null;
+        }
+
+        @Override
+        public RecipeSerializer<?> getType() {
+            return null;
+        }
+
+        @org.jetbrains.annotations.Nullable
+        @Override
+        public JsonObject serializeAdvancement() {
+            return null;
+        }
+
+        @org.jetbrains.annotations.Nullable
+        @Override
+        public ResourceLocation getAdvancementId() {
+            return null;
+        }
+    }
+
 }

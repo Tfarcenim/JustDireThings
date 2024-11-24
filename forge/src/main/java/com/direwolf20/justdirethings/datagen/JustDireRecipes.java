@@ -981,7 +981,7 @@ public class JustDireRecipes extends RecipeProvider {
                 .group("justdirethings")
                 .unlockedBy("has_goo_block_t1", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.GooBlock_Tier1_ITEM.get()))
                 .save(consumer);
-        GooSpreadRecipeTagBuilder.shapeless(JustDireThings.id("coal_block_t1"), new BlockTagIngredient(JustDireTags.Blocks.CHARCOAL), Registration.RawCoal_T1.get().defaultBlockState(), 1, 2400)
+        GooSpreadRecipeTagBuilder.shapeless(JustDireTags.Blocks.CHARCOAL, Registration.RawCoal_T1.get().defaultBlockState(), 1, 2400)
                 .group("justdirethings")
                 .unlockedBy("has_goo_block_t1", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.GooBlock_Tier1_ITEM.get()))
                 .save(consumer);
