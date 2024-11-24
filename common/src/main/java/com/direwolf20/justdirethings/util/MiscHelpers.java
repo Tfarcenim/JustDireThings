@@ -2,6 +2,8 @@ package com.direwolf20.justdirethings.util;
 
 import com.direwolf20.justdirethings.Constants;
 import com.direwolf20.justdirethings.JustDireThings;
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
@@ -16,10 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Random;
+import java.util.*;
 
 import static com.mojang.text2speech.Narrator.LOGGER;
 
@@ -77,32 +76,12 @@ public class MiscHelpers {
         return values[(e.ordinal() + 1) % values.length];
     }
 
-    public static <T extends Comparable<T>> JsonObject serializeBlockState(BlockState state) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("block", BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
-
-        Collection<Property<?>> properties = state.getProperties();
-        JsonObject propertiesJson = new JsonObject();
-
-
-        if (!properties.isEmpty()) {
-            for (Property<?> property : properties) {
-                Property<T> tProperty = (Property<T>) property;
-                T value = state.getValue(tProperty);
-                tProperty.codec().encodeStart(JsonOps.INSTANCE,value).resultOrPartial(Constants.LOG::error)
-                        .ifPresent(jsonElement -> propertiesJson.add(property.getName(),jsonElement));
-            }
-        }
-
-        jsonObject.add("properties", propertiesJson);
-        return jsonObject;
+    public static JsonElement serializeBlockState(BlockState state) {
+        return BlockState.CODEC.encodeStart(JsonOps.INSTANCE,state).resultOrPartial(Constants.LOG::error).orElseThrow();
     }
 
-    public static BlockState loadBlockState(JsonObject jsonObject) {
-        Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(GsonHelper.getAsString(jsonObject,"block")));
-        BlockState state = block.defaultBlockState();
-
-        return state;
+    public static BlockState loadBlockState(JsonElement jsonElement) {
+        return BlockState.CODEC.parse(JsonOps.INSTANCE,jsonElement).resultOrPartial(Constants.LOG::error).orElseThrow();
     }
 
 }

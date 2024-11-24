@@ -2,6 +2,7 @@ package com.direwolf20.justdirethings.datagen.recipes;
 
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.google.gson.JsonObject;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -9,6 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -112,20 +114,12 @@ public class FluidDropRecipe implements CraftingRecipe {
         private static final ResourceLocation NAME = JustDireThings.id("fluiddrop");
 
 
-        public static final StreamCodec<RegistryFriendlyByteBuf, FluidDropRecipe> STREAM_CODEC = StreamCodec.composite(
-                ResourceLocation.STREAM_CODEC, FluidDropRecipe::getId,
-                ByteBufCodecs.idMapper(Block.BLOCK_STATE_REGISTRY), FluidDropRecipe::getInput,
-                ByteBufCodecs.idMapper(Block.BLOCK_STATE_REGISTRY), FluidDropRecipe::getOutput,
-                ByteBufCodecs.holderRegistry(Registries.ITEM), FluidDropRecipe::getCatalystHolder,
-                FluidDropRecipe::new
-        );
-
-
-
 
         @Override
         public FluidDropRecipe fromJson(ResourceLocation id, JsonObject json) {
-            return new FluidDropRecipe(id,);
+            return new FluidDropRecipe(id, MiscHelpers.loadBlockState(GsonHelper.getNonNull(json,"input")),
+                    MiscHelpers.loadBlockState(GsonHelper.getNonNull(json,"output")),
+                    BuiltInRegistries.ITEM.get(new ResourceLocation(GsonHelper.getAsString(json,"catalyst"))));
         }
 
         @Override

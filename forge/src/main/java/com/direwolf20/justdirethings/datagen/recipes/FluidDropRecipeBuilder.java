@@ -3,6 +3,7 @@ package com.direwolf20.justdirethings.datagen.recipes;
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.datagen.JustDireRecipes;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -127,15 +128,13 @@ public class FluidDropRecipeBuilder implements RecipeBuilder {
             this.advancementId = p_249109_;
         }
 
-        public void serializeRecipeData(JsonObject p_126230_) {
+        public void serializeRecipeData(JsonObject json) {
             if (!this.group.isEmpty()) {
-                p_126230_.addProperty("group", this.group);
+                json.addProperty("group", this.group);
             }
-
-            JsonObject jsonobject = new JsonObject();
-
-
-            p_126230_.add("result", jsonobject);
+            json.add("input", MiscHelpers.serializeBlockState(input));
+            json.add("output", MiscHelpers.serializeBlockState(output));
+            json.addProperty("catalyst",BuiltInRegistries.ITEM.getKey(catalyst).toString());
         }
 
         public RecipeSerializer<?> getType() {

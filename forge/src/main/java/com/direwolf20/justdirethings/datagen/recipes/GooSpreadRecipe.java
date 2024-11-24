@@ -3,18 +3,22 @@ package com.direwolf20.justdirethings.datagen.recipes;
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.blockentities.basebe.GooBlockBE_Base;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.MiscHelpers;
+import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public class GooSpreadRecipe implements CraftingRecipe {
     private final ResourceLocation id;
@@ -62,22 +66,23 @@ public class GooSpreadRecipe implements CraftingRecipe {
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider) {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
     public boolean isSpecial() {
         return true;
     }
 
     @Override
-    public boolean matches(CraftingInput p_346065_, Level p_345375_) {
+    public ResourceLocation getId() {
+        return null;
+    }
+
+
+    @Override
+    public boolean matches(CraftingContainer p_44002_, Level p_44003_) {
         return false;
     }
 
     @Override
-    public ItemStack assemble(CraftingInput p_345149_, HolderLookup.Provider p_346030_) {
+    public ItemStack assemble(CraftingContainer p_44001_, RegistryAccess p_267165_) {
         return ItemStack.EMPTY;
     }
 
@@ -87,6 +92,11 @@ public class GooSpreadRecipe implements CraftingRecipe {
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return false;
+    }
+
+    @Override
+    public ItemStack getResultItem(RegistryAccess p_267052_) {
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -108,22 +118,17 @@ public class GooSpreadRecipe implements CraftingRecipe {
                         .apply(p_311734_, GooSpreadRecipe::new)
         );
 
-        public static final StreamCodec<RegistryFriendlyByteBuf, GooSpreadRecipe> STREAM_CODEC = StreamCodec.of(
-                GooSpreadRecipe.Serializer::toNetwork, GooSpreadRecipe.Serializer::fromNetwork
-        );
-
-
         @Override
-        public MapCodec<GooSpreadRecipe> codec() {
-            return CODEC;
+        public GooSpreadRecipe fromJson(ResourceLocation p_44103_, JsonObject json) {
+            BlockState input = MiscHelpers.loadBlockState(GsonHelper.getNonNull(json,"input"));
+            BlockState output = MiscHelpers.loadBlockState(GsonHelper.getNonNull(json,"output"));
+            int tierRequirement = GsonHelper.getAsInt(json,"tierRequirement");
+            int craftingDuration = GsonHelper.getAsInt(json,"craftingDuration");
+            return new GooSpreadRecipe(p_44103_,input,output,tierRequirement,craftingDuration);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, GooSpreadRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        public static GooSpreadRecipe fromNetwork(RegistryFriendlyByteBuf pBuffer) {
+        public @Nullable GooSpreadRecipe fromNetwork(ResourceLocation p_44105_, FriendlyByteBuf pBuffer) {
             ResourceLocation resourceLocation = pBuffer.readResourceLocation();
             BlockState inputState = Block.stateById(pBuffer.readInt());
             BlockState outputState = Block.stateById(pBuffer.readInt());
@@ -133,7 +138,8 @@ public class GooSpreadRecipe implements CraftingRecipe {
             return new GooSpreadRecipe(resourceLocation, inputState, outputState, tierRequirement, craftingDuration);
         }
 
-        public static void toNetwork(RegistryFriendlyByteBuf pBuffer, GooSpreadRecipe pRecipe) {
+        @Override
+        public void toNetwork(FriendlyByteBuf pBuffer, GooSpreadRecipe pRecipe) {
             pBuffer.writeResourceLocation(pRecipe.id);
             pBuffer.writeInt(Block.getId(pRecipe.input));
             pBuffer.writeInt(Block.getId(pRecipe.output));
