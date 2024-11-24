@@ -88,7 +88,7 @@ public abstract class AbstractGooSpreadRecipe<T> implements Recipe<CraftingConta
         protected abstract G compose(ResourceLocation id, T input, BlockState output, int tierRequirement, int craftingDuration);
 
         @Override
-        public void toNetwork(FriendlyByteBuf pBuffer, G pRecipe) {
+        public final void toNetwork(FriendlyByteBuf pBuffer, G pRecipe) {
             pBuffer.writeResourceLocation(pRecipe.id);
             writeInput(pBuffer,pRecipe.input);
             pBuffer.writeInt(Block.getId(pRecipe.output));
@@ -97,7 +97,7 @@ public abstract class AbstractGooSpreadRecipe<T> implements Recipe<CraftingConta
         }
 
         @Override
-        public @Nullable G fromNetwork(ResourceLocation p_44105_, FriendlyByteBuf pBuffer) {
+        public final @Nullable G fromNetwork(ResourceLocation p_44105_, FriendlyByteBuf pBuffer) {
             ResourceLocation resourceLocation = pBuffer.readResourceLocation();
             T inputState = readInput(pBuffer);
             BlockState outputState = Block.stateById(pBuffer.readInt());
@@ -107,7 +107,7 @@ public abstract class AbstractGooSpreadRecipe<T> implements Recipe<CraftingConta
         }
 
         @Override
-        public G fromJson(ResourceLocation id, JsonObject json) {
+        public final G fromJson(ResourceLocation id, JsonObject json) {
             return compose(id, readInput(json),
                     MiscHelpers.loadBlockState(GsonHelper.getNonNull(json,"output")),
                     GsonHelper.getAsInt(json,"tierRequirement"),
