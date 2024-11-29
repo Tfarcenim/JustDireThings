@@ -24,7 +24,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
@@ -38,14 +37,9 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class PortalGunV2Item extends BasePoweredItem implements PoweredItem, FluidContainingItem {
     public static final int MAX_FAVORITES = 12;
@@ -114,15 +108,15 @@ public class PortalGunV2Item extends BasePoweredItem implements PoweredItem, Flu
         int cost = calculateFluidCost((ServerLevel) level, player, portalDestination);
         if (!hasEnoughFluid(itemStack, cost)) {
             player.displayClientMessage(Component.translatable("justdirethings.lowportalfluid"), true);
-            player.playNotifySound(SoundEvents.VAULT_INSERT_ITEM_FAIL, SoundSource.PLAYERS, 1.0F, 1.0F);
+            player.playNotifySound(SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 1.0F, 1.0F);
             return;
         }
         if (!PoweredItem.consumeEnergy(itemStack, Config.PORTAL_GUN_V2_RF_COST.get())) {
             player.displayClientMessage(Component.translatable("justdirethings.lowenergy"), true);
-            player.playNotifySound(SoundEvents.VAULT_INSERT_ITEM_FAIL, SoundSource.PLAYERS, 1.0F, 1.0F);
+            player.playNotifySound(SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 1.0F, 1.0F);
             return;
         }
-        PortalProjectile projectile = new PortalProjectile(level, player, getUUID(itemStack), isPrimaryType, true, portalDestination);
+        PortalProjectile projectile = new PortalProjectile(level, player, PortalGunItem.getUUID(itemStack), isPrimaryType, true, portalDestination);
         projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1F, 1.0F);
         level.addFreshEntity(projectile);
         consumeFluid(itemStack, cost);
@@ -142,7 +136,7 @@ public class PortalGunV2Item extends BasePoweredItem implements PoweredItem, Flu
     }
 
     public static boolean hasEnoughFluid(ItemStack itemStack, int amt) {
-        IFluidHandlerItem fluidHandler = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler == null) {
             return false;
         }
@@ -150,7 +144,7 @@ public class PortalGunV2Item extends BasePoweredItem implements PoweredItem, Flu
     }
 
     public static void consumeFluid(ItemStack itemStack, int amt) {
-        IFluidHandlerItem fluidHandler = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler == null) {
             return;
         }
@@ -167,17 +161,7 @@ public class PortalGunV2Item extends BasePoweredItem implements PoweredItem, Flu
         return false;
     }
 
-    public static UUID setUUID(ItemStack itemStack) {
-        UUID uuid = UUID.randomUUID();
-        itemStack.set(JustDireDataComponents.PORTALGUN_UUID, uuid);
-        return uuid;
-    }
 
-    public static UUID getUUID(ItemStack itemStack) {
-        if (!itemStack.has(JustDireDataComponents.PORTALGUN_UUID))
-            return setUUID(itemStack);
-        return itemStack.get(JustDireDataComponents.PORTALGUN_UUID);
-    }
 
     public static NBTHelpers.PortalDestination getSelectedFavorite(ItemStack itemStack) {
         List<NBTHelpers.PortalDestination> favoritesList = new ArrayList<>(getFavorites(itemStack));
@@ -192,19 +176,20 @@ public class PortalGunV2Item extends BasePoweredItem implements PoweredItem, Flu
     }
 
     public static int getFavoritePosition(ItemStack itemStack) {
-        return itemStack.getOrDefault(JustDireDataComponents.PORTALGUN_FAVORITE, 0);
+        Integer fav = JustDireDataComponents.getPortalgunFavorite(itemStack);
+        return fav == null ? 0 : fav;
     }
 
     public static void setFavoritePosition(ItemStack itemStack, int favorite) {
-        itemStack.set(JustDireDataComponents.PORTALGUN_FAVORITE, favorite);
+        JustDireDataComponents.setPortalgunFavorite(itemStack,favorite);
     }
 
     public static List<NBTHelpers.PortalDestination> getFavorites(ItemStack itemStack) {
-        return itemStack.getOrDefault(JustDireDataComponents.PORTAL_GUN_FAVORITES, new ArrayList<>());
+        return JustDireDataComponents.getPortalGunFavorites(itemStack);
     }
 
     public static void setFavorites(ItemStack itemStack, List<NBTHelpers.PortalDestination> favorites) {
-        itemStack.set(JustDireDataComponents.PORTAL_GUN_FAVORITES, favorites);
+        JustDireDataComponents.setPortalGunFavorites(itemStack,favorites);
     }
 
     public static void setPrevious(Player player, ItemStack itemStack) {
@@ -213,15 +198,16 @@ public class PortalGunV2Item extends BasePoweredItem implements PoweredItem, Flu
         if (facing == Direction.DOWN) facing = Direction.NORTH; //Down is bad
         ResourceKey<Level> dimension = player.level().dimension();
         NBTHelpers.PortalDestination newDestination = new NBTHelpers.PortalDestination(new NBTHelpers.GlobalVec3(dimension, position), facing, "previous");
-        itemStack.set(JustDireDataComponents.PORTAL_GUN_PREVIOUS, newDestination);
+        JustDireDataComponents.setPortalGunPrevious(itemStack, newDestination);
     }
 
     public static NBTHelpers.PortalDestination getPrevious(ItemStack itemStack) {
-        return itemStack.getOrDefault(JustDireDataComponents.PORTAL_GUN_PREVIOUS, NBTHelpers.PortalDestination.EMPTY);
+        NBTHelpers.PortalDestination previous = JustDireDataComponents.getPortalGunPrevious(itemStack);
+        return previous == null ? NBTHelpers.PortalDestination.EMPTY : previous;
     }
 
     public static void addFavorite(ItemStack itemStack, int position, NBTHelpers.PortalDestination portalDestination) {
-        if (!itemStack.has(JustDireDataComponents.PORTAL_GUN_FAVORITES)) {
+        if (!itemStack.hasTag() ||!itemStack.getTag().contains(JustDireDataComponents.PORTAL_GUN_FAVORITES)) {
             List<NBTHelpers.PortalDestination> list = new ArrayList<>(MAX_FAVORITES);
             for (int i = 0; i < MAX_FAVORITES; i++) {
                 list.add(NBTHelpers.PortalDestination.EMPTY); //Prefill List
@@ -241,11 +227,8 @@ public class PortalGunV2Item extends BasePoweredItem implements PoweredItem, Flu
     }
 
     public static boolean getStayOpen(ItemStack itemStack) {
-        return itemStack.getOrDefault(JustDireDataComponents.PORTAL_GUN_STAY_OPEN, false);
-    }
-
-    public static void setStayOpen(ItemStack itemStack, boolean stayOpen) {
-        itemStack.set(JustDireDataComponents.PORTAL_GUN_STAY_OPEN, stayOpen);
+        Boolean stayOpen = JustDireDataComponents.getPortalGunStayOpen(itemStack);
+        return stayOpen != null && stayOpen;
     }
 
     public static ItemStack getPortalGunv2(Player player) {
@@ -259,7 +242,7 @@ public class PortalGunV2Item extends BasePoweredItem implements PoweredItem, Flu
     }
 
     public static int getFullness(ItemStack itemStack) {
-        IFluidHandlerItem fluidHandler = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler != null && !fluidHandler.getFluidInTank(0).isEmpty()) {
             float percentFull = ((float) fluidHandler.getFluidInTank(0).getAmount() / maxMB) * 100;
             if (percentFull > 0 && percentFull <= 33) {

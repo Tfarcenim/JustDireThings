@@ -120,18 +120,18 @@ public class ParadoxEntityRender extends EntityRenderer<ParadoxEntity> {
 
                 // Draw the lightning arc segment
                 vertexConsumer.vertex(matrix, startX, startY, startZ)
-                        .setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
-                        .setUv(0.0F, 0.0F)
-                        .setOverlay(OverlayTexture.NO_OVERLAY)
-                        .setLight(packedLightIn)
-                        .setNormal(matrixStackIn.last(), normal.x(), normal.y(), normal.z());
+                        .color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
+                        .uv(0.0F, 0.0F)
+                        .overlayCoords(OverlayTexture.NO_OVERLAY)
+                        .uv2(packedLightIn)
+                        .normal(matrixStackIn.last().normal(), normal.x(), normal.y(), normal.z());
 
                 vertexConsumer.vertex(matrix, x, y, z)
-                        .setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
-                        .setUv(1.0F, 1.0F)
-                        .setOverlay(OverlayTexture.NO_OVERLAY)
-                        .setLight(packedLightIn)
-                        .setNormal(matrixStackIn.last(), normal.x(), normal.y(), normal.z());
+                        .color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
+                        .uv(1.0F, 1.0F)
+                        .overlayCoords(OverlayTexture.NO_OVERLAY)
+                        .uv2(packedLightIn)
+                        .normal(matrixStackIn.last().normal(), normal.x(), normal.y(), normal.z());
 
                 // Update the start position for the next segment
                 startX = x;
@@ -165,17 +165,17 @@ public class ParadoxEntityRender extends EntityRenderer<ParadoxEntity> {
 
         // Draw the branch
         vertexConsumer.vertex(matrix, startX, startY, startZ)
-                .setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
-                .setUv(0.0F, 0.0F)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(packedLightIn)
-                .setNormal(matrixStackIn.last(), normal.x(), normal.y(), normal.z());
+                .color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
+                .uv(0.0F, 0.0F)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(packedLightIn)
+                .normal(matrixStackIn.last().normal(), normal.x(), normal.y(), normal.z());//todo?
 
         vertexConsumer.vertex(matrix, bx, by, bz)
-                .setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
-                .setUv(1.0F, 1.0F)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(packedLightIn)
-                .setNormal(matrixStackIn.last(), normal.x(), normal.y(), normal.z());
+                .color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
+                .uv(1.0F, 1.0F)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(packedLightIn)
+                .normal(matrixStackIn.last().normal(), normal.x(), normal.y(), normal.z());
     }
 }

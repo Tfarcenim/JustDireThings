@@ -9,8 +9,7 @@ import net.minecraft.world.item.Item;
 
 public class FerricoreBoots extends BaseBoots {
     public FerricoreBoots() {
-        super(ArmorTiers.FERRICORE, new Item.Properties()
-                .durability(ArmorItem.Type.BOOTS.getDurability(15)));
+        super(ArmorTiers.FERRICORE, new Item.Properties());
         registerAbility(Ability.STEPHEIGHT);
         registerAbility(Ability.JUMPBOOST, new AbilityParams(1, 1, 1, 1));
     }

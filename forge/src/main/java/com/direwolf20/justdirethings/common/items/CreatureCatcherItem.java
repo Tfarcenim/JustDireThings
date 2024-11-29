@@ -1,8 +1,10 @@
 package com.direwolf20.justdirethings.common.items;
 
+import com.direwolf20.justdirethings.client.renderers.JustDireItemRenderer;
 import com.direwolf20.justdirethings.common.entities.CreatureCatcherEntity;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,8 +16,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class CreatureCatcherItem extends Item {
     public CreatureCatcherItem() {
@@ -69,5 +73,17 @@ public class CreatureCatcherItem extends Item {
                 .append(Component.literal("")
                         .append(mob.getName())
                         .withStyle(ChatFormatting.GREEN)));
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            JustDireItemRenderer diremodel = new JustDireItemRenderer();
+
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return diremodel;
+            }
+        });
     }
 }

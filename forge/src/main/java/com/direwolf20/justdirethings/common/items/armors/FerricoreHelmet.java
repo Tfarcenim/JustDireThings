@@ -7,8 +7,7 @@ import net.minecraft.world.item.ArmorItem;
 
 public class FerricoreHelmet extends BaseHelmet {
     public FerricoreHelmet() {
-        super(ArmorTiers.FERRICORE, new Properties()
-                .durability(ArmorItem.Type.HELMET.getDurability(15)));
+        super(ArmorTiers.FERRICORE, new Properties());
         registerAbility(Ability.MINDFOG);
     }
 }

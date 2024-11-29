@@ -95,13 +95,13 @@ import static com.direwolf20.justdirethings.client.particles.ModParticles.PARTIC
 public class Registration {
     //public static final TicketController TICKET_CONTROLLER = new TicketController(JustDireThings.id("chunk_loader"), null);
 
-    //Coal_T1.getId(), new FurnaceFuel(4800), false)
+    //TieredCoalItem.getId(), new FurnaceFuel(4800), false)
     //                .add(Registration.CoalBlock_T1.getId(), new FurnaceFuel(48000), false)
-    //                .add(Registration.Coal_T2.getId(), new FurnaceFuel(14400), false)
+    //                .add(Registration.TieredCoal_T2Item.getId(), new FurnaceFuel(14400), false)
     //                .add(Registration.CoalBlock_T2.getId(), new FurnaceFuel(144000), false)
-    //                .add(Registration.Coal_T3.getId(), new FurnaceFuel(43200), false)
+    //                .add(Registration.TieredCoal_T3Item.getId(), new FurnaceFuel(43200), false)
     //                .add(Registration.CoalBlock_T3.getId(), new FurnaceFuel(432000), false)
-    //                .add(Registration.Coal_T4.getId(), new FurnaceFuel(129600), false)
+    //                .add(Registration.TieredCoal_T4Item.getId(), new FurnaceFuel(129600), false)
     //                .add(Registration.CoalBlock_T4.getId(), new FurnaceFuel(1296000), false)
     //                .add(Registration.CharcoalBlock.getId(), new FurnaceFuel(16000), false);
 
@@ -460,19 +460,23 @@ public class Registration {
     public static final RegistryObject<BlockEntityType<ExperienceHolderBE>> ExperienceHolderBE = BLOCK_ENTITIES.register("experienceholder", () -> BlockEntityType.Builder.of(ExperienceHolderBE::new, ExperienceHolder.get()).build(null));
 
     //Items - Raw Resources
-    public static final RegistryObject<RawFerricore> RawFerricore = ITEMS.register("raw_ferricore", RawFerricore::new);
-    public static final RegistryObject<RawBlazegold> RawBlazegold = ITEMS.register("raw_blazegold", RawBlazegold::new);
-    public static final RegistryObject<RawEclipseAlloy> RawEclipseAlloy = ITEMS.register("raw_eclipsealloy", RawEclipseAlloy::new);
+    public static final RegistryObject<Item> RawFerricore = ITEMS.register("raw_ferricore", Registration::basic);
+    public static final RegistryObject<Item> RawBlazegold = ITEMS.register("raw_blazegold",Registration::basic);
+    public static final RegistryObject<Item> RawEclipseAlloy = ITEMS.register("raw_eclipsealloy", Registration::basic);
+
+    public static Item basic() {
+        return new Item(new Item.Properties());
+    }
 
     //Items - Resources
-    public static final RegistryObject<FerricoreIngot> FerricoreIngot = ITEMS.register("ferricore_ingot", FerricoreIngot::new);
+    public static final RegistryObject<Item> FerricoreIngot = ITEMS.register("ferricore_ingot", Registration::basic);
     public static final RegistryObject<BlazeGoldIngot> BlazegoldIngot = ITEMS.register("blazegold_ingot", BlazeGoldIngot::new);
     public static final RegistryObject<Celestigem> Celestigem = ITEMS.register("celestigem", Celestigem::new);
-    public static final RegistryObject<EclipseAlloyIngot> EclipseAlloyIngot = ITEMS.register("eclipsealloy_ingot", EclipseAlloyIngot::new);
-    public static final RegistryObject<Coal_T1> Coal_T1 = ITEMS.register("coal_t1", Coal_T1::new);
-    public static final RegistryObject<Coal_T2> Coal_T2 = ITEMS.register("coal_t2", Coal_T2::new);
-    public static final RegistryObject<Coal_T3> Coal_T3 = ITEMS.register("coal_t3", Coal_T3::new);
-    public static final RegistryObject<Coal_T4> Coal_T4 = ITEMS.register("coal_t4", Coal_T4::new);
+    public static final RegistryObject<Item> EclipseAlloyIngot = ITEMS.register("eclipsealloy_ingot", Registration::basic);
+    public static final RegistryObject<TieredCoalItem> Coal_T1 = ITEMS.register("coal_t1", () -> new TieredCoalItem(2));
+    public static final RegistryObject<TieredCoalItem> Coal_T2 = ITEMS.register("coal_t2", () -> new TieredCoalItem(4));
+    public static final RegistryObject<TieredCoalItem> Coal_T3 = ITEMS.register("coal_t3",() -> new TieredCoalItem(8));
+    public static final RegistryObject<TieredCoalItem> Coal_T4 = ITEMS.register("coal_t4", () -> new TieredCoalItem(16));
     public static final RegistryObject<PolymorphicCatalyst> PolymorphicCatalyst = ITEMS.register("polymorphic_catalyst", PolymorphicCatalyst::new);
     public static final RegistryObject<Item> PortalFluidCatalyst = ITEMS.register("portal_fluid_catalyst", () -> new Item(new Item.Properties()));
     public static final RegistryObject<TimeCrystal> TimeCrystal = ITEMS.register("time_crystal", TimeCrystal::new);

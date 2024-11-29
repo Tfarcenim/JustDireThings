@@ -1620,8 +1620,8 @@ public class JustDireRecipes extends RecipeProvider {
                         EnumSet<Ability> abilities = toggleableTool.getAllAbilities();
                         if (abilities.contains(ability)) {
                             PaxelRecipeBuilder.ability(Ingredient.EMPTY, Ingredient.of(armor.get()), Ingredient.of(upgrade.get()))
-                                    .group("justdirethings")
-                                    .unlockedBy("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
+                                  //  .group("justdirethings")
+                                    .unlocks("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
                                     .save(consumer);
                         }
                     }
@@ -1632,8 +1632,8 @@ public class JustDireRecipes extends RecipeProvider {
                         EnumSet<Ability> abilities = toggleableTool.getAllAbilities();
                         if (abilities.contains(ability)) {
                             PaxelRecipeBuilder.ability(Ingredient.EMPTY, Ingredient.of(tool.get()), Ingredient.of(upgrade.get()))
-                                    .group("justdirethings")
-                                    .unlockedBy("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
+                                 //   .group("justdirethings")
+                                    .unlocks("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
                                     .save(consumer);
                         }
                     }
@@ -1643,10 +1643,10 @@ public class JustDireRecipes extends RecipeProvider {
                     if (bowItem instanceof ToggleableTool toggleableTool) {
                         EnumSet<Ability> abilities = toggleableTool.getAllAbilities();
                         if (abilities.contains(ability)) {
-                            AbilityRecipeBuilder.shapeless(Ingredient.EMPTY, Ingredient.of(bow.get()), Ingredient.of(upgrade.get()))
-                                    .group("justdirethings")
-                                    .unlockedBy("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
-                                    .save(consumer);
+                            PaxelRecipeBuilder.ability(Ingredient.EMPTY, Ingredient.of(bow.get()), Ingredient.of(upgrade.get()))
+                                    ///.group("justdirethings")
+                                    .unlocks("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
+                                    .save(consumer,);
                         }
                     }
                 }

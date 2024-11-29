@@ -8,8 +8,7 @@ import net.minecraft.world.item.ArmorItem;
 
 public class FerricoreChestplate extends BaseChestplate {
     public FerricoreChestplate() {
-        super(ArmorTiers.FERRICORE, new Properties()
-                .durability(ArmorItem.Type.CHESTPLATE.getDurability(15)));
+        super(ArmorTiers.FERRICORE, new Properties());
         registerAbility(Ability.INVULNERABILITY, new AbilityParams(1, 1, 1, 1, 200, 1200));
     }
 }

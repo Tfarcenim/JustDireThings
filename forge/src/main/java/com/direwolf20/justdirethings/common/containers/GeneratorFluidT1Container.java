@@ -1,5 +1,6 @@
 package com.direwolf20.justdirethings.common.containers;
 
+import com.direwolf20.justdirethings.common.blockentities.GeneratorFluidT1BE;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseMachineContainer;
 import com.direwolf20.justdirethings.common.containers.slots.RefinedFuelSlot;
 import com.direwolf20.justdirethings.setup.Registration;
@@ -9,9 +10,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
-public class GeneratorFluidT1Container extends BaseMachineContainer {
+public class GeneratorFluidT1Container extends BaseMachineContainer<GeneratorFluidT1BE> {
 
     public GeneratorFluidT1Container(int windowId, Inventory playerInventory, FriendlyByteBuf extraData) {
         this(windowId, playerInventory, extraData.readBlockPos());

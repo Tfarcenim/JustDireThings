@@ -10,8 +10,7 @@ import net.minecraft.world.item.ItemStack;
 public class EclipseAlloyHelmet extends BaseHelmet implements PoweredTool {
     public EclipseAlloyHelmet() {
         super(ArmorTiers.ECLIPSEALLOY, new Properties()
-                .fireResistant()
-                .durability(Type.HELMET.getDurability(25)));
+                .fireResistant());
         registerAbility(Ability.MINDFOG);
         registerAbility(Ability.STUPEFY, new AbilityParams(1, 1, 1, 1, 100, 200));
         registerAbility(Ability.NIGHTVISION);

@@ -9,21 +9,20 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.RecipeHolder;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
-import net.neoforged.neoforge.event.server.ServerStartedEvent;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.client.event.RecipesUpdatedEvent;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -42,20 +41,18 @@ public class EntityEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void entityTick(EntityTickEvent.Post e) {
-        Entity entity = e.getEntity();
-        Level level = entity.level();
-        if (!(entity instanceof ItemEntity itemEntity)) return;
-        BlockState blockState = entity.getInBlockState();
+    //@SubscribeEvent
+    public static void entityTick(ItemEntity e) {
+        Level level = e.level();
+        BlockState blockState = e.getBlockStateOn();
         if (!(blockState.getBlock() instanceof LiquidBlock)) return;
-        BlockState fluidDropOutput = findRecipe(blockState, itemEntity);
+        BlockState fluidDropOutput = findRecipe(blockState, e);
         if (!fluidDropOutput.isAir()) {
-            BlockPos blockPos = entity.blockPosition();
+            BlockPos blockPos = e.blockPosition();
             if (level.setBlockAndUpdate(blockPos, fluidDropOutput)) {
-                itemEntity.getItem().shrink(1);
+                e.getItem().shrink(1);
                 FluidStack fluidStack = new FluidStack(level.getFluidState(blockPos).getType(), 1000);
-                FluidType fluidType = fluidStack.getFluidType();
+                FluidType fluidType = fluidStack.getFluid().getFluidType();
                 if (fluidType.isVaporizedOnPlacement(level, blockPos, fluidStack)) {
                     level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
                     fluidType.onVaporize(null, level, blockPos, fluidStack);
@@ -74,9 +71,9 @@ public class EntityEvents {
             return fluidCraftCache.get(fluidInputs);
         RecipeManager recipeManager = entity.level().getRecipeManager();
 
-        for (RecipeHolder<?> recipe : recipeManager.getAllRecipesFor(ModRecipes.FLUID_DROP_RECIPE_TYPE.get())) {
-            if (recipe.value() instanceof FluidDropRecipe fluidDropRecipe && fluidDropRecipe.matches(blockState, entity.getItem())) {
-                fluidCraftCache.put(fluidInputs, fluidDropRecipe.getOutput());
+        for (FluidDropRecipe recipe : recipeManager.getAllRecipesFor(ModRecipes.FLUID_DROP_RECIPE_TYPE.get())) {
+            if (recipe.matches(blockState, entity.getItem())) {
+                fluidCraftCache.put(fluidInputs, recipe.getOutput());
                 break;
             }
         }

@@ -14,6 +14,7 @@ import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
 import com.direwolf20.justdirethings.common.items.MachineSettingsCopierItem;
 import com.direwolf20.justdirethings.common.items.PortalGunItem;
 import com.direwolf20.justdirethings.common.items.PortalGunV2Item;
+import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.*;
 import com.direwolf20.justdirethings.network.client.S2CModPacket;
 import com.direwolf20.justdirethings.network.client.S2CParadoxSyncPayload;
@@ -317,7 +318,7 @@ public class ForgePlatformHelper implements IPlatformHelper {
             return;
 
         PortalGunV2Item.setFavoritePosition(itemStack, payload.favorite());
-        PortalGunV2Item.setStayOpen(itemStack, payload.staysOpen());
+        JustDireDataComponents.setPortalGunStayOpen(itemStack, payload.staysOpen());
     }
 
     @Override

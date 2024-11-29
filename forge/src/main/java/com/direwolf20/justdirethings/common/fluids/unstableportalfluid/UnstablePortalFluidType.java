@@ -1,5 +1,6 @@
 package com.direwolf20.justdirethings.common.fluids.unstableportalfluid;
 
+import com.direwolf20.justdirethings.client.TintedFluidTypeExtension;
 import com.direwolf20.justdirethings.datagen.JustDireBiomeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -10,10 +11,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Consumer;
 
 public class UnstablePortalFluidType extends FluidType {
     public UnstablePortalFluidType() {
@@ -39,5 +43,10 @@ public class UnstablePortalFluidType extends FluidType {
     @Override
     public boolean canConvertToSource(FluidState state, LevelReader reader, BlockPos pos) {
         return false;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+        consumer.accept(new TintedFluidTypeExtension(0xFF9400D3));
     }
 }

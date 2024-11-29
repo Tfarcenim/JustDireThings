@@ -4,7 +4,6 @@ import com.direwolf20.justdirethings.common.items.interfaces.AbilityMethods;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
@@ -19,7 +18,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 
 public class MiscRenders {
     public static void renderTransparentPlayer(RenderLevelStageEvent evt, Player player, ItemStack itemStack) {
@@ -41,23 +40,23 @@ public class MiscRenders {
         RenderType renderType = RenderType.itemEntityTranslucentCull(renderer.getTextureLocation(player));
         VertexConsumer vertexconsumer = buffer.getBuffer(renderType);
         int i = LivingEntityRenderer.getOverlayCoords(player, 0);
-        DeltaTracker pPartialTicks = evt.getPartialTick();
+        float pPartialTicks = evt.getPartialTick();
         if (renderer instanceof LivingEntityRenderer<?, ?>) {
             LivingEntityRenderer<Player, ?> livingRenderer = (LivingEntityRenderer<Player, ?>) renderer;
-            float f = Mth.rotLerp(pPartialTicks.getGameTimeDeltaTicks(), player.yBodyRotO, player.yBodyRot);
-            float f1 = Mth.rotLerp(pPartialTicks.getGameTimeDeltaTicks(), player.yHeadRotO, player.yHeadRot);
+            float f = Mth.rotLerp(pPartialTicks, player.yBodyRotO, player.yBodyRot);
+            float f1 = Mth.rotLerp(pPartialTicks, player.yHeadRotO, player.yHeadRot);
             float f2 = f1 - f;
-            float f5 = Mth.lerp(pPartialTicks.getGameTimeDeltaTicks(), player.xRotO, player.getXRot());
+            float f5 = Mth.lerp(pPartialTicks, player.xRotO, player.getXRot());
             float f7 = 0;
-            setupRotations(player, matrixStack, f7, f, pPartialTicks.getGameTimeDeltaTicks());
+            setupRotations(player, matrixStack, f7, f, pPartialTicks);
             matrixStack.scale(-1.0F, -1.0F, 1.0F);
-            scale(player, matrixStack, pPartialTicks.getGameTimeDeltaTicks());
+            scale(player, matrixStack, pPartialTicks);
             matrixStack.translate(0.0F, -1.501F, 0.0F);
             float f8 = 0.0F;
             float f4 = 0.0F;
             if (player.isAlive()) {
-                f8 = player.walkAnimation.speed(pPartialTicks.getGameTimeDeltaTicks());
-                f4 = player.walkAnimation.position(pPartialTicks.getGameTimeDeltaTicks());
+                f8 = player.walkAnimation.speed(pPartialTicks);
+                f4 = player.walkAnimation.position(pPartialTicks);
                 if (player.isBaby()) {
                     f4 *= 3.0F;
                 }
@@ -70,9 +69,9 @@ public class MiscRenders {
             entityModel.attackTime = 0f;
             entityModel.riding = false;
             entityModel.young = player.isBaby();
-            entityModel.prepareMobModel(player, f4, f8, pPartialTicks.getGameTimeDeltaTicks());
+            entityModel.prepareMobModel(player, f4, f8, pPartialTicks);
             entityModel.setupAnim(player, f4, f8, f7, f2, f5);
-            int packedARGB = (127 << 24) | (255 << 16) | (255 << 8) | 255;
+            int packedARGB = 0x7fffffff;
             entityModel.renderToBuffer(matrixStack, vertexconsumer, packedLight, i, packedARGB);
         }
 

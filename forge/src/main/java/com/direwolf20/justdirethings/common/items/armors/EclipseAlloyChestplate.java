@@ -8,8 +8,7 @@ import net.minecraft.world.item.ItemStack;
 public class EclipseAlloyChestplate extends BaseChestplate implements PoweredTool {
     public EclipseAlloyChestplate() {
         super(ArmorTiers.ECLIPSEALLOY, new Properties()
-                .fireResistant()
-                .durability(Type.CHESTPLATE.getDurability(25)));
+                .fireResistant());
         registerAbility(Ability.INVULNERABILITY, new AbilityParams(1, 1, 1, 1, 200, 400));
         registerAbility(Ability.EXTINGUISH, new AbilityParams(1, 1, 1, 1, 0, 40));
         registerAbility(Ability.ELYTRA);

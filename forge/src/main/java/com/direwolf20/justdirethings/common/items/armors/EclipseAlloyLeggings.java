@@ -10,8 +10,7 @@ import net.minecraft.world.item.ItemStack;
 public class EclipseAlloyLeggings extends BaseLeggings implements PoweredTool {
     public EclipseAlloyLeggings() {
         super(ArmorTiers.ECLIPSEALLOY, new Properties()
-                .fireResistant()
-                .durability(Type.LEGGINGS.getDurability(25)));
+                .fireResistant());
         registerAbility(Ability.RUNSPEED, new AbilityParams(1, 5, 1));
         registerAbility(Ability.WALKSPEED, new AbilityParams(1, 5, 1));
         registerAbility(Ability.SWIMSPEED, new AbilityParams(1, 5, 1));

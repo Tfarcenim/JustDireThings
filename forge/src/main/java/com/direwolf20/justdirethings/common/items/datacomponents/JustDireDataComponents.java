@@ -24,6 +24,7 @@ import static com.mojang.text2speech.Narrator.LOGGER;
 public class JustDireDataComponents {
 
     public static final String ABILITY_COOLDOWNS = "ability_cooldowns";
+    public static final String PORTAL_GUN_FAVORITES = "portal_gun_favorites";
 
 
     static Boolean getBoolean(ItemStack stack,String key) {//booleans are bytes internally
@@ -351,12 +352,12 @@ public class JustDireDataComponents {
         }
     }
 
-    static List<NBTHelpers.PortalDestination> getPortalGunFavorites(ItemStack stack) {
-        return getList(stack, NBTHelpers.PortalDestination.CODEC,"portal_gun_favorites");
+    public static List<NBTHelpers.PortalDestination> getPortalGunFavorites(ItemStack stack) {
+        return getList(stack, NBTHelpers.PortalDestination.CODEC,PORTAL_GUN_FAVORITES);
     }
 
-    static void setPortalGunFavorites(ItemStack stack, @Nullable List<NBTHelpers.PortalDestination> destination) {
-        setList(stack,destination, NBTHelpers.PortalDestination.CODEC,"portal_gun_favorites");
+    public static void setPortalGunFavorites(ItemStack stack, @Nullable List<NBTHelpers.PortalDestination> destination) {
+        setList(stack,destination, NBTHelpers.PortalDestination.CODEC,PORTAL_GUN_FAVORITES);
     }
 
     public static NBTHelpers.PortalDestination getPortalGunPrevious(ItemStack stack) {

@@ -2,6 +2,7 @@ package com.direwolf20.justdirethings.client.blockentityrenders.baseber;
 
 import com.direwolf20.justdirethings.client.renderers.RenderHelpers;
 import com.direwolf20.justdirethings.common.blockentities.basebe.AreaAffectingBE;
+import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -29,8 +30,9 @@ public class AreaAffectingBER implements BlockEntityRenderer<BlockEntity> {
         }
     }
 
-    @Override
-    public AABB getRenderBoundingBox(BlockEntity blockEntity) {
-        return AABB.encapsulatingFullBlocks(blockEntity.getBlockPos().above(10).north(10).east(10), blockEntity.getBlockPos().below(10).south(10).west(10));
-    }
+
+  //todo  @Override
+  //  public AABB getRenderBoundingBox(BlockEntity blockEntity) {
+   //     return MiscHelpers.encapsulatingFullBlocks(blockEntity.getBlockPos().above(10).north(10).east(10), blockEntity.getBlockPos().below(10).south(10).west(10));
+   // }
 }

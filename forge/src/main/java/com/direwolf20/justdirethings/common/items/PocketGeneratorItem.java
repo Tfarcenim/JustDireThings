@@ -6,10 +6,11 @@ import com.direwolf20.justdirethings.common.containers.PocketGeneratorContainer;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredItem;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableItem;
-import com.direwolf20.justdirethings.common.items.resources.Coal_T1;
+import com.direwolf20.justdirethings.common.items.resources.TieredCoalItem;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.util.ItemStackNBTHandler;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -21,6 +22,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -39,10 +41,8 @@ public class PocketGeneratorItem extends Item implements PoweredItem, Toggleable
         if (level.isClientSide()) return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
 
         if (!player.isShiftKeyDown()) {
-            player.openMenu(new SimpleMenuProvider(
-                    (windowId, playerInventory, playerEntity) -> new PocketGeneratorContainer(windowId, playerInventory, player, itemstack), Component.translatable("")), (buf -> {
-                ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, itemstack);
-            }));
+            NetworkHooks.openScreen((ServerPlayer) player,new SimpleMenuProvider(
+                    (windowId, playerInventory, playerEntity) -> new PocketGeneratorContainer(windowId, playerInventory, player, itemstack), Component.empty()), buf -> buf.writeItem(itemstack));
         }
         return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
     }
@@ -104,7 +104,7 @@ public class PocketGeneratorItem extends Item implements PoweredItem, Toggleable
 
         int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING);
         if (burnTime > 0) {
-            if (fuelStack.getItem() instanceof Coal_T1 direCoal) {
+            if (fuelStack.getItem() instanceof TieredCoalItem direCoal) {
                 setFuelMultiplier(itemStack, direCoal.getBurnSpeedMultiplier());
             } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock) {
                 setFuelMultiplier(itemStack, coalBlock.getBurnSpeedMultiplier());
@@ -171,11 +171,12 @@ public class PocketGeneratorItem extends Item implements PoweredItem, Toggleable
     }
 
     public void setFuelMultiplier(ItemStack itemStack, int amount) {
-        itemStack.set(JustDireDataComponents.POCKETGEN_FUELMULT, amount);
+        JustDireDataComponents.setPocketgenFuelmult(itemStack, amount);
     }
 
     public int getFuelMultiplier(ItemStack itemStack) {
-        return itemStack.getOrDefault(JustDireDataComponents.POCKETGEN_FUELMULT, 1);
+        Integer fuelMulti = JustDireDataComponents.getPocketgenFuelmult(itemStack);
+        return fuelMulti == null ? 1 : fuelMulti;
     }
 
     @Override

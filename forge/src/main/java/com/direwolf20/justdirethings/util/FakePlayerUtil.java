@@ -3,20 +3,19 @@ package com.direwolf20.justdirethings.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
-import net.neoforged.neoforge.common.CommonHooks;
+import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -27,31 +26,6 @@ import java.util.Optional;
  */
 public class FakePlayerUtil {
     public record FakePlayerResult(InteractionResult interactionResult, ItemStack returnStack) {
-    }
-
-    protected static void addAttributes(UsefulFakePlayer player, ItemStack itemStack, EquipmentSlot equipmentSlot) {
-        AttributeMap attributemap = player.getAttributes();
-        if (!itemStack.isEmpty()) {
-            itemStack.forEachModifier(equipmentSlot, (p_332602_, p_332603_) -> {
-                AttributeInstance attributeinstance = attributemap.getInstance(p_332602_);
-                if (attributeinstance != null) {
-                    attributeinstance.removeModifier(p_332603_.id());
-                    attributeinstance.addTransientModifier(p_332603_);
-                }
-            });
-        }
-    }
-
-    protected static void removeAttributes(UsefulFakePlayer player, ItemStack itemStack, EquipmentSlot equipmentSlot) {
-        AttributeMap attributemap = player.getAttributes();
-        if (!itemStack.isEmpty()) {
-            itemStack.forEachModifier(equipmentSlot, (p_330002_, p_330003_) -> {
-                AttributeInstance attributeinstance = attributemap.getInstance(p_330002_);
-                if (attributeinstance != null) {
-                    attributeinstance.removeModifier(p_330003_);
-                }
-            });
-        }
     }
 
 
@@ -76,7 +50,7 @@ public class FakePlayerUtil {
         double z = a == Direction.Axis.Z ? ad == Direction.AxisDirection.NEGATIVE ? 0.95 : 0.05 : 0.5;
         player.setPos(pos.x() + x, pos.y() + y - player.getEyeHeight(), pos.z() + z);
         if (!toHold.isEmpty())
-            addAttributes(player, toHold, EquipmentSlot.MAINHAND);
+            player.getAttributes().addTransientAttributeModifiers(toHold.getAttributeModifiers(EquipmentSlot.MAINHAND));
         player.setShiftKeyDown(sneaking);
     }
 
@@ -93,7 +67,7 @@ public class FakePlayerUtil {
         float xRot = direction == Direction.DOWN ? 90 : direction == Direction.UP ? -90 : 0;
         //player.setXRot(xRot);
         //player.setYRot(direction.toYRot());
-        player.absRotateTo(direction.toYRot(), xRot);
+        absRotateTo(player,direction.toYRot(), xRot);
         player.setYHeadRot(direction.toYRot());
         player.yHeadRotO = direction.toYRot();
         Direction.Axis a = direction.getAxis();
@@ -103,8 +77,15 @@ public class FakePlayerUtil {
         double z = a == Direction.Axis.Z ? ad == Direction.AxisDirection.NEGATIVE ? 0.95 : 0.05 : 0.5;
         player.absMoveTo(pos.getX() + x, pos.getY() + y - player.getEyeHeight(), pos.getZ() + z);
         if (!toHold.isEmpty())
-            addAttributes(player, toHold, EquipmentSlot.MAINHAND);
+            player.getAttributes().addTransientAttributeModifiers(toHold.getAttributeModifiers(EquipmentSlot.MAINHAND));
         player.setShiftKeyDown(sneaking);
+    }
+
+    public static void absRotateTo(Player player, float yRot, float xRot) {
+        player.setYRot(yRot % 360.0F);
+        player.setXRot(Mth.clamp(xRot, -90.0F, 90.0F) % 360.0F);
+        player.yRotO = player.getYRot();
+        player.xRotO = player.getXRot();
     }
 
     /**
@@ -128,7 +109,7 @@ public class FakePlayerUtil {
         double z = a == Direction.Axis.Z ? ad == Direction.AxisDirection.NEGATIVE ? 0.95 : 0.05 : 0.5;
         player.setPos(pos.getX() + x, pos.getY() + y - player.getEyeHeight(), pos.getZ() + z);
         if (!toHold.isEmpty())
-            addAttributes(player, toHold, EquipmentSlot.MAINHAND);
+            player.getAttributes().addTransientAttributeModifiers(toHold.getAttributeModifiers(EquipmentSlot.MAINHAND));
         player.setShiftKeyDown(sneaking);
 
         // Calculate the rotation angles to look at the target position
@@ -150,11 +131,11 @@ public class FakePlayerUtil {
      */
     public static void cleanupFakePlayerFromUse(UsefulFakePlayer player, ItemStack oldStack) {
         if (!oldStack.isEmpty())
-            removeAttributes(player, oldStack, EquipmentSlot.MAINHAND);
+            player.getAttributes().removeAttributeModifiers(oldStack.getAttributeModifiers(EquipmentSlot.MAINHAND));
         player.getInventory().items.set(player.getInventory().selected, ItemStack.EMPTY);
         if (!player.getInventory().isEmpty()) player.getInventory().dropAll(); //Handles bucket stacks, for example
         player.setShiftKeyDown(false);
-        player.setReach(player.getAttributeValue(Attributes.BLOCK_INTERACTION_RANGE));
+        player.setReach(player.getBlockReach());
     }
 
     public static FakePlayerResult clickEntityInDirection(UsefulFakePlayer player, Level world, LivingEntity entity, int clickType, int maxHold) {
@@ -418,7 +399,7 @@ public class FakePlayerUtil {
                 if (action == InteractionType.INTERACT) {
                     return player.interactOn(entity, InteractionHand.MAIN_HAND) == InteractionResult.SUCCESS;
                 } else if (action == InteractionType.INTERACT_AT) {
-                    if (CommonHooks.onInteractEntityAt(player, entity, result.getLocation(), InteractionHand.MAIN_HAND) != null)
+                    if (ForgeHooks.onInteractEntityAt(player, entity, result.getLocation(), InteractionHand.MAIN_HAND) != null)
                         return false;
                     return entity.interactAt(player, result.getLocation(), InteractionHand.MAIN_HAND) == InteractionResult.SUCCESS;
                 } else if (action == InteractionType.ATTACK) {

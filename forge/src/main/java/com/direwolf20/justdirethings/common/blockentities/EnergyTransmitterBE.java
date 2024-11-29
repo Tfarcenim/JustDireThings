@@ -28,9 +28,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -62,9 +59,10 @@ public class  EnergyTransmitterBE extends BaseMachineBE implements RedstoneContr
         markDirtyClient();
     }
 
+    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
     @Override
     public FilterBasicHandler getFilterHandler() {
-        return getData(Registration.HANDLER_BASIC_FILTER);
+        return filterBasicHandler;
     }
 
     @Override
@@ -92,9 +90,11 @@ public class  EnergyTransmitterBE extends BaseMachineBE implements RedstoneContr
         return poweredMachineData;
     }
 
+    TransmitterEnergyStorage energyStorage = new TransmitterEnergyStorage(getMaxEnergy(),this);
+
     @Override
     public TransmitterEnergyStorage getEnergyStorage() {
-        return getData(Registration.ENERGYSTORAGE_TRANSMITTERS);
+        return energyStorage;
     }
 
     @Override
@@ -254,7 +254,7 @@ public class  EnergyTransmitterBE extends BaseMachineBE implements RedstoneContr
     public void drainFromSlot() {
         ItemStack itemStack = getMachineHandler().getStackInSlot(0);
         if (itemStack.isEmpty()) return;
-        IEnergyStorage energyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
+        IEnergyStorage energyStorage = itemStack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
         if (energyStorage == null) return;
         if (itemStack.getItem() instanceof PocketGeneratorItem pocketGeneratorItem) {
             pocketGeneratorItem.tryBurn((EnergyStorageItemStackNoReceive) energyStorage, itemStack);
@@ -268,23 +268,17 @@ public class  EnergyTransmitterBE extends BaseMachineBE implements RedstoneContr
         var tempStorage = energyHandlers.get(blockPos);
         if (tempStorage == null) {
             boolean foundAcceptableSide = false;
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
             for (Direction direction : Direction.values()) {
-                tempStorage = BlockCapabilityCache.create(
-                        Capabilities.EnergyStorage.BLOCK, // capability to cache
-                        (ServerLevel) level, // level
-                        blockPos, // target position
-                        direction // context (The side of the block we're trying to pull/push from?)
-                );
-                if (tempStorage.getCapability() != null && tempStorage.getCapability().canReceive()) {
-                    energyHandlers.put(blockPos, tempStorage);
+                IEnergyStorage cap = blockEntity.getCapability(ForgeCapabilities.ENERGY).orElse(null);
+                if (cap != null && cap.canReceive()) {
+                    energyHandlers.put(blockPos, cap);
                     foundAcceptableSide = true;
                     break;
                 }
             }
-            if (!foundAcceptableSide)
-                energyHandlers.put(blockPos, tempStorage); //Put the last one we checked, even if it can't receive!
         }
-        return tempStorage.getCapability();
+        return tempStorage;
     }
 
     public TransmitterEnergyStorage getTransmitterEnergyHandler(BlockPos blockPos) {
@@ -295,24 +289,16 @@ public class  EnergyTransmitterBE extends BaseMachineBE implements RedstoneContr
     }
 
     public IEnergyStorage getTransmitterHandler(BlockPos blockPos) {
-        var tempStorage = transmitterHandlers.get(blockPos);
-        if (tempStorage == null) {
+        if (!transmitterHandlers.containsKey(blockPos)) {
             BlockState blockState = level.getBlockState(blockPos);
             if (blockState.is(Registration.EnergyTransmitter.get())) {
-                tempStorage = BlockCapabilityCache.create(
-                        Capabilities.EnergyStorage.BLOCK, // capability to cache
-                        (ServerLevel) level, // level
-                        blockPos, // target position
-                        blockState.getValue(BlockStateProperties.FACING) // context (The side of the block we're trying to pull/push from?)
-                );
-                if (tempStorage.getCapability() != null) { //This should always be true?
-                    transmitterHandlers.put(blockPos, tempStorage);
-                    return tempStorage.getCapability();
+                BlockEntity blockEntity = level.getBlockEntity(blockPos);
+                if (blockEntity != null) {
+                    blockEntity.getCapability(ForgeCapabilities.ENERGY).ifPresent(iEnergyStorage -> transmitterHandlers.put(blockPos, iEnergyStorage));
                 }
             }
-            energyHandlers.put(blockPos, tempStorage); //This should never ever run?
         }
-        return tempStorage.getCapability();
+            return transmitterHandlers.get(blockPos);
     }
 
     public void providePower() {

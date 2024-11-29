@@ -9,6 +9,7 @@ import com.direwolf20.justdirethings.common.containers.slots.InventoryHolderSlot
 import com.direwolf20.justdirethings.network.server.C2SInventoryHolderSettingsPayload;
 import com.direwolf20.justdirethings.network.server.C2SInventoryHolderMoveItemsPayload;
 import com.direwolf20.justdirethings.network.server.C2SInventoryHolderSaveSlotPayload;
+import com.direwolf20.justdirethings.platform.Services;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -20,7 +21,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class InventoryHolderScreen extends BaseMachineScreen<InventoryHolderContainer> {
     private InventoryHolderBE inventoryHolderBE;
@@ -70,13 +70,13 @@ public class InventoryHolderScreen extends BaseMachineScreen<InventoryHolderCont
             saveSettings();
         }));
         addRenderableWidget(ToggleButtonFactory.SEND_INV_BUTTON(getGuiLeft() + 134, topSectionTop + 132, b -> {
-            PacketDistributor.sendToServer(new C2SInventoryHolderMoveItemsPayload(0));
+            Services.PLATFORM.sendToServer(new C2SInventoryHolderMoveItemsPayload(0));
         }));
         addRenderableWidget(ToggleButtonFactory.PULL_INV_BUTTON(getGuiLeft() + 26, topSectionTop + 132, b -> {
-            PacketDistributor.sendToServer(new C2SInventoryHolderMoveItemsPayload(1));
+            Services.PLATFORM.sendToServer(new C2SInventoryHolderMoveItemsPayload(1));
         }));
         addRenderableWidget(ToggleButtonFactory.SWAP_INV_BUTTON(getGuiLeft() + 152, topSectionTop + 132, b -> {
-            PacketDistributor.sendToServer(new C2SInventoryHolderMoveItemsPayload(2));
+            Services.PLATFORM.sendToServer(new C2SInventoryHolderMoveItemsPayload(2));
         }));
         addRenderableWidget(ToggleButtonFactory.FILTERONLYBUTTON(getGuiLeft() + 26, topSectionTop + 22, automatedFiltersOnly, b -> {
             automatedFiltersOnly = !automatedFiltersOnly;
@@ -151,7 +151,7 @@ public class InventoryHolderScreen extends BaseMachineScreen<InventoryHolderCont
     @Override
     public void saveSettings() {
         super.saveSettings();
-        PacketDistributor.sendToServer(new C2SInventoryHolderSettingsPayload(compareNBT, filtersOnly, compareCounts, automatedFiltersOnly, automatedCompareCounts, renderPlayer, renderedSlot));
+        Services.PLATFORM.sendToServer(new C2SInventoryHolderSettingsPayload(compareNBT, filtersOnly, compareCounts, automatedFiltersOnly, automatedCompareCounts, renderPlayer, renderedSlot));
     }
 
     public void renderInventorySection(GuiGraphics guiGraphics, int relX, int relY) {
@@ -169,7 +169,7 @@ public class InventoryHolderScreen extends BaseMachineScreen<InventoryHolderCont
                     return true;
                 }
             } else {
-                PacketDistributor.sendToServer(new C2SInventoryHolderSaveSlotPayload(hoveredSlot.getSlotIndex()));
+                Services.PLATFORM.sendToServer(new C2SInventoryHolderSaveSlotPayload(hoveredSlot.getSlotIndex()));
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 return true;
             }

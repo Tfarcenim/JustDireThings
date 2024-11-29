@@ -11,8 +11,7 @@ import net.minecraft.world.item.ItemStack;
 public class BlazegoldHelmet extends BaseHelmet {
     public BlazegoldHelmet() {
         super(ArmorTiers.BLAZEGOLD, new Properties()
-                .fireResistant()
-                .durability(Type.HELMET.getDurability(25)));
+                .fireResistant());
         registerAbility(Ability.MINDFOG);
         registerAbility(Ability.LAVAREPAIR);
         registerAbility(Ability.STUPEFY, new AbilityParams(1, 1, 1, 1, 100, 600));

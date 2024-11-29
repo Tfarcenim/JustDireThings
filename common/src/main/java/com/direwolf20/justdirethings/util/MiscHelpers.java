@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.NbtOps;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.*;
@@ -82,6 +84,17 @@ public class MiscHelpers {
 
     public static BlockState loadBlockState(JsonElement jsonElement) {
         return BlockState.CODEC.parse(JsonOps.INSTANCE,jsonElement).resultOrPartial(Constants.LOG::error).orElseThrow();
+    }
+
+    public static AABB encapsulatingFullBlocks(BlockPos pStartPos, BlockPos pEndPos) {
+        return new AABB(
+                Math.min(pStartPos.getX(), pEndPos.getX()),
+                Math.min(pStartPos.getY(), pEndPos.getY()),
+                Math.min(pStartPos.getZ(), pEndPos.getZ()),
+                Math.max(pStartPos.getX(), pEndPos.getX()) + 1,
+                Math.max(pStartPos.getY(), pEndPos.getY()) + 1,
+                Math.max(pStartPos.getZ(), pEndPos.getZ()) + 1
+        );
     }
 
 }

@@ -10,8 +10,7 @@ import net.minecraft.world.item.ItemStack;
 public class CelestigemBoots extends BaseBoots implements PoweredTool {
     public CelestigemBoots() {
         super(ArmorTiers.CELESTIGEM, new Properties()
-                .fireResistant()
-                .durability(Type.BOOTS.getDurability(25)));
+                .fireResistant());
         registerAbility(Ability.STEPHEIGHT);
         registerAbility(Ability.JUMPBOOST, new AbilityParams(1, 3, 1, 3));
         registerAbility(Ability.GROUNDSTOMP, new AbilityParams(1, 3, 1, 3, 0, 200));

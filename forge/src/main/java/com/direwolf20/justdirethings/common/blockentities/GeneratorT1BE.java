@@ -8,7 +8,7 @@ import com.direwolf20.justdirethings.common.capabilities.EnergyStorageNoReceive;
 import com.direwolf20.justdirethings.common.capabilities.GeneratorItemHandler;
 import com.direwolf20.justdirethings.common.capabilities.MachineEnergyStorage;
 import com.direwolf20.justdirethings.common.items.FuelCanisterItem;
-import com.direwolf20.justdirethings.common.items.resources.Coal_T1;
+import com.direwolf20.justdirethings.common.items.resources.TieredCoalItem;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.interfacehelpers.RedstoneControlData;
@@ -169,7 +169,7 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
         int oldMultiplier = this.fuelBurnMultiplier;
         int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING);
         if (burnTime <= 0) return; //Should be impossible, but lets be sure!
-        if (fuelStack.getItem() instanceof Coal_T1 direCoal) {
+        if (fuelStack.getItem() instanceof TieredCoalItem direCoal) {
             this.fuelBurnMultiplier = direCoal.getBurnSpeedMultiplier();
         } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock) {
             this.fuelBurnMultiplier = coalBlock.getBurnSpeedMultiplier();

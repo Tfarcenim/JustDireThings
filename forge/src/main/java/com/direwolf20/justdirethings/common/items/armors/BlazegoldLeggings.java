@@ -11,8 +11,7 @@ import net.minecraft.world.item.ItemStack;
 public class BlazegoldLeggings extends BaseLeggings {
     public BlazegoldLeggings() {
         super(ArmorTiers.BLAZEGOLD, new Properties()
-                .fireResistant()
-                .durability(Type.LEGGINGS.getDurability(25)));
+                .fireResistant());
         registerAbility(Ability.RUNSPEED, new AbilityParams(1, 2, 1));
         registerAbility(Ability.WALKSPEED, new AbilityParams(1, 2, 1));
         registerAbility(Ability.SWIMSPEED, new AbilityParams(1, 2, 1));

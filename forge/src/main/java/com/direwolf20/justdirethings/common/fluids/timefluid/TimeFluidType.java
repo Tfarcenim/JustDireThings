@@ -1,11 +1,15 @@
 package com.direwolf20.justdirethings.common.fluids.timefluid;
 
+import com.direwolf20.justdirethings.client.TintedFluidTypeExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidType;
+
+import java.util.function.Consumer;
 
 public class TimeFluidType extends FluidType {
     public TimeFluidType() {
@@ -18,5 +22,10 @@ public class TimeFluidType extends FluidType {
     @Override
     public boolean canConvertToSource(FluidState state, LevelReader reader, BlockPos pos) {
         return false;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+        consumer.accept(new TintedFluidTypeExtension(0x3300FF00));
     }
 }

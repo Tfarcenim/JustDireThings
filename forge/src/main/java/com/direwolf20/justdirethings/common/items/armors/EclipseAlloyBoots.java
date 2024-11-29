@@ -10,8 +10,7 @@ import net.minecraft.world.item.ItemStack;
 public class EclipseAlloyBoots extends BaseBoots implements PoweredTool {
     public EclipseAlloyBoots() {
         super(ArmorTiers.ECLIPSEALLOY, new Properties()
-                .fireResistant()
-                .durability(Type.BOOTS.getDurability(25)));
+                .fireResistant());
         registerAbility(Ability.STEPHEIGHT);
         registerAbility(Ability.JUMPBOOST, new AbilityParams(1, 5, 1, 5));
         registerAbility(Ability.GROUNDSTOMP, new AbilityParams(1, 5, 1, 5, 0, 200));

@@ -14,11 +14,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +35,7 @@ public class BaseBoots extends ArmorItem implements ToggleableTool, LeftClickabl
     protected final EnumSet<Ability> abilities = EnumSet.noneOf(Ability.class);
     protected final Map<Ability, AbilityParams> abilityParams = new EnumMap<>(Ability.class);
 
-    public BaseBoots(Holder<ArmorMaterial> pMaterial, Item.Properties pProperties) {
+    public BaseBoots(ArmorMaterial pMaterial, Item.Properties pProperties) {
         super(pMaterial, Type.BOOTS, pProperties);
     }
 
@@ -57,20 +57,18 @@ public class BaseBoots extends ArmorItem implements ToggleableTool, LeftClickabl
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        Level level = context.level();
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         if (level == null) {
             return;
         }
 
         boolean sneakPressed = Screen.hasShiftDown();
         appendFEText(stack, tooltip);
+        appendToolEnabled(stack, tooltip);
         if (sneakPressed) {
-            appendToolEnabled(stack, tooltip);
             appendAbilityList(stack, tooltip);
         } else {
-            appendToolEnabled(stack, tooltip);
             appendShiftForInfo(stack, tooltip);
         }
     }
@@ -83,14 +81,13 @@ public class BaseBoots extends ArmorItem implements ToggleableTool, LeftClickabl
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<T> onBroken) {
         if (stack.getItem() instanceof PoweredTool poweredTool) {
-            IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            IEnergyStorage energyStorage = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
             if (energyStorage == null) return amount;
             double reductionFactor = 0;
             if (entity != null) {
-                HolderLookup.RegistryLookup<Enchantment> registrylookup = entity.level().getServer().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
-                int unbreakingLevel = stack.getEnchantmentLevel(registrylookup.getOrThrow(Enchantments.UNBREAKING));
+                int unbreakingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING,stack);
                 reductionFactor = Math.min(1.0, unbreakingLevel * 0.1);
             }
             int finalEnergyCost = (int) Math.max(0, amount - (amount * reductionFactor));
@@ -98,16 +95,5 @@ public class BaseBoots extends ArmorItem implements ToggleableTool, LeftClickabl
             return 0;
         }
         return amount;
-    }
-
-    @Override
-    public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
-        if (stack.getItem() instanceof PoweredTool)
-            return super.isPrimaryItemFor(stack, enchantment) && canAcceptEnchantments(enchantment);
-        return super.isPrimaryItemFor(stack, enchantment);
-    }
-
-    private boolean canAcceptEnchantments(Holder<Enchantment> enchantment) {
-        return !enchantment.value().effects().has(EnchantmentEffectComponents.REPAIR_WITH_XP);
     }
 }

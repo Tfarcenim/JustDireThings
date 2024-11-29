@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import net.neoforged.neoforge.client.model.pipeline.VertexConsumerWrapper;
+import net.minecraftforge.client.model.pipeline.VertexConsumerWrapper;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 
@@ -51,15 +51,15 @@ public class DireVertexConsumerSquished extends VertexConsumerWrapper {
     }
 
     @Override
-    public VertexConsumer setColor(int r, int g, int b, int a) {
+    public VertexConsumer color(int r, int g, int b, int a) {
         if (red == -1)
-            parent.setColor(r, g, b, a);
+            parent.color(r, g, b, a);
         else {
             int rCol = (int) Mth.lerp(red, 0, r);
             int gCol = (int) Mth.lerp(green, 0, g);
             int bCol = (int) Mth.lerp(blue, 0, b);
             int aCol = (int) Mth.lerp(alpha, 0, a);
-            parent.setColor(rCol, gCol, bCol, aCol);
+            parent.color(rCol, gCol, bCol, aCol);
         }
         return this;
     }
@@ -77,7 +77,7 @@ public class DireVertexConsumerSquished extends VertexConsumerWrapper {
     }
 
     @Override
-    public VertexConsumer vertex(float x, float y, float z) {
+    public VertexConsumer endVertex(float x, float y, float z) {
         Matrix4f inverseMatrix = new Matrix4f(matrix4f);
         inverseMatrix.invert();
 
@@ -92,7 +92,7 @@ public class DireVertexConsumerSquished extends VertexConsumerWrapper {
     }
 
     @Override
-    public VertexConsumer setUv(float u, float v) {
+    public VertexConsumer uv(float u, float v) {
         if (adjustUV) {
             //Growing up from ground!
             if (bottomUp) {
@@ -106,10 +106,10 @@ public class DireVertexConsumerSquished extends VertexConsumerWrapper {
                     float adjustedU = minU + adjustedUDistance;
                     float adjustedV = minV + adjustedVDistance;
 
-                    parent.setUv(adjustedU, adjustedV);
+                    parent.uv(adjustedU, adjustedV);
                     return this;
                 } else {
-                    parent.setUv(u, v);
+                    parent.uv(u, v);
                     return this;
                 }
             } else {
@@ -154,7 +154,7 @@ public class DireVertexConsumerSquished extends VertexConsumerWrapper {
                         float adjustedVDistance = vDistanceToEnd * (maxY); // Adjust for the block height
                         float adjustedV2Distance = vDistanceToStart * (minY);
                         float adjustedV = maxV - adjustedVDistance - adjustedV2Distance; // Subtracting because we're adjusting from the end.
-                        parent.setUv(adjustedU, adjustedV);
+                        parent.uv(adjustedU, adjustedV);
                         return this;
                     } else {
                         //When drawing the top/bottom, we do like above, but both U and V are different, so we calculate both
@@ -189,13 +189,13 @@ public class DireVertexConsumerSquished extends VertexConsumerWrapper {
                             adjustedV2Distance = vDistanceToStart * minZ;
                             adjustedV = maxV - adjustedVDistance - adjustedV2Distance;
                         }
-                        parent.setUv(adjustedU, adjustedV);
+                        parent.uv(adjustedU, adjustedV);
                         return this;
                     }
                 }
             }
         }
-        parent.setUv(u, v);
+        parent.uv(u, v);
         return this;
     }
 }

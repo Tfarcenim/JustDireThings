@@ -8,7 +8,7 @@ import com.direwolf20.justdirethings.common.blockentities.basebe.PoweredMachineB
 import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock_T1;
 import com.direwolf20.justdirethings.common.containers.GeneratorT1Container;
 import com.direwolf20.justdirethings.common.items.FuelCanisterItem;
-import com.direwolf20.justdirethings.common.items.resources.Coal_T1;
+import com.direwolf20.justdirethings.common.items.resources.TieredCoalItem;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.MiscTools;
@@ -109,7 +109,7 @@ public class GeneratorT1Screen extends BaseMachineScreen<GeneratorT1Container> {
             int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING);
             if (burnTime > 0) {
                 int fuelBurnMultiplier = 1;
-                if (fuelStack.getItem() instanceof Coal_T1 direCoal) {
+                if (fuelStack.getItem() instanceof TieredCoalItem direCoal) {
                     fuelBurnMultiplier = direCoal.getBurnSpeedMultiplier();
                 } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock) {
                     fuelBurnMultiplier = coalBlock.getBurnSpeedMultiplier();

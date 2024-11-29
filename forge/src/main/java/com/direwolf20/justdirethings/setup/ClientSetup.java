@@ -3,6 +3,7 @@ package com.direwolf20.justdirethings.setup;
 
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.KeyBindings;
+import com.direwolf20.justdirethings.client.TintedFluidTypeExtension;
 import com.direwolf20.justdirethings.client.blockentityrenders.*;
 import com.direwolf20.justdirethings.client.blockentityrenders.gooblocks.GooBlockRender_Tier1;
 import com.direwolf20.justdirethings.client.blockentityrenders.gooblocks.GooBlockRender_Tier2;
@@ -16,7 +17,6 @@ import com.direwolf20.justdirethings.client.events.RenderHighlight;
 import com.direwolf20.justdirethings.client.events.RenderLevelLast;
 import com.direwolf20.justdirethings.client.itemcustomrenders.FluidbarDecorator;
 import com.direwolf20.justdirethings.client.overlays.AbilityCooldownOverlay;
-import com.direwolf20.justdirethings.client.renderers.JustDireItemRenderer;
 import com.direwolf20.justdirethings.client.renderers.RenderHelpers;
 import com.direwolf20.justdirethings.client.renderers.shader.DireRenderTypes;
 import com.direwolf20.justdirethings.client.screens.*;
@@ -30,10 +30,8 @@ import com.direwolf20.justdirethings.common.items.tools.basetools.BaseBowItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
@@ -43,20 +41,17 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RegisterItemDecorationsEvent;
-import net.minecraftforge.client.event.RegisterShadersEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.io.IOException;
-
-import static com.direwolf20.justdirethings.JustDireThings.MODID;
 
 @Mod.EventBusSubscriber(modid = JustDireThings.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
@@ -134,16 +129,16 @@ public class ClientSetup {
     }
 
     @SubscribeEvent
-    public static void registerOverlays(RegisterGuiLayersEvent event) {
-        event.registerAbove(VanillaGuiLayers.HOTBAR, JustDireThings.id( "abilitycooldownoverlay"), AbilityCooldownOverlay.INSTANCE);
+    public static void registerOverlays(RegisterGuiOverlaysEvent event) {
+        event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), "abilitycooldownoverlay", AbilityCooldownOverlay.INSTANCE);
     }
 
-    private static void onTexturesStitched(final TextureAtlasStitchedEvent event) {
+    /*private static void onTexturesStitched(final TextureAtlasStitchedEvent event) {
         //noinspection deprecation
         if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
             RenderHelpers.captureDummySprite(event.getAtlas());
         }
-    }
+    }*///todo
 
     public static void registerEnabledToolTextures(Item tool) {
         if (tool instanceof ToggleableItem toggleableItem) {
@@ -151,10 +146,12 @@ public class ClientSetup {
                     JustDireThings.id( "enabled"), (stack, level, living, id) -> {
                         if (stack.getItem() instanceof PocketGeneratorItem) {
                             if (!toggleableItem.getEnabled(stack)) return 0.0f;
-                            IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+                            IEnergyStorage energyStorage = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
                             if (energyStorage == null) return 0.0f;
                             if (energyStorage.getEnergyStored() > 0) return 1.0f;
-                            if (!(stack.getOrDefault(JustDireDataComponents.POCKETGEN_COUNTER, 0) > 0)) return 0.0f;
+
+                            Integer pocketgen_counter = JustDireDataComponents.getPocketgenCounter(stack);
+                            if (pocketgen_counter == null || pocketgen_counter <=0) return 0;
                             return 1.0f;
                         } else
                             return toggleableItem.getEnabled(stack) ? 1.0f : 0.0f;
@@ -173,7 +170,7 @@ public class ClientSetup {
     }
 
     @SubscribeEvent
-    private static void registerShaders(RegisterShadersEvent event) {
+    public static void registerShaders(RegisterShadersEvent event) {
         try {
             for(DireRenderTypes.ShaderRenderType type : DireRenderTypes.getRenderTypes().values()) {
                 type.register(event.getResourceProvider(), event::registerShader);
@@ -218,377 +215,19 @@ public class ClientSetup {
         event.registerEntityRenderer(Registration.PortalProjectile.get(), PortalProjectileRender::new);
         event.registerEntityRenderer(Registration.DecoyEntity.get(), DecoyEntityRender::new);
         event.registerEntityRenderer(Registration.JustDireArrow.get(), JustDireArrowRenderer::new);
-        event.registerEntityRenderer(Registration.JustDireAreaEffectCloud.get(), NoopRenderer::new);
+      //  event.registerEntityRenderer(Registration.JustDireAreaEffectCloud.get(), NoopRenderer::new);
         event.registerEntityRenderer(Registration.TimeWandEntity.get(), TimeWandEntityRender::new);
         event.registerEntityRenderer(Registration.ParadoxEntity.get(), ParadoxEntityRender::new);
     }
 
     @SubscribeEvent
-    static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
-        event.registerItem(new IClientItemExtensions() {
-            JustDireItemRenderer diremodel = new JustDireItemRenderer();
-
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return diremodel;
-            }
-        }, Registration.CreatureCatcher.get());
-
-        final ResourceLocation UNDERWATER_LOCATION = ResourceLocation.parse("textures/misc/underwater.png");
-        final ResourceLocation WATER_STILL = ResourceLocation.fromNamespaceAndPath(MODID, "block/fluid_source");
-        final ResourceLocation WATER_FLOW = ResourceLocation.fromNamespaceAndPath(MODID, "block/fluid_flowing");
-        final ResourceLocation WATER_OVERLAY = ResourceLocation.fromNamespaceAndPath(MODID, "block/fluid_overlay");
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            @Override
-            public ResourceLocation getStillTexture() {
-                return WATER_STILL;
-            }
-
-            @Override
-            public ResourceLocation getFlowingTexture() {
-                return WATER_FLOW;
-            }
-
-            @Override
-            public ResourceLocation getOverlayTexture() {
-                return WATER_OVERLAY;
-            }
-
-            @Override
-            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return UNDERWATER_LOCATION;
-            }
-
-            @Override
-            public int getTintColor() {
-                return 0xFFFFFFFF;
-            }
-
-            @Override
-            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                return 0xFFFFFFFF;
-            }
-        }, Registration.POLYMORPHIC_FLUID_TYPE.get());
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            @Override
-            public ResourceLocation getStillTexture() {
-                return WATER_STILL;
-            }
-
-            @Override
-            public ResourceLocation getFlowingTexture() {
-                return WATER_FLOW;
-            }
-
-            @Override
-            public ResourceLocation getOverlayTexture() {
-                return WATER_OVERLAY;
-            }
-
-            @Override
-            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return UNDERWATER_LOCATION;
-            }
-
-            @Override
-            public int getTintColor() {
-                return 0xFF00DD00;
-            }
-
-            @Override
-            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                return 0xFF00DD00;
-            }
-        }, Registration.PORTAL_FLUID_TYPE.get());
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            @Override
-            public ResourceLocation getStillTexture() {
-                return WATER_STILL;
-            }
-
-            @Override
-            public ResourceLocation getFlowingTexture() {
-                return WATER_FLOW;
-            }
-
-            @Override
-            public ResourceLocation getOverlayTexture() {
-                return WATER_OVERLAY;
-            }
-
-            @Override
-            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return UNDERWATER_LOCATION;
-            }
-
-            @Override
-            public int getTintColor() {
-                return 0xFF9400D3;
-            }
-
-            @Override
-            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                return 0xFF9400D3;
-            }
-        }, Registration.UNSTABLE_PORTAL_FLUID_TYPE.get());
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            @Override
-            public ResourceLocation getStillTexture() {
-                return WATER_STILL;
-            }
-
-            @Override
-            public ResourceLocation getFlowingTexture() {
-                return WATER_FLOW;
-            }
-
-            @Override
-            public ResourceLocation getOverlayTexture() {
-                return WATER_OVERLAY;
-            }
-
-            @Override
-            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return UNDERWATER_LOCATION;
-            }
-
-            @Override
-            public int getTintColor() {
-                return 0xFF8B0000;
-            }
-
-            @Override
-            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                return 0xFF8B0000;
-            }
-        }, Registration.REFINED_T2_FLUID_TYPE.get());
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            @Override
-            public ResourceLocation getStillTexture() {
-                return WATER_STILL;
-            }
-
-            @Override
-            public ResourceLocation getFlowingTexture() {
-                return WATER_FLOW;
-            }
-
-            @Override
-            public ResourceLocation getOverlayTexture() {
-                return WATER_OVERLAY;
-            }
-
-            @Override
-            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return UNDERWATER_LOCATION;
-            }
-
-            @Override
-            public int getTintColor() {
-                return 0xFF40C7C7;
-            }
-
-            @Override
-            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                return 0xFF40C7C7;
-            }
-        }, Registration.REFINED_T3_FLUID_TYPE.get());
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            @Override
-            public ResourceLocation getStillTexture() {
-                return WATER_STILL;
-            }
-
-            @Override
-            public ResourceLocation getFlowingTexture() {
-                return WATER_FLOW;
-            }
-
-            @Override
-            public ResourceLocation getOverlayTexture() {
-                return WATER_OVERLAY;
-            }
-
-            @Override
-            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return UNDERWATER_LOCATION;
-            }
-
-            @Override
-            public int getTintColor() {
-                return 0xFF1B2027;
-            }
-
-            @Override
-            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                return 0xFF1B2027;
-            }
-        }, Registration.REFINED_T4_FLUID_TYPE.get());
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            @Override
-            public ResourceLocation getStillTexture() {
-                return WATER_STILL;
-            }
-
-            @Override
-            public ResourceLocation getFlowingTexture() {
-                return WATER_FLOW;
-            }
-
-            @Override
-            public ResourceLocation getOverlayTexture() {
-                return WATER_OVERLAY;
-            }
-
-            @Override
-            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return UNDERWATER_LOCATION;
-            }
-
-            @Override
-            public int getTintColor() {
-                return 0xFF8B4500;
-            }
-
-            @Override
-            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                return 0xFF8B4500;
-            }
-        }, Registration.UNREFINED_T2_FLUID_TYPE.get());
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            @Override
-            public ResourceLocation getStillTexture() {
-                return WATER_STILL;
-            }
-
-            @Override
-            public ResourceLocation getFlowingTexture() {
-                return WATER_FLOW;
-            }
-
-            @Override
-            public ResourceLocation getOverlayTexture() {
-                return WATER_OVERLAY;
-            }
-
-            @Override
-            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return UNDERWATER_LOCATION;
-            }
-
-            @Override
-            public int getTintColor() {
-                return 0xFF64D5AD;
-            }
-
-            @Override
-            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                return 0xFF64D5AD;
-            }
-        }, Registration.UNREFINED_T3_FLUID_TYPE.get());
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            @Override
-            public ResourceLocation getStillTexture() {
-                return WATER_STILL;
-            }
-
-            @Override
-            public ResourceLocation getFlowingTexture() {
-                return WATER_FLOW;
-            }
-
-            @Override
-            public ResourceLocation getOverlayTexture() {
-                return WATER_OVERLAY;
-            }
-
-            @Override
-            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return UNDERWATER_LOCATION;
-            }
-
-            @Override
-            public int getTintColor() {
-                return 0xFF36484A;
-            }
-
-            @Override
-            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                return 0xFF36484A;
-            }
-        }, Registration.UNREFINED_T4_FLUID_TYPE.get());
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            @Override
-            public ResourceLocation getStillTexture() {
-                return WATER_STILL;
-            }
-
-            @Override
-            public ResourceLocation getFlowingTexture() {
-                return WATER_FLOW;
-            }
-
-            @Override
-            public ResourceLocation getOverlayTexture() {
-                return WATER_OVERLAY;
-            }
-
-            @Override
-            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return UNDERWATER_LOCATION;
-            }
-
-            @Override
-            public int getTintColor() {
-                return 0x3300FF00;
-            }
-
-            @Override
-            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                return 0x7700FF00;
-            }
-        }, Registration.TIME_FLUID_TYPE.get());
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            @Override
-            public ResourceLocation getStillTexture() {
-                return WATER_STILL;
-            }
-
-            @Override
-            public ResourceLocation getFlowingTexture() {
-                return WATER_FLOW;
-            }
-
-            @Override
-            public ResourceLocation getOverlayTexture() {
-                return WATER_OVERLAY;
-            }
-
-            @Override
-            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return UNDERWATER_LOCATION;
-            }
-
-            @Override
-            public int getTintColor() {
-                return 0xFF32CD32;
-            }
-
-            @Override
-            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                return 0xFF32CD32;
-            }
-        }, Registration.XP_FLUID_TYPE.get());
-    }
-
-    @SubscribeEvent
-    static void itemColors(RegisterColorHandlersEvent.Item event) {
+    public static void itemColors(RegisterColorHandlersEvent.Item event) {
         final ItemColors colors = event.getItemColors();
 
         for (var bucket : Registration.BUCKET_ITEMS.getEntries()) {
             colors.register((stack, index) -> {
                 if (index == 1 && stack.getItem() instanceof BucketItem bucketItem) {
-                    return IClientFluidTypeExtensions.of(bucketItem.content).getTintColor();
+                    return IClientFluidTypeExtensions.of(bucketItem.getFluid()).getTintColor();
                 }
                 return 0xFFFFFFFF;
             }, bucket.get());

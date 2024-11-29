@@ -1,11 +1,15 @@
 package com.direwolf20.justdirethings.client.renderactions;
 
+import com.direwolf20.justdirethings.client.DireBufferBuilder;
 import com.direwolf20.justdirethings.client.particles.alwaysvisibleparticle.AlwaysVisibleParticleData;
 import com.direwolf20.justdirethings.client.renderers.OurRenderTypes;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexBuffer;
+import com.mojang.blaze3d.vertex.VertexSorting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -26,6 +30,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.TierSortingRegistry;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -40,17 +47,15 @@ public class ThingFinder {
     private static long lastBlockDrawTime = 0; // The last time particles were drawn
     private static long lastEntityDrawTime = 0; // The last time particles were drawn
     public static long entityParticlesStartTime;
-
+    //public static Map<BlockPos, BlockState> oreMap = new HashMap<>();
     public static List<BlockPos> oreBlocksList = new ArrayList<>();
     public static List<Entity> entityList = new ArrayList<>();
     private static int sortCounter = 0;
 
     //A eBufferBuilder, so we can draw the render
-    private static final ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(RenderType.cutout().bufferSize());
-
+    private static final DireBufferBuilder builder = new DireBufferBuilder(RenderType.cutout().bufferSize());
     //Cached SortStates used for re-sorting every so often
-    private static MeshData meshdata;
-    private static MeshData.SortState sortState;
+    private static BufferBuilder.SortState sortState;
     //Vertex Buffer to buffer the different ores.
     private static final VertexBuffer vertexBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
     //The render type
@@ -94,7 +99,7 @@ public class ThingFinder {
     private static void discoverOres(Player player, Ability toolAbility, ItemStack itemStack) {
         oreBlocksList.clear();
         BlockPos playerPos = player.getOnPos();
-        int radius = 10;
+        int radius = 10; //TODO 50 seems to be ok perf wise but ridiculous
         oreBlocksList = BlockPos.betweenClosedStream(playerPos.offset(-radius, -radius, -radius), playerPos.offset(radius, radius, radius))
                 .filter(blockPos -> isValidBlock(blockPos, player, itemStack))
                 .map(BlockPos::immutable)
@@ -112,7 +117,7 @@ public class ThingFinder {
         if (!blockState.getTags().anyMatch(tag -> tag.equals(Tags.Blocks.ORES)))
             return false;
         if (itemStack.getItem() instanceof TieredItem tieredItem) {
-            return itemStack.isCorrectToolForDrops(blockState);
+            return TierSortingRegistry.isCorrectTierForDrops(tieredItem.getTier(), blockState);
         }
         return true;
     }
@@ -120,9 +125,9 @@ public class ThingFinder {
     private static void discoverMobs(Player player, boolean startTimer) {
         entityList.clear();
         BlockPos playerPos = player.getOnPos();
-        int radius = 10;
+        int radius = 10; //TODO 50 seems to be ok perf wise but ridiculous
 
-        entityList = player.level().getEntities(player, AABB.encapsulatingFullBlocks(playerPos.offset(-radius, -radius, -radius), playerPos.offset(radius, radius, radius)))
+        entityList = player.level().getEntities(player, MiscHelpers.encapsulatingFullBlocks(playerPos.offset(-radius, -radius, -radius), playerPos.offset(radius, radius, radius)))
                 .stream()
                 .filter(entity -> entity instanceof Monster)
                 .collect(Collectors.toList());
@@ -167,8 +172,7 @@ public class ThingFinder {
         Level level = player.level();
         renderedAtPos = player.getOnPos();
 
-        byteBufferBuilder.clear();
-        BufferBuilder builder = new BufferBuilder(byteBufferBuilder, renderType.mode(), renderType.format());
+        builder.begin(renderType.mode(), renderType.format());
 
         for (BlockPos pos : oreBlocksList) {
             BlockState renderState = level.getBlockState(pos);
@@ -198,16 +202,13 @@ public class ThingFinder {
         Vec3 projectedView = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         Vec3 subtracted = projectedView.subtract(renderedAtPos.getX(), renderedAtPos.getY(), renderedAtPos.getZ());
         Vector3f sortPos = new Vector3f((float) subtracted.x, (float) subtracted.y, (float) subtracted.z);
-        if (meshdata != null) {
-            meshdata.close();
-        }
-        meshdata = builder.build();
-        if (meshdata != null) {
-            sortState = meshdata.sortQuads(byteBufferBuilder, VertexSorting.byDistance(sortPos));
-            vertexBuffer.bind();
-            vertexBuffer.upload(meshdata);
-            VertexBuffer.unbind();
-        }
+
+        builder.setQuadSorting(VertexSorting.byDistance(sortPos));
+        sortState = builder.getSortState();
+        vertexBuffer.bind();
+        vertexBuffer.upload(builder.end());
+        VertexBuffer.unbind();
+
         oreBlocksList.clear();
     }
 
@@ -235,7 +236,6 @@ public class ThingFinder {
 
         PoseStack matrix = evt.getPoseStack();
         matrix.pushPose();
-        matrix.mulPose(evt.getModelViewMatrix());
         matrix.translate(-projectedView.x(), -projectedView.y(), -projectedView.z());
         matrix.translate(renderPos.getX(), renderPos.getY(), renderPos.getZ());
         //Draw the renders in the specified order
@@ -254,18 +254,22 @@ public class ThingFinder {
     }
 
     public static void sortAll(BlockPos lookingAt) {
-        ByteBufferBuilder.Result sortResult = sort(lookingAt);
+        BufferBuilder.RenderedBuffer renderedBuffer = sort(lookingAt, renderType);
         vertexBuffer.bind();
-        vertexBuffer.uploadIndexBuffer(sortResult);
+        vertexBuffer.upload(renderedBuffer);
         VertexBuffer.unbind();
 
     }
 
     //Sort the render type we pass in - using DireBufferBuilder because we want to sort in the opposite direction from normal
-    public static ByteBufferBuilder.Result sort(BlockPos lookingAt) {
+    public static BufferBuilder.RenderedBuffer sort(BlockPos lookingAt, RenderType renderType) {
         Vec3 projectedView = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         Vec3 subtracted = projectedView.subtract(lookingAt.getX(), lookingAt.getY(), lookingAt.getZ());
         Vector3f sortPos = new Vector3f((float) subtracted.x, (float) subtracted.y, (float) subtracted.z);
-        return sortState.buildSortedIndexBuffer(byteBufferBuilder, VertexSorting.byDistance(sortPos));
+        builder.begin(renderType.mode(), renderType.format());
+        builder.restoreSortState(sortState);
+        builder.setQuadSorting(VertexSorting.byDistance(sortPos));
+        sortState = builder.getSortState();
+        return builder.end();
     }
 }

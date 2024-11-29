@@ -11,8 +11,7 @@ import net.minecraft.world.item.ItemStack;
 public class BlazegoldBoots extends BaseBoots {
     public BlazegoldBoots() {
         super(ArmorTiers.BLAZEGOLD, new Properties()
-                .fireResistant()
-                .durability(Type.BOOTS.getDurability(25)));
+                .fireResistant());
         registerAbility(Ability.STEPHEIGHT);
         registerAbility(Ability.JUMPBOOST, new AbilityParams(1, 2, 1, 2));
         registerAbility(Ability.LAVAREPAIR);

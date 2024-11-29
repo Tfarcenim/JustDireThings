@@ -8,8 +8,7 @@ import net.minecraft.world.item.ArmorItem;
 
 public class FerricoreLeggings extends BaseLeggings {
     public FerricoreLeggings() {
-        super(ArmorTiers.FERRICORE, new Properties()
-                .durability(ArmorItem.Type.LEGGINGS.getDurability(15)));
+        super(ArmorTiers.FERRICORE, new Properties());
         registerAbility(Ability.RUNSPEED, new AbilityParams(1, 1, 1));
         registerAbility(Ability.WALKSPEED, new AbilityParams(1, 1, 1));
     }

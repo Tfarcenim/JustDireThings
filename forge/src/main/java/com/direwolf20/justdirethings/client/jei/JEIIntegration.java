@@ -3,7 +3,6 @@ package com.direwolf20.justdirethings.client.jei;
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.jei.ghostfilters.GhostFilterBasic;
 import com.direwolf20.justdirethings.client.screens.basescreens.BaseScreen;
-import com.direwolf20.justdirethings.common.blocks.baseblocks.BaseMachineBlock;
 import com.direwolf20.justdirethings.datagen.recipes.*;
 import com.direwolf20.justdirethings.setup.ModRecipes;
 import com.direwolf20.justdirethings.setup.Registration;
@@ -21,14 +20,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @JeiPlugin
 public class JEIIntegration implements IModPlugin {
@@ -44,19 +40,19 @@ public class JEIIntegration implements IModPlugin {
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         IRecipeManager recipeRegistry = jeiRuntime.getRecipeManager();
         RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
-        List<RecipeHolder<CraftingRecipe>> hiddenRecipes = new ArrayList<>();
-        for (var sidedBlock : Registration.SIDEDBLOCKS.getEntries()) {
+        List<CraftingRecipe> hiddenRecipes = new ArrayList<>();
+       /* for (var sidedBlock : Registration.SIDEDBLOCKS.getEntries()) {
             if (sidedBlock.get() instanceof BaseMachineBlock baseMachineBlock) {
-                Optional<RecipeHolder<?>> recipe = recipeManager.byKey(ResourceLocation.parse(sidedBlock.getId() + "_nbtclear"));
-                recipe.ifPresent(recipeHolder -> hiddenRecipes.add((RecipeHolder<CraftingRecipe>) recipeHolder));
+                Optional<? extends Recipe<?>> recipe = recipeManager.byKey(new ResourceLocation(sidedBlock.getId() + "_nbtclear"));
+                recipe.ifPresent(recipeHolder -> hiddenRecipes.add(recipeHolder));
             }
         }
         for (var sidedBlock : Registration.BLOCKS.getEntries()) {
             if (sidedBlock.get() instanceof BaseMachineBlock baseMachineBlock) {
-                Optional<RecipeHolder<?>> recipe = recipeManager.byKey(ResourceLocation.parse(sidedBlock.getId() + "_nbtclear"));
-                recipe.ifPresent(recipeHolder -> hiddenRecipes.add((RecipeHolder<CraftingRecipe>) recipeHolder));
+                Optional<RecipeHolder<?>> recipe = recipeManager.byKey(new ResourceLocation(sidedBlock.getId() + "_nbtclear"));
+                recipe.ifPresent(recipeHolder -> hiddenRecipes.add(recipeHolder));
             }
-        }
+        }*/
 
 
         recipeRegistry.hideRecipes(RecipeTypes.CRAFTING, hiddenRecipes);
@@ -78,27 +74,24 @@ public class JEIIntegration implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         assert Minecraft.getInstance().level != null;
         RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
-        List<GooSpreadRecipe> goospreadrecipes = recipeManager.getAllRecipesFor(ModRecipes.GOO_SPREAD_RECIPE_TYPE.get())
-                .stream().map(RecipeHolder::value).collect(Collectors.toList());
+        List<GooSpreadRecipe> goospreadrecipes = new ArrayList<>(recipeManager.getAllRecipesFor(ModRecipes.GOO_SPREAD_RECIPE_TYPE.get()));
 
         registration.addRecipes(GooSpreadRecipeCategory.TYPE, goospreadrecipes);
 
-        List<GooSpreadRecipeTag> goospreadtagrecipes = recipeManager.getAllRecipesFor(ModRecipes.GOO_SPREAD_RECIPE_TYPE_TAG.get())
-                .stream().map(RecipeHolder::value).collect(Collectors.toList());
+        List<GooSpreadRecipeTag> goospreadtagrecipes = new ArrayList<>(recipeManager.getAllRecipesFor(ModRecipes.GOO_SPREAD_RECIPE_TYPE_TAG.get()));
 
         registration.addRecipes(GooSpreadRecipeTagCategory.TYPE, goospreadtagrecipes);
 
-        List<FluidDropRecipe> fluidDropRecipes = recipeManager.getAllRecipesFor(ModRecipes.FLUID_DROP_RECIPE_TYPE.get())
-                .stream().map(RecipeHolder::value).collect(Collectors.toList());
+        List<FluidDropRecipe> fluidDropRecipes = new ArrayList<>(recipeManager.getAllRecipesFor(ModRecipes.FLUID_DROP_RECIPE_TYPE.get()));
 
         registration.addRecipes(FluidDropRecipeCategory.TYPE, fluidDropRecipes);
 
         //Ore to Resources
         registration.addRecipes(new RecipeType<>(OreToResourceCategory.UID, OreToResourceRecipe.class),
-                List.of(new OreToResourceRecipe(Registration.RawFerricoreOre.get(), new ItemStack(Registration.RawFerricore)),
-                        new OreToResourceRecipe(Registration.RawBlazegoldOre.get(), new ItemStack(Registration.RawBlazegold)),
-                        new OreToResourceRecipe(Registration.RawCelestigemOre.get(), new ItemStack(Registration.Celestigem)),
-                        new OreToResourceRecipe(Registration.RawEclipseAlloyOre.get(), new ItemStack(Registration.RawEclipseAlloy))));
+                List.of(new OreToResourceRecipe(Registration.RawFerricoreOre.get(), new ItemStack(Registration.RawFerricore.get())),
+                        new OreToResourceRecipe(Registration.RawBlazegoldOre.get(), new ItemStack(Registration.RawBlazegold.get())),
+                        new OreToResourceRecipe(Registration.RawCelestigemOre.get(), new ItemStack(Registration.Celestigem.get())),
+                        new OreToResourceRecipe(Registration.RawEclipseAlloyOre.get(), new ItemStack(Registration.RawEclipseAlloy.get()))));
 
     }
 

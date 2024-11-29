@@ -308,8 +308,8 @@ public class GooBlockRender_Base<T extends GooBlockBE_Base> implements BlockEnti
         };
     }
 
-    @Override
-    public AABB getRenderBoundingBox(T blockEntity) {
-        return AABB.encapsulatingFullBlocks(blockEntity.getBlockPos().above(10).north(10).east(10), blockEntity.getBlockPos().below(10).south(10).west(10));
-    }
+ //   @Override
+  ////  public AABB getRenderBoundingBox(T blockEntity) {
+  //      return AABB.encapsulatingFullBlocks(blockEntity.getBlockPos().above(10).north(10).east(10), blockEntity.getBlockPos().below(10).south(10).west(10));
+   // }
 }

@@ -3,7 +3,7 @@ package com.direwolf20.justdirethings.common.items;
 import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock_T1;
 import com.direwolf20.justdirethings.common.containers.FuelCanisterContainer;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
-import com.direwolf20.justdirethings.common.items.resources.Coal_T1;
+import com.direwolf20.justdirethings.common.items.resources.TieredCoalItem;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import net.minecraft.ChatFormatting;
@@ -119,7 +119,7 @@ public class FuelCanisterItem extends Item {
         if (fuelPerPiece == 0) return;
         double currentBurnSpeedMultiplier = getBurnSpeed(stack);
         int fuelMultiplier = 1;
-        if (fuelStack.getItem() instanceof Coal_T1 direCoal)
+        if (fuelStack.getItem() instanceof TieredCoalItem direCoal)
             fuelMultiplier = direCoal.getBurnSpeedMultiplier();
         else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock)
             fuelMultiplier = coalBlock.getBurnSpeedMultiplier();

@@ -15,15 +15,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.joml.Matrix4f;
 
 import java.awt.*;
 
 public class RenderLevelLast {
     @SubscribeEvent
-    static void renderWorldLastEvent(RenderLevelStageEvent evt) {
+    public static void renderWorldLastEvent(RenderLevelStageEvent evt) {
         if (evt.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
             return;
         }

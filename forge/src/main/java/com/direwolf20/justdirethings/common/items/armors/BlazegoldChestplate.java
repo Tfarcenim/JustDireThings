@@ -11,8 +11,7 @@ import net.minecraft.world.item.ItemStack;
 public class BlazegoldChestplate extends BaseChestplate {
     public BlazegoldChestplate() {
         super(ArmorTiers.BLAZEGOLD, new Properties()
-                .fireResistant()
-                .durability(Type.CHESTPLATE.getDurability(25)));
+                .fireResistant());
         registerAbility(Ability.INVULNERABILITY, new AbilityParams(1, 1, 1, 1, 200, 1200));
         registerAbility(Ability.LAVAREPAIR);
         registerAbility(Ability.EXTINGUISH, new AbilityParams(1, 1, 1, 1, 0, 200));
