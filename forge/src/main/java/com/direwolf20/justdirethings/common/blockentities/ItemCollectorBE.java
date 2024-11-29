@@ -75,9 +75,11 @@ public class ItemCollectorBE extends BaseMachineBE implements FilterableBE, Area
         markDirtyClient();
     }
 
+    FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
+
     @Override
     public FilterBasicHandler getFilterHandler() {
-        return getData(Registration.HANDLER_BASIC_FILTER);
+        return filterBasicHandler;
     }
 
     public void doParticles(ItemStack itemStack, Vec3 sourcePos) {
@@ -94,7 +96,6 @@ public class ItemCollectorBE extends BaseMachineBE implements FilterableBE, Area
 
     private void findItemsAndStore() {
         if (!isActiveRedstone() || !canRun()) return;
-        assert level != null;
         AABB searchArea = getAABB(getBlockPos());
 
         List<ItemEntity> entityList = level.getEntitiesOfClass(ItemEntity.class, searchArea, entity -> true)

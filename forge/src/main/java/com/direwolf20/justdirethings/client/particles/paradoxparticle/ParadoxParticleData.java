@@ -16,7 +16,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 public class ParadoxParticleData implements ParticleOptions {
-    public static final MapCodec<ParadoxParticleData> MAP_CODEC = RecordCodecBuilder.create(instance ->
+    public static final Codec<ParadoxParticleData> MAP_CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     ItemStack.CODEC.fieldOf("itemStack").forGetter(p -> p.itemStack),
                     Codec.DOUBLE.fieldOf("targetX").forGetter(p -> p.targetX),

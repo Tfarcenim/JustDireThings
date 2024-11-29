@@ -22,11 +22,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.util.FakePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,14 +82,16 @@ public class FluidCollectorT1BE extends BaseMachineBE implements RedstoneControl
         if (fluidStack.isEmpty()) return;
         ItemStack itemStack = getItemStack();
         if (!isStackValid(itemStack, fluidStack)) return;
-        IFluidHandlerItem fluidHandlerItem = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-        int insertAmt = fluidHandlerItem.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE);
-        if (insertAmt > 0) {
-            FluidStack extractedStack = getFluidTank().drain(Math.min(insertAmt, 1000), IFluidHandler.FluidAction.EXECUTE);
-            fluidHandlerItem.fill(extractedStack, IFluidHandler.FluidAction.EXECUTE);
-            if (itemStack.getItem() instanceof BucketItem)
-                getMachineHandler().setStackInSlot(0, fluidHandlerItem.getContainer());
+        IFluidHandlerItem fluidHandlerItem = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
+        if (fluidHandlerItem != null) {
+            int insertAmt = fluidHandlerItem.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE);
+            if (insertAmt > 0) {
+                FluidStack extractedStack = getFluidTank().drain(Math.min(insertAmt, 1000), IFluidHandler.FluidAction.EXECUTE);
+                fluidHandlerItem.fill(extractedStack, IFluidHandler.FluidAction.EXECUTE);
+                if (itemStack.getItem() instanceof BucketItem)
+                    getMachineHandler().setStackInSlot(0, fluidHandlerItem.getContainer());
 
+            }
         }
     }
 
@@ -103,7 +104,7 @@ public class FluidCollectorT1BE extends BaseMachineBE implements RedstoneControl
             return false;
         if (fluidStack.isEmpty())
             return false;
-        IFluidHandlerItem fluidHandlerItem = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandlerItem = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandlerItem == null)
             return false;
         int amtFilled = fluidHandlerItem.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE);
@@ -116,8 +117,10 @@ public class FluidCollectorT1BE extends BaseMachineBE implements RedstoneControl
         return getFluidTank().getFluid();
     }
 
+    protected JustDireFluidTank fluidTank = new JustDireFluidTank(getMaxMB());
+
     public JustDireFluidTank getFluidTank() {
-        return getData(Registration.MACHINE_FLUID_HANDLER);
+        return fluidTank;
     }
 
     public boolean isStackValid(FluidStack fluidStack) {
@@ -154,7 +157,7 @@ public class FluidCollectorT1BE extends BaseMachineBE implements RedstoneControl
         if (positionsToPlace.isEmpty())
             return;
         if (canRun()) {
-            BlockPos blockPos = positionsToPlace.removeFirst();
+            BlockPos blockPos = positionsToPlace.remove(0);
             collectFluid(blockPos);
         }
     }
@@ -170,7 +173,7 @@ public class FluidCollectorT1BE extends BaseMachineBE implements RedstoneControl
         if (liquidBlock == null) return false;
         if (!isBlockValidForTank(liquidBlock))
             return false; //Check again here, in case we picked up water, and now we are operating on lava, before clearing the area list
-        FluidStack fluidStack = new FluidStack(liquidBlock.fluid, 1000);
+        FluidStack fluidStack = new FluidStack(liquidBlock.getFluid(), 1000);
         if (getFluidTank().fill(fluidStack, IFluidHandler.FluidAction.SIMULATE) < 1000) return false;
         if (level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 3)) {
             getFluidTank().fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
@@ -181,7 +184,7 @@ public class FluidCollectorT1BE extends BaseMachineBE implements RedstoneControl
     }
 
     public boolean isBlockValidForTank(LiquidBlock liquidBlock) {
-        if (!getFluidStack().isEmpty() && !getFluidStack().is(liquidBlock.fluid))
+        if (!getFluidStack().isEmpty() && !getFluidStack().isFluidEqual(new FluidStack(liquidBlock.getFluid(),1000)))
             return false;
         return true;
     }

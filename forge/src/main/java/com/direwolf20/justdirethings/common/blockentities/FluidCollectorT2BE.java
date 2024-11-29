@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.Comparator;
 import java.util.List;
@@ -40,9 +40,11 @@ public class FluidCollectorT2BE extends FluidCollectorT1BE implements PoweredMac
         return poweredMachineData;
     }
 
+    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+
     @Override
     public MachineEnergyStorage getEnergyStorage() {
-        return getData(Registration.ENERGYSTORAGE_MACHINES);
+        return energyStorage;
     }
 
     @Override
@@ -55,9 +57,11 @@ public class FluidCollectorT2BE extends FluidCollectorT1BE implements PoweredMac
         return areaAffectingData;
     }
 
+    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
+
     @Override
     public FilterBasicHandler getFilterHandler() {
-        return getData(Registration.HANDLER_BASIC_FILTER);
+        return filterBasicHandler;
     }
 
     @Override

@@ -24,7 +24,7 @@ import java.util.stream.StreamSupport;
 @Mixin(CollisionGetter.class)
 public interface CollisionMixin {
 
-    @Inject(method = "collidesWithSuffocatingBlock(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Z", at = @At("HEAD"), cancellable = true)
+    /*@Inject(method = "collidesWithSuffocatingBlock(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Z", at = @At("HEAD"), cancellable = true)
     private void collidesWithSuffocatingBlock(Entity entity, AABB box, CallbackInfoReturnable<Boolean> cir) {
         if (entity instanceof Player && shouldPassThroughWalls((Player) entity)) {
             cir.setReturnValue(false);
@@ -64,5 +64,5 @@ public interface CollisionMixin {
 
     default boolean shouldPassThroughWalls(Player player) {
         return player.getAttributeValue(Registration.PHASE.get()) > 0;
-    }
+    }*/
 }
