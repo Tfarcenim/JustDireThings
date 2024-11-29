@@ -1,10 +1,8 @@
 package com.direwolf20.justdirethings.client.particles.itemparticle;
 
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 
 public class ItemFlowParticleType extends ParticleType<ItemFlowParticleData> {
     public ItemFlowParticleType(boolean pOverrideLimiter) {
@@ -16,13 +14,8 @@ public class ItemFlowParticleType extends ParticleType<ItemFlowParticleData> {
     }
 
     @Override
-    public MapCodec<ItemFlowParticleData> codec() {
+    public Codec<ItemFlowParticleData> codec() {
         return ItemFlowParticleData.MAP_CODEC;
-    }
-
-    @Override
-    public StreamCodec<RegistryFriendlyByteBuf, ItemFlowParticleData> streamCodec() {
-        return ItemFlowParticleData.STREAM_CODEC;
     }
 
 }

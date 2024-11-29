@@ -7,12 +7,12 @@ import com.direwolf20.justdirethings.client.particles.glitterparticle.GlitterPar
 import com.direwolf20.justdirethings.client.particles.gooexplodeparticle.GooExplodeParticle;
 import com.direwolf20.justdirethings.client.particles.itemparticle.ItemFlowParticle;
 import com.direwolf20.justdirethings.client.particles.paradoxparticle.ParadoxParticle;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
-@EventBusSubscriber(modid = JustDireThings.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = JustDireThings.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ParticleRenderDispatcher {
 
     @SubscribeEvent

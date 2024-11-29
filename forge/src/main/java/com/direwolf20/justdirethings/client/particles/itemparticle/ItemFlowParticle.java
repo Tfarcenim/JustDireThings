@@ -5,17 +5,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.BreakingItemParticle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Random;
-
 public class ItemFlowParticle extends BreakingItemParticle {
 
     private double targetX, targetY, targetZ;
-    Random random = new Random();
 
     public ItemFlowParticle(ClientLevel world, double x, double y, double z, double targetX, double targetY, double targetZ, ItemStack itemStack, int ticksPerBlock) {
         this(world, x, y, z, itemStack);
@@ -44,7 +40,7 @@ public class ItemFlowParticle extends BreakingItemParticle {
         this.lifetime = (int) (distance * speedAdjust);
         this.scale(partSize);
         if (this.sprite == null) {
-            this.setSprite(Minecraft.getInstance().getItemRenderer().getModel(new ItemStack(Blocks.COBBLESTONE), world, (LivingEntity) null, 0).getParticleIcon());
+            this.setSprite(Minecraft.getInstance().getItemRenderer().getModel(new ItemStack(Blocks.COBBLESTONE), world, null, 0).getParticleIcon());
         }
 
     }

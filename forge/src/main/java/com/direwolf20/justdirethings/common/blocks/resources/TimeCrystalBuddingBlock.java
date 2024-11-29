@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Random;
 
@@ -63,7 +64,7 @@ public class TimeCrystalBuddingBlock extends BuddingAmethystBlock {
     }
 
     @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int stage = state.getValue(STAGE);
         int advanceTo = canAdvanceTo(level, state);
         if (advanceTo != -1) {
@@ -113,9 +114,7 @@ public class TimeCrystalBuddingBlock extends BuddingAmethystBlock {
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         if (state.getValue(STAGE) == 3) return;
-        double d0 = (double) pos.getX() + 0.5;
-        double d1 = (double) pos.getY() + 0.5;
-        double d2 = (double) pos.getZ() + 0.5;
+
 
         float r, g, b;
         int advanceTo = canAdvanceTo(level, state);
@@ -147,8 +146,10 @@ public class TimeCrystalBuddingBlock extends BuddingAmethystBlock {
             double startY = (double) pos.getY() + offsetY;
             double startZ = (double) pos.getZ() + offsetZ;
 
+            Vec3 vec3 = pos.getCenter();
+
             float randomPartSize = 0.05f + (0.025f - 0.05f) * rand.nextFloat();
-            GlitterParticleData data = GlitterParticleData.playerparticle("glitter", d0, d1, d2, randomPartSize, r, g, b, 0.5f, 120, false);
+            GlitterParticleData data = GlitterParticleData.playerparticle("glitter", vec3, randomPartSize, r, g, b, 0.5f, 120, false);
             level.addParticle(data, startX, startY, startZ, 0.025, 0.025f, 0.025);
         }
     }

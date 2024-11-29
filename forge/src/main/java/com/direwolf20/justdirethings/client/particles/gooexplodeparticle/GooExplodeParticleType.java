@@ -1,10 +1,8 @@
 package com.direwolf20.justdirethings.client.particles.gooexplodeparticle;
 
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 
 public class GooExplodeParticleType extends ParticleType<GooExplodeParticleData> {
     public GooExplodeParticleType(boolean pOverrideLimiter) {
@@ -16,13 +14,8 @@ public class GooExplodeParticleType extends ParticleType<GooExplodeParticleData>
     }
 
     @Override
-    public MapCodec<GooExplodeParticleData> codec() {
+    public Codec<GooExplodeParticleData> codec() {
         return GooExplodeParticleData.MAP_CODEC;
-    }
-
-    @Override
-    public StreamCodec<RegistryFriendlyByteBuf, GooExplodeParticleData> streamCodec() {
-        return GooExplodeParticleData.STREAM_CODEC;
     }
 
 }

@@ -3,9 +3,12 @@ package com.direwolf20.justdirethings.platform.services;
 import com.direwolf20.justdirethings.network.client.S2CModPacket;
 import com.direwolf20.justdirethings.network.client.S2CParadoxSyncPayload;
 import com.direwolf20.justdirethings.network.server.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
 
 import java.util.function.Function;
 
@@ -49,6 +52,8 @@ public interface IPlatformHelper {
     <MSG extends C2SModPacket> void registerServerPacket(Class<MSG> packetLocation, Function<FriendlyByteBuf,MSG> reader);
     void sendToClient(S2CModPacket msg, ServerPlayer player);
     void sendToServer(C2SModPacket msg);
+
+    void sendToTrackingChunks(LevelChunk chunk, S2CModPacket msg);
 
     void handleC2SAreaEffectingPayload(ServerPlayer player,C2SAreaAffectingPayload payload);
 

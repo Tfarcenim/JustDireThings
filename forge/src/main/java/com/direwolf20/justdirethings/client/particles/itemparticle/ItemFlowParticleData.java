@@ -2,19 +2,16 @@ package com.direwolf20.justdirethings.client.particles.itemparticle;
 
 import com.direwolf20.justdirethings.client.particles.ModParticles;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
 public class ItemFlowParticleData implements ParticleOptions {
-    public static final MapCodec<ItemFlowParticleData> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
+    public static final Codec<ItemFlowParticleData> MAP_CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     ItemStack.CODEC.fieldOf("itemStack").forGetter(p -> p.itemStack),
                     Codec.DOUBLE.fieldOf("targetX").forGetter(p -> p.targetX),
@@ -22,19 +19,7 @@ public class ItemFlowParticleData implements ParticleOptions {
                     Codec.DOUBLE.fieldOf("targetZ").forGetter(p -> p.targetZ),
                     Codec.INT.fieldOf("ticksPerBlock").forGetter(p -> p.ticksPerBlock)
             ).apply(instance, ItemFlowParticleData::new));
-    public static final StreamCodec<RegistryFriendlyByteBuf, ItemFlowParticleData> STREAM_CODEC = StreamCodec.composite(
-            ItemStack.STREAM_CODEC,
-            ItemFlowParticleData::getItemStack,
-            ByteBufCodecs.DOUBLE,
-            ItemFlowParticleData::getTargetX,
-            ByteBufCodecs.DOUBLE,
-            ItemFlowParticleData::getTargetY,
-            ByteBufCodecs.DOUBLE,
-            ItemFlowParticleData::getTargetZ,
-            ByteBufCodecs.INT,
-            ItemFlowParticleData::getTicksPerBlock,
-            ItemFlowParticleData::new
-    );
+
 
     private final ItemStack itemStack;
     public final double targetX;
@@ -48,6 +33,20 @@ public class ItemFlowParticleData implements ParticleOptions {
         targetY = ty;
         targetZ = tz;
         ticksPerBlock = ticks;
+    }
+
+    @Override
+    public void writeToNetwork(FriendlyByteBuf pBuffer) {
+        pBuffer.writeItem(itemStack);
+        pBuffer.writeDouble(targetX);
+        pBuffer.writeDouble(targetY);
+        pBuffer.writeDouble(targetZ);
+        pBuffer.writeInt(ticksPerBlock);
+    }
+
+    @Override
+    public String writeToString() {
+        return "";//todo
     }
 
     @Nonnull

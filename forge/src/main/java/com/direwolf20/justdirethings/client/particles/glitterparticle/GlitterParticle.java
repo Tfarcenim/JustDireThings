@@ -8,6 +8,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3d;
 
 import java.util.Random;
 
@@ -15,16 +16,14 @@ public class GlitterParticle extends TextureSheetParticle {
     private double sourceX;
     private double sourceY;
     private double sourceZ;
-    private double targetX;
-    private double targetY;
-    private double targetZ;
+    private Vec3 target;
     private int speedModifier;
     private String particleType;
     private Random rand = new Random();
     private int particlePicker;
     protected final SpriteSet spriteSet;
 
-    public GlitterParticle(ClientLevel world, double sourceX, double sourceY, double sourceZ, double targetX, double targetY, double targetZ, double xSpeed, double ySpeed, double zSpeed,
+    public GlitterParticle(ClientLevel world, double sourceX, double sourceY, double sourceZ, Vec3 target, double xSpeed, double ySpeed, double zSpeed,
                            float size, float red, float green, float blue, float alpha, boolean collide, float maxAge, String particleType, SpriteSet sprite) {
         super(world, sourceX, sourceY, sourceZ);
         xd = xSpeed;
@@ -46,9 +45,8 @@ public class GlitterParticle extends TextureSheetParticle {
         this.sourceX = sourceX;
         this.sourceY = sourceY;
         this.sourceZ = sourceZ;
-        this.targetX = targetX;
-        this.targetY = targetY;
-        this.targetZ = targetZ;
+
+        this.target = target;
         this.hasPhysics = collide;
         this.particleType = particleType;
         this.setGravity(0f);
@@ -86,22 +84,21 @@ public class GlitterParticle extends TextureSheetParticle {
         this.zo = this.z;
 
         Vec3 sourcePos = new Vec3(sourceX, sourceY, sourceZ);
-        Vec3 targetPos = new Vec3(targetX, targetY, targetZ);
 
         //Get the current position of the particle, and figure out the vector of where it's going
         Vec3 partPos = new Vec3(this.x, this.y, this.z);
-        Vec3 targetDirection = new Vec3(targetPos.x() - this.x, targetPos.y() - this.y, targetPos.z() - this.z);
+        Vec3 targetDirection = new Vec3(target.x() - this.x, target.y() - this.y, target.z() - this.z);
 
         //The total distance between the particle and target
-        double totalDistance = targetPos.distanceTo(partPos);
+        double totalDistance = target.distanceTo(partPos);
         if (totalDistance < 0.1)
             this.remove();
 
         double speedAdjust = 20;
 
-        moveX = (targetX - this.x) / speedAdjust;
-        moveY = (targetY - this.y) / speedAdjust;
-        moveZ = (targetZ - this.z) / speedAdjust;
+        moveX = (target.x - this.x) / speedAdjust;
+        moveY = (target.y - this.y) / speedAdjust;
+        moveZ = (target.z - this.z) / speedAdjust;
 
         //This does not seem to be used but I will leave it here for now anyways
         BlockPos nextPos = new BlockPos((int) this.x + (int) moveX, (int) this.y + (int) moveY, (int) this.z + (int) moveZ);

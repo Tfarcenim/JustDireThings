@@ -13,17 +13,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
 import java.util.UUID;
 
 public class ParadoxParticle extends BreakingItemParticle {
 
     private double targetX, targetY, targetZ;
-    private static Random random = new Random();
     private double initialRadius;
     private double angularVelocity;
     private double currentAngle;
@@ -66,7 +64,7 @@ public class ParadoxParticle extends BreakingItemParticle {
         this.sourcePos = new BlockPos((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
         BlockState blockState = level.getBlockState(sourcePos);
         if (blockState.getBlock() instanceof LiquidBlock liquidBlock) {
-            FluidStack fluidStack = new FluidStack(liquidBlock.fluid, 1000);
+            FluidStack fluidStack = new FluidStack(liquidBlock.getFluid(), 1000);
             this.setSprite(Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(IClientFluidTypeExtensions.of(fluidStack.getFluid()).getStillTexture(fluidStack)));
             //this.setSprite(Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidStack.getFluid().getAttributes().getStillTexture(fluidStack)));
             int i = IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor(fluidStack);

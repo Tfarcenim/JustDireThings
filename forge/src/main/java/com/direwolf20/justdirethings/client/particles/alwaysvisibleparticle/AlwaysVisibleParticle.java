@@ -16,14 +16,19 @@ import net.minecraft.resources.ResourceLocation;
 public class AlwaysVisibleParticle extends TextureSheetParticle {
     static final ParticleRenderType AlwaysOn = new ParticleRenderType() {
         @Override
-        public BufferBuilder begin(Tesselator p_350993_, TextureManager p_107442_) {
+        public void begin(BufferBuilder p_350993_, TextureManager p_107442_) {
             RenderSystem.disableBlend();
             RenderSystem.depthMask(true);
             RenderSystem.setShader(GameRenderer::getParticleShader);
             RenderSystem.disableDepthTest();
             RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
             Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
-            return p_350993_.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+            p_350993_.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+        }
+
+        @Override
+        public void end(Tesselator pTesselator) {
+            pTesselator.end();
         }
 
         @Override
@@ -37,7 +42,7 @@ public class AlwaysVisibleParticle extends TextureSheetParticle {
         ParticleEngine particleEngine = Minecraft.getInstance().particleEngine;
         SpriteSet spriteSet = particleEngine.spriteSets.get(resourceLocation);
         if (spriteSet == null)
-            spriteSet = particleEngine.spriteSets.get(ResourceLocation.withDefaultNamespace("smoke"));
+            spriteSet = particleEngine.spriteSets.get(new ResourceLocation("smoke"));
         this.pickSprite(spriteSet);
         this.xd = 0;
         this.yd = 0;

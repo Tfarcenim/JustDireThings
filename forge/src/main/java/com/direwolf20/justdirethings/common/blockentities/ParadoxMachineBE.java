@@ -8,6 +8,7 @@ import com.direwolf20.justdirethings.common.entities.ParadoxEntity;
 import com.direwolf20.justdirethings.common.fluids.timefluid.TimeFluid;
 import com.direwolf20.justdirethings.network.client.S2CParadoxSyncPayload;
 import com.direwolf20.justdirethings.datagen.JustDireEntityTags;
+import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.JustDireTags;
@@ -33,6 +34,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
@@ -104,8 +106,10 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
         double startY = d1 - 0.5 + offsetY;
         double startZ = d2 - 0.5 + offsetZ;
 
+        Vec3 start = new Vec3(startX,startY,startZ);
+
         float randomPartSize = 0.05f + (0.025f - 0.05f) * random.nextFloat();
-        GlitterParticleData data = GlitterParticleData.playerparticle("glitter", d0, d1, d2, randomPartSize, r, g, b, 1f, 120, false);
+        GlitterParticleData data = GlitterParticleData.playerparticle("glitter", start, randomPartSize, r, g, b, 1f, 120, false);
         level.addParticle(data, startX, startY, startZ, 0.00025, 0.00025f, 0.00025);
     }
 
@@ -188,7 +192,7 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
             return;
         } else {
             if (timeRunning % 20 == 0 && !(timeRunning >= getRunTime())) {
-                PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, level.getChunk(getBlockPos()).getPos(), new S2CParadoxSyncPayload(getBlockPos(), timeRunning));
+                Services.PLATFORM.sendToTrackingChunks((LevelChunk) level.getChunk(getBlockPos()), new S2CParadoxSyncPayload(getBlockPos(), timeRunning));
             }
             if (timeRunning % 100 == 0 && !(timeRunning >= getRunTime())) {
                 level.playSound(null, getBlockPos(), SoundEvents.PORTAL_AMBIENT, SoundSource.BLOCKS, 0.5F, 0.25F);
@@ -743,8 +747,8 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
             ListTag restoringBlocksList = tag.getList("restoringBlocks", 10); // 10 indicates a CompoundTag
             for (int i = 0; i < restoringBlocksList.size(); i++) {
                 CompoundTag blockData = restoringBlocksList.getCompound(i);
-                BlockPos pos = NbtUtils.readBlockPos(blockData, "pos").orElse(null);
-                if (pos == null) continue;
+                if (!blockData.contains("pos"))continue;
+                BlockPos pos = NbtUtils.readBlockPos(blockData.getCompound("pos"));
                 BlockState state = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), blockData.getCompound("state"));
                 restoringBlocks.put(pos, state);
             }

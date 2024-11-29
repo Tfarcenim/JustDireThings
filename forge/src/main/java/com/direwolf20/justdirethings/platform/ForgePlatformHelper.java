@@ -25,6 +25,7 @@ import com.direwolf20.justdirethings.util.NBTHelpers;
 import com.direwolf20.justdirethings.util.interfacehelpers.FilterData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -41,11 +42,13 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.Locale;
 import java.util.Map;
@@ -94,6 +97,11 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public void sendToServer(C2SModPacket msg) {
         PacketHandlerForge.sendToServer(msg);
+    }
+
+    @Override
+    public void sendToTrackingChunks(LevelChunk chunk, S2CModPacket msg) {
+        PacketHandlerForge.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk),msg);
     }
 
     @Override
