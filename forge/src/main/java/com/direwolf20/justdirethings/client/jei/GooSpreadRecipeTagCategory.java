@@ -47,7 +47,7 @@ public class GooSpreadRecipeTagCategory implements IRecipeCategory<GooSpreadReci
         slot = guiHelper.getSlotDrawable();
         icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.GooBlock_Tier1.get()));
         localizedName = Component.translatable("justdirethings.goospreadrecipetag.title");
-        this.arrow = guiHelper.  ;
+        this.arrow = guiHelper.getRecipeArrow();
     }
 
     @Override

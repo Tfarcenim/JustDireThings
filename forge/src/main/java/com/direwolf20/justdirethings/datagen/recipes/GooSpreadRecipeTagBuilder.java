@@ -1,24 +1,18 @@
 package com.direwolf20.justdirethings.datagen.recipes;
 
 import com.direwolf20.justdirethings.JustDireThings;
-import com.direwolf20.justdirethings.setup.Registration;
-import com.direwolf20.justdirethings.util.MiscHelpers;
+import com.direwolf20.justdirethings.setup.ModRecipes;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 
@@ -61,7 +55,7 @@ public class GooSpreadRecipeTagBuilder extends AbstractGooRecipeBuilder<TagKey<B
 
         @Override
         public RecipeSerializer<?> getType() {
-            return Registration.GOO_SPREAD_RECIPE_SERIALIZER_TAG.get();
+            return ModRecipes.GOO_SPREAD_RECIPE_SERIALIZER_TAG.get();
         }
 
     }

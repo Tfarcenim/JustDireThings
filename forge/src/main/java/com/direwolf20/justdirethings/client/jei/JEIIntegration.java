@@ -5,6 +5,7 @@ import com.direwolf20.justdirethings.client.jei.ghostfilters.GhostFilterBasic;
 import com.direwolf20.justdirethings.client.screens.basescreens.BaseScreen;
 import com.direwolf20.justdirethings.common.blocks.baseblocks.BaseMachineBlock;
 import com.direwolf20.justdirethings.datagen.recipes.*;
+import com.direwolf20.justdirethings.setup.ModRecipes;
 import com.direwolf20.justdirethings.setup.Registration;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -77,17 +78,17 @@ public class JEIIntegration implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         assert Minecraft.getInstance().level != null;
         RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
-        List<GooSpreadRecipe> goospreadrecipes = recipeManager.getAllRecipesFor(Registration.GOO_SPREAD_RECIPE_TYPE.get())
+        List<GooSpreadRecipe> goospreadrecipes = recipeManager.getAllRecipesFor(ModRecipes.GOO_SPREAD_RECIPE_TYPE.get())
                 .stream().map(RecipeHolder::value).collect(Collectors.toList());
 
         registration.addRecipes(GooSpreadRecipeCategory.TYPE, goospreadrecipes);
 
-        List<GooSpreadRecipeTag> goospreadtagrecipes = recipeManager.getAllRecipesFor(Registration.GOO_SPREAD_RECIPE_TYPE_TAG.get())
+        List<GooSpreadRecipeTag> goospreadtagrecipes = recipeManager.getAllRecipesFor(ModRecipes.GOO_SPREAD_RECIPE_TYPE_TAG.get())
                 .stream().map(RecipeHolder::value).collect(Collectors.toList());
 
         registration.addRecipes(GooSpreadRecipeTagCategory.TYPE, goospreadtagrecipes);
 
-        List<FluidDropRecipe> fluidDropRecipes = recipeManager.getAllRecipesFor(Registration.FLUID_DROP_RECIPE_TYPE.get())
+        List<FluidDropRecipe> fluidDropRecipes = recipeManager.getAllRecipesFor(ModRecipes.FLUID_DROP_RECIPE_TYPE.get())
                 .stream().map(RecipeHolder::value).collect(Collectors.toList());
 
         registration.addRecipes(FluidDropRecipeCategory.TYPE, fluidDropRecipes);

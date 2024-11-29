@@ -34,13 +34,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.CommonHooks;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.event.level.BlockEvent;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
 import static com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool.getInstantRFCost;
 
 public class Helpers {
-    public static final Predicate<BlockState> oreCondition = s -> s.is(Tags.Blocks.ORES) || s.is(Tags.Blocks.CLUSTERS);
+    public static final Predicate<BlockState> oreCondition = s -> s.is(Tags.Blocks.ORES);
     public static final Predicate<BlockState> fallingBlockCondition = s -> s.getBlock() instanceof FallingBlock;
     public static final Predicate<BlockState> logCondition = s -> s.is(BlockTags.LOGS);
 
@@ -57,7 +57,7 @@ public class Helpers {
         if (pPlayer instanceof ServerPlayer player && level instanceof ServerLevel serverLevel) {
             BlockState state = level.getBlockState(pos);
             GameType type = player.getAbilities().instabuild ? GameType.CREATIVE : GameType.SURVIVAL;
-            BlockEvent.BreakEvent exp = CommonHooks.fireBlockBreak(serverLevel, type, player, pos, state);
+            BlockEvent.BreakEvent exp = new BlockEvent.BreakEvent(serverLevel, pos, state, player);
             if (exp.isCanceled()) {
                 return;
             }
@@ -160,7 +160,7 @@ public class Helpers {
             ItemStack cloneStack = stack.copy();
             stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
             if (stack.isEmpty() && !cloneStack.isEmpty() && player instanceof Player player1)
-                net.neoforged.neoforge.event.EventHooks.onPlayerDestroyItem(player1, cloneStack, InteractionHand.MAIN_HAND);
+                ForgeEventFactory.onPlayerDestroyItem(player1, cloneStack, InteractionHand.MAIN_HAND);
         }
     }
 
@@ -171,7 +171,7 @@ public class Helpers {
             ItemStack cloneStack = stack.copy();
             stack.hurtAndBreak(amount, player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
             if (stack.isEmpty() && !cloneStack.isEmpty() && player instanceof Player player1)
-                net.neoforged.neoforge.event.EventHooks.onPlayerDestroyItem(player1, cloneStack, InteractionHand.MAIN_HAND);
+                ForgeEventFactory.onPlayerDestroyItem(player1, cloneStack, InteractionHand.MAIN_HAND);
         }
     }
 
@@ -182,7 +182,7 @@ public class Helpers {
             ItemStack cloneStack = stack.copy();
             stack.hurtAndBreak(ability.getDurabilityCost(), player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
             if (stack.isEmpty() && !cloneStack.isEmpty() && player instanceof Player player1)
-                net.neoforged.neoforge.event.EventHooks.onPlayerDestroyItem(player1, cloneStack, InteractionHand.MAIN_HAND);
+                ForgeEventFactory.onPlayerDestroyItem(player1, cloneStack, InteractionHand.MAIN_HAND);
         }
     }
 
@@ -193,7 +193,7 @@ public class Helpers {
             ItemStack cloneStack = stack.copy();
             stack.hurtAndBreak(ability.getDurabilityCost() * multiplier, player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
             if (stack.isEmpty() && !cloneStack.isEmpty() && player instanceof Player player1)
-                net.neoforged.neoforge.event.EventHooks.onPlayerDestroyItem(player1, cloneStack, InteractionHand.MAIN_HAND);
+                ForgeEventFactory.onPlayerDestroyItem(player1, cloneStack, InteractionHand.MAIN_HAND);
         }
     }
 
@@ -553,7 +553,8 @@ public class Helpers {
     }
 
     private static BlockPos getLavaPos(ItemStack stack) {
-        return stack.getOrDefault(JustDireDataComponents.LAVAREPAIR_LAVAPOS, BlockPos.ZERO);
+        BlockPos lavaRepair = JustDireDataComponents.getLavaPos(stack);
+        return lavaRepair == null ? BlockPos.ZERO : lavaRepair;
     }
 
     private static void doParticles(ItemStack itemStack, ItemEntity entity) {

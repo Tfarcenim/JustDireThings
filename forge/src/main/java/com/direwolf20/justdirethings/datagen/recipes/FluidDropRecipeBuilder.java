@@ -1,7 +1,7 @@
 package com.direwolf20.justdirethings.datagen.recipes;
 
 import com.direwolf20.justdirethings.JustDireThings;
-import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.setup.ModRecipes;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -97,7 +97,7 @@ public class FluidDropRecipeBuilder implements RecipeBuilder {
         }
 
         public RecipeSerializer<?> getType() {
-            return Registration.FLUID_DROP_RECIPE_SERIALIZER.get();
+            return ModRecipes.FLUID_DROP_RECIPE_SERIALIZER.get();
         }
 
         public ResourceLocation getId() {

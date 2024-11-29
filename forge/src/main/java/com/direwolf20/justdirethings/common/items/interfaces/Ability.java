@@ -2,13 +2,13 @@ package com.direwolf20.justdirethings.common.items.interfaces;
 
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.EnumMap;
 import java.util.Locale;
@@ -144,7 +144,7 @@ public enum Ability {
     final BindingType bindingType;
     final CustomSettingType customSettingType;
     final UseType useType;
-    private Holder<Item> upgradeItem;
+    private RegistryObject<? extends Item> upgradeItem;
     // Dynamic parameter map
     private static final Map<Ability, AbilityParams> dynamicParams = new EnumMap<>(Ability.class);
     public AbilityAction action;  // Functional interface for action
@@ -168,12 +168,12 @@ public enum Ability {
         this(settingType, durabilityCost, feCost, useType, bindingType, CustomSettingType.NONE);
     }
 
-    Ability(SettingType settingType, int durabilityCost, int feCost, UseType useType, BindingType bindingType, Holder<Item> upgradeItem) {
+    Ability(SettingType settingType, int durabilityCost, int feCost, UseType useType, BindingType bindingType, RegistryObject<? extends Item> upgradeItem) {
         this(settingType, durabilityCost, feCost, useType, bindingType, CustomSettingType.NONE);
         this.upgradeItem = upgradeItem;
     }
 
-    Ability(SettingType settingType, int durabilityCost, int feCost, UseType useType, BindingType bindingType, CustomSettingType customSettingType, Holder<Item> upgradeItem) {
+    Ability(SettingType settingType, int durabilityCost, int feCost, UseType useType, BindingType bindingType, CustomSettingType customSettingType, RegistryObject<? extends Item> upgradeItem) {
         this(settingType, durabilityCost, feCost, useType, bindingType, customSettingType);
         this.upgradeItem = upgradeItem;
     }
@@ -183,7 +183,7 @@ public enum Ability {
         this.action = action;
     }
 
-    Ability(SettingType settingType, int durabilityCost, int feCost, UseType useType, BindingType bindingType, AbilityAction action, CustomSettingType customSettingType, Holder<Item> upgradeItem) {
+    Ability(SettingType settingType, int durabilityCost, int feCost, UseType useType, BindingType bindingType, AbilityAction action, CustomSettingType customSettingType, RegistryObject<? extends Item> upgradeItem) {
         this(settingType, durabilityCost, feCost, useType, bindingType, customSettingType);
         this.action = action;
         this.upgradeItem = upgradeItem;
@@ -194,7 +194,7 @@ public enum Ability {
         this.cooldownIcon = cooldownIcon;
     }
 
-    Ability(SettingType settingType, int durabilityCost, int feCost, UseType useType, BindingType bindingType, CustomSettingType customSettingType, ResourceLocation cooldownIcon, Holder<Item> upgradeItem) {
+    Ability(SettingType settingType, int durabilityCost, int feCost, UseType useType, BindingType bindingType, CustomSettingType customSettingType, ResourceLocation cooldownIcon, RegistryObject<? extends Item> upgradeItem) {
         this(settingType, durabilityCost, feCost, useType, bindingType, customSettingType);
         this.cooldownIcon = cooldownIcon;
         this.upgradeItem = upgradeItem;
@@ -206,7 +206,7 @@ public enum Ability {
         this.cooldownIcon = cooldownIcon;
     }
 
-    Ability(SettingType settingType, int durabilityCost, int feCost, UseType useType, BindingType bindingType, AbilityAction action, CustomSettingType customSettingType, ResourceLocation cooldownIcon, Holder<Item> upgradeItem) {
+    Ability(SettingType settingType, int durabilityCost, int feCost, UseType useType, BindingType bindingType, AbilityAction action, CustomSettingType customSettingType, ResourceLocation cooldownIcon, RegistryObject<? extends Item> upgradeItem) {
         this(settingType, durabilityCost, feCost, useType, bindingType, customSettingType);
         this.action = action;
         this.cooldownIcon = cooldownIcon;
@@ -218,7 +218,7 @@ public enum Ability {
         this.useOnAction = useOnAction;
     }
 
-    Ability(SettingType settingType, int durabilityCost, int feCost, UseType useType, BindingType bindingType, UseOnAbilityAction useOnAction, CustomSettingType customSettingType, Holder<Item> upgradeItem) {
+    Ability(SettingType settingType, int durabilityCost, int feCost, UseType useType, BindingType bindingType, UseOnAbilityAction useOnAction, CustomSettingType customSettingType, RegistryObject<? extends Item> upgradeItem) {
         this(settingType, durabilityCost, feCost, useType, bindingType, customSettingType);
         this.useOnAction = useOnAction;
         this.upgradeItem = upgradeItem;
@@ -280,13 +280,13 @@ public enum Ability {
         return upgradeItem != null;
     }
 
-    public Holder<Item> getUpgradeItem() {
+    public RegistryObject<? extends Item> getUpgradeItem() {
         return upgradeItem;
     }
 
     public static Ability getAbilityFromUpgradeItem(Item item) {
         for (Ability ability : values()) {
-            if (ability.getUpgradeItem() != null && ability.getUpgradeItem().value() == item) {
+            if (ability.getUpgradeItem() != null && ability.getUpgradeItem().get() == item) {
                 return ability;
             }
         }

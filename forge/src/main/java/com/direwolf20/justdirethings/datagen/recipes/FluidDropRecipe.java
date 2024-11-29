@@ -1,13 +1,12 @@
 package com.direwolf20.justdirethings.datagen.recipes;
 
 import com.direwolf20.justdirethings.JustDireThings;
-import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.setup.ModRecipes;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.google.gson.JsonObject;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -42,7 +41,7 @@ public class FluidDropRecipe implements CraftingRecipe {
 
     @Override
     public RecipeType<?> getType() {
-        return Registration.FLUID_DROP_RECIPE_TYPE.get();
+        return ModRecipes.FLUID_DROP_RECIPE_TYPE.get();
     }
 
     public boolean matches(BlockState blockState, ItemStack catalystStack) {
@@ -106,7 +105,7 @@ public class FluidDropRecipe implements CraftingRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return Registration.FLUID_DROP_RECIPE_SERIALIZER.get();
+        return ModRecipes.FLUID_DROP_RECIPE_SERIALIZER.get();
     }
 
 

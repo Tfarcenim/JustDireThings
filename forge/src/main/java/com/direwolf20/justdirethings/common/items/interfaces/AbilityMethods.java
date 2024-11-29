@@ -44,10 +44,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -201,7 +200,6 @@ public class AbilityMethods {
         if (blockState.isAir()) return false;
         if (blockState.getDestroySpeed(serverLevel, blockPos) < 0) return false;
         if (blockState.is(JustDireTags.Blocks.ECLISEGATEDENY)) return false;
-        if (blockState.is(Tags.Blocks.RELOCATION_NOT_SUPPORTED)) return false;
         return true;
     }
 
@@ -210,7 +208,7 @@ public class AbilityMethods {
         Vec3 shiftPosition = getShiftPosition(level, player, itemStack);
         if (!shiftPosition.equals(Vec3.ZERO)) {
             WorldBorder worldBorder = level.getWorldBorder();
-            if (!worldBorder.isWithinBounds(shiftPosition)) {
+            if (!worldBorder.isWithinBounds(shiftPosition.x,shiftPosition.y,shiftPosition.z)) {
                 // Notify player or take any other action if the position is outside the world border
                 return false;
             }
@@ -223,8 +221,7 @@ public class AbilityMethods {
                 player.teleportTo(shiftPosition.x, shiftPosition.y, shiftPosition.z);
             }
             player.resetFallDistance();
-            PacketDistributor.sendToPlayer((ServerPlayer) player, new ClientSoundPayload(SoundEvents.PLAYER_TELEPORT.getLocation(), 1f, 1f));
-            level.playSound(player, BlockPos.containing(shiftPosition), SoundEvents.PLAYER_TELEPORT, SoundSource.PLAYERS, 1F, 1.0F);
+            level.playSound(null, BlockPos.containing(shiftPosition), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 1F, 1.0F);
             damageTool(itemStack, player, Ability.VOIDSHIFT, distanceTraveled);
         }
         return false;
@@ -462,7 +459,7 @@ public class AbilityMethods {
                 AbilityParams abilityParams = toggleableTool.getAbilityParams(Ability.STUPEFY);
                 ToggleableTool.addCooldown(itemStack, Ability.STUPEFY, abilityParams.activeCooldown, true);
                 player.playNotifySound(SoundEvents.ILLUSIONER_CAST_SPELL, SoundSource.PLAYERS, 0.5F, 0.75F);
-                ((ServerLevel) level).sendParticles(ParticleTypes.WHITE_SMOKE, mob.getX(), mob.getEyeY(), mob.getZ(), 20, 0.25, 0.2, 0.25, 0);
+                ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, mob.getX(), mob.getEyeY(), mob.getZ(), 20, 0.25, 0.2, 0.25, 0);
                 Helpers.damageTool(itemStack, player, Ability.STUPEFY);
             }
         }
@@ -495,8 +492,8 @@ public class AbilityMethods {
                     mob.knockback(strength, -dx, -dz);
                 }
             }
-            player.playNotifySound(SoundEvents.MACE_SMASH_GROUND, SoundSource.PLAYERS, .5F, 1.0F);
-            ((ServerLevel) level).sendParticles(ParticleTypes.DUST_PLUME, player.getX(), player.getY(), player.getZ(), 20, 0.5, 0.2, 0.5, 0);
+            //todo? player.playNotifySound(SoundEvents.MACE_SMASH_GROUND, SoundSource.PLAYERS, .5F, 1.0F);
+            ((ServerLevel) level).sendParticles(ParticleTypes.ASH, player.getX(), player.getY(), player.getZ(), 20, 0.5, 0.2, 0.5, 0);
             Helpers.damageTool(itemStack, player, Ability.GROUNDSTOMP);
         }
         return false;
@@ -529,12 +526,12 @@ public class AbilityMethods {
             AbilityParams abilityParams = toggleableTool.getAbilityParams(Ability.DEBUFFREMOVER);
             ToggleableTool.addCooldown(itemStack, Ability.DEBUFFREMOVER, abilityParams.cooldown, false);
             player.playNotifySound(SoundEvents.WANDERING_TRADER_DRINK_MILK, SoundSource.PLAYERS, 1.0F, 1.0F);
-            List<Holder<MobEffect>> negativeEffects = new ArrayList<>();
-            for (Holder<MobEffect> mobEffect : player.getActiveEffectsMap().keySet()) {
-                if (mobEffect.value().getCategory() == MobEffectCategory.HARMFUL)
+            List<MobEffect> negativeEffects = new ArrayList<>();
+            for (MobEffect mobEffect : player.getActiveEffectsMap().keySet()) {
+                if (mobEffect.getCategory() == MobEffectCategory.HARMFUL)
                     negativeEffects.add(mobEffect);
             }
-            for (Holder<MobEffect> mobEffectHolder : negativeEffects) {
+            for (MobEffect mobEffectHolder : negativeEffects) {
                 if (toggleableTool.canUseAbilityAndDurability(itemStack, Ability.DEBUFFREMOVER)) {
                     player.removeEffect(mobEffectHolder);
                     Helpers.damageTool(itemStack, player, Ability.DEBUFFREMOVER);
@@ -551,7 +548,7 @@ public class AbilityMethods {
         if (itemStack.getItem() instanceof ToggleableTool toggleableTool && toggleableTool.canUseAbilityAndDurability(itemStack, Ability.EARTHQUAKE)) {
             AbilityParams abilityParams = toggleableTool.getAbilityParams(Ability.EARTHQUAKE);
             ToggleableTool.addCooldown(itemStack, Ability.EARTHQUAKE, abilityParams.activeCooldown, true);
-            player.playNotifySound(SoundEvents.MACE_SMASH_GROUND_HEAVY, SoundSource.PLAYERS, 1.0F, 0.5F);
+            //todo?player.playNotifySound(SoundEvents.MACE_SMASH_GROUND_HEAVY, SoundSource.PLAYERS, 1.0F, 0.5F);
             int radius = 5;
             AABB aabb = new AABB(player.getX() - radius, player.getY() - radius, player.getZ() - radius,
                     player.getX() + radius, player.getY() + radius, player.getZ() + radius);
@@ -601,10 +598,14 @@ public class AbilityMethods {
         if (level.isClientSide) return false;
         int currentCooldown = ToggleableTool.getAnyCooldown(itemStack, Ability.EPICARROW);
         if (currentCooldown != -1) return false;
-        if (itemStack.getItem() instanceof ToggleableTool toggleableTool && toggleableTool.canUseAbilityAndDurability(itemStack, Ability.EPICARROW) && !itemStack.getOrDefault(JustDireDataComponents.EPIC_ARROW, false)) {
-            itemStack.set(JustDireDataComponents.EPIC_ARROW, true);
-            player.playNotifySound(SoundEvents.EVOKER_PREPARE_SUMMON, SoundSource.PLAYERS, 1F, 0.5F);
-            Helpers.damageTool(itemStack, player, Ability.EPICARROW);
+        if (itemStack.getItem() instanceof ToggleableTool toggleableTool && toggleableTool.canUseAbilityAndDurability(itemStack, Ability.EPICARROW)) {
+
+            Boolean epic = JustDireDataComponents.isEpicArrow(itemStack);
+            if (epic == null || !epic) {
+                JustDireDataComponents.setEpicArrow(itemStack,true);
+                player.playNotifySound(SoundEvents.EVOKER_PREPARE_SUMMON, SoundSource.PLAYERS, 1F, 0.5F);
+                Helpers.damageTool(itemStack, player, Ability.EPICARROW);
+            }
         }
         return false;
     }
@@ -647,17 +648,19 @@ public class AbilityMethods {
     }
 
     public static List<String> getStupefyTargets(ItemStack itemStack) {
-        return itemStack.getOrDefault(JustDireDataComponents.STUPEFY_TARGETS.get(), new ArrayList<>());
+        List<String> strings = JustDireDataComponents.getStupefyTargets(itemStack);
+        if (strings == null) strings = new ArrayList<>();
+        return strings;
     }
 
     public static void addStupefyTarget(ItemStack itemStack, String entityUUID) {
         List<String> stupefyTargets = new ArrayList<>(getStupefyTargets(itemStack));
         stupefyTargets.add(entityUUID);
-        itemStack.set(JustDireDataComponents.STUPEFY_TARGETS, stupefyTargets);
+        JustDireDataComponents.setStupefyTargets(itemStack,stupefyTargets);
     }
 
     public static void clearStupefyTargets(ItemStack itemStack) {
-        itemStack.set(JustDireDataComponents.STUPEFY_TARGETS, new ArrayList<>());
+        JustDireDataComponents.setStupefyTargets(itemStack, new ArrayList<>());
     }
 
 }

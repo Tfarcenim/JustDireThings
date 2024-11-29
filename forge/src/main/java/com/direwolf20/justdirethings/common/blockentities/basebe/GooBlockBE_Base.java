@@ -4,11 +4,10 @@ import com.direwolf20.justdirethings.client.particles.gooexplodeparticle.GooExpl
 import com.direwolf20.justdirethings.datagen.recipes.GooSpreadRecipe;
 import com.direwolf20.justdirethings.datagen.recipes.GooSpreadRecipeTag;
 import com.direwolf20.justdirethings.setup.Config;
-import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.setup.ModRecipes;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -203,7 +202,7 @@ public class GooBlockBE_Base extends BlockEntity {
     private GooSpreadRecipe findRecipe(BlockState state) {
         RecipeManager recipeManager = getLevel().getRecipeManager();
 
-        for (RecipeHolder<?> recipe : recipeManager.getAllRecipesFor(Registration.GOO_SPREAD_RECIPE_TYPE.get())) {
+        for (RecipeHolder<?> recipe : recipeManager.getAllRecipesFor(ModRecipes.GOO_SPREAD_RECIPE_TYPE.get())) {
             if (recipe.value() instanceof GooSpreadRecipe gooSpreadRecipe && gooSpreadRecipe.matches(this, state)) {
                 return gooSpreadRecipe;
             }
@@ -216,7 +215,7 @@ public class GooBlockBE_Base extends BlockEntity {
     private GooSpreadRecipeTag findRecipeTag(BlockState state) {
         RecipeManager recipeManager = getLevel().getRecipeManager();
 
-        for (RecipeHolder<?> recipe : recipeManager.getAllRecipesFor(Registration.GOO_SPREAD_RECIPE_TYPE_TAG.get())) {
+        for (RecipeHolder<?> recipe : recipeManager.getAllRecipesFor(ModRecipes.GOO_SPREAD_RECIPE_TYPE_TAG.get())) {
             if (recipe.value() instanceof GooSpreadRecipeTag gooSpreadRecipeTag && gooSpreadRecipeTag.matches(this, state)) {
                 return gooSpreadRecipeTag;
             }

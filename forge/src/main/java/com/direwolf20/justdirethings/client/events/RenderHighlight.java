@@ -15,8 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.client.event.RenderHighlightEvent;
+import net.minecraftforge.client.event.RenderHighlightEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.Set;
 
@@ -92,11 +92,11 @@ public class RenderHighlight {
                     f1 /= f3;
                     f2 /= f3;
                     pConsumer.vertex(posestack$pose.pose(), (float) (p_234280_ + pX), (float) (p_234281_ + pY), (float) (p_234282_ + pZ))
-                            .setColor(pRed, pGreen, pBlue, pAlpha)
-                            .setNormal(posestack$pose, f, f1, f2);
+                            .color(pRed, pGreen, pBlue, pAlpha)
+                            .normal(posestack$pose.normal(), f, f1, f2);
                     pConsumer.vertex(posestack$pose.pose(), (float) (p_234283_ + pX), (float) (p_234284_ + pY), (float) (p_234285_ + pZ))
-                            .setColor(pRed, pGreen, pBlue, pAlpha)
-                            .setNormal(posestack$pose, f, f1, f2);
+                            .color(pRed, pGreen, pBlue, pAlpha)
+                            .normal(posestack$pose.normal(), f, f1, f2);
                 }
         );
     }

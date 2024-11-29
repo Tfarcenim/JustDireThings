@@ -3,7 +3,7 @@ package com.direwolf20.justdirethings.util;
 import com.direwolf20.justdirethings.setup.Config;
 import java.util.List;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 import vazkii.patchouli.api.IComponentProcessor;
 import vazkii.patchouli.api.IVariable;
 import vazkii.patchouli.api.IVariableProvider;
@@ -14,9 +14,9 @@ public class ConfigValueComponentProcessor implements IComponentProcessor {
 
     @Override
     public void setup(final Level level, final IVariableProvider iVariableProvider) {
-        this.rawText = iVariableProvider.get("text", level.registryAccess()).asString();
-        this.options = iVariableProvider.get("config_options", level.registryAccess())
-            .asList(level.registryAccess())
+        this.rawText = iVariableProvider.get("text").asString();
+        this.options = iVariableProvider.get("config_options")
+            .asList()
             .stream()
             .map(IVariable::asString)
             .toList();
@@ -31,10 +31,10 @@ public class ConfigValueComponentProcessor implements IComponentProcessor {
         String result = this.rawText;
 
         for (final String option : this.options) {
-            final Object value = ((ModConfigSpec.ConfigValue<?>) Config.COMMON_CONFIG.getValues().get(option)).get();
+            final Object value = ((ForgeConfigSpec.ConfigValue<?>) Config.COMMON_CONFIG.getValues().get(option)).get();
             result = result.replace("#" + option + "#", String.valueOf(value));
         }
 
-        return IVariable.wrap(result, level.registryAccess());
+        return IVariable.wrap(result);
     }
 }

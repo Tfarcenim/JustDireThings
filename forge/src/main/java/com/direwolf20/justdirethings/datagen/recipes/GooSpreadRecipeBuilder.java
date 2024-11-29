@@ -1,7 +1,7 @@
 package com.direwolf20.justdirethings.datagen.recipes;
 
 import com.direwolf20.justdirethings.JustDireThings;
-import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.setup.ModRecipes;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -56,7 +56,7 @@ public class GooSpreadRecipeBuilder extends AbstractGooRecipeBuilder<BlockState>
 
         @Override
         public RecipeSerializer<?> getType() {
-            return Registration.GOO_SPREAD_RECIPE_SERIALIZER_TAG.get();
+            return ModRecipes.GOO_SPREAD_RECIPE_SERIALIZER_TAG.get();
         }
     }
 }

@@ -1283,9 +1283,9 @@ public class JustDireRecipes extends RecipeProvider {
                 .group("justdirethings")
                 .unlockedBy("has_celestigem", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.Celestigem.get()))
                 .save(consumer);
-        PaxelRecipeBuilder.shapeless(Ingredient.of(Registration.CelestigemPickaxe.get()), Ingredient.of(Registration.CelestigemAxe.get()),
+        PaxelRecipeBuilder.paxel(Ingredient.of(Registration.CelestigemPickaxe.get()), Ingredient.of(Registration.CelestigemAxe.get()),
                         Ingredient.of(Registration.CelestigemShovel.get()), Registration.CelestigemPaxel.get())
-                .unlockedBy("has_celestigem", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.Celestigem.get()))
+                .unlocks("has_celestigem", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.Celestigem.get()))
                 .save(consumer, JustDireThings.id(Registration.CelestigemPaxel.getId().getPath()));
 
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Registration.TEMPLATE_CELESTIGEM.get()), Ingredient.of(Registration.BlazegoldSword.get()),
@@ -1354,9 +1354,9 @@ public class JustDireRecipes extends RecipeProvider {
                 .group("justdirethings")
                 .unlockedBy("has_eclipsealloy_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.EclipseAlloyIngot.get()))
                 .save(consumer);
-        PaxelRecipeBuilder.shapeless(Ingredient.of(Registration.EclipseAlloyPickaxe.get()), Ingredient.of(Registration.EclipseAlloyAxe.get()),
+        PaxelRecipeBuilder.paxel(Ingredient.of(Registration.EclipseAlloyPickaxe.get()), Ingredient.of(Registration.EclipseAlloyAxe.get()),
                         Ingredient.of(Registration.EclipseAlloyShovel.get()), Registration.EclipseAlloyPaxel.get())
-                .unlockedBy("has_eclipsealloy_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.EclipseAlloyIngot.get()))
+                .unlocks("has_eclipsealloy_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.EclipseAlloyIngot.get()))
                 .save(consumer, JustDireThings.id(Registration.EclipseAlloyPaxel.getId().getPath()));
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Registration.TEMPLATE_ECLIPSEALLOY.get()), Ingredient.of(Registration.CelestigemSword.get()),
                         Ingredient.of(Registration.EclipseAlloyIngot.get()), RecipeCategory.MISC, Registration.EclipseAlloySword.get())
@@ -1619,7 +1619,7 @@ public class JustDireRecipes extends RecipeProvider {
                     if (armorItem instanceof ToggleableTool toggleableTool) {
                         EnumSet<Ability> abilities = toggleableTool.getAllAbilities();
                         if (abilities.contains(ability)) {
-                            AbilityRecipeBuilder.shapeless(Ingredient.EMPTY, Ingredient.of(armor.get()), Ingredient.of(upgrade.get()))
+                            PaxelRecipeBuilder.ability(Ingredient.EMPTY, Ingredient.of(armor.get()), Ingredient.of(upgrade.get()))
                                     .group("justdirethings")
                                     .unlockedBy("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
                                     .save(consumer);
@@ -1631,7 +1631,7 @@ public class JustDireRecipes extends RecipeProvider {
                     if (toolItem instanceof ToggleableTool toggleableTool) {
                         EnumSet<Ability> abilities = toggleableTool.getAllAbilities();
                         if (abilities.contains(ability)) {
-                            AbilityRecipeBuilder.shapeless(Ingredient.EMPTY, Ingredient.of(tool.get()), Ingredient.of(upgrade.get()))
+                            PaxelRecipeBuilder.ability(Ingredient.EMPTY, Ingredient.of(tool.get()), Ingredient.of(upgrade.get()))
                                     .group("justdirethings")
                                     .unlockedBy("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
                                     .save(consumer);

@@ -1,7 +1,7 @@
 package com.direwolf20.justdirethings.datagen.recipes;
 
 import com.direwolf20.justdirethings.JustDireThings;
-import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.setup.ModRecipes;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
@@ -9,11 +9,9 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
 public class GooSpreadRecipe extends AbstractGooSpreadRecipe<BlockState> {
 
@@ -24,13 +22,13 @@ public class GooSpreadRecipe extends AbstractGooSpreadRecipe<BlockState> {
 
     @Override
     public RecipeType<?> getType() {
-        return Registration.GOO_SPREAD_RECIPE_TYPE.get();
+        return ModRecipes.GOO_SPREAD_RECIPE_TYPE.get();
     }
 
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return Registration.GOO_SPREAD_RECIPE_SERIALIZER.get();
+        return ModRecipes.GOO_SPREAD_RECIPE_SERIALIZER.get();
     }
 
 

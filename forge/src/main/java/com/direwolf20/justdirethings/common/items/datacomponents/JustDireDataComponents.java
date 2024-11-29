@@ -23,6 +23,9 @@ import static com.mojang.text2speech.Narrator.LOGGER;
 
 public class JustDireDataComponents {
 
+    public static final String ABILITY_COOLDOWNS = "ability_cooldowns";
+
+
     static Boolean getBoolean(ItemStack stack,String key) {//booleans are bytes internally
         return stack.hasTag() && stack.getTag().contains(key,Tag.TAG_BYTE) ? stack.getTag().getBoolean(key) : null;
     }
@@ -140,19 +143,16 @@ public class JustDireDataComponents {
         }
     }
 
-    public static ToolRecords.AbilityCooldown getAbilityCooldowns(ItemStack stack) {
-        if (stack.hasTag() && stack.getTag().contains("ability_cooldowns")) {
-            return ToolRecords.AbilityCooldown.fromTag(stack.getTag().getCompound("ability_cooldowns"));
+
+    public static List<ToolRecords.AbilityCooldown> getAbilityCooldowns(ItemStack stack) {
+        if (stack.hasTag() && stack.getTag().contains(ABILITY_COOLDOWNS)) {
+            return getList(stack,ToolRecords.AbilityCooldown.CODEC,ABILITY_COOLDOWNS);
         }
         return null;
     }
 
-    public static void setAbilityCooldowns(ItemStack stack, @Nullable ToolRecords.AbilityCooldown cooldowns) {
-        if (cooldowns == null) {
-            stack.removeTagKey("ability_cooldowns");
-        } else {
-            stack.getOrCreateTag().put("ability_cooldowns",cooldowns.toTag());
-        }
+    public static void setAbilityCooldowns(ItemStack stack, @Nullable List<ToolRecords.AbilityCooldown> cooldowns) {
+        setList(stack,cooldowns, ToolRecords.AbilityCooldown.CODEC,ABILITY_COOLDOWNS);
     }
 
     public static NBTHelpers.BoundInventory getBoundInventory(ItemStack stack) {
@@ -457,6 +457,14 @@ public class JustDireDataComponents {
         } else {
             stack.getOrCreateTag().put("potion_contents",contents.toTag());
         }
+    }
+
+    public static boolean hasAbilityCooldowns(ItemStack stack) {
+        return containsTagKey(stack,ABILITY_COOLDOWNS);
+    }
+
+    public static boolean containsTagKey(ItemStack stack,String key) {
+        return stack.getTagElement(key) != null;
     }
 
     public static Integer getPotionAmount(ItemStack stack) {

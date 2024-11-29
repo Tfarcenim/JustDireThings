@@ -6,62 +6,53 @@ import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataCom
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
 import com.direwolf20.justdirethings.setup.Config;
-import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.setup.ModRecipes;
+import com.google.gson.JsonObject;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.Level;
 
 import java.util.stream.Stream;
 
-public class AbilityRecipe implements SmithingRecipe {
-    private final Ingredient template;
-    private final Ingredient base;
-    private final Ingredient addition;
+public class AbilityRecipe extends CustomSmithingTransformRecipe {
 
-    public AbilityRecipe(Ingredient template, Ingredient base, Ingredient addition) {
-        this.template = template;
-        this.base = base;
-        this.addition = addition;
+    public AbilityRecipe(SmithingTransformRecipe recipe) {
+        super(recipe);
     }
 
+
+    //template = 0, base = 1, addition = 2
     @Override
-    public RecipeType<?> getType() {
-        return RecipeType.SMITHING;
-    }
-
-    public boolean matches(SmithingRecipeInput p_346082_, Level p_345460_) {
-        return this.template.test(p_346082_.template()) && this.base.test(p_346082_.base()) && this.addition.test(p_346082_.addition());
-    }
-
-    public ItemStack assemble(SmithingRecipeInput smithingRecipeInput, HolderLookup.Provider provider) {
-        ItemStack base = smithingRecipeInput.base();
-        ItemStack upgrade = smithingRecipeInput.addition();
+    public ItemStack assemble(Container container, RegistryAccess pRegistryAccess) {
+        ItemStack base = container.getItem(1);
+        ItemStack upgrade = container.getItem(2);
         if (isBaseIngredient(base) && base.getItem() instanceof ToggleableTool toggleableTool) {
             Ability ability = Ability.getAbilityFromUpgradeItem(upgrade.getItem());
             if (ability != null && toggleableTool.hasAbility(ability) && !ToggleableTool.hasUpgrade(base, ability) && Config.AVAILABLE_ABILITY_MAP.get(ability).get()) {
                 ItemStack itemstack1 = base.copyWithCount(1);
-                itemstack1.set(JustDireDataComponents.ABILITY_UPGRADE_INSTALLS.get(ability), true);
+                JustDireDataComponents.setAbilityUpgradeInstalled(itemstack1,true,ability);
                 return itemstack1;
             }
         }
-
         return ItemStack.EMPTY;
     }
 
+
+
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider) {
-        ItemStack itemstack = new ItemStack(getBase().getItems()[0].getItem());
-        Ability ability = Ability.getAbilityFromUpgradeItem(getAddition().getItems()[0].getItem());
+    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
+        ItemStack itemstack = new ItemStack(base.getItems()[0].getItem());
+        Ability ability = Ability.getAbilityFromUpgradeItem(addition.getItems()[0].getItem());
         if (!Config.AVAILABLE_ABILITY_MAP.get(ability).get())
             return new ItemStack(Items.AIR);
-        itemstack.set(JustDireDataComponents.ABILITY_UPGRADE_INSTALLS.get(ability), true);
+        JustDireDataComponents.setAbilityUpgradeInstalled(itemstack,true,ability);
 
         return itemstack;
     }
@@ -81,56 +72,31 @@ public class AbilityRecipe implements SmithingRecipe {
         return stack.getItem() instanceof Upgrade;
     }
 
-    public Ingredient getTemplate() {
-        return template;
-    }
-
-    public Ingredient getBase() {
-        return base;
-    }
-
-    public Ingredient getAddition() {
-        return addition;
-    }
-
     @Override
     public boolean isIncomplete() {
-        return Stream.of(this.template, this.base, this.addition).anyMatch(Ingredient::hasNoItems);
+        return Stream.of(this.template, this.base, this.addition).anyMatch(Ingredient::isEmpty);
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return Registration.ABILITY_RECIPE_SERIALIZER.get();
+        return ModRecipes.ABILITY_RECIPE_SERIALIZER.get();
     }
 
 
-    public static class Serializer implements RecipeSerializer<AbilityRecipe> {
-        private static final ResourceLocation NAME = JustDireThings.id("ability");
-        private static final MapCodec<AbilityRecipe> CODEC = RecordCodecBuilder.mapCodec(
-                p_311734_ -> p_311734_.group(
-                                Ingredient.CODEC.fieldOf("template").forGetter(p_301070_ -> p_301070_.template),
-                                Ingredient.CODEC.fieldOf("base").forGetter(p_300969_ -> p_300969_.base),
-                                Ingredient.CODEC.fieldOf("addition").forGetter(p_300977_ -> p_300977_.addition)
-                        )
-                        .apply(p_311734_, AbilityRecipe::new)
-        );
-
-        public static final StreamCodec<RegistryFriendlyByteBuf, AbilityRecipe> STREAM_CODEC = StreamCodec.composite(
-                Ingredient.CONTENTS_STREAM_CODEC, AbilityRecipe::getTemplate,
-                Ingredient.CONTENTS_STREAM_CODEC, AbilityRecipe::getBase,
-                Ingredient.CONTENTS_STREAM_CODEC, AbilityRecipe::getAddition,
-                AbilityRecipe::new
-        );
-
-
+    public static class Serializer extends SmithingTransformRecipe.Serializer {
         @Override
-        public MapCodec<AbilityRecipe> codec() {
-            return CODEC;
+        public SmithingTransformRecipe fromNetwork(ResourceLocation p_267117_, FriendlyByteBuf p_267316_) {
+            return new AbilityRecipe(super.fromNetwork(p_267117_, p_267316_));
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, AbilityRecipe> streamCodec() {
-            return STREAM_CODEC;
+        public void toNetwork(FriendlyByteBuf p_266746_, SmithingTransformRecipe p_266927_) {
+            super.toNetwork(p_266746_, p_266927_);
+        }
+
+        @Override
+        public SmithingTransformRecipe fromJson(ResourceLocation recipeLoc, JsonObject recipeJson) {
+            return new AbilityRecipe(super.fromJson(recipeLoc, recipeJson));
         }
     }
 }

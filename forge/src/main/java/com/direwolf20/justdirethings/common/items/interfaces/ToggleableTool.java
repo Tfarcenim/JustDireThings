@@ -1,6 +1,7 @@
 package com.direwolf20.justdirethings.common.items.interfaces;
 
 import com.direwolf20.justdirethings.common.blockentities.GooSoilBE;
+import com.direwolf20.justdirethings.common.blocks.PlayerAccessor;
 import com.direwolf20.justdirethings.common.blocks.soil.GooSoilBase;
 import com.direwolf20.justdirethings.common.containers.ToolSettingContainer;
 import com.direwolf20.justdirethings.common.events.BlockEvents;
@@ -10,6 +11,7 @@ import com.direwolf20.justdirethings.common.items.armors.basearmors.BaseHelmet;
 import com.direwolf20.justdirethings.common.items.armors.basearmors.BaseLeggings;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
+import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.util.MiningCollect;
 import com.direwolf20.justdirethings.util.MiscForgeHelpers;
@@ -37,6 +39,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -140,7 +143,7 @@ public interface ToggleableTool extends ToggleableItem {
         return true;
     }
 
-    default Set<BlockPos> getBreakBlockPositions(ItemStack pStack, Level pLevel, BlockPos pPos, LivingEntity pEntityLiving, BlockState pState) {
+    default Set<BlockPos> getBreakBlockPositions(ItemStack pStack, Level pLevel, BlockPos pPos, Player pEntityLiving, BlockState pState) {
         Set<BlockPos> breakBlockPositions = new HashSet<>();
         int maxBreak = Config.TOOL_MAX_BREAK_FERRICORE.get();
         if (pStack.getItem() instanceof TieredItem tieredItem) {
@@ -189,7 +192,7 @@ public interface ToggleableTool extends ToggleableItem {
         return instaBreak;
     }
 
-    default void mineBlocksAbility(ItemStack pStack, Level pLevel, BlockPos pPos, LivingEntity pEntityLiving) {
+    default void mineBlocksAbility(ItemStack pStack, Level pLevel, BlockPos pPos, Player pEntityLiving) {
         BlockState pState = pLevel.getBlockState(pPos);
         Set<BlockPos> breakBlockPositions = getBreakBlockPositions(pStack, pLevel, pPos, pEntityLiving, pState);
         boolean instaBreak = canInstaBreak(pStack, pLevel, breakBlockPositions);
@@ -283,8 +286,8 @@ public interface ToggleableTool extends ToggleableItem {
     }
 
     static int getAnyCooldown(ItemStack itemStack, Ability ability) {
-        if (!itemStack.has(JustDireDataComponents.ABILITY_COOLDOWNS)) return -1;
-        List<ToolRecords.AbilityCooldown> abilityCooldowns = itemStack.get(JustDireDataComponents.ABILITY_COOLDOWNS);
+        if (!JustDireDataComponents.hasAbilityCooldowns(itemStack)) return -1;
+        List<ToolRecords.AbilityCooldown> abilityCooldowns = JustDireDataComponents.getAbilityCooldowns(itemStack);
         for (ToolRecords.AbilityCooldown abilityCooldown : abilityCooldowns) {
             if (abilityCooldown.abilityName().equals(ability.getName()))
                 return abilityCooldown.cooldownTicks();
@@ -293,8 +296,8 @@ public interface ToggleableTool extends ToggleableItem {
     }
 
     static int getCooldown(ItemStack itemStack, Ability ability, boolean active) {
-        if (!itemStack.has(JustDireDataComponents.ABILITY_COOLDOWNS)) return -1;
-        List<ToolRecords.AbilityCooldown> abilityCooldowns = itemStack.get(JustDireDataComponents.ABILITY_COOLDOWNS);
+        if (!JustDireDataComponents.hasAbilityCooldowns(itemStack)) return -1;
+        List<ToolRecords.AbilityCooldown> abilityCooldowns = JustDireDataComponents.getAbilityCooldowns(itemStack);
         for (ToolRecords.AbilityCooldown abilityCooldown : abilityCooldowns) {
             if (abilityCooldown.abilityName().equals(ability.getName()) && abilityCooldown.isactive() == active) {
                 return abilityCooldown.cooldownTicks();
@@ -304,9 +307,10 @@ public interface ToggleableTool extends ToggleableItem {
     }
 
     static void tickCooldowns(Level level, ItemStack itemStack, Player player) {
-        if (level.isClientSide || !itemStack.has(JustDireDataComponents.ABILITY_COOLDOWNS)) return;
+        if (level.isClientSide || !JustDireDataComponents.hasAbilityCooldowns(itemStack)) return;
         Set<ToolRecords.AbilityCooldown> cooldownsToRemove = new HashSet<>();
-        List<ToolRecords.AbilityCooldown> abilityCooldowns = new ArrayList<>(itemStack.getOrDefault(JustDireDataComponents.ABILITY_COOLDOWNS, new ArrayList<>()));
+        List<ToolRecords.AbilityCooldown> abilityCooldowns = JustDireDataComponents.getAbilityCooldowns(itemStack);
+        if (abilityCooldowns == null) abilityCooldowns = new ArrayList<>();
         for (int i = 0; i < abilityCooldowns.size(); i++) {
             ToolRecords.AbilityCooldown abilityCooldown = abilityCooldowns.get(i);
             int cooldown = abilityCooldown.cooldownTicks();
@@ -339,9 +343,9 @@ public interface ToggleableTool extends ToggleableItem {
             player.playNotifySound(SoundEvents.ENDER_EYE_DEATH, SoundSource.PLAYERS, 1.0F, 1.0F);
         }
         if (abilityCooldowns.isEmpty())
-            itemStack.remove(JustDireDataComponents.ABILITY_COOLDOWNS);
+            itemStack.removeTagKey(JustDireDataComponents.ABILITY_COOLDOWNS);
         else
-            itemStack.set(JustDireDataComponents.ABILITY_COOLDOWNS, abilityCooldowns);
+            JustDireDataComponents.setAbilityCooldowns(itemStack,abilityCooldowns);
     }
 
     static void cooldownDataClear(ItemStack itemStack, Ability ability) {
@@ -350,16 +354,15 @@ public interface ToggleableTool extends ToggleableItem {
     }
 
     static void addCooldown(ItemStack itemStack, Ability ability, int cooldown, boolean active) {
-        List<ToolRecords.AbilityCooldown> abilityCooldowns;
-        if (itemStack.has(JustDireDataComponents.ABILITY_COOLDOWNS))
-            abilityCooldowns = itemStack.get(JustDireDataComponents.ABILITY_COOLDOWNS);
-        else
-            abilityCooldowns = new ArrayList<>();
+        List<ToolRecords.AbilityCooldown> abilityCooldowns = JustDireDataComponents.getAbilityCooldowns(itemStack);
+        
+        if (abilityCooldowns == null) abilityCooldowns = new ArrayList<>();
+        
         ToolRecords.AbilityCooldown cooldownRecord = new ToolRecords.AbilityCooldown(
                 ability.getName(), cooldown, active
         );
         abilityCooldowns.add(cooldownRecord);
-        itemStack.set(JustDireDataComponents.ABILITY_COOLDOWNS, abilityCooldowns);
+        JustDireDataComponents.setAbilityCooldowns(itemStack,abilityCooldowns);
     }
 
     static boolean isItemEquipped(ItemStack itemStack, Player player) {
@@ -370,8 +373,8 @@ public interface ToggleableTool extends ToggleableItem {
         if (itemStack.getItem() instanceof BaseChestplate)
             return ItemStack.isSameItemSameTags(itemStack, player.getItemBySlot(EquipmentSlot.CHEST));
         if (itemStack.getItem() instanceof BaseHelmet)
-            return ItemStack.isSameItemSameComponents(itemStack, player.getItemBySlot(EquipmentSlot.HEAD));
-        return ItemStack.isSameItemSameComponents(itemStack, player.getItemInHand(InteractionHand.MAIN_HAND)) || ItemStack.isSameItemSameComponents(itemStack, player.getItemInHand(InteractionHand.OFF_HAND));
+            return ItemStack.isSameItemSameTags(itemStack, player.getItemBySlot(EquipmentSlot.HEAD));
+        return ItemStack.isSameItemSameTags(itemStack, player.getItemInHand(InteractionHand.MAIN_HAND)) || ItemStack.isSameItemSameTags(itemStack, player.getItemInHand(InteractionHand.OFF_HAND));
     }
 
     default boolean useAbility(Level level, Player player, ItemStack itemStack, int keyCode, boolean isMouse) {
@@ -491,7 +494,7 @@ public interface ToggleableTool extends ToggleableItem {
         BlockPos pPos = pContext.getClickedPos();
         BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
         if (blockEntity == null) return false;
-        IItemHandler handler = pLevel.getCapability(Capabilities.ItemHandler.BLOCK, pPos, pContext.getClickedFace());
+        IItemHandler handler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, pContext.getClickedFace()).orElse(null);
         if (handler == null) return false;
         NBTHelpers.BoundInventory boundInventory = ToggleableTool.getBoundInventory(pStack);
         NBTHelpers.BoundInventory newBind = new NBTHelpers.BoundInventory(GlobalPos.of(pLevel.dimension(), pPos), pContext.getClickedFace());
@@ -500,7 +503,7 @@ public interface ToggleableTool extends ToggleableItem {
             pContext.getPlayer().displayClientMessage(Component.translatable("justdirethings.bindremoved"), true);
             player.playNotifySound(SoundEvents.ENDER_EYE_DEATH, SoundSource.PLAYERS, 1.0F, 1.0F);
         } else {
-            setBoundInventory(pStack, newBind);
+            JustDireDataComponents.setBoundInventory(pStack, newBind);
             pContext.getPlayer().displayClientMessage(Component.translatable("justdirethings.boundto", Component.translatable(pLevel.dimension().location().getPath()), "[" + pPos.toShortString() + "]"), true);
             player.playNotifySound(SoundEvents.END_PORTAL_FRAME_FILL, SoundSource.PLAYERS, 1.0F, 1.0F);
         }
@@ -544,10 +547,10 @@ public interface ToggleableTool extends ToggleableItem {
 
     //Thanks Soaryn!
     @NotNull
-    static Direction getTargetLookDirection(LivingEntity livingEntity) {
+    static Direction getTargetLookDirection(Player livingEntity) {
         var playerLook = new Vec3(livingEntity.getX(), livingEntity.getY() + livingEntity.getEyeHeight(), livingEntity.getZ());
         var lookVec = livingEntity.getViewVector(1.0F);
-        var reach = livingEntity instanceof Player player ? player.blockInteractionRange() : 1;
+        var reach = Services.PLATFORM.getBlockReach(livingEntity);
         var endLook = playerLook.add(lookVec.x * reach, lookVec.y * reach, lookVec.z * reach);
         var hitResult = livingEntity.level().clip(new ClipContext(playerLook, endLook, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, livingEntity));
         return hitResult.getDirection().getOpposite();
@@ -577,9 +580,7 @@ public interface ToggleableTool extends ToggleableItem {
         setToolValue(stack, setting, nextValue);
     }
 
-    static void setBoundInventory(ItemStack stack, NBTHelpers.BoundInventory boundInventory) {
-        stack.set(JustDireDataComponents.BOUND_INVENTORY, boundInventory);
-    }
+
 
     static void removeBoundInventory(ItemStack stack) {
         stack.remove(JustDireDataComponents.BOUND_INVENTORY);
