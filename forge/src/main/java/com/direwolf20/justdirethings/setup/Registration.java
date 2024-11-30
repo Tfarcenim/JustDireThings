@@ -501,27 +501,27 @@ public class Registration {
     public static final RegistryObject<EclipseAlloyBowItem> EclipseAlloyBow = BOWS.register("bow_eclipsealloy", EclipseAlloyBowItem::new);
 
     //Items - Tools
-    public static final RegistryObject<FerricoreSword> FerricoreSword = TOOLS.register("ferricore_sword", FerricoreSword::new);
-    public static final RegistryObject<FerricorePickaxe> FerricorePickaxe = TOOLS.register("ferricore_pickaxe", FerricorePickaxe::new);
+    public static final RegistryObject<FerricoreSwordItem> FerricoreSword = TOOLS.register("ferricore_sword", FerricoreSwordItem::new);
+    public static final RegistryObject<FerricorePickaxeItem> FerricorePickaxe = TOOLS.register("ferricore_pickaxe", FerricorePickaxeItem::new);
     public static final RegistryObject<FerricoreShovel> FerricoreShovel = TOOLS.register("ferricore_shovel", FerricoreShovel::new);
-    public static final RegistryObject<FerricoreAxe> FerricoreAxe = TOOLS.register("ferricore_axe", FerricoreAxe::new);
-    public static final RegistryObject<FerricoreHoe> FerricoreHoe = TOOLS.register("ferricore_hoe", FerricoreHoe::new);
-    public static final RegistryObject<BlazegoldSword> BlazegoldSword = TOOLS.register("blazegold_sword", BlazegoldSword::new);
-    public static final RegistryObject<BlazegoldPickaxe> BlazegoldPickaxe = TOOLS.register("blazegold_pickaxe", BlazegoldPickaxe::new);
+    public static final RegistryObject<FerricoreAxeItem> FerricoreAxe = TOOLS.register("ferricore_axe", FerricoreAxeItem::new);
+    public static final RegistryObject<FerricoreHoeItem> FerricoreHoe = TOOLS.register("ferricore_hoe", FerricoreHoeItem::new);
+    public static final RegistryObject<BlazegoldSwordItem> BlazegoldSword = TOOLS.register("blazegold_sword", BlazegoldSwordItem::new);
+    public static final RegistryObject<BlazegoldPickaxeItem> BlazegoldPickaxe = TOOLS.register("blazegold_pickaxe", BlazegoldPickaxeItem::new);
     public static final RegistryObject<BlazegoldShovel> BlazegoldShovel = TOOLS.register("blazegold_shovel", BlazegoldShovel::new);
-    public static final RegistryObject<BlazegoldAxe> BlazegoldAxe = TOOLS.register("blazegold_axe", BlazegoldAxe::new);
-    public static final RegistryObject<BlazegoldHoe> BlazegoldHoe = TOOLS.register("blazegold_hoe", BlazegoldHoe::new);
-    public static final RegistryObject<CelestigemSword> CelestigemSword = TOOLS.register("celestigem_sword", CelestigemSword::new);
-    public static final RegistryObject<CelestigemPickaxe> CelestigemPickaxe = TOOLS.register("celestigem_pickaxe", CelestigemPickaxe::new);
+    public static final RegistryObject<BlazegoldAxeItem> BlazegoldAxe = TOOLS.register("blazegold_axe", BlazegoldAxeItem::new);
+    public static final RegistryObject<BlazegoldHoeItem> BlazegoldHoe = TOOLS.register("blazegold_hoe", BlazegoldHoeItem::new);
+    public static final RegistryObject<CelestigemSwordItem> CelestigemSword = TOOLS.register("celestigem_sword", CelestigemSwordItem::new);
+    public static final RegistryObject<CelestigemPickaxeItem> CelestigemPickaxe = TOOLS.register("celestigem_pickaxe", CelestigemPickaxeItem::new);
     public static final RegistryObject<CelestigemShovel> CelestigemShovel = TOOLS.register("celestigem_shovel", CelestigemShovel::new);
-    public static final RegistryObject<CelestigemAxe> CelestigemAxe = TOOLS.register("celestigem_axe", CelestigemAxe::new);
-    public static final RegistryObject<CelestigemHoe> CelestigemHoe = TOOLS.register("celestigem_hoe", CelestigemHoe::new);
+    public static final RegistryObject<CelestigemAxeItem> CelestigemAxe = TOOLS.register("celestigem_axe", CelestigemAxeItem::new);
+    public static final RegistryObject<CelestigemHoeItem> CelestigemHoe = TOOLS.register("celestigem_hoe", CelestigemHoeItem::new);
     public static final RegistryObject<CelestigemPaxel> CelestigemPaxel = TOOLS.register("celestigem_paxel", CelestigemPaxel::new);
-    public static final RegistryObject<EclipseAlloySword> EclipseAlloySword = TOOLS.register("eclipsealloy_sword", EclipseAlloySword::new);
-    public static final RegistryObject<EclipseAlloyPickaxe> EclipseAlloyPickaxe = TOOLS.register("eclipsealloy_pickaxe", EclipseAlloyPickaxe::new);
+    public static final RegistryObject<EclipseAlloySwordItem> EclipseAlloySword = TOOLS.register("eclipsealloy_sword", EclipseAlloySwordItem::new);
+    public static final RegistryObject<EclipseAlloyPickaxeItem> EclipseAlloyPickaxe = TOOLS.register("eclipsealloy_pickaxe", EclipseAlloyPickaxeItem::new);
     public static final RegistryObject<EclipseAlloyShovel> EclipseAlloyShovel = TOOLS.register("eclipsealloy_shovel", EclipseAlloyShovel::new);
-    public static final RegistryObject<EclipseAlloyAxe> EclipseAlloyAxe = TOOLS.register("eclipsealloy_axe", EclipseAlloyAxe::new);
-    public static final RegistryObject<EclipseAlloyHoe> EclipseAlloyHoe = TOOLS.register("eclipsealloy_hoe", EclipseAlloyHoe::new);
+    public static final RegistryObject<EclipseAlloyAxeItem> EclipseAlloyAxe = TOOLS.register("eclipsealloy_axe", EclipseAlloyAxeItem::new);
+    public static final RegistryObject<EclipseAlloyHoeItem> EclipseAlloyHoe = TOOLS.register("eclipsealloy_hoe", EclipseAlloyHoeItem::new);
     public static final RegistryObject<EclipseAlloyPaxel> EclipseAlloyPaxel = TOOLS.register("eclipsealloy_paxel", EclipseAlloyPaxel::new);
 
     //Items - Armor

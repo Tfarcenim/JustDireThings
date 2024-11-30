@@ -1,7 +1,7 @@
 package com.direwolf20.justdirethings.util;
 
 import com.direwolf20.justdirethings.JustDireThings;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseHoe;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BaseHoeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -96,7 +96,7 @@ public class MiningCollect {
             return false;
         if (level.getBlockEntity(pos) != null)
             return false;
-        if (tool.getItem() instanceof BaseHoe && player instanceof Player player1) {
+        if (tool.getItem() instanceof BaseHoeItem && player instanceof Player player1) {
             UseOnContext useOnContext = new UseOnContext(level, player1, InteractionHand.MAIN_HAND, tool, new BlockHitResult(pos.getCenter(), side, pos, false));
             BlockState toolModifiedState = level.getBlockState(pos).getToolModifiedState(useOnContext, ToolActions.HOE_TILL, true);
             if (toolModifiedState != null)

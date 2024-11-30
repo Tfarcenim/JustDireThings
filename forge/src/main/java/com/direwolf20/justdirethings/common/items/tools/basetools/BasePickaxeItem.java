@@ -5,8 +5,6 @@ import com.direwolf20.justdirethings.setup.Config;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,12 +14,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
@@ -33,41 +27,26 @@ import java.util.stream.Collectors;
 
 import static com.direwolf20.justdirethings.util.TooltipHelpers.*;
 
-public class BaseAxe extends AxeItem implements ToggleableTool, LeftClickableTool {
+public class BasePickaxeItem extends PickaxeItem implements ToggleableTool, LeftClickableTool {
     protected final EnumSet<Ability> abilities = EnumSet.noneOf(Ability.class);
     protected final Map<Ability, AbilityParams> abilityParams = new EnumMap<>(Ability.class);
 
-    public BaseAxe(Tier pTier, float pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
+    public BasePickaxeItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }
 
 
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
-        if (bindDrops(pContext))
+        if (pContext.getPlayer().isShiftKeyDown() && bindDrops(pContext))
             return InteractionResult.SUCCESS;
-        Level level = pContext.getLevel();
-        boolean oldSnapshot = level.captureBlockSnapshots;
-        level.captureBlockSnapshots = false;
         useOnAbility(pContext);
-        level.captureBlockSnapshots = oldSnapshot;
         return super.useOn(pContext);
     }
 
-    /*@Override
-    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
-        if (!player.level().isClientSide) {
-            BlockState blockState = player.level().getBlockState(pos);
-            if (itemstack.getItem() instanceof ToggleableTool toggleableTool && itemstack.isCorrectToolForDrops(blockState)) {
-                toggleableTool.mineBlocksAbility(itemstack, player.level(), pos, player);
-            }
-        }
-        return false;
-    }*/
-
     @Override
     public boolean mineBlock(ItemStack pStack, Level pLevel, BlockState pState, BlockPos pPos, LivingEntity pEntityLiving) {
-        return true; //We handle damage in the BlockEvent.BreakEvent
+        return true;  //We handle damage in the BlockEvent.BreakEvent
     }
 
     @Override
@@ -120,19 +99,7 @@ public class BaseAxe extends AxeItem implements ToggleableTool, LeftClickableToo
 
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<T> onBroken) {
-        if (stack.getItem() instanceof PoweredTool poweredTool) {
-            IEnergyStorage energyStorage = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
-            if (energyStorage == null) return amount;
-            double reductionFactor = 0;
-            if (entity != null) {
-                int unbreakingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING,stack);
-                reductionFactor = Math.min(1.0, unbreakingLevel * 0.1);
-            }
-            int finalEnergyCost = (int) Math.max(0, amount - (amount * reductionFactor));
-            energyStorage.extractEnergy(finalEnergyCost, false);
-            return 0;
-        }
-        return amount;
+        return BaseAxeItem.defaultDamage(stack,amount,entity,onBroken);
     }
 
     @Override

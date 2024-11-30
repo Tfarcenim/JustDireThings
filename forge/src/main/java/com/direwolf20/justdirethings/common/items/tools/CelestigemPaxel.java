@@ -3,16 +3,14 @@ package com.direwolf20.justdirethings.common.items.tools;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.AbilityParams;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredTool;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BasePaxel;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BasePaxelItem;
 import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 
-public class CelestigemPaxel extends BasePaxel implements PoweredTool {
+public class  CelestigemPaxel extends BasePaxelItem implements PoweredTool {
     public CelestigemPaxel() {
-        super(GooTier.CELESTIGEM, new Properties()
-                .attributes(PickaxeItem.createAttributes(GooTier.CELESTIGEM, 1.0F, -2.8F))
-                .fireResistant());
+        super(GooTier.CELESTIGEM, 1, -2.8F, new Properties() .fireResistant());
         registerAbility(Ability.ORESCANNER);
         registerAbility(Ability.OREMINER);
         registerAbility(Ability.SKYSWEEPER);

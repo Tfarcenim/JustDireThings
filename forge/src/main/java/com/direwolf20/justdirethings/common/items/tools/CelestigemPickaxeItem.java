@@ -3,18 +3,20 @@ package com.direwolf20.justdirethings.common.items.tools;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.AbilityParams;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredTool;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseHoe;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BasePickaxeItem;
 import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
 
-public class EclipseAlloyHoe extends BaseHoe implements PoweredTool {
-    public EclipseAlloyHoe() {
-        super(GooTier.ECLIPSEALLOY, new Properties()
-                .attributes(HoeItem.createAttributes(GooTier.ECLIPSEALLOY, -2.0F, -1.0F))
-                .fireResistant());
+public class CelestigemPickaxeItem extends BasePickaxeItem implements PoweredTool {
+    public CelestigemPickaxeItem() {
+        super(GooTier.CELESTIGEM, 1, -2.8F,
+        new Properties().fireResistant());
+        registerAbility(Ability.ORESCANNER);
+        registerAbility(Ability.OREMINER);
+        registerAbility(Ability.SMELTER);
+        registerAbility(Ability.HAMMER, new AbilityParams(3, 5, 2));
         registerAbility(Ability.DROPTELEPORT);
-        registerAbility(Ability.HAMMER, new AbilityParams(3, 7, 2));
     }
 
     @Override
@@ -33,10 +35,5 @@ public class EclipseAlloyHoe extends BaseHoe implements PoweredTool {
         if (color == -1)
             return super.getBarColor(stack);
         return color;
-    }
-
-    @Override
-    public int getMaxEnergy() {
-        return 500000;
     }
 }

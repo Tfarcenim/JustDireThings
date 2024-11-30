@@ -1,20 +1,18 @@
 package com.direwolf20.justdirethings.common.items.tools;
 
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
+import com.direwolf20.justdirethings.common.items.interfaces.AbilityParams;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredTool;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseAxe;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BaseHoeItem;
 import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
-import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 
-public class EclipseAlloyAxe extends BaseAxe implements PoweredTool {
-    public EclipseAlloyAxe() {
-        super(GooTier.ECLIPSEALLOY, 7.0F, -2.5F, new Properties().fireResistant());
-        registerAbility(Ability.TREEFELLER);
-        registerAbility(Ability.LEAFBREAKER);
-        registerAbility(Ability.SMELTER);
+public class CelestigemHoeItem extends BaseHoeItem implements PoweredTool {
+    public CelestigemHoeItem() {
+        super(GooTier.CELESTIGEM, -2, -1.0F, new Properties().fireResistant());
         registerAbility(Ability.DROPTELEPORT);
-        registerAbility(Ability.INSTABREAK);
+        registerAbility(Ability.HAMMER, new AbilityParams(3, 5, 2));
     }
 
     @Override
@@ -33,10 +31,5 @@ public class EclipseAlloyAxe extends BaseAxe implements PoweredTool {
         if (color == -1)
             return super.getBarColor(stack);
         return color;
-    }
-
-    @Override
-    public int getMaxEnergy() {
-        return 500000;
     }
 }

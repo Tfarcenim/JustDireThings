@@ -1,24 +1,24 @@
 package com.direwolf20.justdirethings.common.items.tools;
 
+import com.direwolf20.justdirethings.common.capabilities.providers.EnergyItemProvider;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.AbilityParams;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredTool;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BasePickaxe;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BaseSwordItem;
 import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import org.jetbrains.annotations.Nullable;
 
-public class EclipseAlloyPickaxe extends BasePickaxe implements PoweredTool {
-    public EclipseAlloyPickaxe() {
-        super(GooTier.ECLIPSEALLOY, new Properties()
-                .attributes(PickaxeItem.createAttributes(GooTier.ECLIPSEALLOY, 1.0F, -2.8F))
-                .fireResistant());
-        registerAbility(Ability.OREXRAY);
-        registerAbility(Ability.OREMINER);
-        registerAbility(Ability.SMELTER);
-        registerAbility(Ability.HAMMER, new AbilityParams(3, 7, 2));
+public class CelestigemSwordItem extends BaseSwordItem implements PoweredTool {
+    public CelestigemSwordItem() {
+        super(GooTier.CELESTIGEM, 3, -2.0F, new Properties().fireResistant());
+        registerAbility(Ability.MOBSCANNER);
+        registerAbility(Ability.CAUTERIZEWOUNDS, new AbilityParams(1, 1, 1, 1, 0, 1200));
         registerAbility(Ability.DROPTELEPORT);
-        registerAbility(Ability.INSTABREAK);
+        registerAbility(Ability.SMOKER);
     }
 
     @Override
@@ -40,7 +40,10 @@ public class EclipseAlloyPickaxe extends BasePickaxe implements PoweredTool {
     }
 
     @Override
-    public int getMaxEnergy() {
-        return 500000;
+    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new EnergyItemProvider(stack);
     }
+
+
+
 }

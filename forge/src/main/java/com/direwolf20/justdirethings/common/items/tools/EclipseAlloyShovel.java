@@ -3,16 +3,14 @@ package com.direwolf20.justdirethings.common.items.tools;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.AbilityParams;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredTool;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseShovel;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BaseShovelItem;
 import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShovelItem;
 
-public class EclipseAlloyShovel extends BaseShovel implements PoweredTool {
+public class  EclipseAlloyShovel extends BaseShovelItem implements PoweredTool {
     public EclipseAlloyShovel() {
-        super(GooTier.ECLIPSEALLOY, new Properties()
-                .attributes(ShovelItem.createAttributes(GooTier.ECLIPSEALLOY, 1.5F, -3.0F))
-                .fireResistant());
+        super(GooTier.ECLIPSEALLOY, 1.5F, -3.0F,new Properties() .fireResistant());
         registerAbility(Ability.SKYSWEEPER);
         registerAbility(Ability.LAWNMOWER);
         registerAbility(Ability.SMELTER);

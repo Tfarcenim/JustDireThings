@@ -5,7 +5,7 @@ import com.direwolf20.justdirethings.common.items.PortalGunItem;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.LeftClickableTool;
 import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseHoe;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BaseHoeItem;
 import com.direwolf20.justdirethings.network.server.C2SLeftClickPayload;
 import com.direwolf20.justdirethings.network.server.C2SMiscPayload;
 import com.direwolf20.justdirethings.platform.Services;
@@ -50,7 +50,7 @@ public class PlayerEvents {
                 activateAbilities(itemStack, toggleableTool, event.getEntity(), event.getHand(), false, event.getPos(), event.getFace());
             }
         }
-        if (itemStack.getItem() instanceof ToggleableTool toggleableTool && !(itemStack.getItem() instanceof BaseHoe) && toggleableTool.hasAbility(Ability.HAMMER) && event.getFace() != null) {
+        if (itemStack.getItem() instanceof ToggleableTool toggleableTool && !(itemStack.getItem() instanceof BaseHoeItem) && toggleableTool.hasAbility(Ability.HAMMER) && event.getFace() != null) {
             doExtraCrumblings(event, itemStack, toggleableTool);
         }
         if (itemStack.getItem() instanceof PortalGunItem && event.getAction().equals(PlayerInteractEvent.LeftClickBlock.Action.START))

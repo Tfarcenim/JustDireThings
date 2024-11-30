@@ -3,20 +3,18 @@ package com.direwolf20.justdirethings.common.items.tools;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.AbilityParams;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredTool;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseSword;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BaseHoeItem;
 import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 
-public class EclipseAlloySword extends BaseSword implements PoweredTool {
-    public EclipseAlloySword() {
+public class EclipseAlloyHoeItem extends BaseHoeItem implements PoweredTool {
+    public EclipseAlloyHoeItem() {
         super(GooTier.ECLIPSEALLOY, new Properties()
-                .attributes(SwordItem.createAttributes(GooTier.ECLIPSEALLOY, 3, -2.0F))
+                .attributes(HoeItem.createAttributes(GooTier.ECLIPSEALLOY, -2.0F, -1.0F))
                 .fireResistant());
-        registerAbility(Ability.GLOWING);
-        registerAbility(Ability.CAUTERIZEWOUNDS, new AbilityParams(1, 1, 1, 1, 0, 1200));
         registerAbility(Ability.DROPTELEPORT);
-        registerAbility(Ability.SMOKER);
+        registerAbility(Ability.HAMMER, new AbilityParams(3, 7, 2));
     }
 
     @Override

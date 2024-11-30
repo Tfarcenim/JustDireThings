@@ -99,8 +99,7 @@ public class JustDireThingsForge {
                     }
                     return new EnergyStorageItemstack(capacity, itemStack);
                 },
-                Registration.CelestigemSword.get(),
-                Registration.CelestigemPickaxe.get(),
+=                Registration.CelestigemPickaxe.get(),
                 Registration.CelestigemAxe.get(),
                 Registration.CelestigemShovel.get(),
                 Registration.CelestigemHoe.get(),
@@ -174,8 +173,6 @@ public class JustDireThingsForge {
                         return be.getData(Registration.MACHINE_HANDLER);
                     return null;
                 },
-                Registration.BlockBreakerT1.get(),
-                Registration.BlockBreakerT2.get(),
                 Registration.BlockPlacerT1.get(),
                 Registration.BlockPlacerT2.get(),
                 Registration.ClickerT1.get(),

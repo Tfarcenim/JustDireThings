@@ -1,19 +1,20 @@
 package com.direwolf20.justdirethings.common.items.tools;
 
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
+import com.direwolf20.justdirethings.common.items.interfaces.AbilityParams;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredTool;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseAxe;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BaseSwordItem;
 import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
 
-public class CelestigemAxe extends BaseAxe implements PoweredTool {
-    public CelestigemAxe() {
-        super(GooTier.CELESTIGEM,7.0F, -2.5F,new Properties().fireResistant());
-        registerAbility(Ability.TREEFELLER);
-        registerAbility(Ability.LEAFBREAKER);
-        registerAbility(Ability.SMELTER);
+public class EclipseAlloySwordItem extends BaseSwordItem implements PoweredTool {
+    public EclipseAlloySwordItem() {
+        super(GooTier.ECLIPSEALLOY, 3, -2.0F ,new Properties() .fireResistant());
+        registerAbility(Ability.GLOWING);
+        registerAbility(Ability.CAUTERIZEWOUNDS, new AbilityParams(1, 1, 1, 1, 0, 1200));
         registerAbility(Ability.DROPTELEPORT);
+        registerAbility(Ability.SMOKER);
     }
 
     @Override
@@ -32,5 +33,10 @@ public class CelestigemAxe extends BaseAxe implements PoweredTool {
         if (color == -1)
             return super.getBarColor(stack);
         return color;
+    }
+
+    @Override
+    public int getMaxEnergy() {
+        return 500000;
     }
 }
