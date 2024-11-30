@@ -10,7 +10,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.SmithingRecipeInput;
 
 public class PaxelRecipeCategory implements ISmithingCategoryExtension<PaxelRecipe> {
 
@@ -19,19 +18,19 @@ public class PaxelRecipeCategory implements ISmithingCategoryExtension<PaxelReci
 
     @Override
     public <T extends IIngredientAcceptor<T>> void setBase(PaxelRecipe recipe, T ingredientAcceptor) {
-        Ingredient ingredient = recipe.getBase();
+        Ingredient ingredient = recipe.base;
         ingredientAcceptor.addIngredients(ingredient);
     }
 
     @Override
     public <T extends IIngredientAcceptor<T>> void setAddition(PaxelRecipe recipe, T ingredientAcceptor) {
-        Ingredient ingredient = recipe.getAddition();
+        Ingredient ingredient = recipe.addition;
         ingredientAcceptor.addIngredients(ingredient);
     }
 
     @Override
     public <T extends IIngredientAcceptor<T>> void setTemplate(PaxelRecipe recipe, T ingredientAcceptor) {
-        Ingredient ingredient = recipe.getTemplate();
+        Ingredient ingredient = recipe.template;
         ingredientAcceptor.addIngredients(ingredient);
     }
 
@@ -45,6 +44,8 @@ public class PaxelRecipeCategory implements ISmithingCategoryExtension<PaxelReci
         ItemStack resultItem = recipe.getResultItem(registryAccess);
         ingredientAcceptor.addItemStack(resultItem);
     }
+
+    /*
 
     @Override
     public void onDisplayedIngredientsUpdate(PaxelRecipe recipe, IRecipeSlotDrawable templateSlot, IRecipeSlotDrawable baseSlot, IRecipeSlotDrawable additionSlot, IRecipeSlotDrawable outputSlot, IFocusGroup focuses) {
@@ -61,5 +62,5 @@ public class PaxelRecipeCategory implements ISmithingCategoryExtension<PaxelReci
         ItemStack result = recipe.assemble(input, registryAccess);
         outputSlot.createDisplayOverrides()
             .addItemStack(result);
-    }
+    }*/
 }

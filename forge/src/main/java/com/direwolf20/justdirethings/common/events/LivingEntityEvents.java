@@ -21,12 +21,11 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
-import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -36,20 +35,20 @@ import java.util.Map;
 public class LivingEntityEvents {
 
     @SubscribeEvent
-    public static void blockDamage(EntityInvulnerabilityCheckEvent e) {
+    public static void blockDamage(LivingAttackEvent e) {
         Entity target = e.getEntity();
         if (target instanceof Player player) {
             ItemStack chestplate = player.getItemBySlot(EquipmentSlot.CHEST);
             if (chestplate.getItem() instanceof ToggleableTool toggleableTool && toggleableTool.canUseAbilityAndDurability(chestplate, Ability.ELYTRA)) {
                 if (e.getSource().is(DamageTypes.FLY_INTO_WALL)) {
-                    e.setInvulnerable(true);
+                    e.setCanceled(true);
                     Helpers.damageTool(chestplate, player, Ability.ELYTRA);
                     return;
                 }
             }
             if (chestplate.getItem() instanceof ToggleableTool toggleableTool && toggleableTool.canUseAbilityAndDurability(chestplate, Ability.LAVAIMMUNITY)) {
                 if (e.getSource().is(DamageTypes.LAVA) || e.getSource().is(DamageTypes.IN_FIRE) || e.getSource().is(DamageTypes.ON_FIRE)) {
-                    e.setInvulnerable(true);
+                    e.setCanceled(true);
                     Helpers.damageTool(chestplate, player, Ability.LAVAIMMUNITY);
                     return;
                 }
@@ -58,7 +57,7 @@ public class LivingEntityEvents {
                 int activeCooldown = ToggleableTool.getCooldown(chestplate, Ability.INVULNERABILITY, true);
                 if (activeCooldown == -1) return;
                 player.playNotifySound(SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 1.0F);
-                e.setInvulnerable(true);
+                e.setCanceled(true);
             }
         }
     }
@@ -66,7 +65,7 @@ public class LivingEntityEvents {
     @SubscribeEvent
     public static void changeTargets(LivingChangeTargetEvent e) {
         LivingEntity source = e.getEntity();
-        LivingEntity target = e.getOriginalAboutToBeSetTarget();
+        LivingEntity target = e.getOriginalTarget();
         if (target instanceof Player player) {
             ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
             if (helmet.getItem() instanceof ToggleableTool toggleableTool) {
@@ -235,7 +234,7 @@ public class LivingEntityEvents {
             ItemStack totemStack = findTotem(player);
             if (!totemStack.isEmpty()) {
                 CompoundTag deathData = new CompoundTag();
-                deathData.put("direDeathData", NBTHelpers.globalVec3ToNBT(player.level().dimension(), player.position()));
+                deathData.put("direDeathData",new NBTHelpers.GlobalVec3(player.level().dimension(), player.position()).toTag());
                 player.setData(Registration.DEATH_DATA, deathData);
                 totemStack.shrink(1);
             }
@@ -256,10 +255,10 @@ public class LivingEntityEvents {
         ServerPlayer oldPlayer = (ServerPlayer) event.getOriginal();
         if (oldPlayer.level().isClientSide || !event.isWasDeath()) return;
         ServerPlayer newPlayer = (ServerPlayer) event.getEntity();
-        CompoundTag deathData = oldPlayer.getData(Registration.DEATH_DATA);
+        CompoundTag deathData = oldPlayer.getPersistentData().getCompound("death_data");
 
         if (deathData.contains("direDeathData")) {
-            NBTHelpers.GlobalVec3 boundTo = NBTHelpers.nbtToGlobalVec3(deathData.getCompound("direDeathData"));
+            NBTHelpers.GlobalVec3 boundTo = NBTHelpers.GlobalVec3.fromTag(deathData.getCompound("direDeathData"));
             ItemStack totemStack = new ItemStack(Registration.TotemOfDeathRecall.get());
             TotemOfDeathRecallItem.setBoundTo(totemStack, boundTo);
             newPlayer.getInventory().add(totemStack);

@@ -3,6 +3,7 @@ package com.direwolf20.justdirethings.client.screens;
 import com.direwolf20.justdirethings.client.KeyBindings;
 import com.direwolf20.justdirethings.common.items.PortalGunV2Item;
 import com.direwolf20.justdirethings.network.server.C2SPortalGunFavoriteChangePayload;
+import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.NBTHelpers;
 import net.minecraft.client.Minecraft;
@@ -14,8 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.gui.widget.ExtendedButton;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 import java.util.function.Predicate;
 
@@ -34,10 +34,6 @@ public class AdvPortalEditMenu extends Screen {
         super(Component.literal(""));
         this.portalGun = itemStack;
         this.slotSelected = favoritePosition;
-    }
-
-    @Override
-    public void renderBackground(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
     }
 
     @Override
@@ -74,11 +70,7 @@ public class AdvPortalEditMenu extends Screen {
         this.zPos.setFilter(doubleInputValidator);
         this.zPos.setEditable(false);
         addRenderableWidget(zPos);
-    }
-
-    @Override
-    protected void setInitialFocus() {
-        this.setInitialFocus(this.nameField);
+        setInitialFocus(nameField);
     }
 
     @Override
@@ -135,7 +127,7 @@ public class AdvPortalEditMenu extends Screen {
                 portalDestination = new NBTHelpers.PortalDestination(new NBTHelpers.GlobalVec3(player.level().dimension(), position), facing, "UNNAMED");
             }
             Vec3 coords = portalDestination.globalVec3().position();
-            PacketDistributor.sendToServer(new C2SPortalGunFavoriteChangePayload(slotSelected, true, nameField.getValue(), true, coords));
+            Services.PLATFORM.sendToServer(new C2SPortalGunFavoriteChangePayload(slotSelected, true, nameField.getValue(), true, coords));
             this.onClose();
         } catch (NumberFormatException e) {
             System.out.println("Error: Invalid format for the validFormattedX string");

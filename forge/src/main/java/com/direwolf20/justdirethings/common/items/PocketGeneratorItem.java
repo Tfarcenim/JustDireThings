@@ -9,6 +9,8 @@ import com.direwolf20.justdirethings.common.items.interfaces.ToggleableItem;
 import com.direwolf20.justdirethings.common.items.resources.TieredCoalItem;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.util.ItemStackNBTHandler;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -20,10 +22,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -78,7 +85,10 @@ public class PocketGeneratorItem extends Item implements PoweredItem, Toggleable
 
     public void tryBurn(EnergyStorageItemStackNoReceive energyStorage, ItemStack itemStack) {
         boolean canInsertEnergy = energyStorage.forceReceiveEnergy(fePerTick(itemStack), true) > 0;
-        if (itemStack.getOrDefault(JustDireDataComponents.POCKETGEN_COUNTER, 0) > 0 && canInsertEnergy) {
+
+        Integer c = JustDireDataComponents.getPocketgenCounter(itemStack);
+        int counter = c == null ? 0 : c;
+        if (counter > 0 && canInsertEnergy) {
             burn(energyStorage, itemStack);
         } else if (canInsertEnergy) {
             if (initBurn(itemStack))
@@ -89,11 +99,12 @@ public class PocketGeneratorItem extends Item implements PoweredItem, Toggleable
 
     private void burn(EnergyStorageItemStackNoReceive energyStorage, ItemStack itemStack) {
         energyStorage.forceReceiveEnergy(fePerTick(itemStack), false);
-        int counter = itemStack.getOrDefault(JustDireDataComponents.POCKETGEN_COUNTER, 0);
+        Integer c = JustDireDataComponents.getPocketgenCounter(itemStack);
+        int counter = c == null ? 0 : c;
         counter--;
-        itemStack.set(JustDireDataComponents.POCKETGEN_COUNTER, counter);
+        JustDireDataComponents.setPocketgenCounter(itemStack,counter);
         if (counter == 0) {
-            itemStack.set(JustDireDataComponents.POCKETGEN_MAXBURN, 0);
+            JustDireDataComponents.setPocketgenMaxburn(itemStack,0);
             initBurn(itemStack);
         }
     }
@@ -194,5 +205,24 @@ public class PocketGeneratorItem extends Item implements PoweredItem, Toggleable
 
     public int getBurnSpeedMultiplier(ItemStack itemStack) {
         return Config.POCKET_GENERATOR_BURN_SPEED_MULTIPLIER.get() * getFuelMultiplier(itemStack);
+    }
+
+    @Override
+    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new Provider(stack,JustDireDataComponents.ITEMSTACK_HANDLER,1);
+    }
+
+    static class Provider extends ItemStackNBTHandler implements ICapabilityProvider {
+
+        public Provider(ItemStack stack, String target, int size) {
+            super(stack, target, size);
+        }
+
+        private final LazyOptional<IItemHandler> holder = LazyOptional.of(() -> this);
+
+        @Override
+        public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+            return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, this.holder);
+        }
     }
 }

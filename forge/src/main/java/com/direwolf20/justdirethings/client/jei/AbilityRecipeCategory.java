@@ -10,7 +10,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.SmithingRecipeInput;
 
 public class AbilityRecipeCategory implements ISmithingCategoryExtension<AbilityRecipe> {
 
@@ -19,19 +18,19 @@ public class AbilityRecipeCategory implements ISmithingCategoryExtension<Ability
 
     @Override
     public <T extends IIngredientAcceptor<T>> void setBase(AbilityRecipe recipe, T ingredientAcceptor) {
-        Ingredient ingredient = recipe.getBase();
+        Ingredient ingredient = recipe.base;
         ingredientAcceptor.addIngredients(ingredient);
     }
 
     @Override
     public <T extends IIngredientAcceptor<T>> void setAddition(AbilityRecipe recipe, T ingredientAcceptor) {
-        Ingredient ingredient = recipe.getAddition();
+        Ingredient ingredient = recipe.addition;
         ingredientAcceptor.addIngredients(ingredient);
     }
 
     @Override
     public <T extends IIngredientAcceptor<T>> void setTemplate(AbilityRecipe recipe, T ingredientAcceptor) {
-        Ingredient ingredient = recipe.getTemplate();
+        Ingredient ingredient = recipe.template;
         ingredientAcceptor.addIngredients(ingredient);
     }
 
@@ -45,7 +44,7 @@ public class AbilityRecipeCategory implements ISmithingCategoryExtension<Ability
         ingredientAcceptor.addItemStack(resultItem);
     }
 
-    @Override
+    /*@Override
     public void onDisplayedIngredientsUpdate(AbilityRecipe recipe, IRecipeSlotDrawable templateSlot, IRecipeSlotDrawable baseSlot, IRecipeSlotDrawable additionSlot, IRecipeSlotDrawable outputSlot, IFocusGroup focuses) {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
@@ -60,5 +59,5 @@ public class AbilityRecipeCategory implements ISmithingCategoryExtension<Ability
         ItemStack result = recipe.assemble(input, registryAccess);
         outputSlot.createDisplayOverrides()
             .addItemStack(result);
-    }
+    }*/
 }

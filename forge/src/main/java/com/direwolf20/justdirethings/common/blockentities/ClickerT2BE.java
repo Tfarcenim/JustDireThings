@@ -42,9 +42,10 @@ public class ClickerT2BE extends ClickerT1BE implements PoweredMachineBE, AreaAf
         return poweredMachineData;
     }
 
+    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
     @Override
     public MachineEnergyStorage getEnergyStorage() {
-        return getData(Registration.ENERGYSTORAGE_MACHINES);
+        return energyStorage;
     }
 
     @Override
@@ -57,9 +58,10 @@ public class ClickerT2BE extends ClickerT1BE implements PoweredMachineBE, AreaAf
         return areaAffectingData;
     }
 
+    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
     @Override
     public FilterBasicHandler getFilterHandler() {
-        return getData(Registration.HANDLER_BASIC_FILTER);
+        return filterBasicHandler;
     }
 
     @Override

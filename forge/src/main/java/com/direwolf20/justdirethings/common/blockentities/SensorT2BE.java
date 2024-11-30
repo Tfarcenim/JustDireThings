@@ -34,9 +34,10 @@ public class SensorT2BE extends SensorT1BE implements AreaAffectingBE, PoweredMa
         this(Registration.SensorT2BE.get(), pPos, pBlockState);
     }
 
+    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
     @Override
     public FilterBasicHandler getFilterHandler() {
-        return getData(Registration.HANDLER_BASIC_FILTER);
+        return filterBasicHandler;
     }
 
     @Override
@@ -49,9 +50,10 @@ public class SensorT2BE extends SensorT1BE implements AreaAffectingBE, PoweredMa
         return poweredMachineData;
     }
 
+    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
     @Override
     public MachineEnergyStorage getEnergyStorage() {
-        return getData(Registration.ENERGYSTORAGE_MACHINES);
+        return energyStorage;
     }
 
     @Override

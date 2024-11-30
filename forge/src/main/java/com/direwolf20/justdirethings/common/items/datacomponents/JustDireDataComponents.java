@@ -1,5 +1,7 @@
 package com.direwolf20.justdirethings.common.items.datacomponents;
 
+import com.direwolf20.justdirethings.Constants;
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.ToolRecords;
 import com.direwolf20.justdirethings.util.FillMode;
@@ -8,6 +10,7 @@ import com.direwolf20.justdirethings.util.NBTHelpers;
 import com.direwolf20.justdirethings.util.PotionContents;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.*;
@@ -18,6 +21,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BiFunction;
+import java.util.function.UnaryOperator;
 
 import static com.mojang.text2speech.Narrator.LOGGER;
 
@@ -48,6 +53,26 @@ public class JustDireDataComponents {
             stack.removeTagKey(key);
         } else {
             stack.getOrCreateTag().putInt(key,value);
+        }
+    }
+
+    public static <T> void update(ItemStack stack,String key,Codec<T> codec, T defaultValue, UnaryOperator<T> updater) {
+        T t = getValue(stack,key,codec);
+        if (t == null) t = defaultValue;
+        setValue(stack,updater.apply(t), key,codec);
+    }
+
+    static <T> T getValue(ItemStack stack,String key,Codec<T> codec) {
+        if (!stack.hasTag()) return null;
+        Tag tag = stack.getTag().get(key);
+        return codec.parse(new Dynamic<>(NbtOps.INSTANCE, tag)).resultOrPartial(Constants.LOG::error).orElse(null);
+    }
+
+    static<T> void setValue(ItemStack stack,T value,String key,Codec<T> codec) {
+        if (value == null) {
+            stack.removeTagKey(key);
+        } else {
+            codec.encodeStart(NbtOps.INSTANCE,value).resultOrPartial(Constants.LOG::error).ifPresent(tag -> stack.getOrCreateTag().put(key,tag));
         }
     }
 
@@ -125,12 +150,23 @@ public class JustDireDataComponents {
     }
 
     public static float getFloatingTicks(ItemStack stack) {
-        return stack.hasTag() ? stack.getTag().getFloat("floatingticks") : 0;
+        return stack.hasTag() ? stack.getTag().getFloat(FLOATINGTICKS) : 0;
+    }
+
+    public static final String FLOATINGTICKS = "floatingticks";
+    public static final String LAVAREPAIR_LAVAPOS = "lavapos";
+
+    public static void setFloatingTicks(ItemStack stack,Float value) {
+        if (value == null) {
+            stack.removeTagKey(FLOATINGTICKS);
+        } else {
+            stack.getOrCreateTag().putFloat(FLOATINGTICKS,value);
+        }
     }
 
     public static BlockPos getLavaPos(ItemStack stack) {
-        if (stack.hasTag() && stack.getTag().contains("lavapos")) {
-            int[] ints = stack.getTag().getIntArray("lavapos");
+        if (stack.hasTag() && stack.getTag().contains(LAVAREPAIR_LAVAPOS)) {
+            int[] ints = stack.getTag().getIntArray(LAVAREPAIR_LAVAPOS);
             return new BlockPos(ints[0],ints[1],ints[2]);
         }
         return null;
@@ -138,9 +174,9 @@ public class JustDireDataComponents {
 
     public static void setLavaPos(ItemStack stack,@Nullable BlockPos value) {
         if (value == null) {
-            stack.removeTagKey("lavapos");
+            stack.removeTagKey(LAVAREPAIR_LAVAPOS);
         } else {
-            stack.getOrCreateTag().putIntArray("lavapos",new int[]{value.getX(),value.getY(),value.getZ()});
+            stack.getOrCreateTag().putIntArray(LAVAREPAIR_LAVAPOS,new int[]{value.getX(),value.getY(),value.getZ()});
         }
     }
 

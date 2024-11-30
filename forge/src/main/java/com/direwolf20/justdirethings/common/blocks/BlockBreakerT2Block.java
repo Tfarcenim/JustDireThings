@@ -10,11 +10,12 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class BlockBreakerT2 extends BaseMachineBlock {
-    public BlockBreakerT2() {
+public class BlockBreakerT2Block extends BaseMachineBlock {
+    public BlockBreakerT2Block() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)
@@ -30,10 +31,8 @@ public class BlockBreakerT2 extends BaseMachineBlock {
 
     @Override
     public void openMenu(ServerPlayer player, BlockPos blockPos) {
-        player.openMenu(new SimpleMenuProvider(
-                (windowId, playerInventory, playerEntity) -> new BlockBreakerT2Container(windowId, playerInventory, blockPos), Component.translatable("")), (buf -> {
-            buf.writeBlockPos(blockPos);
-        }));
+        NetworkHooks.openScreen(player,new SimpleMenuProvider(
+                (windowId, playerInventory, playerEntity) -> new BlockBreakerT2Container(windowId, playerInventory, blockPos), Component.empty()),blockPos);
     }
 
     @Override

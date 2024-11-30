@@ -1,6 +1,5 @@
 package com.direwolf20.justdirethings.util;
 
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -33,7 +32,10 @@ public record PotionContents(Optional<Potion> potion, OptionalInt customColor,
 
 
     public List<MobEffectInstance> getAllEffects() {
-        return this.potion.map(potionHolder -> this.customEffects.isEmpty() ? potionHolder.getEffects() : Iterables.concat(potionHolder.getEffects(), this.customEffects)).orElse(this.customEffects);
+        List<MobEffectInstance> effects = new ArrayList<>();
+        potion.ifPresent(potion1 -> effects.addAll(potion1.getEffects()));
+        effects.addAll(customEffects);
+        return effects;
     }
 
     public int getColor() {
@@ -126,6 +128,12 @@ public record PotionContents(Optional<Potion> potion, OptionalInt customColor,
 
     public static void addPotionTooltip(List<MobEffectInstance> effects, List<Component> tooltipAdder, float durationFactor) {
         PotionUtils.addPotionTooltip(effects,tooltipAdder,durationFactor);
+    }
+
+    public PotionContents withEffectAdded(MobEffectInstance mobEffectInstance) {
+        List<MobEffectInstance> customEffects = new ArrayList<>(customEffects());
+        customEffects.add(mobEffectInstance);
+        return new PotionContents(this.potion, this.customColor, customEffects);
     }
 }
 

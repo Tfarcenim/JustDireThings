@@ -9,29 +9,34 @@ import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.common.NeoForgeMod;
-import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerDestroyItemEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.event.ItemAttributeModifierEvent;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool.getInstantRFCost;
 import static com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool.getToolValue;
 
 public class PlayerEvents {
-    public static final AttributeModifier stepHeight = new AttributeModifier(JustDireThings.id("justdirestepassist"), 1.0, AttributeModifier.Operation.ADD_VALUE);
-    public static final AttributeModifier creativeFlight = new AttributeModifier(JustDireThings.id("justdireflight"), 1.0, AttributeModifier.Operation.ADD_VALUE);
-    public static final AttributeModifier phase = new AttributeModifier(JustDireThings.id("justdirephase"), 1.0, AttributeModifier.Operation.ADD_VALUE);
+    public static final AttributeModifier stepHeight = new AttributeModifier(from(JustDireThings.id("justdirestepassist")),"step", 1.0, AttributeModifier.Operation.ADDITION);
+    public static final AttributeModifier creativeFlight = new AttributeModifier(from(JustDireThings.id("justdireflight")),"flight", 1.0, AttributeModifier.Operation.ADDITION);
+    public static final AttributeModifier phase = new AttributeModifier(from(JustDireThings.id("justdirephase")),"phase", 1.0, AttributeModifier.Operation.ADDITION);
+
+
+    static UUID from(ResourceLocation location) {
+        return new UUID(location.getNamespace().hashCode(),location.getPath().hashCode());
+    }
 
     @SubscribeEvent
     public static void PlayerDestroyItem(PlayerDestroyItemEvent event) {
@@ -40,7 +45,7 @@ public class PlayerEvents {
             EnumSet<Ability> abilities = toggleableTool.getAbilities();
             for (Ability ability : abilities) {
                 if (ToggleableTool.hasUpgrade(itemStack, ability) && ability.requiresUpgrade()) {
-                    ItemStack upgradeStack = new ItemStack(ability.getUpgradeItem());
+                    ItemStack upgradeStack = new ItemStack(ability.getUpgradeItem().get());
                     event.getEntity().drop(upgradeStack, true);
                 }
             }
@@ -50,13 +55,14 @@ public class PlayerEvents {
     @SubscribeEvent
     public static void ItemAttributes(ItemAttributeModifierEvent event) {
         ItemStack itemStack = event.getItemStack();
+        EquipmentSlot slot = event.getSlotType();
         if (itemStack.getItem() instanceof ToggleableTool toggleableTool) {
-            if (toggleableTool.canUseAbility(itemStack, Ability.STEPHEIGHT))
-                event.addModifier(Attributes.STEP_HEIGHT, stepHeight, EquipmentSlotGroup.FEET);
-            if (toggleableTool.canUseAbilityAndDurability(itemStack, Ability.FLIGHT))
-                event.addModifier(NeoForgeMod.CREATIVE_FLIGHT, creativeFlight, EquipmentSlotGroup.CHEST);
-            if (toggleableTool.canUseAbility(itemStack, Ability.PHASE))
-                event.addModifier(Registration.PHASE, phase, EquipmentSlotGroup.LEGS);
+            if (toggleableTool.canUseAbility(itemStack, Ability.STEPHEIGHT) && slot == EquipmentSlot.FEET)
+                event.addModifier(ForgeMod.STEP_HEIGHT_ADDITION.get(), stepHeight);
+          //  if (toggleableTool.canUseAbilityAndDurability(itemStack, Ability.FLIGHT) && slot == EquipmentSlot.CHEST)
+           //     event.addModifier(ForgeMod.CREATIVE_FLIGHT, creativeFlight);//todo
+            if (toggleableTool.canUseAbility(itemStack, Ability.PHASE) && slot == EquipmentSlot.LEGS)
+                event.addModifier(Registration.PHASE.get(), phase);
         }
         //A catch all for unpowered itemse
         if (itemStack.getItem() instanceof PoweredTool poweredTool && PoweredItem.getAvailableEnergy(itemStack) < poweredTool.getBlockBreakFECost()) {

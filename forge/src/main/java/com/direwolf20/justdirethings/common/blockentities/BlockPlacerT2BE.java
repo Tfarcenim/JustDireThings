@@ -38,9 +38,10 @@ public class BlockPlacerT2BE extends BlockPlacerT1BE implements PoweredMachineBE
         return poweredMachineData;
     }
 
+    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
     @Override
     public MachineEnergyStorage getEnergyStorage() {
-        return getData(Registration.ENERGYSTORAGE_MACHINES);
+        return energyStorage;
     }
 
     @Override
@@ -53,9 +54,10 @@ public class BlockPlacerT2BE extends BlockPlacerT1BE implements PoweredMachineBE
         return areaAffectingData;
     }
 
+    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
     @Override
     public FilterBasicHandler getFilterHandler() {
-        return getData(Registration.HANDLER_BASIC_FILTER);
+        return filterBasicHandler;
     }
 
     @Override

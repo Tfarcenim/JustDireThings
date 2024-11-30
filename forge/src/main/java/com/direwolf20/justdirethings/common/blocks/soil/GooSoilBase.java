@@ -18,8 +18,8 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.piston.MovingPistonBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.util.TriState;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +44,11 @@ public class GooSoilBase extends FarmBlock {
     }
 
     @Override
+    public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
+        return true;
+    }
+
+    /*@Override
     public TriState canSustainPlant(BlockState state, BlockGetter level, BlockPos soilPosition, Direction facing, BlockState plant) {
         if (facing != Direction.UP) return TriState.FALSE;
         if (plant.getBlock() instanceof CactusBlock)
@@ -62,7 +67,7 @@ public class GooSoilBase extends FarmBlock {
             return TriState.TRUE;
 
         return TriState.DEFAULT;
-    }
+    }*/
 
     @Override
     public void fallOn(Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, float pFallDistance) {

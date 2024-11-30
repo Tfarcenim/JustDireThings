@@ -30,8 +30,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class InventoryHolder extends BaseMachineBlock {
-    public InventoryHolder() {
+public class InventoryHolderBlock extends BaseMachineBlock {
+    public InventoryHolderBlock() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)

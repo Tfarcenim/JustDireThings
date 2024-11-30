@@ -3,12 +3,12 @@ package com.direwolf20.justdirethings.client.jei.ghostfilters;
 import com.direwolf20.justdirethings.client.screens.basescreens.BaseScreen;
 import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
 import com.direwolf20.justdirethings.network.server.C2SGhostSlotPayload;
+import com.direwolf20.justdirethings.platform.Services;
 import mezz.jei.api.gui.handlers.IGhostIngredientHandler;
 import mezz.jei.api.ingredients.ITypedIngredient;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class GhostFilterBasic implements IGhostIngredientHandler<BaseScreen> {
                     @Override
                     public void accept(I ingredient) {
                         slot.set((ItemStack) ingredient);
-                        PacketDistributor.sendToServer(new C2SGhostSlotPayload(slot.index, (ItemStack) ingredient, ((ItemStack) ingredient).getCount(), -1));
+                        Services.PLATFORM.sendToServer(new C2SGhostSlotPayload(slot.index, (ItemStack) ingredient, ((ItemStack) ingredient).getCount(), -1));
                     }
                 });
             }

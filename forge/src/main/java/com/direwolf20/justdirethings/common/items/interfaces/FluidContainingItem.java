@@ -2,9 +2,9 @@ package com.direwolf20.justdirethings.common.items.interfaces;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 public interface FluidContainingItem {
     default int getMaxMB() {
@@ -12,7 +12,7 @@ public interface FluidContainingItem {
     }
 
     static int getAvailableFluid(ItemStack stack) {
-        IFluidHandlerItem fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler == null) {
             return -1;
         }
@@ -20,7 +20,7 @@ public interface FluidContainingItem {
     }
 
     default boolean isFluidBarVisible(ItemStack stack) {
-        IFluidHandlerItem fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler == null) {
             return false;
         }
@@ -28,7 +28,7 @@ public interface FluidContainingItem {
     }
 
     default int getFluidBarWidth(ItemStack stack) {
-        IFluidHandlerItem fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler == null) {
             return 13;
         }
@@ -36,7 +36,7 @@ public interface FluidContainingItem {
     }
 
     default int getFluidBarColor(ItemStack stack) {
-        IFluidHandlerItem fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler == null) {
             return -1; //Tell caller to call super
         }
@@ -47,7 +47,7 @@ public interface FluidContainingItem {
     }
 
     static boolean hasEnoughFluid(ItemStack itemStack, int amt) {
-        IFluidHandlerItem fluidHandler = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler == null) {
             return false;
         }
@@ -55,7 +55,7 @@ public interface FluidContainingItem {
     }
 
     static void consumeFluid(ItemStack itemStack, int amt) {
-        IFluidHandlerItem fluidHandler = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandlerItem fluidHandler = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandler == null) {
             return;
         }

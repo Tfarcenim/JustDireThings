@@ -6,6 +6,7 @@ import com.direwolf20.justdirethings.datagen.JustDireItemTags;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
@@ -16,6 +17,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -36,6 +38,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.level.BlockEvent;
@@ -43,6 +46,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -72,7 +76,8 @@ public class Helpers {
                 return;
             }
             float destroySpeed = state.getDestroySpeed(level, pos);
-            BlockState removedBlockState = state.getBlock().playerWillDestroy(level, pos, state, player);
+            //BlockState removedBlockState = state.getBlock().playerWillDestroy(level, pos, state, player);
+            BlockState removedBlockState = Blocks.AIR.defaultBlockState();//todo
             if (player.getAbilities().instabuild) {
                 removeBlock(serverLevel, player, pos, removedBlockState, false);
                 return;
@@ -153,12 +158,14 @@ public class Helpers {
         return new ArrayList<>();
     }*/
 
+    static final Consumer<LivingEntity> BREAK = player-> player.broadcastBreakEvent(InteractionHand.MAIN_HAND);
+    
     public static void damageTool(ItemStack stack, LivingEntity player) {
         if (stack.getItem() instanceof PoweredTool poweredTool) {
-            stack.hurtAndBreak(poweredTool.getBlockBreakFECost(), player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
+            stack.hurtAndBreak(poweredTool.getBlockBreakFECost(), player, BREAK);
         } else {
             ItemStack cloneStack = stack.copy();
-            stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
+            stack.hurtAndBreak(1, player, BREAK);
             if (stack.isEmpty() && !cloneStack.isEmpty() && player instanceof Player player1)
                 ForgeEventFactory.onPlayerDestroyItem(player1, cloneStack, InteractionHand.MAIN_HAND);
         }
@@ -166,10 +173,10 @@ public class Helpers {
 
     public static void damageTool(ItemStack stack, LivingEntity player, int amount) {
         if (stack.getItem() instanceof PoweredItem poweredTool) {
-            stack.hurtAndBreak(amount, player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
+            stack.hurtAndBreak(amount, player, BREAK);
         } else {
             ItemStack cloneStack = stack.copy();
-            stack.hurtAndBreak(amount, player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
+            stack.hurtAndBreak(amount, player, BREAK);
             if (stack.isEmpty() && !cloneStack.isEmpty() && player instanceof Player player1)
                 ForgeEventFactory.onPlayerDestroyItem(player1, cloneStack, InteractionHand.MAIN_HAND);
         }
@@ -177,10 +184,10 @@ public class Helpers {
 
     public static void damageTool(ItemStack stack, LivingEntity player, Ability ability) {
         if (stack.getItem() instanceof PoweredItem) {
-            stack.hurtAndBreak(ability.getFeCost(), player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
+            stack.hurtAndBreak(ability.getFeCost(), player, BREAK);
         } else {
             ItemStack cloneStack = stack.copy();
-            stack.hurtAndBreak(ability.getDurabilityCost(), player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
+            stack.hurtAndBreak(ability.getDurabilityCost(), player, BREAK);
             if (stack.isEmpty() && !cloneStack.isEmpty() && player instanceof Player player1)
                 ForgeEventFactory.onPlayerDestroyItem(player1, cloneStack, InteractionHand.MAIN_HAND);
         }
@@ -188,10 +195,10 @@ public class Helpers {
 
     public static void damageTool(ItemStack stack, LivingEntity player, Ability ability, int multiplier) {
         if (stack.getItem() instanceof PoweredItem) {
-            stack.hurtAndBreak(ability.getFeCost() * multiplier, player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
+            stack.hurtAndBreak(ability.getFeCost() * multiplier, player, BREAK);
         } else {
             ItemStack cloneStack = stack.copy();
-            stack.hurtAndBreak(ability.getDurabilityCost() * multiplier, player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
+            stack.hurtAndBreak(ability.getDurabilityCost() * multiplier, player, BREAK);
             if (stack.isEmpty() && !cloneStack.isEmpty() && player instanceof Player player1)
                 ForgeEventFactory.onPlayerDestroyItem(player1, cloneStack, InteractionHand.MAIN_HAND);
         }
@@ -199,7 +206,7 @@ public class Helpers {
 
     public static int testUseTool(ItemStack stack) {
         if (stack.getItem() instanceof PoweredTool poweredTool) {
-            IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            IEnergyStorage energyStorage = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
             if (energyStorage == null) return -1; //Shouldn't Happen!
             return energyStorage.getEnergyStored() - poweredTool.getBlockBreakFECost();
         } else {
@@ -209,7 +216,7 @@ public class Helpers {
 
     public static int testUseTool(ItemStack stack, int cost) {
         if (stack.getItem() instanceof PoweredItem) {
-            IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            IEnergyStorage energyStorage = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
             if (energyStorage == null) return -1; //Shouldn't Happen!
             return energyStorage.getEnergyStored() - cost;
         } else {
@@ -219,7 +226,7 @@ public class Helpers {
 
     public static int testUseTool(ItemStack stack, Ability ability) {
         if (stack.getItem() instanceof PoweredItem) {
-            IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            IEnergyStorage energyStorage = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
             if (energyStorage == null) return -1; //Shouldn't Happen!
             return energyStorage.getEnergyStored() - ability.getFeCost();
         } else {
@@ -229,7 +236,7 @@ public class Helpers {
 
     public static int testUseTool(ItemStack stack, Ability ability, int multiplier) {
         if (stack.getItem() instanceof PoweredItem) {
-            IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            IEnergyStorage energyStorage = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
             if (energyStorage == null) return -1; //Shouldn't Happen!
             return energyStorage.getEnergyStored() - (ability.getFeCost() * multiplier);
         } else {
@@ -241,7 +248,7 @@ public class Helpers {
         for (ItemStack newDrop : newDrops) {
             // Attempt to find a matching ItemStack in 'drops' that can be merged with 'newDrop'
             Optional<ItemStack> match = drops.stream()
-                    .filter(drop -> ItemStack.isSameItemSameComponents(drop, newDrop))
+                    .filter(drop -> ItemStack.isSameItemSameTags(drop, newDrop))
                     .findFirst();
 
             if (match.isPresent()) {
@@ -272,9 +279,9 @@ public class Helpers {
         RegistryAccess registryAccess = level.registryAccess();
         RecipeManager recipeManager = level.getRecipeManager();
         ItemStack returnStack = ItemStack.EMPTY;
-        Optional<RecipeHolder<SmeltingRecipe>> smeltingRecipe = recipeManager.getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(itemStack), level);
+        Optional<SmeltingRecipe> smeltingRecipe = recipeManager.getRecipeFor(RecipeType.SMELTING, new SimpleContainer(itemStack), level);
         if (smeltingRecipe.isPresent() && !itemStack.is(JustDireItemTags.AUTO_SMELT_DENY))
-            returnStack = smeltingRecipe.get().value().getResultItem(registryAccess);
+            returnStack = smeltingRecipe.get().getResultItem(registryAccess);
         if (returnStack.isEmpty()) return itemStack;
         return returnStack;
     }
@@ -286,11 +293,11 @@ public class Helpers {
         didISmelt[0] = false;
         for (ItemStack drop : drops) {
             // Check if there's a smelting recipe for the drop
-            Optional<RecipeHolder<SmeltingRecipe>> smeltingRecipe = recipeManager.getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(drop), level);
+            Optional<SmeltingRecipe> smeltingRecipe = recipeManager.getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level);
 
             if (smeltingRecipe.isPresent() && !drop.is(JustDireItemTags.AUTO_SMELT_DENY)) {
                 // Get the result of the smelting recipe
-                ItemStack smeltedResult = smeltingRecipe.get().value().getResultItem(registryAccess);
+                ItemStack smeltedResult = smeltingRecipe.get().getResultItem(registryAccess);
 
                 if (!smeltedResult.isEmpty() && (testUseTool(tool, Ability.SMELTER, drop.getCount()) >= 0)) {
                     // If the smelting result is valid, prepare to replace the original drop with the smelted result
@@ -316,11 +323,11 @@ public class Helpers {
         didISmoke[0] = false;
 
         // Check if there's a smoking recipe for the drop
-        Optional<RecipeHolder<SmokingRecipe>> smokingRecipe = recipeManager.getRecipeFor(RecipeType.SMOKING, new SingleRecipeInput(drop.getItem()), level);
+        Optional<SmokingRecipe> smokingRecipe = recipeManager.getRecipeFor(RecipeType.SMOKING, new SimpleContainer(drop.getItem()), level);
 
         if (smokingRecipe.isPresent() && !drop.getItem().is(JustDireItemTags.AUTO_SMOKE_DENY)) {
             // Get the result of the smoking recipe
-            ItemStack smokedResults = smokingRecipe.get().value().getResultItem(registryAccess);
+            ItemStack smokedResults = smokingRecipe.get().getResultItem(registryAccess);
 
             if (!smokedResults.isEmpty() && (testUseTool(tool, Ability.SMOKER, drop.getItem().getCount()) >= 0)) {
                 didISmoke[0] = true;
@@ -521,32 +528,33 @@ public class Helpers {
 
     public static boolean doLavaRepair(ItemStack stack, ItemEntity entity) {
         if (isInLava(entity)) {
-            stack.set(JustDireDataComponents.FLOATINGTICKS, 0);
-            stack.set(JustDireDataComponents.LAVAREPAIR_LAVAPOS, entity.blockPosition());
+            JustDireDataComponents.setFloatingTicks(stack,0f);
+            JustDireDataComponents.setLavaPos(stack, entity.blockPosition());
             entity.setPickUpDelay(85);
             entity.setOnGround(true);
         }
         if (!validateLava(stack, entity)) {
-            stack.remove(JustDireDataComponents.FLOATINGTICKS);
-            stack.remove(JustDireDataComponents.LAVAREPAIR_LAVAPOS);
+            stack.removeTagKey(JustDireDataComponents.FLOATINGTICKS);
+            stack.removeTagKey(JustDireDataComponents.LAVAREPAIR_LAVAPOS);
             entity.setOnGround(false);
         }
-        if (stack.has(JustDireDataComponents.FLOATINGTICKS)) {
+        if (stack.hasTag() &&stack.getTag().contains(JustDireDataComponents.FLOATINGTICKS)) {
             if (entity.position().y - getLavaPos(stack).getY() < 3)
                 entity.setDeltaMovement(new Vec3(0, 0.05, 0)); // Slower floating effect
             else
                 entity.setDeltaMovement(new Vec3(0, 0.005, 0)); // Slower floating effect
             entity.move(MoverType.SELF, entity.getDeltaMovement());
-            stack.update(JustDireDataComponents.FLOATINGTICKS, 0, v -> v + 1);
+            JustDireDataComponents.update(stack,JustDireDataComponents.FLOATINGTICKS, Codec.FLOAT, 0f,v -> v + 1);
             entity.setOnGround(true);
-            if (stack.getOrDefault(JustDireDataComponents.FLOATINGTICKS, 0) >= 80) {
+            float ticks = JustDireDataComponents.getFloatingTicks(stack);
+            if (ticks >= 80) {
                 turnLavaIntoObsidian(stack, entity);
                 repairItem(stack);
-                stack.remove(JustDireDataComponents.FLOATINGTICKS);
-                stack.remove(JustDireDataComponents.LAVAREPAIR_LAVAPOS);
+                stack.removeTagKey(JustDireDataComponents.FLOATINGTICKS);
+                stack.removeTagKey(JustDireDataComponents.LAVAREPAIR_LAVAPOS);
                 entity.setOnGround(false);
             }
-            if (!entity.level().isClientSide && stack.getOrDefault(JustDireDataComponents.FLOATINGTICKS, 0) < 40)
+            if (!entity.level().isClientSide && JustDireDataComponents.getFloatingTicks(stack) < 40)
                 doParticles(stack, entity);
         }
         return false; // Return false to allow normal item update processing

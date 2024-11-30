@@ -19,9 +19,15 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -262,5 +268,12 @@ public class BlockBreakerT1BE extends BaseMachineBE implements RedstoneControlle
         if (!getRedstoneControlData().equals(getDefaultRedstoneData()))
             return false;
         return true;
+    }
+
+    LazyOptional<IItemHandler> itemOptional = LazyOptional.of(this::getMachineHandler);
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        return cap == ForgeCapabilities.ITEM_HANDLER ? itemOptional.cast() : super.getCapability(cap, side);
     }
 }

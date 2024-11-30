@@ -22,8 +22,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +39,7 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
         super(container, inv, name);
         this.container = container;
         this.pocketGenerator = container.playerEntity.getMainHandItem();
-        this.energyStorage = pocketGenerator.getCapability(Capabilities.EnergyStorage.ITEM);
+        this.energyStorage = pocketGenerator.getCapability(ForgeCapabilities.ENERGY).orElse(null);
     }
 
     @Override
@@ -47,7 +47,8 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
         if (mouseX > (leftPos + 7) && mouseX < (leftPos + 7) + 18 && mouseY > (topPos + 7) && mouseY < (topPos + 7) + 73) {
-            int counter = pocketGenerator.getOrDefault(JustDireDataComponents.POCKETGEN_COUNTER, 0);
+
+            int counter = getCounter();
             int feBurnPerTick = 0;
             if (pocketGenerator.getItem() instanceof PocketGeneratorItem pocketGeneratorItem) {
                 feBurnPerTick = pocketGeneratorItem.getFePerFuelTick() * pocketGeneratorItem.getBurnSpeedMultiplier(pocketGenerator);
@@ -99,7 +100,7 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
     }
 
     @Override
-    protected void renderSlot(GuiGraphics pGuiGraphics, Slot pSlot) {
+    public void renderSlot(GuiGraphics pGuiGraphics, Slot pSlot) {
         super.renderSlot(pGuiGraphics, pSlot);
     }
 
@@ -123,11 +124,11 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
         this.pocketGenerator = container.playerEntity.getMainHandItem();
         if (pocketGenerator.isEmpty() || !(pocketGenerator.getItem() instanceof PocketGeneratorItem))
             return;
-        this.energyStorage = pocketGenerator.getCapability(Capabilities.EnergyStorage.ITEM);
+        this.energyStorage = pocketGenerator.getCapability(ForgeCapabilities.ENERGY).orElse(null);
         if (energyStorage == null)
             return;
-        int maxBurn = pocketGenerator.getOrDefault(JustDireDataComponents.POCKETGEN_MAXBURN, 0);
-        int counter = pocketGenerator.getOrDefault(JustDireDataComponents.POCKETGEN_COUNTER, 0);
+        int maxBurn = getMaxBurn();
+        int counter = getCounter();
         int maxHeight = 13;
         if (maxBurn > 0) {
             int remaining = (counter * maxHeight) / maxBurn;
@@ -140,6 +141,16 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
             int remaining = (energyStorage.getEnergyStored() * height) / maxEnergy;
             guiGraphics.blit(GUI, leftPos + 8, topPos + 78 - remaining, 176, 84 - remaining, 16, remaining + 1);
         }
+    }
+
+    int getCounter() {
+        Integer i = JustDireDataComponents.getPocketgenCounter(pocketGenerator);
+        return i == null ? 0 : i;
+    }
+
+    int getMaxBurn() {
+        Integer i = JustDireDataComponents.getPocketgenMaxburn(pocketGenerator);
+        return i == null ? 0 : i;
     }
 
     @Override
@@ -162,20 +173,6 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
         }
 
         return super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
-    }
-
-    @Override
-    public boolean mouseClicked(double x, double y, int btn) {
-        return super.mouseClicked(x, y, btn);
-    }
-
-    public boolean mouseReleased(double p_mouseReleased_1_, double p_mouseReleased_3_, int p_mouseReleased_5_) {
-        return super.mouseReleased(p_mouseReleased_1_, p_mouseReleased_3_, p_mouseReleased_5_);
-    }
-
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double pScrollX, double pScrollY) {
-        return super.mouseScrolled(mouseX, mouseY, pScrollX, pScrollY);
     }
 
     private static MutableComponent getTrans(String key, Object... args) {

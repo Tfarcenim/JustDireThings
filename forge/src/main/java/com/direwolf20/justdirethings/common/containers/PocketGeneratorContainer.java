@@ -4,19 +4,17 @@ import com.direwolf20.justdirethings.common.containers.basecontainers.BaseContai
 import com.direwolf20.justdirethings.common.containers.slots.FuelSlot;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.ItemStackNBTHandler;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ComponentItemHandler;
-import net.neoforged.neoforge.items.IItemHandler;
 
 public class PocketGeneratorContainer extends BaseContainer {
     public static final int SLOTS = 1;
-    public ComponentItemHandler handler;
+    public ItemStackNBTHandler handler;
     public ItemStack pocketGeneratorItemStack;
     public Player playerEntity;
 
@@ -27,7 +25,7 @@ public class PocketGeneratorContainer extends BaseContainer {
     public PocketGeneratorContainer(int windowId, Inventory playerInventory, Player player, ItemStack pocketGenerator) {
         super(Registration.PocketGenerator_Container.get(), windowId);
         playerEntity = player;
-        handler = new ComponentItemHandler(pocketGenerator, JustDireDataComponents.ITEMSTACK_HANDLER.get(), 1);
+        handler = new ItemStackNBTHandler(pocketGenerator, JustDireDataComponents.ITEMSTACK_HANDLER, 1);
         this.pocketGeneratorItemStack = pocketGenerator;
         if (handler != null)
             addGeneratorSlots(handler, 0, 80, 35, 1, 18);

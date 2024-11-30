@@ -5,6 +5,7 @@ import com.direwolf20.justdirethings.common.items.PotionCanisterItem;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.*;
 import com.direwolf20.justdirethings.setup.Config;
+import com.direwolf20.justdirethings.util.ItemStackNBTHandler;
 import com.direwolf20.justdirethings.util.PotionContents;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
@@ -21,12 +22,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,6 +76,11 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
         }
     }
 
+    @Override
+    public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
+        super.releaseUsing(pStack, pLevel, pEntityLiving, pTimeLeft);
+    }//todo
+
     protected Projectile createProjectile(Level level, LivingEntity livingEntity, ItemStack itemStack, ItemStack stack, boolean crit) {
         ArrowItem arrowitem = stack.getItem() instanceof ArrowItem arrowitem1 ? arrowitem1 : (ArrowItem) Items.ARROW;
         ToggleableTool toggleableTool = (ToggleableTool) itemStack.getItem();
@@ -79,16 +89,17 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
             if (crit) {
                 justDireArrow.setCritArrow(true);
             }
-            if (itemStack.getOrDefault(JustDireDataComponents.EPIC_ARROW, false)) {
+            Boolean e = JustDireDataComponents.isEpicArrow(itemStack);
+            if (e != null && e) {
                 justDireArrow.setEpicArrow(true);
                 justDireArrow.setBaseDamage(20d);
                 AbilityParams abilityParams = toggleableTool.getAbilityParams(Ability.EPICARROW);
                 ToggleableTool.addCooldown(itemStack, Ability.EPICARROW, abilityParams.cooldown, false);
-                itemStack.set(JustDireDataComponents.EPIC_ARROW, false);
+                JustDireDataComponents.setEpicArrow(itemStack,false);
             }
 
             if (!toggleableTool.getEnabled(itemStack))
-                return customArrow(justDireArrow, stack, itemStack);
+                return customArrow(justDireArrow);
 
             if (canUseAbilityAndDurability(itemStack, Ability.PHASE)) {
                 justDireArrow.setPhase(true);
@@ -106,10 +117,10 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
             }
 
             if (noPotionAbilitiesActive(itemStack))
-                return customArrow(justDireArrow, stack, itemStack);
+                return customArrow(justDireArrow);
 
-            IItemHandler itemHandler = itemStack.getCapability(Capabilities.ItemHandler.ITEM);
-            if (itemHandler instanceof ComponentItemHandler componentItemHandler) {
+            IItemHandler itemHandler = itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
+            if (itemHandler instanceof ItemStackNBTHandler componentItemHandler) {
                 PotionContents potionContents = PotionContents.EMPTY;
                 for (int slot = 0; slot < componentItemHandler.getSlots(); slot++) {
                     ItemStack potionCanister = componentItemHandler.getStackInSlot(slot);
@@ -150,9 +161,9 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
                 }
             }
 
-            return customArrow(justDireArrow, stack, itemStack);
+            return customArrow(justDireArrow);
         }
-        return super.createProjectile(level, livingEntity, itemStack, stack, crit);
+        return null;//super.createProjectile(level, livingEntity, itemStack, stack, crit);
     }
 
     public LivingEntity findAimedAtEntity(LivingEntity livingEntity, boolean onlyHostile) {
@@ -211,10 +222,12 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
 
     }
 
-    @Override
+  //  @Override
     protected int getDurabilityUse(ItemStack itemStack) {
         return this instanceof PoweredTool poweredTool ? poweredTool.getBlockBreakFECost() : 1;
     }
+
+
 
     @Override
     public EnumSet<Ability> getAllAbilities() {
@@ -234,9 +247,8 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        Level level = context.level();
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         if (level == null) {
             return;
         }
@@ -253,14 +265,13 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<T> onBroken) {
         if (stack.getItem() instanceof PoweredTool poweredTool) {
-            IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            IEnergyStorage energyStorage = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
             if (energyStorage == null) return amount;
             double reductionFactor = 0;
             if (entity != null) {
-                HolderLookup.RegistryLookup<Enchantment> registrylookup = entity.level().getServer().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
-                int unbreakingLevel = stack.getEnchantmentLevel(registrylookup.getOrThrow(Enchantments.UNBREAKING));
+                int unbreakingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING,stack);
                 reductionFactor = Math.min(1.0, unbreakingLevel * 0.1);
             }
             int finalEnergyCost = (int) Math.max(0, amount - (amount * reductionFactor));
@@ -268,17 +279,6 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
             return 0;
         }
         return amount;
-    }
-
-    @Override
-    public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
-        if (stack.getItem() instanceof PoweredTool)
-            return super.isPrimaryItemFor(stack, enchantment) && canAcceptEnchantments(enchantment);
-        return super.isPrimaryItemFor(stack, enchantment);
-    }
-
-    private boolean canAcceptEnchantments(Holder<Enchantment> enchantment) {
-        return !enchantment.value().effects().has(EnchantmentEffectComponents.REPAIR_WITH_XP);
     }
 
     @Override

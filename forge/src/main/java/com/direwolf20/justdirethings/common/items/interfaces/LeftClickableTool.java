@@ -35,7 +35,7 @@ public interface LeftClickableTool {
         for (Ability ability : abilityList) {
             abilitiesNamesList.add(ability.getName());
         }
-        stack.set(JustDireDataComponents.LEFT_CLICK_ABILITIES, abilitiesNamesList);
+        JustDireDataComponents.setLeftClickAbilities(stack, abilitiesNamesList);
     }
 
     static Set<Ability> getLeftClickList(ItemStack stack) {

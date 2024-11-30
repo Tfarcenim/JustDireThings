@@ -1,7 +1,7 @@
 package com.direwolf20.justdirethings.datagen;
 
 import com.direwolf20.justdirethings.JustDireThings;
-import com.direwolf20.justdirethings.common.blocks.BlockBreakerT1;
+import com.direwolf20.justdirethings.common.blocks.BlockBreakerT1Block;
 import com.direwolf20.justdirethings.common.blocks.gooblocks.GooBlock_Base;
 import com.direwolf20.justdirethings.common.blocks.gooblocks.GooPatternBlock;
 import com.direwolf20.justdirethings.common.blocks.resources.TimeCrystalBuddingBlock;
@@ -10,7 +10,6 @@ import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -144,7 +143,7 @@ public class JustDireBlockStates extends BlockStateProvider {
             if (sidedBlock.equals(Registration.BlockBreakerT1)) {
                 getVariantBuilder(Registration.BlockBreakerT1.get()).forAllStates(s -> {
                     ModelFile model;
-                    boolean active = s.getValue(BlockBreakerT1.ACTIVE);
+                    boolean active = s.getValue(BlockBreakerT1Block.ACTIVE);
                     Direction dir = s.getValue(BlockStateProperties.FACING);
                     if (active) { //Active
                         model = models().orientableWithBottom(

@@ -9,8 +9,10 @@ import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.JustDireTags;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -1616,37 +1618,40 @@ public class JustDireRecipes extends RecipeProvider {
             if (ability != null) {
                 for (var armor : Registration.ARMORS.getEntries()) {
                     Item armorItem = armor.get();
+                    ResourceLocation name = BuiltInRegistries.ITEM.getKey(armorItem);
                     if (armorItem instanceof ToggleableTool toggleableTool) {
                         EnumSet<Ability> abilities = toggleableTool.getAllAbilities();
                         if (abilities.contains(ability)) {
                             PaxelRecipeBuilder.ability(Ingredient.EMPTY, Ingredient.of(armor.get()), Ingredient.of(upgrade.get()))
                                   //  .group("justdirethings")
                                     .unlocks("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
-                                    .save(consumer);
+                                    .save(consumer,name.withSuffix("-ability"));
                         }
                     }
                 }
                 for (var tool : Registration.TOOLS.getEntries()) {
                     Item toolItem = tool.get();
+                    ResourceLocation name = BuiltInRegistries.ITEM.getKey(toolItem);
                     if (toolItem instanceof ToggleableTool toggleableTool) {
                         EnumSet<Ability> abilities = toggleableTool.getAllAbilities();
                         if (abilities.contains(ability)) {
                             PaxelRecipeBuilder.ability(Ingredient.EMPTY, Ingredient.of(tool.get()), Ingredient.of(upgrade.get()))
                                  //   .group("justdirethings")
                                     .unlocks("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
-                                    .save(consumer);
+                                    .save(consumer,name.withSuffix("-ability"));
                         }
                     }
                 }
                 for (var bow : Registration.BOWS.getEntries()) {
                     Item bowItem = bow.get();
+                    ResourceLocation name = BuiltInRegistries.ITEM.getKey(bowItem);
                     if (bowItem instanceof ToggleableTool toggleableTool) {
                         EnumSet<Ability> abilities = toggleableTool.getAllAbilities();
                         if (abilities.contains(ability)) {
                             PaxelRecipeBuilder.ability(Ingredient.EMPTY, Ingredient.of(bow.get()), Ingredient.of(upgrade.get()))
                                     ///.group("justdirethings")
                                     .unlocks("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
-                                    .save(consumer,);
+                                    .save(consumer,name.withSuffix("-ability"));
                         }
                     }
                 }

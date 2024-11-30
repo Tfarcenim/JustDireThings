@@ -5,10 +5,10 @@ import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButton
 import com.direwolf20.justdirethings.client.screens.widgets.ToggleButton;
 import com.direwolf20.justdirethings.common.containers.BlockPlacerT1Container;
 import com.direwolf20.justdirethings.network.server.C2SDirectionSettingPayload;
+import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BlockPlacerT1Screen extends BaseMachineScreen<BlockPlacerT1Container> {
     public BlockPlacerT1Screen(BlockPlacerT1Container container, Inventory inv, Component name) {
@@ -20,7 +20,7 @@ public class BlockPlacerT1Screen extends BaseMachineScreen<BlockPlacerT1Containe
         super.init();
         addRenderableWidget(ToggleButtonFactory.DIRECTIONBUTTON(getGuiLeft() + 122, topSectionTop + 38, direction, b -> {
             direction = ((ToggleButton) b).getTexturePosition();
-            PacketDistributor.sendToServer(new C2SDirectionSettingPayload(direction));
+            Services.PLATFORM.sendToServer(new C2SDirectionSettingPayload(direction));
         }));
     }
 

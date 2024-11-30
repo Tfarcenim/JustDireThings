@@ -1,12 +1,14 @@
 package com.direwolf20.justdirethings.common.items.interfaces;
 
+import com.google.common.collect.Multimap;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 
 public interface PoweredTool extends PoweredItem {
-    default ItemAttributeModifiers getPoweredAttributeModifiers(ItemStack stack, ItemAttributeModifiers originalModifiers) {
-        ItemAttributeModifiers modifiers = ItemAttributeModifiers.builder().build();
+    default Multimap<Attribute, AttributeModifier> getPoweredAttributeModifiers(ItemStack stack, Multimap<Attribute, AttributeModifier> originalModifiers) {
+    /*    ItemAttributeModifiers modifiers = ItemAttributeModifiers.builder().build();
         if (PoweredItem.getAvailableEnergy(stack) >= getBlockBreakFECost()) {
             return originalModifiers;
         } else {
@@ -15,7 +17,8 @@ public interface PoweredTool extends PoweredItem {
                     modifiers.withModifierAdded(entry.attribute(), entry.modifier(), entry.slot());
             }
         }
-        return modifiers;
+        return modifiers;*/
+        return null;
     }
 
     default int getBlockBreakFECost() {

@@ -18,7 +18,6 @@ import com.direwolf20.justdirethings.common.blocks.soil.GooSoilTier3;
 import com.direwolf20.justdirethings.common.blocks.soil.GooSoilTier4;
 import com.direwolf20.justdirethings.common.capabilities.*;
 import com.direwolf20.justdirethings.common.containers.*;
-import com.direwolf20.justdirethings.common.containers.handlers.FilterBasicHandler;
 import com.direwolf20.justdirethings.common.entities.*;
 import com.direwolf20.justdirethings.common.fluids.basefluids.RefinedFuel;
 import com.direwolf20.justdirethings.common.fluids.polymorphicfluid.PolymorphicFluid;
@@ -314,9 +313,9 @@ public class Registration {
     //Machines
     public static final RegistryObject<ItemCollector> ItemCollector = BLOCKS.register("itemcollector", ItemCollector::new);
     public static final RegistryObject<BlockItem> ItemCollector_ITEM = ITEMS.register("itemcollector", () -> new BlockItem(ItemCollector.get(), new Item.Properties()));
-    public static final RegistryObject<BlockBreakerT1> BlockBreakerT1 = SIDEDBLOCKS.register("blockbreakert1", BlockBreakerT1::new);
+    public static final RegistryObject<BlockBreakerT1Block> BlockBreakerT1 = SIDEDBLOCKS.register("blockbreakert1", BlockBreakerT1Block::new);
     public static final RegistryObject<BlockItem> BlockBreakerT1_ITEM = ITEMS.register("blockbreakert1", () -> new BlockItem(BlockBreakerT1.get(), new Item.Properties()));
-    public static final RegistryObject<BlockBreakerT2> BlockBreakerT2 = SIDEDBLOCKS.register("blockbreakert2", BlockBreakerT2::new);
+    public static final RegistryObject<BlockBreakerT2Block> BlockBreakerT2 = SIDEDBLOCKS.register("blockbreakert2", BlockBreakerT2Block::new);
     public static final RegistryObject<BlockItem> BlockBreakerT2_ITEM = ITEMS.register("blockbreakert2", () -> new BlockItem(BlockBreakerT2.get(), new Item.Properties()));
     public static final RegistryObject<BlockPlacerT1> BlockPlacerT1 = SIDEDBLOCKS.register("blockplacert1", BlockPlacerT1::new);
     public static final RegistryObject<BlockItem> BlockPlacerT1_ITEM = ITEMS.register("blockplacert1", () -> new BlockItem(BlockPlacerT1.get(), new Item.Properties()));
@@ -350,7 +349,7 @@ public class Registration {
     public static final RegistryObject<BlockItem> FluidCollectorT2_ITEM = ITEMS.register("fluidcollectort2", () -> new BlockItem(FluidCollectorT2.get(), new Item.Properties()));
     public static final RegistryObject<ParadoxMachine> ParadoxMachine = SIDEDBLOCKS.register("paradoxmachine", ParadoxMachine::new);
     public static final RegistryObject<BlockItem> ParadoxMachine_ITEM = ITEMS.register("paradoxmachine", () -> new BlockItem(ParadoxMachine.get(), new Item.Properties()));
-    public static final RegistryObject<InventoryHolder> InventoryHolder = BLOCKS.register("inventory_holder", InventoryHolder::new);
+    public static final RegistryObject<InventoryHolderBlock> InventoryHolder = BLOCKS.register("inventory_holder", InventoryHolderBlock::new);
     public static final RegistryObject<BlockItem> InventoryHolder_ITEM = ITEMS.register("inventory_holder", () -> new BlockItem(InventoryHolder.get(), new Item.Properties()));
     public static final RegistryObject<ExperienceHolderBlock> ExperienceHolder = BLOCKS.register("experienceholder", ExperienceHolderBlock::new);
     public static final RegistryObject<BlockItem> ExperienceHolder_ITEM = ITEMS.register("experienceholder", () -> new BlockItem(ExperienceHolder.get(), new Item.Properties()));
@@ -736,14 +735,6 @@ public class Registration {
                 if (holder instanceof BaseMachineBE baseMachineBE)
                     return new GeneratorFluidItemHandler(baseMachineBE.MACHINE_SLOTS);
                 return new GeneratorFluidItemHandler(1);
-            }).build());
-    public static final Supplier<AttachmentType<FilterBasicHandler>> HANDLER_BASIC_FILTER = ATTACHMENT_TYPES.register(
-            "handler_item_collector", () -> AttachmentType.serializable(() -> new FilterBasicHandler(9)).build());
-    public static final Supplier<AttachmentType<FilterBasicHandler>> HANDLER_BASIC_FILTER_ANYSIZE = ATTACHMENT_TYPES.register(
-            "anysize_filter_handler", () -> AttachmentType.serializable(holder -> {
-                if (holder instanceof BaseMachineBE baseMachineBE)
-                    return new FilterBasicHandler(baseMachineBE.ANYSIZE_FILTER_SLOTS);
-                return new FilterBasicHandler(0);
             }).build());
 
 

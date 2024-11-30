@@ -16,12 +16,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
@@ -37,9 +37,10 @@ public class BaseAxe extends AxeItem implements ToggleableTool, LeftClickableToo
     protected final EnumSet<Ability> abilities = EnumSet.noneOf(Ability.class);
     protected final Map<Ability, AbilityParams> abilityParams = new EnumMap<>(Ability.class);
 
-    public BaseAxe(Tier pTier, Item.Properties pProperties) {
-        super(pTier, pProperties);
+    public BaseAxe(Tier pTier, float pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
+        super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }
+
 
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
@@ -75,9 +76,8 @@ public class BaseAxe extends AxeItem implements ToggleableTool, LeftClickableToo
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        Level level = context.level();
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
         if (level == null) {
             return;
         }
@@ -119,14 +119,13 @@ public class BaseAxe extends AxeItem implements ToggleableTool, LeftClickableToo
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<T> onBroken) {
         if (stack.getItem() instanceof PoweredTool poweredTool) {
-            IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            IEnergyStorage energyStorage = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
             if (energyStorage == null) return amount;
             double reductionFactor = 0;
             if (entity != null) {
-                HolderLookup.RegistryLookup<Enchantment> registrylookup = entity.level().getServer().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
-                int unbreakingLevel = stack.getEnchantmentLevel(registrylookup.getOrThrow(Enchantments.UNBREAKING));
+                int unbreakingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING,stack);
                 reductionFactor = Math.min(1.0, unbreakingLevel * 0.1);
             }
             int finalEnergyCost = (int) Math.max(0, amount - (amount * reductionFactor));
@@ -134,17 +133,6 @@ public class BaseAxe extends AxeItem implements ToggleableTool, LeftClickableToo
             return 0;
         }
         return amount;
-    }
-
-    @Override
-    public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
-        if (stack.getItem() instanceof PoweredTool)
-            return super.isPrimaryItemFor(stack, enchantment) && canAcceptEnchantments(enchantment);
-        return super.isPrimaryItemFor(stack, enchantment);
-    }
-
-    private boolean canAcceptEnchantments(Holder<Enchantment> enchantment) {
-        return !enchantment.value().effects().has(EnchantmentEffectComponents.REPAIR_WITH_XP);
     }
 
     @Override

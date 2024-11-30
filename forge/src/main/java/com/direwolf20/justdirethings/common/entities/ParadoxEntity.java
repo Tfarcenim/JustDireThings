@@ -28,8 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.entity.PartEntity;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -301,13 +299,13 @@ public class ParadoxEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(REQUIRED_CONSUMPTION, 100);
-        builder.define(CONSUMPTION, 0);
-        builder.define(RADIUS, 0);
-        builder.define(SHRINK_SCALE, 1.0f);
-        builder.define(TARGET_RADIUS, 0);
-        builder.define(GROWTH_TICKS, 0);
+    protected void defineSynchedData() {
+        entityData.define(REQUIRED_CONSUMPTION, 100);
+        entityData.define(CONSUMPTION, 0);
+        entityData.define(RADIUS, 0);
+        entityData.define(SHRINK_SCALE, 1.0f);
+        entityData.define(TARGET_RADIUS, 0);
+        entityData.define(GROWTH_TICKS, 0);
     }
 
     public int getRadius() {

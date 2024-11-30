@@ -67,9 +67,7 @@ public class JustDireThingsForge {
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         //Items
-        event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new ComponentItemHandler(itemStack, JustDireDataComponents.ITEMSTACK_HANDLER.get(), 1),
-                Registration.Pocket_Generator.get()
-        );
+
         event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new ComponentItemHandler(itemStack, JustDireDataComponents.TOOL_CONTENTS.get(), 1),
                 Registration.FerricoreBow.get()
         );
@@ -190,14 +188,7 @@ public class JustDireThingsForge {
                 Registration.FluidCollectorT1.get(),
                 Registration.FluidCollectorT2.get()
         );
-        event.registerBlock(Capabilities.ItemHandler.BLOCK,
-                (level, pos, state, be, side) -> {
-                    if (be instanceof InventoryHolderBE inventoryHolderBE)
-                        return inventoryHolderBE.getInventoryHolderHandler();
-                    return null;
-                },
-                Registration.InventoryHolder.get()
-        );
+
         event.registerBlock(Capabilities.ItemHandler.BLOCK,
                 (level, pos, state, be, side) -> {
                     if (be instanceof BaseMachineBE)

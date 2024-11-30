@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.blockentities.basebe;
 
-import com.direwolf20.justdirethings.common.blocks.BlockBreakerT1;
+import com.direwolf20.justdirethings.common.blocks.BlockBreakerT1Block;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.interfacehelpers.RedstoneControlData;
 import net.minecraft.nbt.CompoundTag;
@@ -17,8 +17,8 @@ public interface RedstoneControlledBE {
         if (getBlockEntity() instanceof BaseMachineBE baseMachineBE)
             baseMachineBE.markDirtyClient();
         BlockState blockState = getBlockEntity().getBlockState();
-        if (blockState.hasProperty(BlockBreakerT1.ACTIVE)) {
-            getBlockEntity().getLevel().setBlockAndUpdate(getBlockEntity().getBlockPos(), blockState.setValue(BlockBreakerT1.ACTIVE, isActiveRedstoneTestOnly()));
+        if (blockState.hasProperty(BlockBreakerT1Block.ACTIVE)) {
+            getBlockEntity().getLevel().setBlockAndUpdate(getBlockEntity().getBlockPos(), blockState.setValue(BlockBreakerT1Block.ACTIVE, isActiveRedstoneTestOnly()));
         }
     }
 
@@ -30,8 +30,8 @@ public interface RedstoneControlledBE {
             getRedstoneControlData().receivingRedstone = newRedstoneSignal;
             getRedstoneControlData().checkedRedstone = true;
             BlockState blockState = getBlockEntity().getBlockState();
-            if (blockState.hasProperty(BlockBreakerT1.ACTIVE)) {
-                getBlockEntity().getLevel().setBlockAndUpdate(getBlockEntity().getBlockPos(), blockState.setValue(BlockBreakerT1.ACTIVE, isActiveRedstoneTestOnly()));
+            if (blockState.hasProperty(BlockBreakerT1Block.ACTIVE)) {
+                getBlockEntity().getLevel().setBlockAndUpdate(getBlockEntity().getBlockPos(), blockState.setValue(BlockBreakerT1Block.ACTIVE, isActiveRedstoneTestOnly()));
             }
         }
     }

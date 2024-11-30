@@ -18,7 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class EclipseGateBlock extends Block implements EntityBlock {
+public class  EclipseGateBlock extends Block implements EntityBlock {
     public EclipseGateBlock() {
         super(Properties.of()
                 .strength(20f)

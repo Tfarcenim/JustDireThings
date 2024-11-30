@@ -31,7 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import net.minecraftforge.client.model.data.ModelData;
 
 import java.util.BitSet;
 import java.util.List;
@@ -170,7 +170,7 @@ public class ParadoxMachineBER extends AreaAffectingBER {
         float f4 = 0.0F;
 
         // Set transparency
-        int packedARGB = (alpha << 24) | (255 << 16) | (255 << 8) | 255;
+        int packedARGB = (alpha << 24) | 0xffffff;
 
         // Render entity model with transparency
         if (renderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {
@@ -180,7 +180,7 @@ public class ParadoxMachineBER extends AreaAffectingBER {
             entityModel.young = entity.isBaby();
             entityModel.prepareMobModel(entity, f4, f8, partialTicks);
             entityModel.setupAnim(entity, f4, f8, f7, f2, f5);
-            entityModel.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightsIn, overlayCoords, packedARGB);
+            entityModel.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightsIn, overlayCoords,1,1,1, alpha/255f);
         }
     }
 

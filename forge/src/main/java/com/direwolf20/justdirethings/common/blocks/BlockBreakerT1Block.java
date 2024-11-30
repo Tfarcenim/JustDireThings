@@ -18,9 +18,9 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 import javax.annotation.Nullable;
 
-public class BlockBreakerT1 extends BaseMachineBlock {
+public class BlockBreakerT1Block extends BaseMachineBlock {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
-    public BlockBreakerT1() {
+    public BlockBreakerT1Block() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)
