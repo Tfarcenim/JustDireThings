@@ -1,8 +1,8 @@
 package com.direwolf20.justdirethings.common.blocks;
 
-import com.direwolf20.justdirethings.common.blockentities.FluidPlacerT2BE;
+import com.direwolf20.justdirethings.common.blockentities.ParadoxMachineBE;
 import com.direwolf20.justdirethings.common.blocks.baseblocks.BaseMachineBlock;
-import com.direwolf20.justdirethings.common.containers.FluidPlacerT2Container;
+import com.direwolf20.justdirethings.common.containers.ParadoxMachineContainer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,12 +24,11 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class FluidPlacerT2 extends BaseMachineBlock {
-    public FluidPlacerT2() {
+public class ParadoxMachineBlock extends BaseMachineBlock {
+    public ParadoxMachineBlock() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)
@@ -40,26 +39,26 @@ public class FluidPlacerT2 extends BaseMachineBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new FluidPlacerT2BE(pos, state);
+        return new ParadoxMachineBE(pos, state);
     }
 
     @Override
     public void openMenu(ServerPlayer player, BlockPos blockPos) {
-        NetworkHooks.openScreen(player,new SimpleMenuProvider(
-                (windowId, playerInventory, playerEntity) -> new FluidPlacerT2Container(windowId, playerInventory, blockPos), Component.empty()),blockPos);
+        player.openMenu(new SimpleMenuProvider(
+                (windowId, playerInventory, playerEntity) -> new ParadoxMachineContainer(windowId, playerInventory, blockPos), Component.empty()));
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+    public InteractionResult use(BlockState p_60503_, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (level.isClientSide) return InteractionResult.PASS;
         IFluidHandlerItem fluidHandlerItem = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandlerItem != null) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity== null) return InteractionResult.PASS;
+            if (blockEntity == null) return InteractionResult.PASS;
             IFluidHandler cap = blockEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, blockHitResult.getDirection()).orElse(null);
             if (cap == null) return InteractionResult.PASS;
-            if (fluidHandlerItem.getFluidInTank(0).isEmpty()) {
+            if (fluidHandlerItem.getFluidInTank(0).getAmount() < fluidHandlerItem.getTankCapacity(0) && !cap.getFluidInTank(0).isEmpty()) {
                 FluidStack testStack = cap.drain(fluidHandlerItem.getTankCapacity(0), IFluidHandler.FluidAction.SIMULATE);
                 if (testStack.getAmount() > 0) {
                     int amtFit = fluidHandlerItem.fill(testStack, IFluidHandler.FluidAction.SIMULATE);
@@ -92,6 +91,6 @@ public class FluidPlacerT2 extends BaseMachineBlock {
 
     @Override
     public boolean isValidBE(BlockEntity blockEntity) {
-        return blockEntity instanceof FluidPlacerT2BE;
+        return blockEntity instanceof ParadoxMachineBE;
     }
 }

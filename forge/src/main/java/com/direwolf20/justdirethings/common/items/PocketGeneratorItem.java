@@ -26,6 +26,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
@@ -207,22 +208,43 @@ public class PocketGeneratorItem extends Item implements PoweredItem, Toggleable
         return Config.POCKET_GENERATOR_BURN_SPEED_MULTIPLIER.get() * getFuelMultiplier(itemStack);
     }
 
-    @Override
-    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new Provider(stack,JustDireDataComponents.ITEMSTACK_HANDLER,1);
+    public IItemHandler getItemHandler(ItemStack stack) {
+        return new ItemStackNBTHandler(stack,JustDireDataComponents.TOOL_CONTENTS,1);
     }
 
-    static class Provider extends ItemStackNBTHandler implements ICapabilityProvider {
+    public EnergyStorage getEnergyStorage(ItemStack stack) {
+        int capacity = 1000000; //Default
+        if (stack.getItem() instanceof PoweredItem poweredItem) {
+            capacity = poweredItem.getMaxEnergy();
+        }
+        return new EnergyStorageItemStackNoReceive(capacity, stack);
+    }
 
-        public Provider(ItemStack stack, String target, int size) {
-            super(stack, target, size);
+    @Override
+    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new Provider(stack);
+    }
+
+    class Provider implements ICapabilityProvider {
+
+        private final ItemStack stack;
+
+        public Provider(ItemStack stack) {
+            this.stack = stack;
+            itemHolder = LazyOptional.of(() -> getItemHandler(this.stack));
+            energyHolder = LazyOptional.of(() -> getEnergyStorage(stack));
         }
 
-        private final LazyOptional<IItemHandler> holder = LazyOptional.of(() -> this);
+        private final LazyOptional<IItemHandler> itemHolder;
+        private final LazyOptional<IEnergyStorage> energyHolder;
 
         @Override
         public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-            return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, this.holder);
+            if (cap == ForgeCapabilities.ITEM_HANDLER) {
+                return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, this.itemHolder);
+            } else {
+                return ForgeCapabilities.ENERGY.orEmpty(cap,energyHolder);
+            }
         }
     }
 }

@@ -22,9 +22,13 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -154,6 +158,12 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
             int extractAmt = extractEnergy(amtFit, false);
             iEnergyStorage.receiveEnergy(extractAmt, false);
         }
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY) return LazyOptional.of(() -> energyHandler).cast();
+        return cap == ForgeCapabilities.ITEM_HANDLER ? LazyOptional.of(() -> getMachineHandler()).cast() : super.getCapability(cap, side);
     }
 
     public void doBurn() {

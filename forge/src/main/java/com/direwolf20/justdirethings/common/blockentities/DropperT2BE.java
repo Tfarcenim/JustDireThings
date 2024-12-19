@@ -18,6 +18,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,4 +139,11 @@ public class DropperT2BE extends DropperT1BE implements AreaAffectingBE, Powered
         super.setChanged();
         this.filteredList = null; //Null it out, so it regenerates if needed
     }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY) return LazyOptional.of(() -> energyStorage).cast();
+        return cap == ForgeCapabilities.ITEM_HANDLER ? LazyOptional.of(() -> machineHandler).cast() : super.getCapability(cap, side);
+    }
+
 }

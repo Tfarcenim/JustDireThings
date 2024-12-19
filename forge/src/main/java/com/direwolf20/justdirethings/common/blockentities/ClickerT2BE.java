@@ -11,6 +11,7 @@ import com.direwolf20.justdirethings.util.UsefulFakePlayer;
 import com.direwolf20.justdirethings.util.interfacehelpers.AreaAffectingData;
 import com.direwolf20.justdirethings.util.interfacehelpers.FilterData;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,7 +22,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.List;
@@ -127,5 +134,13 @@ public class ClickerT2BE extends ClickerT1BE implements PoweredMachineBE, AreaAf
         if (!super.isValidEntity(entity))
             return false; //Do the same checks as normal, then check the filters
         return isEntityValidFilter(entity, this.level);
+    }
+
+    LazyOptional<IItemHandler> itemOptional = LazyOptional.of(this::getMachineHandler);
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY) return LazyOptional.of(() -> getEnergyStorage()).cast();
+        return cap == ForgeCapabilities.ITEM_HANDLER ? itemOptional.cast() : super.getCapability(cap, side);
     }
 }

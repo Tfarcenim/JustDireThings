@@ -1,5 +1,6 @@
 package com.direwolf20.justdirethings.common.containers;
 
+import com.direwolf20.justdirethings.common.blockentities.PlayerAccessorBE;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseMachineContainer;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.BlockPos;
@@ -9,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 
-public class PlayerAccessorContainer extends BaseMachineContainer {
+public class PlayerAccessorContainer extends BaseMachineContainer<PlayerAccessorBE> {
     public PlayerAccessorContainer(int windowId, Inventory playerInventory, FriendlyByteBuf extraData) {
         this(windowId, playerInventory, extraData.readBlockPos());
     }
@@ -28,6 +29,8 @@ public class PlayerAccessorContainer extends BaseMachineContainer {
     public ItemStack quickMoveStack(Player playerIn, int index) {
         return super.quickMoveStack(playerIn, index);
     }
+
+
 
     @Override
     public void removed(Player playerIn) {

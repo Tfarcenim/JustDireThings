@@ -25,7 +25,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -277,5 +282,11 @@ public class ClickerT1BE extends BaseMachineBE implements RedstoneControlledBE {
         if (tag.contains("maxHoldTicks"))
             maxHoldTicks = tag.getInt("maxHoldTicks");
         super.load(tag);
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) return LazyOptional.of(() -> machineHandler).cast();
+        return super.getCapability(cap, side);
     }
 }

@@ -3,8 +3,12 @@ package com.direwolf20.justdirethings.common.items;
 import com.direwolf20.justdirethings.common.containers.PotionCanisterContainer;
 import com.direwolf20.justdirethings.common.containers.handlers.PotionCanisterHandler;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BaseBowItem;
+import com.direwolf20.justdirethings.util.ItemStackNBTHandler;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.direwolf20.justdirethings.util.PotionContents;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -14,7 +18,13 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -113,4 +123,30 @@ public class PotionCanisterItem extends Item {
     public static int getPotionColor(ItemStack itemStack) {
         return getPotionContents(itemStack).getColor();
     }
+
+    public IItemHandler getItemHandler(ItemStack stack) {
+        return new ItemStackNBTHandler(stack,JustDireDataComponents.TOOL_CONTENTS,1);
+    }
+
+    @Override
+    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new CapabilityProvider(stack);
+    }
+
+    public class CapabilityProvider implements ICapabilityProvider {
+
+        private final ItemStack stack;
+        private final LazyOptional<IItemHandler> holder;
+
+        public CapabilityProvider(ItemStack stack) {
+            this.stack = stack;
+            holder = LazyOptional.of(() -> getItemHandler(stack));
+        }
+
+        @Override
+        public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+            return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, this.holder);
+        }
+    }
+
 }

@@ -317,17 +317,17 @@ public class Registration {
     public static final RegistryObject<BlockItem> BlockBreakerT1_ITEM = ITEMS.register("blockbreakert1", () -> new BlockItem(BlockBreakerT1.get(), new Item.Properties()));
     public static final RegistryObject<BlockBreakerT2Block> BlockBreakerT2 = SIDEDBLOCKS.register("blockbreakert2", BlockBreakerT2Block::new);
     public static final RegistryObject<BlockItem> BlockBreakerT2_ITEM = ITEMS.register("blockbreakert2", () -> new BlockItem(BlockBreakerT2.get(), new Item.Properties()));
-    public static final RegistryObject<BlockPlacerT1> BlockPlacerT1 = SIDEDBLOCKS.register("blockplacert1", BlockPlacerT1::new);
+    public static final RegistryObject<BlockPlacerT1Block> BlockPlacerT1 = SIDEDBLOCKS.register("blockplacert1", BlockPlacerT1Block::new);
     public static final RegistryObject<BlockItem> BlockPlacerT1_ITEM = ITEMS.register("blockplacert1", () -> new BlockItem(BlockPlacerT1.get(), new Item.Properties()));
-    public static final RegistryObject<BlockPlacerT2> BlockPlacerT2 = SIDEDBLOCKS.register("blockplacert2", BlockPlacerT2::new);
+    public static final RegistryObject<BlockPlacerT2Block> BlockPlacerT2 = SIDEDBLOCKS.register("blockplacert2", BlockPlacerT2Block::new);
     public static final RegistryObject<BlockItem> BlockPlacerT2_ITEM = ITEMS.register("blockplacert2", () -> new BlockItem(BlockPlacerT2.get(), new Item.Properties()));
     public static final RegistryObject<ClickerT1Block> ClickerT1 = SIDEDBLOCKS.register("clickert1", ClickerT1Block::new);
     public static final RegistryObject<BlockItem> ClickerT1_ITEM = ITEMS.register("clickert1", () -> new BlockItem(ClickerT1.get(), new Item.Properties()));
-    public static final RegistryObject<ClickerT2> ClickerT2 = SIDEDBLOCKS.register("clickert2", ClickerT2::new);
+    public static final RegistryObject<ClickerT2Block> ClickerT2 = SIDEDBLOCKS.register("clickert2", ClickerT2Block::new);
     public static final RegistryObject<BlockItem> ClickerT2_ITEM = ITEMS.register("clickert2", () -> new BlockItem(ClickerT2.get(), new Item.Properties()));
     public static final RegistryObject<SensorT1> SensorT1 = SIDEDBLOCKS.register("sensort1", SensorT1::new);
     public static final RegistryObject<BlockItem> SensorT1_ITEM = ITEMS.register("sensort1", () -> new BlockItem(SensorT1.get(), new Item.Properties()));
-    public static final RegistryObject<SensorT2> SensorT2 = SIDEDBLOCKS.register("sensort2", SensorT2::new);
+    public static final RegistryObject<SensorT2Block> SensorT2 = SIDEDBLOCKS.register("sensort2", SensorT2Block::new);
     public static final RegistryObject<BlockItem> SensorT2_ITEM = ITEMS.register("sensort2", () -> new BlockItem(SensorT2.get(), new Item.Properties()));
     public static final RegistryObject<DropperT1Block> DropperT1 = SIDEDBLOCKS.register("droppert1", DropperT1Block::new);
     public static final RegistryObject<BlockItem> DropperT1_ITEM = ITEMS.register("droppert1", () -> new BlockItem(DropperT1.get(), new Item.Properties()));
@@ -335,19 +335,19 @@ public class Registration {
     public static final RegistryObject<BlockItem> DropperT2_ITEM = ITEMS.register("droppert2", () -> new BlockItem(DropperT2.get(), new Item.Properties()));
     public static final RegistryObject<BlockSwapperT1> BlockSwapperT1 = SIDEDBLOCKS.register("blockswappert1", BlockSwapperT1::new);
     public static final RegistryObject<BlockItem> BlockSwapperT1_ITEM = ITEMS.register("blockswappert1", () -> new BlockItem(BlockSwapperT1.get(), new Item.Properties()));
-    public static final RegistryObject<BlockSwapperT2> BlockSwapperT2 = SIDEDBLOCKS.register("blockswappert2", BlockSwapperT2::new);
+    public static final RegistryObject<BlockSwapperT2Block> BlockSwapperT2 = SIDEDBLOCKS.register("blockswappert2", BlockSwapperT2Block::new);
     public static final RegistryObject<BlockItem> BlockSwapperT2_ITEM = ITEMS.register("blockswappert2", () -> new BlockItem(BlockSwapperT2.get(), new Item.Properties()));
-    public static final RegistryObject<PlayerAccessor> PlayerAccessor = BLOCKS.register("playeraccessor", PlayerAccessor::new);
+    public static final RegistryObject<PlayerAccessorBlock> PlayerAccessor = BLOCKS.register("playeraccessor", PlayerAccessorBlock::new);
     public static final RegistryObject<BlockItem> PlayerAccessor_ITEM = ITEMS.register("playeraccessor", () -> new BlockItem(PlayerAccessor.get(), new Item.Properties()));
-    public static final RegistryObject<FluidPlacerT1> FluidPlacerT1 = SIDEDBLOCKS.register("fluidplacert1", FluidPlacerT1::new);
+    public static final RegistryObject<FluidPlacerT1Block> FluidPlacerT1 = SIDEDBLOCKS.register("fluidplacert1", FluidPlacerT1Block::new);
     public static final RegistryObject<BlockItem> FluidPlacerT1_ITEM = ITEMS.register("fluidplacert1", () -> new BlockItem(FluidPlacerT1.get(), new Item.Properties()));
-    public static final RegistryObject<FluidPlacerT2> FluidPlacerT2 = SIDEDBLOCKS.register("fluidplacert2", FluidPlacerT2::new);
+    public static final RegistryObject<FluidPlacerT2Block> FluidPlacerT2 = SIDEDBLOCKS.register("fluidplacert2", FluidPlacerT2Block::new);
     public static final RegistryObject<BlockItem> FluidPlacerT2_ITEM = ITEMS.register("fluidplacert2", () -> new BlockItem(FluidPlacerT2.get(), new Item.Properties()));
     public static final RegistryObject<FluidCollectorT1Block> FluidCollectorT1 = SIDEDBLOCKS.register("fluidcollectort1", FluidCollectorT1Block::new);
     public static final RegistryObject<BlockItem> FluidCollectorT1_ITEM = ITEMS.register("fluidcollectort1", () -> new BlockItem(FluidCollectorT1.get(), new Item.Properties()));
     public static final RegistryObject<FluidCollectorT2Block> FluidCollectorT2 = SIDEDBLOCKS.register("fluidcollectort2", FluidCollectorT2Block::new);
     public static final RegistryObject<BlockItem> FluidCollectorT2_ITEM = ITEMS.register("fluidcollectort2", () -> new BlockItem(FluidCollectorT2.get(), new Item.Properties()));
-    public static final RegistryObject<ParadoxMachine> ParadoxMachine = SIDEDBLOCKS.register("paradoxmachine", ParadoxMachine::new);
+    public static final RegistryObject<ParadoxMachineBlock> ParadoxMachine = SIDEDBLOCKS.register("paradoxmachine", ParadoxMachineBlock::new);
     public static final RegistryObject<BlockItem> ParadoxMachine_ITEM = ITEMS.register("paradoxmachine", () -> new BlockItem(ParadoxMachine.get(), new Item.Properties()));
     public static final RegistryObject<InventoryHolderBlock> InventoryHolder = BLOCKS.register("inventory_holder", InventoryHolderBlock::new);
     public static final RegistryObject<BlockItem> InventoryHolder_ITEM = ITEMS.register("inventory_holder", () -> new BlockItem(InventoryHolder.get(), new Item.Properties()));
@@ -357,7 +357,7 @@ public class Registration {
 
     //Power Machines
     public static final RegistryObject<GeneratorT1Block> GeneratorT1 = BLOCKS.register("generatort1", GeneratorT1Block::new);
-    public static final RegistryObject<GeneratorFluidT1> GeneratorFluidT1 = BLOCKS.register("generatorfluidt1", GeneratorFluidT1::new);
+    public static final RegistryObject<GeneratorFluidT1Block> GeneratorFluidT1 = BLOCKS.register("generatorfluidt1", GeneratorFluidT1Block::new);
     public static final RegistryObject<BlockItem> GeneratorT1_ITEM = ITEMS.register("generatort1", () -> new BlockItem(GeneratorT1.get(), new Item.Properties()));
     public static final RegistryObject<BlockItem> GeneratorFluidT1_ITEM = ITEMS.register("generatorfluidt1", () -> new BlockItem(GeneratorFluidT1.get(), new Item.Properties()));
     public static final RegistryObject<EnergyTransmitterBlock> EnergyTransmitter = BLOCKS.register("energytransmitter", EnergyTransmitterBlock::new);
@@ -747,7 +747,7 @@ public class Registration {
                     throw new IllegalStateException("Cannot attach energy handler item to a non-PoweredMachine.");
                 }
             }).build());
-    public static final Supplier<AttachmentType<TransmitterEnergyStorage>> ENERGYSTORAGE_TRANSMITTERS = ATTACHMENT_TYPES.register(
+   /* public static final Supplier<AttachmentType<TransmitterEnergyStorage>> ENERGYSTORAGE_TRANSMITTERS = ATTACHMENT_TYPES.register(
             "energystorage_transmitters", () -> AttachmentType.serializable(holder -> {
                 if (holder instanceof EnergyTransmitterBE energyTransmitterBE) {
                     int capacity = energyTransmitterBE.getMaxEnergy(); //Default
@@ -755,7 +755,7 @@ public class Registration {
                 } else {
                     throw new IllegalStateException("Cannot attach energy handler item to a non-EnergyTransmitterBlock.");
                 }
-            }).build());
+            }).build());*/
     public static final Supplier<AttachmentType<EnergyStorageNoReceive>> ENERGYSTORAGE_GENERATORS = ATTACHMENT_TYPES.register(
             "energystorage_generators", () -> AttachmentType.serializable(holder -> {
                 if (holder instanceof PoweredMachineBE feMachineBE) {
@@ -783,10 +783,10 @@ public class Registration {
                     return new JustDireFluidTank(fluidMachineBE.getMaxMB(), fluidstack -> fluidstack.getFluid() instanceof RefinedFuel);
                 return new JustDireFluidTank(0);
             }).build());
-    public static final Supplier<AttachmentType<JustDireFluidTank>> PARADOX_FLUID_HANDLER = ATTACHMENT_TYPES.register(
+    /*public static final Supplier<AttachmentType<JustDireFluidTank>> PARADOX_FLUID_HANDLER = ATTACHMENT_TYPES.register(
             "paradox_fluid_handler", () -> AttachmentType.serializable(holder -> {
                 if (holder instanceof FluidMachineBE fluidMachineBE)
                     return new JustDireFluidTank(fluidMachineBE.getMaxMB(), fluidstack -> fluidstack.getFluid() instanceof TimeFluid);
                 return new JustDireFluidTank(0);
-            }).build());
+            }).build());*/
 }

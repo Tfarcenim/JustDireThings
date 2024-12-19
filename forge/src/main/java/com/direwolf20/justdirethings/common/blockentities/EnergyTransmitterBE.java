@@ -26,8 +26,12 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -402,5 +406,15 @@ public class  EnergyTransmitterBE extends BaseMachineBE implements RedstoneContr
         super.load(tag);
         if (tag.contains("showParticles"))
             showParticles = tag.getBoolean("showParticles");
+    }
+
+
+    public TransmitterEnergyStorage transmitterEnergyStorage = new TransmitterEnergyStorage(getMaxEnergy(),this);
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) return LazyOptional.of(() -> machineHandler).cast();
+        if (cap == ForgeCapabilities.ENERGY) return LazyOptional.of(() -> transmitterEnergyStorage).cast();
+        return super.getCapability(cap, side);
     }
 }

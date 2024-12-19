@@ -10,9 +10,9 @@ import com.direwolf20.justdirethings.common.containers.ClickerT2Container;
 import com.direwolf20.justdirethings.network.server.C2SDirectionSettingPayload;
 import com.direwolf20.justdirethings.network.server.C2SClickerPayload;
 import com.direwolf20.justdirethings.network.server.C2STickSpeedPayload;
+import com.direwolf20.justdirethings.platform.Services;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class ClickerT2Screen extends BaseMachineScreen<ClickerT2Container> {
     public int clickType;
@@ -49,12 +49,12 @@ public class ClickerT2Screen extends BaseMachineScreen<ClickerT2Container> {
         if (clickType == 2) {
             tickSpeedButton = ToggleButtonFactory.TICKSPEEDBUTTON(getGuiLeft() + 144, topSectionTop + 40, tickSpeed, maxHoldTicks + 1, b -> {
                 tickSpeed = ((NumberButton) b).getValue(); //The value is updated in the mouseClicked method below
-                PacketDistributor.sendToServer(new C2STickSpeedPayload(tickSpeed));
+                Services.PLATFORM.sendToServer(new C2STickSpeedPayload(tickSpeed));
             });
         } else {
             tickSpeedButton = ToggleButtonFactory.TICKSPEEDBUTTON(getGuiLeft() + 144, topSectionTop + 40, tickSpeed, b -> {
                 tickSpeed = ((NumberButton) b).getValue(); //The value is updated in the mouseClicked method below
-                PacketDistributor.sendToServer(new C2STickSpeedPayload(tickSpeed));
+                Services.PLATFORM.sendToServer(new C2STickSpeedPayload(tickSpeed));
             });
         }
         widgetsToAdd.add(tickSpeedButton);
@@ -66,7 +66,7 @@ public class ClickerT2Screen extends BaseMachineScreen<ClickerT2Container> {
         super.init();
         addRenderableWidget(ToggleButtonFactory.DIRECTIONBUTTON(getGuiLeft() + 116, topSectionTop + 62, direction, b -> {
             direction = ((ToggleButton) b).getTexturePosition();
-            PacketDistributor.sendToServer(new C2SDirectionSettingPayload(direction));
+            Services.PLATFORM.sendToServer(new C2SDirectionSettingPayload(direction));
         }));
 
         addRenderableWidget(ToggleButtonFactory.CLICKTARGETBUTTON(getGuiLeft() + 44, topSectionTop + 62, clickTarget, b -> {
@@ -78,7 +78,7 @@ public class ClickerT2Screen extends BaseMachineScreen<ClickerT2Container> {
             clickType = ((ToggleButton) b).getTexturePosition();
             if (clickType == 2) {
                 tickSpeed = Math.max(tickSpeed, maxHoldTicks + 1);
-                PacketDistributor.sendToServer(new C2STickSpeedPayload(tickSpeed));
+                Services.PLATFORM.sendToServer(new C2STickSpeedPayload(tickSpeed));
             }
             addTickSpeedButton();
             saveSettings();
@@ -89,7 +89,7 @@ public class ClickerT2Screen extends BaseMachineScreen<ClickerT2Container> {
             maxHoldTicks = ((NumberButton) b).getValue(); //The value is updated in the mouseClicked method below
             if (clickType == 2) {
                 tickSpeed = Math.max(tickSpeed, maxHoldTicks + 1);
-                PacketDistributor.sendToServer(new C2STickSpeedPayload(tickSpeed));
+                Services.PLATFORM.sendToServer(new C2STickSpeedPayload(tickSpeed));
             }
             addTickSpeedButton();
             saveSettings();
@@ -120,6 +120,6 @@ public class ClickerT2Screen extends BaseMachineScreen<ClickerT2Container> {
     @Override
     public void saveSettings() {
         super.saveSettings();
-        PacketDistributor.sendToServer(new C2SClickerPayload(clickType, clickTarget, sneaking, showFakePlayer, maxHoldTicks));
+        Services.PLATFORM.sendToServer(new C2SClickerPayload(clickType, clickTarget, sneaking, showFakePlayer, maxHoldTicks));
     }
 }

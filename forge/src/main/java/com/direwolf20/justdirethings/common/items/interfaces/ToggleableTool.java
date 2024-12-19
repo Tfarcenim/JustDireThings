@@ -1,7 +1,6 @@
 package com.direwolf20.justdirethings.common.items.interfaces;
 
 import com.direwolf20.justdirethings.common.blockentities.GooSoilBE;
-import com.direwolf20.justdirethings.common.blocks.PlayerAccessor;
 import com.direwolf20.justdirethings.common.blocks.soil.GooSoilBase;
 import com.direwolf20.justdirethings.common.containers.ToolSettingContainer;
 import com.direwolf20.justdirethings.common.events.BlockEvents;

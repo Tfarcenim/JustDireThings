@@ -18,13 +18,15 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class InventoryHolderContainer extends BaseMachineContainer {
-    public static final ResourceLocation EMPTY_ARMOR_SLOT_HELMET = ResourceLocation.parse("item/empty_armor_slot_helmet");
-    public static final ResourceLocation EMPTY_ARMOR_SLOT_CHESTPLATE = ResourceLocation.parse("item/empty_armor_slot_chestplate");
-    public static final ResourceLocation EMPTY_ARMOR_SLOT_LEGGINGS = ResourceLocation.parse("item/empty_armor_slot_leggings");
-    public static final ResourceLocation EMPTY_ARMOR_SLOT_BOOTS = ResourceLocation.parse("item/empty_armor_slot_boots");
-    public static final ResourceLocation EMPTY_ARMOR_SLOT_SHIELD = ResourceLocation.parse("item/empty_armor_slot_shield");
+public class InventoryHolderContainer extends BaseMachineContainer<InventoryHolderBE> {
+    public static final ResourceLocation EMPTY_ARMOR_SLOT_HELMET = new ResourceLocation("item/empty_armor_slot_helmet");
+    public static final ResourceLocation EMPTY_ARMOR_SLOT_CHESTPLATE = new ResourceLocation("item/empty_armor_slot_chestplate");
+    public static final ResourceLocation EMPTY_ARMOR_SLOT_LEGGINGS = new ResourceLocation("item/empty_armor_slot_leggings");
+    public static final ResourceLocation EMPTY_ARMOR_SLOT_BOOTS = new ResourceLocation("item/empty_armor_slot_boots");
+    public static final ResourceLocation EMPTY_ARMOR_SLOT_SHIELD = new ResourceLocation("item/empty_armor_slot_shield");
     static final ResourceLocation[] TEXTURE_EMPTY_SLOTS = new ResourceLocation[]{
             EMPTY_ARMOR_SLOT_BOOTS, EMPTY_ARMOR_SLOT_LEGGINGS, EMPTY_ARMOR_SLOT_CHESTPLATE, EMPTY_ARMOR_SLOT_HELMET
     };
@@ -38,8 +40,7 @@ public class InventoryHolderContainer extends BaseMachineContainer {
         super(Registration.InventoryHolder_Container.get(), windowId, playerInventory, blockPos);
         addPlayerSlots(player.getInventory());
         addArmorSlots(player, player.getInventory());
-        if (this.baseMachineBE instanceof InventoryHolderBE inventoryHolderBE)
-            this.inventoryHolderBE = inventoryHolderBE;
+        this.inventoryHolderBE = baseMachineBE;
     }
 
     public void addMachineSlots() {
@@ -84,7 +85,7 @@ public class InventoryHolderContainer extends BaseMachineContainer {
             Slot machineInventorySlot = this.slots.get(machineSlot);
             ItemStack machineStack = machineInventorySlot.getItem(); // Copy the Machine's Item Stack
             if (playerStack.isEmpty() && machineStack.isEmpty()) continue;
-            if (playerSlot >= 77 && playerSlot <= 80 && EnchantmentHelper.has(playerStack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE)) //Armor Slots
+            if (playerSlot >= 77 && playerSlot <= 80 && EnchantmentHelper.hasBindingCurse(playerStack)) //Armor Slots
                 continue;
 
             ItemStack machineStackCopy = machineStack.copy();
@@ -114,7 +115,7 @@ public class InventoryHolderContainer extends BaseMachineContainer {
         Slot slot = this.slots.get(index);
         if (slot.hasItem()) {
             ItemStack currentStack = slot.getItem();
-            if (index >= 77 && index <= 80 && EnchantmentHelper.has(currentStack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE)) { //Armor Slots
+            if (index >= 77 && index <= 80 && EnchantmentHelper.hasBindingCurse(currentStack)) { //Armor Slots
                 return ItemStack.EMPTY;
             }
             if (index < MACHINE_SLOTS) { //Machine Slots to Player Inventory
@@ -190,12 +191,10 @@ public class InventoryHolderContainer extends BaseMachineContainer {
 
     //Overrides for custom slot
     protected int addMachineSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
-        if (this.baseMachineBE instanceof InventoryHolderBE inventoryHolderBE) {
             for (int i = 0; i < amount; i++) {
-                addSlot(new InventoryHolderSlot(handler, index, x, y, inventoryHolderBE));
+                addSlot(new InventoryHolderSlot(handler, index, x, y, baseMachineBE));
                 x += dx;
                 index++;
-            }
         }
         return index;
     }
@@ -209,46 +208,9 @@ public class InventoryHolderContainer extends BaseMachineContainer {
     }
 
     public void addMachineArmorSlots(IItemHandler itemHandler, Player playerEntity, int index, int x, int y) {
-        if (this.baseMachineBE instanceof InventoryHolderBE inventoryHolderBE) {
-            for (int k = 0; k < 4; ++k) {
-                final EquipmentSlot equipmentslot = SLOT_IDS[k];
-                this.addSlot(new InventoryHolderSlot(itemHandler, index + k, x + k * 18, y, inventoryHolderBE) {
-                    @Override
-                    public int getMaxStackSize() {
-                        return 1;
-                    }
-
-                    @Override
-                    public boolean mayPlace(ItemStack p_39746_) {
-                        return p_39746_.canEquip(equipmentslot, playerEntity);
-                    }
-
-                    @Override
-                    public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                        return Pair.of(InventoryMenu.BLOCK_ATLAS, TEXTURE_EMPTY_SLOTS[equipmentslot.getIndex()]);
-                    }
-                });
-            }
-
-            this.addSlot(new InventoryHolderSlot(itemHandler, index + 4, x + 4 * 18, y, inventoryHolderBE) {
-                @Override
-                public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_ARMOR_SLOT_SHIELD);
-                }
-            });
-        }
-    }
-
-    public void addArmorSlots(Player playerEntity, Inventory playerInventory) {
         for (int k = 0; k < 4; ++k) {
             final EquipmentSlot equipmentslot = SLOT_IDS[k];
-            this.addSlot(new Slot(playerInventory, 39 - k, 44 + k * 18, 82) {
-                @Override
-                public void setByPlayer(ItemStack p_270969_, ItemStack p_299918_) {
-                    onEquipItem(playerEntity, equipmentslot, p_270969_, p_299918_);
-                    super.setByPlayer(p_270969_, p_299918_);
-                }
-
+            this.addSlot(new InventoryHolderSlot(itemHandler, index + k, x + k * 18, y, baseMachineBE) {
                 @Override
                 public int getMaxStackSize() {
                     return 1;
@@ -260,9 +222,44 @@ public class InventoryHolderContainer extends BaseMachineContainer {
                 }
 
                 @Override
-                public boolean mayPickup(Player p_39744_) {
+                public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, TEXTURE_EMPTY_SLOTS[equipmentslot.getIndex()]);
+                }
+            });
+        }
+
+        this.addSlot(new InventoryHolderSlot(itemHandler, index + 4, x + 4 * 18, y, baseMachineBE) {
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_ARMOR_SLOT_SHIELD);
+            }
+        });
+    }
+
+    public void addArmorSlots(Player playerEntity, Inventory playerInventory) {
+        for (int k = 0; k < 4; ++k) {
+            final EquipmentSlot equipmentslot = SLOT_IDS[k];
+            this.addSlot(new Slot(playerInventory, 39 - k, 44 + k * 18, 82) {
+                @Override
+                public void setByPlayer(ItemStack stack) {
+                    onEquipItem(playerEntity, equipmentslot, stack, this.getItem());
+                    super.setByPlayer(stack);
+                }
+
+                @Override
+                public int getMaxStackSize() {
+                    return 1;
+                }
+
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    return stack.canEquip(equipmentslot, playerEntity);
+                }
+
+                @Override
+                public boolean mayPickup(Player player) {
                     ItemStack itemstack = this.getItem();
-                    return !itemstack.isEmpty() && !p_39744_.isCreative() && EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE) ? false : super.mayPickup(p_39744_);
+                    return (itemstack.isEmpty() || player.isCreative() || !EnchantmentHelper.hasBindingCurse(itemstack)) && super.mayPickup(player);
                 }
 
                 @Override
@@ -274,9 +271,9 @@ public class InventoryHolderContainer extends BaseMachineContainer {
 
         this.addSlot(new Slot(playerInventory, 40, 44 + 4 * 18, 82) {
             @Override
-            public void setByPlayer(ItemStack p_270479_, ItemStack p_299920_) {
-                onEquipItem(playerEntity, EquipmentSlot.OFFHAND, p_270479_, p_299920_);
-                super.setByPlayer(p_270479_, p_299920_);
+            public void setByPlayer(ItemStack p_270479_) {
+                onEquipItem(playerEntity, EquipmentSlot.OFFHAND, p_270479_, getItem());
+                super.setByPlayer(p_270479_);
             }
 
             @Override

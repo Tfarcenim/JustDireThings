@@ -8,9 +8,11 @@ import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.util.ItemStackNBTHandler;
 import com.direwolf20.justdirethings.util.PotionContents;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -29,7 +31,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
@@ -47,9 +52,11 @@ import static com.direwolf20.justdirethings.util.TooltipHelpers.*;
 public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickableTool {
     protected final EnumSet<Ability> abilities = EnumSet.noneOf(Ability.class);
     protected final Map<Ability, AbilityParams> abilityParams = new EnumMap<>(Ability.class);
+    private final int slots;
 
-    public BaseBowItem(Properties properties) {
+    public BaseBowItem(Properties properties,int slots) {
         super(properties);
+        this.slots = slots;
     }
 
     public float getMaxDraw() {
@@ -285,4 +292,30 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return false;
     }
+
+    public IItemHandler getItemHandler(ItemStack stack) {
+        return new ItemStackNBTHandler(stack,JustDireDataComponents.TOOL_CONTENTS,slots);
+    }
+
+    @Override
+    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new CapabilityProvider(stack);
+    }
+
+    public class CapabilityProvider implements ICapabilityProvider {
+
+        private final ItemStack stack;
+        private final LazyOptional<IItemHandler> holder;
+
+        public CapabilityProvider(ItemStack stack) {
+            this.stack = stack;
+            holder = LazyOptional.of(() -> getItemHandler(stack));
+        }
+
+        @Override
+        public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+            return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, this.holder);
+        }
+    }
+
 }

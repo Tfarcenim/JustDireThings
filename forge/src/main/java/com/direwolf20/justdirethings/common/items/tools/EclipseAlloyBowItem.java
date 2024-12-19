@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class EclipseAlloyBowItem extends BaseBowItem implements PoweredTool {
     public EclipseAlloyBowItem() {
-        super(new Properties().durability(450).fireResistant());
+        super(new Properties().durability(450).fireResistant(),4);
         registerAbility(Ability.POTIONARROW);
         registerAbility(Ability.SPLASH);
         registerAbility(Ability.LINGERING);

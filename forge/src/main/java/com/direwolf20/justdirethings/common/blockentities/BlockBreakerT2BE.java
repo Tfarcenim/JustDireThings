@@ -154,6 +154,7 @@ public class BlockBreakerT2BE extends BlockBreakerT1BE implements PoweredMachine
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY) return LazyOptional.of(() -> getEnergyStorage()).cast();
         return cap == ForgeCapabilities.ITEM_HANDLER ? itemOptional.cast() : super.getCapability(cap, side);
     }
 }

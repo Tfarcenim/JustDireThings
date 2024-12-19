@@ -30,6 +30,7 @@ public class JustDireDataComponents {
 
     public static final String ABILITY_COOLDOWNS = "ability_cooldowns";
     public static final String PORTAL_GUN_FAVORITES = "portal_gun_favorites";
+    public static final String TOOL_CONTENTS = "tool_contents";
 
 
     static Boolean getBoolean(ItemStack stack,String key) {//booleans are bytes internally
@@ -474,11 +475,11 @@ public class JustDireDataComponents {
     }
 
     public static List<ItemStack> getToolContents(ItemStack stack) {
-        return getItems(stack,"tool_contents");
+        return getItems(stack,TOOL_CONTENTS);
     }
 
     public static void setToolContents(ItemStack stack,List<ItemStack> items) {
-        setItems(stack,items,"tool_contents");
+        setItems(stack,items,TOOL_CONTENTS);
     }
 
     public static PotionContents getPotionContents(ItemStack stack) {

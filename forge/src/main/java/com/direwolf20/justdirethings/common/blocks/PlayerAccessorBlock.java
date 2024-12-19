@@ -18,8 +18,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 
 import javax.annotation.Nullable;
 
-public class PlayerAccessor extends BaseMachineBlock {
-    public PlayerAccessor() {
+public class PlayerAccessorBlock extends BaseMachineBlock {
+    public PlayerAccessorBlock() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)

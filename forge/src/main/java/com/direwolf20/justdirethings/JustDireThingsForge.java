@@ -68,22 +68,22 @@ public class JustDireThingsForge {
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         //Items
 
-        event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new ComponentItemHandler(itemStack, JustDireDataComponents.TOOL_CONTENTS.get(), 1),
-                Registration.FerricoreBow.get()
-        );
-        event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new ComponentItemHandler(itemStack, JustDireDataComponents.TOOL_CONTENTS.get(), 2),
-                Registration.BlazegoldBow.get()
-        );
-        event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new ComponentItemHandler(itemStack, JustDireDataComponents.TOOL_CONTENTS.get(), 3),
-                Registration.CelestigemBow.get()
-        );
-        event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new ComponentItemHandler(itemStack, JustDireDataComponents.TOOL_CONTENTS.get(), 4),
-                Registration.EclipseAlloyBow.get()
-        );
-        event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new PotionCanisterHandler(itemStack, JustDireDataComponents.TOOL_CONTENTS.get(), 1),
-                Registration.PotionCanister.get()
-        );
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (itemStack, context) -> {
+      //  event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new ComponentItemHandler(itemStack, JustDireDataComponents.TOOL_CONTENTS.get(), 1),
+       //         Registration.FerricoreBow.get()
+    //    );
+    //    event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new ComponentItemHandler(itemStack, JustDireDataComponents.TOOL_CONTENTS.get(), 2),
+     //           Registration.BlazegoldBow.get()
+    //    );
+    //    event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new ComponentItemHandler(itemStack, JustDireDataComponents.TOOL_CONTENTS.get(), 3),
+    //            Registration.CelestigemBow.get()
+    //    );
+    //    event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new ComponentItemHandler(itemStack, JustDireDataComponents.TOOL_CONTENTS.get(), 4),
+      //          Registration.EclipseAlloyBow.get()
+      //  );
+   //     event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new PotionCanisterHandler(itemStack, JustDireDataComponents.TOOL_CONTENTS.get(), 1),
+    //            Registration.PotionCanister.get()
+    //    );
+    /*    event.registerItem(Capabilities.EnergyStorage.ITEM, (itemStack, context) -> {
                     int capacity = 1000000; //Default
                     if (itemStack.getItem() instanceof PoweredItem poweredItem) {
                         capacity = poweredItem.getMaxEnergy();
@@ -91,14 +91,14 @@ public class JustDireThingsForge {
                     return new EnergyStorageItemStackNoReceive(capacity, itemStack);
                 },
                 Registration.Pocket_Generator.get()
-        );
+        );*/
         event.registerItem(Capabilities.EnergyStorage.ITEM, (itemStack, context) -> {
                     int capacity = 1000000; //Default
                     if (itemStack.getItem() instanceof PoweredItem poweredItem) {
                         capacity = poweredItem.getMaxEnergy();
                     }
                     return new EnergyStorageItemstack(capacity, itemStack);
-                },
+                }
 =                Registration.CelestigemPickaxe.get(),
                 Registration.CelestigemAxe.get(),
                 Registration.CelestigemShovel.get(),
@@ -167,7 +167,7 @@ public class JustDireThingsForge {
         );
 
         //Blocks
-        event.registerBlock(Capabilities.ItemHandler.BLOCK,
+        /*event.registerBlock(Capabilities.ItemHandler.BLOCK,
                 (level, pos, state, be, side) -> {
                     if (be instanceof BaseMachineBE)
                         return be.getData(Registration.MACHINE_HANDLER);
@@ -184,25 +184,25 @@ public class JustDireThingsForge {
                 Registration.FluidPlacerT2.get(),
                 Registration.FluidCollectorT1.get(),
                 Registration.FluidCollectorT2.get()
-        );
+        );*/
 
-        event.registerBlock(Capabilities.ItemHandler.BLOCK,
+       /* event.registerBlock(Capabilities.ItemHandler.BLOCK,
                 (level, pos, state, be, side) -> {
                     if (be instanceof BaseMachineBE)
                         return be.getData(Registration.GENERATOR_ITEM_HANDLER);
                     return null;
                 },
                 Registration.GeneratorT1.get()
-        );
-        event.registerBlock(Capabilities.ItemHandler.BLOCK,
+        );*/
+       /* event.registerBlock(Capabilities.ItemHandler.BLOCK,
                 (level, pos, state, be, side) -> {
                     if (be instanceof BaseMachineBE)
                         return be.getData(Registration.GENERATOR_FLUID_ITEM_HANDLER);
                     return null;
                 },
                 Registration.GeneratorFluidT1.get()
-        );
-        event.registerBlock(Capabilities.ItemHandler.BLOCK,
+        );*/
+     /*   event.registerBlock(Capabilities.ItemHandler.BLOCK,
                 (level, pos, state, be, side) -> {
                     if (be instanceof PlayerAccessorBE playerAccessorBE) {
                         if (be.getLevel().isClientSide) {
@@ -214,24 +214,24 @@ public class JustDireThingsForge {
                     return null;
                 },
                 Registration.PlayerAccessor.get()
-        );
-        event.registerBlock(Capabilities.EnergyStorage.BLOCK,
+        );*/
+        /*event.registerBlock(Capabilities.EnergyStorage.BLOCK,
                 (level, pos, state, be, side) -> {
                     if (be instanceof PoweredMachineBE)
                         return be.getData(Registration.ENERGYSTORAGE_MACHINES);
                     return null;
                 },
-                Registration.BlockBreakerT2.get(),
-                Registration.BlockPlacerT2.get(),
-                Registration.ClickerT2.get(),
-                Registration.SensorT2.get(),
+               // Registration.BlockBreakerT2.get(),
+           //     Registration.BlockPlacerT2.get(),
+              //  Registration.ClickerT2.get(),
+             //   Registration.SensorT2.get(),
                 Registration.DropperT2.get(),
                 Registration.BlockSwapperT2.get(),
                 Registration.FluidPlacerT2.get(),
                 Registration.FluidCollectorT2.get(),
                 Registration.ParadoxMachine.get()
-        );
-        event.registerBlock(Capabilities.EnergyStorage.BLOCK,
+        );*/
+     /*   event.registerBlock(Capabilities.EnergyStorage.BLOCK,
                 (level, pos, state, be, side) -> {
                     if (be instanceof PoweredMachineBE)
                         return be.getData(Registration.ENERGYSTORAGE_GENERATORS);
@@ -239,8 +239,8 @@ public class JustDireThingsForge {
                 },
                 Registration.GeneratorT1.get(),
                 Registration.GeneratorFluidT1.get()
-        );
-        event.registerBlock(Capabilities.EnergyStorage.BLOCK,
+        );*/
+       /* event.registerBlock(Capabilities.EnergyStorage.BLOCK,
                 (level, pos, state, be, side) -> {
                     if (be instanceof EnergyTransmitterBE && side != null && side.equals(state.getValue(BlockStateProperties.FACING))) {
                         return be.getData(Registration.ENERGYSTORAGE_TRANSMITTERS);
@@ -248,8 +248,8 @@ public class JustDireThingsForge {
                     return null;
                 },
                 Registration.EnergyTransmitter.get()
-        );
-        event.registerBlock(Capabilities.FluidHandler.BLOCK,
+        );*/
+      /*  event.registerBlock(Capabilities.FluidHandler.BLOCK,
                 (level, pos, state, be, side) -> {
                     if (be instanceof FluidMachineBE) {
                         return be.getData(Registration.MACHINE_FLUID_HANDLER);
@@ -260,8 +260,8 @@ public class JustDireThingsForge {
                 Registration.FluidPlacerT2.get(),
                 Registration.FluidCollectorT1.get(),
                 Registration.FluidCollectorT2.get()
-        );
-        event.registerBlock(Capabilities.FluidHandler.BLOCK,
+        );*/
+      /*  event.registerBlock(Capabilities.FluidHandler.BLOCK,
                 (level, pos, state, be, side) -> {
                     if (be instanceof FluidMachineBE) {
                         return be.getData(Registration.GENERATOR_FLUID_HANDLER);
@@ -277,7 +277,7 @@ public class JustDireThingsForge {
                     }
                     return null;
                 },
-                Registration.ParadoxMachine.get()
-        );
+                Registration.ParadoxMachineBlock.get()
+        );*/
     }
 }

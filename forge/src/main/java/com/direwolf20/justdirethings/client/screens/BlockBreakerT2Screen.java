@@ -5,12 +5,12 @@ import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButton
 import com.direwolf20.justdirethings.client.screens.widgets.ToggleButton;
 import com.direwolf20.justdirethings.common.containers.BlockBreakerT2Container;
 import com.direwolf20.justdirethings.network.server.C2SDirectionSettingPayload;
+import com.direwolf20.justdirethings.platform.Services;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BlockBreakerT2Screen extends BaseMachineScreen<BlockBreakerT2Container> {
     public BlockBreakerT2Screen(BlockBreakerT2Container container, Inventory inv, Component name) {
@@ -28,7 +28,7 @@ public class BlockBreakerT2Screen extends BaseMachineScreen<BlockBreakerT2Contai
         super.init();
         addRenderableWidget(ToggleButtonFactory.DIRECTIONBUTTON(getGuiLeft() + 116, topSectionTop + 62, direction, b -> {
             direction = ((ToggleButton) b).getTexturePosition();
-            PacketDistributor.sendToServer(new C2SDirectionSettingPayload(direction));
+            Services.PLATFORM.sendToServer(new C2SDirectionSettingPayload(direction));
         }));
     }
 

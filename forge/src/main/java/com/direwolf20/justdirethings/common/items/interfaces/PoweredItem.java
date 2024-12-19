@@ -1,13 +1,14 @@
 package com.direwolf20.justdirethings.common.items.interfaces;
 
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.energy.IEnergyStorage;
 
 public interface PoweredItem {
     static int getAvailableEnergy(ItemStack stack) {
-        var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        var energy = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
         if (energy == null) {
             return -1;
         }
@@ -15,7 +16,7 @@ public interface PoweredItem {
     }
 
     default boolean isPowerBarVisible(ItemStack stack) {
-        var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        var energy = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
         if (energy == null) {
             return false;
         }
@@ -23,15 +24,15 @@ public interface PoweredItem {
     }
 
     default int getPowerBarWidth(ItemStack stack) {
-        var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        var energy = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
         if (energy == null) {
-            return 13;
+            return Item.MAX_BAR_WIDTH;
         }
-        return Math.min(13 * energy.getEnergyStored() / energy.getMaxEnergyStored(), 13);
+        return Math.min(Item.MAX_BAR_WIDTH * energy.getEnergyStored() / energy.getMaxEnergyStored(), Item.MAX_BAR_WIDTH);
     }
 
     default int getPowerBarColor(ItemStack stack) {
-        var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        var energy = stack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
         if (energy == null) {
             return -1; //Tell caller to call super
         }
@@ -47,7 +48,7 @@ public interface PoweredItem {
     }
 
     static boolean consumeEnergy(ItemStack itemStack, int amt) {
-        IEnergyStorage energyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
+        IEnergyStorage energyStorage = itemStack.getCapability(ForgeCapabilities.ENERGY).orElse(null);
         if (energyStorage == null) return false;
         int amtExtracted = energyStorage.extractEnergy(amt, false);
         return amtExtracted == amt;

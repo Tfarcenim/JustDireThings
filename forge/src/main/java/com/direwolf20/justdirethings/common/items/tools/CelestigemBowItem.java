@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class CelestigemBowItem extends BaseBowItem implements PoweredTool {
     public CelestigemBowItem() {
-        super(new Properties().durability(450).fireResistant());
+        super(new Properties().durability(450).fireResistant(),3);
         registerAbility(Ability.POTIONARROW);
         registerAbility(Ability.SPLASH);
         registerAbility(Ability.LINGERING);

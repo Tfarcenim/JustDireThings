@@ -16,8 +16,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
-public class SensorT2 extends BaseMachineBlock {
-    public SensorT2() {
+public class SensorT2Block extends BaseMachineBlock {
+    public SensorT2Block() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)
