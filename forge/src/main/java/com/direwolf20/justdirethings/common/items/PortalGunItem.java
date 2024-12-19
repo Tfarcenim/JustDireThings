@@ -1,5 +1,6 @@
 package com.direwolf20.justdirethings.common.items;
 
+import com.direwolf20.justdirethings.common.capabilities.EnergyStorageItemstack;
 import com.direwolf20.justdirethings.common.entities.PortalEntity;
 import com.direwolf20.justdirethings.common.entities.PortalProjectile;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
@@ -7,6 +8,8 @@ import com.direwolf20.justdirethings.common.items.interfaces.BasePoweredItem;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredItem;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.setup.Registration;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -18,6 +21,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
@@ -98,5 +107,29 @@ public class PortalGunItem extends BasePoweredItem implements PoweredItem {
         UUID existing = JustDireDataComponents.getPortalgunUUID(itemStack);
         if (existing != null) return existing;
         return setRandomUUID(itemStack);
+    }
+
+    public EnergyStorageItemstack getEnergyStorage(ItemStack stack) {
+        return new EnergyStorageItemstack(getMaxEnergy(), stack);
+    }
+
+    @Override
+    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new Provider(stack);
+    }
+
+    public class Provider implements ICapabilityProvider {
+
+        private final ItemStack stack;
+
+        public Provider(ItemStack stack) {
+            this.stack = stack;
+        }
+
+        @Override
+        public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+            if (cap == ForgeCapabilities.ENERGY) return LazyOptional.of(() -> getEnergyStorage(stack)).cast();
+            return LazyOptional.empty();
+        }
     }
 }

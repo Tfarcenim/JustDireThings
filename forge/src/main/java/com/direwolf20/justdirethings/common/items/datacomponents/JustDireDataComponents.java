@@ -30,6 +30,7 @@ public class JustDireDataComponents {
 
     public static final String ABILITY_COOLDOWNS = "ability_cooldowns";
     public static final String BOUND_INVENTORY = "bound_inventory";
+    public static final String FLUID_CONTAINER = "fluid_container";
     public static final String PORTAL_GUN_FAVORITES = "portal_gun_favorites";
     public static final String TOOL_CONTENTS = "tool_contents";
     public static final String TOOL_ENABLED = "tool_enabled";
@@ -425,17 +426,17 @@ public class JustDireDataComponents {
     }
 
     public static FluidStack getFluidContainer(ItemStack stack) {
-        if (stack.hasTag() && stack.getTag().contains("fluid_container")) {
-            return FluidStack.loadFluidStackFromNBT(stack.getTagElement("fluid_container"));
+        if (stack.hasTag() && stack.getTag().contains(FLUID_CONTAINER)) {
+            return FluidStack.loadFluidStackFromNBT(stack.getTagElement(FLUID_CONTAINER));
         }
         return FluidStack.EMPTY;
     }
 
     public static void setFluidContainer(ItemStack stack,FluidStack fluidStack) {
         if (fluidStack.isEmpty()) {
-            stack.removeTagKey("fluid_container");
+            stack.removeTagKey(FLUID_CONTAINER);
         } else {
-            stack.getOrCreateTag().put("fluid_container",fluidStack.writeToNBT(new CompoundTag()));
+            stack.getOrCreateTag().put(FLUID_CONTAINER,fluidStack.writeToNBT(new CompoundTag()));
         }
     }
 

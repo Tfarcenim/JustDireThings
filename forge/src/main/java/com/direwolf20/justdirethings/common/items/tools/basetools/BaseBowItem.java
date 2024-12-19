@@ -304,7 +304,7 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
 
     public class CapabilityProvider implements ICapabilityProvider {
 
-        private final ItemStack stack;
+        protected final ItemStack stack;
         private final LazyOptional<IItemHandler> holder;
 
         public CapabilityProvider(ItemStack stack) {

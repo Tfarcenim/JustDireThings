@@ -1,17 +1,22 @@
 package com.direwolf20.justdirethings.common.items;
 
+import com.direwolf20.justdirethings.common.capabilities.EnergyStorageItemstack;
 import com.direwolf20.justdirethings.common.entities.TimeWandEntity;
 import com.direwolf20.justdirethings.common.fluids.timefluid.TimeFluidBlock;
+import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.BasePoweredItem;
 import com.direwolf20.justdirethings.common.items.interfaces.FluidContainingItem;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredItem;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.FluidStackNBTHandler;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.direwolf20.justdirethings.util.MiscTools;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,11 +36,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -204,4 +214,44 @@ public class TimeWandItem extends BasePoweredItem implements PoweredItem, FluidC
         }
         tooltip.add(Component.translatable("justdirethings.timefluidamt", MagicHelpers.formatted(fluidHandler.getFluidInTank(0).getAmount()), MagicHelpers.formatted(fluidHandler.getTankCapacity(0))).withStyle(ChatFormatting.GREEN));
     }
+
+    public FluidStackNBTHandler getFluidHandler(ItemStack stack) {
+        return new FluidStackNBTHandler(stack, PortalGunV2Item.maxMB, JustDireDataComponents.FLUID_CONTAINER) {
+            @Override
+            public boolean isFluidValid(int tank, FluidStack stack) {
+                return stack.getFluid().getFluidType() == Registration.TIME_FLUID_TYPE.get();
+            }
+
+            @Override
+            public boolean canFillFluidType(FluidStack fluid) {
+                return fluid.getFluid().getFluidType() == Registration.TIME_FLUID_TYPE.get();
+            }
+        };
+    }
+
+    public EnergyStorageItemstack getEnergyStorage(ItemStack stack) {
+        return new EnergyStorageItemstack(getMaxEnergy(), stack);
+    }
+
+    @Override
+    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new Provider(stack);
+    }
+
+    public class Provider implements ICapabilityProvider {
+
+        private final ItemStack stack;
+
+        public Provider(ItemStack stack) {
+            this.stack = stack;
+        }
+
+        @Override
+        public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+            if (cap == ForgeCapabilities.FLUID_HANDLER_ITEM) return LazyOptional.of(() -> getFluidHandler(stack)).cast();
+            if (cap == ForgeCapabilities.ENERGY) return LazyOptional.of(() -> getEnergyStorage(stack)).cast();
+            return LazyOptional.empty();
+        }
+    }
+
 }

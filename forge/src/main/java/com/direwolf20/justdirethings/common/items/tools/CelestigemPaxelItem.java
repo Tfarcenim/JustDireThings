@@ -5,12 +5,11 @@ import com.direwolf20.justdirethings.common.items.PortalGunItem;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.AbilityParams;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredTool;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseSwordItem;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BasePaxelItem;
 import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -18,13 +17,18 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class EclipseAlloySwordItem extends BaseSwordItem implements PoweredTool {
-    public EclipseAlloySwordItem() {
-        super(GooTier.ECLIPSEALLOY, 3, -2.0F ,new Properties() .fireResistant());
-        registerAbility(Ability.GLOWING);
-        registerAbility(Ability.CAUTERIZEWOUNDS, new AbilityParams(1, 1, 1, 1, 0, 1200));
+public class CelestigemPaxelItem extends BasePaxelItem implements PoweredTool {
+    public CelestigemPaxelItem() {
+        super(GooTier.CELESTIGEM, 1, -2.8F, new Properties() .fireResistant());
+        registerAbility(Ability.ORESCANNER);
+        registerAbility(Ability.OREMINER);
+        registerAbility(Ability.SKYSWEEPER);
+        registerAbility(Ability.LAWNMOWER);
+        registerAbility(Ability.TREEFELLER);
+        registerAbility(Ability.LEAFBREAKER);
+        registerAbility(Ability.SMELTER);
+        registerAbility(Ability.HAMMER, new AbilityParams(3, 5, 2));
         registerAbility(Ability.DROPTELEPORT);
-        registerAbility(Ability.SMOKER);
     }
 
     @Override
@@ -43,11 +47,6 @@ public class EclipseAlloySwordItem extends BaseSwordItem implements PoweredTool 
         if (color == -1)
             return super.getBarColor(stack);
         return color;
-    }
-
-    @Override
-    public int getMaxEnergy() {
-        return 500000;
     }
 
     public EnergyStorageItemstack getEnergyStorage(ItemStack stack) {

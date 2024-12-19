@@ -10,6 +10,7 @@ import com.direwolf20.justdirethings.network.server.C2SExperienceHolderPayload;
 import com.direwolf20.justdirethings.network.server.C2SExperienceHolderSettingsPayload;
 import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.util.ExperienceUtils;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -89,10 +90,11 @@ public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderCo
         int barY = topSectionTop + topSectionHeight - 15;  // Y position for the XP bar
 
         // Bind the vanilla experience bar texture (this is the same texture used by the player XP bar)
-        guiGraphics.blitSprite(EXPERIENCE_BAR_BACKGROUND_SPRITE, barX, barY, 182, 5);//todo
+
+        guiGraphics.blit(Gui.GUI_ICONS_LOCATION, barX, barY,0,64, 182, 5);//todo
         int partialAmount = (int) (ExperienceUtils.getProgressToNextLevel(experienceHolderBE.exp) * 183.0F);
         if (partialAmount > 0) {
-            guiGraphics.blitSprite(EXPERIENCE_BAR_PROGRESS_SPRITE, 182, 5, 0, 0, barX, barY, partialAmount, 5);
+            guiGraphics.blit(Gui.GUI_ICONS_LOCATION, 182, 5, 0, 0, barX, barY, partialAmount, 5);
         }
         String s = String.valueOf(ExperienceUtils.getLevelFromTotalExperience(experienceHolderBE.exp));
         int j = topSectionLeft + (topSectionWidth / 2) - font.width(s) / 2;

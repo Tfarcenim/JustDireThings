@@ -5,12 +5,11 @@ import com.direwolf20.justdirethings.common.items.PortalGunItem;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.AbilityParams;
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredTool;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseSwordItem;
+import com.direwolf20.justdirethings.common.items.tools.basetools.BaseShovelItem;
 import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -18,13 +17,15 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class EclipseAlloySwordItem extends BaseSwordItem implements PoweredTool {
-    public EclipseAlloySwordItem() {
-        super(GooTier.ECLIPSEALLOY, 3, -2.0F ,new Properties() .fireResistant());
-        registerAbility(Ability.GLOWING);
-        registerAbility(Ability.CAUTERIZEWOUNDS, new AbilityParams(1, 1, 1, 1, 0, 1200));
+public class EclipseAlloyShovelItem extends BaseShovelItem implements PoweredTool {
+    public EclipseAlloyShovelItem() {
+        super(GooTier.ECLIPSEALLOY, 1.5F, -3.0F,new Properties() .fireResistant());
+        registerAbility(Ability.SKYSWEEPER);
+        registerAbility(Ability.LAWNMOWER);
+        registerAbility(Ability.SMELTER);
+        registerAbility(Ability.HAMMER, new AbilityParams(3, 7, 2));
         registerAbility(Ability.DROPTELEPORT);
-        registerAbility(Ability.SMOKER);
+        registerAbility(Ability.INSTABREAK);
     }
 
     @Override

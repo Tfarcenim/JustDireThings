@@ -1,15 +1,19 @@
 package com.direwolf20.justdirethings.common.items;
 
 import com.direwolf20.justdirethings.JustDireThings;
+import com.direwolf20.justdirethings.common.capabilities.EnergyStorageItemstack;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.FluidContainingItem;
+import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.FillMode;
+import com.direwolf20.justdirethings.util.FluidStackNBTHandler;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
@@ -40,7 +44,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.common.SoundActions;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -274,4 +281,30 @@ public class FluidCanisterItem extends Item implements FluidContainingItem {
     public static void nextFillMode(ItemStack itemStack) {
         JustDireDataComponents.cycleFluidCanisterMode(itemStack);
     }
+
+    public FluidStackNBTHandler getFluidHandler(ItemStack stack) {
+        return new FluidStackNBTHandler(stack, PortalGunV2Item.maxMB, JustDireDataComponents.FLUID_CONTAINER);
+    }
+
+    @Override
+    public @org.jetbrains.annotations.Nullable ICapabilityProvider initCapabilities(ItemStack stack, @org.jetbrains.annotations.Nullable CompoundTag nbt) {
+        return new Provider(stack);
+    }
+
+    public class Provider implements ICapabilityProvider {
+
+        private final ItemStack stack;
+
+        public Provider(ItemStack stack) {
+            this.stack = stack;
+        }
+
+        @Override
+        public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @org.jetbrains.annotations.Nullable Direction side) {
+            if (cap == ForgeCapabilities.FLUID_HANDLER_ITEM) return LazyOptional.of(() -> getFluidHandler(stack)).cast();
+            return LazyOptional.empty();
+        }
+    }
+
+
 }

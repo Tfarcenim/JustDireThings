@@ -1,11 +1,7 @@
-package com.direwolf20.justdirethings.common.items.tools;
+package com.direwolf20.justdirethings.common.items;
 
 import com.direwolf20.justdirethings.common.capabilities.EnergyStorageItemstack;
-import com.direwolf20.justdirethings.common.items.PortalGunItem;
-import com.direwolf20.justdirethings.common.items.interfaces.Ability;
-import com.direwolf20.justdirethings.common.items.interfaces.PoweredTool;
-import com.direwolf20.justdirethings.common.items.tools.basetools.BaseAxeItem;
-import com.direwolf20.justdirethings.common.items.tools.utils.GooTier;
+import com.direwolf20.justdirethings.common.items.interfaces.*;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -16,31 +12,19 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CelestigemAxeItem extends BaseAxeItem implements PoweredTool {
-    public CelestigemAxeItem() {
-        super(GooTier.CELESTIGEM,7.0F, -2.5F,new Properties().fireResistant());
-        registerAbility(Ability.TREEFELLER);
-        registerAbility(Ability.LEAFBREAKER);
-        registerAbility(Ability.SMELTER);
-        registerAbility(Ability.DROPTELEPORT);
+public class EclipsegateWandItem extends BaseToggleableToolItem implements PoweredItem, LeftClickableTool {
+    public EclipsegateWandItem() {
+        super(new Properties()
+                .durability(200)
+                .fireResistant());
+        registerAbility(Ability.AIRBURST, new AbilityParams(1, 8, 1, 8));
+        registerAbility(Ability.VOIDSHIFT, new AbilityParams(1, 30, 1, 30));
+        registerAbility(Ability.ECLIPSEGATE, new AbilityParams(1, 20, 1, 20));
     }
 
     @Override
-    public boolean isBarVisible(ItemStack stack) {
-        return isPowerBarVisible(stack);
-    }
-
-    @Override
-    public int getBarWidth(ItemStack stack) {
-        return getPowerBarWidth(stack);
-    }
-
-    @Override
-    public int getBarColor(ItemStack stack) {
-        int color = getPowerBarColor(stack);
-        if (color == -1)
-            return super.getBarColor(stack);
-        return color;
+    public int getMaxEnergy() {
+        return 100000;
     }
 
     public EnergyStorageItemstack getEnergyStorage(ItemStack stack) {

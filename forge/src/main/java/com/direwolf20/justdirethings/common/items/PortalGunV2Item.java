@@ -1,5 +1,6 @@
 package com.direwolf20.justdirethings.common.items;
 
+import com.direwolf20.justdirethings.common.capabilities.EnergyStorageItemstack;
 import com.direwolf20.justdirethings.common.entities.PortalProjectile;
 import com.direwolf20.justdirethings.common.fluids.portalfluid.PortalFluidBlock;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
@@ -8,6 +9,7 @@ import com.direwolf20.justdirethings.common.items.interfaces.FluidContainingItem
 import com.direwolf20.justdirethings.common.items.interfaces.PoweredItem;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.setup.Registration;
+import com.direwolf20.justdirethings.util.FluidStackNBTHandler;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.NBTHelpers;
@@ -34,11 +36,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -259,8 +265,42 @@ public class PortalGunV2Item extends BasePoweredItem implements PoweredItem, Flu
         return 0;
     }
 
+    public FluidStackNBTHandler getFluidHandler(ItemStack stack) {
+        return new FluidStackNBTHandler(stack, PortalGunV2Item.maxMB, JustDireDataComponents.FLUID_CONTAINER) {
+            @Override
+            public boolean isFluidValid(int tank, FluidStack stack) {
+                return stack.getFluid().getFluidType() == Registration.PORTAL_FLUID_TYPE.get();
+            }
+
+            @Override
+            public boolean canFillFluidType(FluidStack fluid) {
+                return fluid.getFluid().getFluidType() == Registration.PORTAL_FLUID_TYPE.get();
+            }
+        };
+    }
+
+    public EnergyStorageItemstack getEnergyStorage(ItemStack stack) {
+        return new EnergyStorageItemstack(getMaxEnergy(), stack);
+    }
+
     @Override
     public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return super.initCapabilities(stack, nbt);
+        return new Provider(stack);
+    }
+
+    public class Provider implements ICapabilityProvider {
+
+        private final ItemStack stack;
+
+        public Provider(ItemStack stack) {
+            this.stack = stack;
+        }
+
+        @Override
+        public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+            if (cap == ForgeCapabilities.FLUID_HANDLER_ITEM) return LazyOptional.of(() -> getFluidHandler(stack)).cast();
+            if (cap == ForgeCapabilities.ENERGY) return LazyOptional.of(() -> getEnergyStorage(stack)).cast();
+            return LazyOptional.empty();
+        }
     }
 }
