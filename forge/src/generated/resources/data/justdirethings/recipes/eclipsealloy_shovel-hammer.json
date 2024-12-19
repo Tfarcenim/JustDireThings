@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:eclipsealloy_shovel"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }

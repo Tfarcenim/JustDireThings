@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:ferricore_leggings"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }

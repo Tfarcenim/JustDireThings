@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:celestigem_pickaxe"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }

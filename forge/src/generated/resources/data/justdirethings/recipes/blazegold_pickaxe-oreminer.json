@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:blazegold_pickaxe"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }

@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemStackNBTHandler implements IItemHandlerModifiable {
@@ -23,11 +24,22 @@ public class ItemStackNBTHandler implements IItemHandlerModifiable {
 
     @Override
     public void setStackInSlot(int slot, @NotNull ItemStack stack) {
-
+        validateSlotIndex(slot);
+        if (!this.isItemValid(slot, stack)) {
+            throw new RuntimeException("Invalid stack " + stack + " for slot " + slot + ")");
+        }
+        List<ItemStack> contents = this.getContents();
+        ItemStack existing = contents.get(slot);
+        if (!ItemStack.matches(stack, existing)) {
+            this.updateContents(contents, stack, slot);
+        }
     }
 
     public List<ItemStack> getContents() {
         List<ItemStack> stacks = JustDireDataComponents.getItems(stack,target);
+        if (stacks == null) {
+            return NonNullList.createWithCapacity(size);
+        }
         return stacks;
     }
 

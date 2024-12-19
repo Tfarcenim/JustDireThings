@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:celestigem_paxel"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }

@@ -1,9 +1,7 @@
 package com.direwolf20.justdirethings.client.jei;
 
-import com.direwolf20.justdirethings.datagen.recipes.PaxelRecipe;
+import com.direwolf20.justdirethings.recipe.PaxelRecipe;
 import mezz.jei.api.gui.builder.IIngredientAcceptor;
-import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable;
-import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.vanilla.smithing.ISmithingCategoryExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

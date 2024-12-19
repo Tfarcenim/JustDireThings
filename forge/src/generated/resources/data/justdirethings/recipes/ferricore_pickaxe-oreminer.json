@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:ferricore_pickaxe"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }

@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:bow_celestigem"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }

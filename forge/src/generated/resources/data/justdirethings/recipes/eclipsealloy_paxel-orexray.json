@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:eclipsealloy_paxel"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }

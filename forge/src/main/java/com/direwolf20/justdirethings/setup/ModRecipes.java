@@ -2,6 +2,8 @@ package com.direwolf20.justdirethings.setup;
 
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.datagen.recipes.*;
+import com.direwolf20.justdirethings.recipe.AbilityRecipe;
+import com.direwolf20.justdirethings.recipe.PaxelRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;

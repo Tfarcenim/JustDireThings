@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:eclipsealloy_pickaxe"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }

@@ -4,6 +4,8 @@ import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.client.jei.ghostfilters.GhostFilterBasic;
 import com.direwolf20.justdirethings.client.screens.basescreens.BaseScreen;
 import com.direwolf20.justdirethings.datagen.recipes.*;
+import com.direwolf20.justdirethings.recipe.AbilityRecipe;
+import com.direwolf20.justdirethings.recipe.PaxelRecipe;
 import com.direwolf20.justdirethings.setup.ModRecipes;
 import com.direwolf20.justdirethings.setup.Registration;
 import mezz.jei.api.IModPlugin;

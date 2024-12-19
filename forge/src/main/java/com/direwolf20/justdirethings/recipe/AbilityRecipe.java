@@ -1,6 +1,5 @@
-package com.direwolf20.justdirethings.datagen.recipes;
+package com.direwolf20.justdirethings.recipe;
 
-import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.items.abilityupgrades.Upgrade;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
@@ -8,9 +7,6 @@ import com.direwolf20.justdirethings.common.items.interfaces.ToggleableTool;
 import com.direwolf20.justdirethings.setup.Config;
 import com.direwolf20.justdirethings.setup.ModRecipes;
 import com.google.gson.JsonObject;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +19,7 @@ import java.util.stream.Stream;
 
 public class AbilityRecipe extends CustomSmithingTransformRecipe {
 
-    public AbilityRecipe(SmithingTransformRecipe recipe) {
+    public AbilityRecipe(SmithingTrimRecipe recipe) {
         super(recipe);
     }
 
@@ -83,19 +79,19 @@ public class AbilityRecipe extends CustomSmithingTransformRecipe {
     }
 
 
-    public static class Serializer extends SmithingTransformRecipe.Serializer {
+    public static class Serializer extends SmithingTrimRecipe.Serializer {
         @Override
-        public SmithingTransformRecipe fromNetwork(ResourceLocation p_267117_, FriendlyByteBuf p_267316_) {
+        public SmithingTrimRecipe fromNetwork(ResourceLocation p_267117_, FriendlyByteBuf p_267316_) {
             return new AbilityRecipe(super.fromNetwork(p_267117_, p_267316_));
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf p_266746_, SmithingTransformRecipe p_266927_) {
+        public void toNetwork(FriendlyByteBuf p_266746_, SmithingTrimRecipe p_266927_) {
             super.toNetwork(p_266746_, p_266927_);
         }
 
         @Override
-        public SmithingTransformRecipe fromJson(ResourceLocation recipeLoc, JsonObject recipeJson) {
+        public SmithingTrimRecipe fromJson(ResourceLocation recipeLoc, JsonObject recipeJson) {
             return new AbilityRecipe(super.fromJson(recipeLoc, recipeJson));
         }
     }

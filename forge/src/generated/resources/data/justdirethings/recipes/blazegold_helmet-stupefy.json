@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:blazegold_helmet"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }

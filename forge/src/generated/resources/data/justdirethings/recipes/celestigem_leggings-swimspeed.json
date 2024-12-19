@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:celestigem_leggings"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }

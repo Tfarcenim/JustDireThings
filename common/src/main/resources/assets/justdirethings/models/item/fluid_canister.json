@@ -1,5 +1,5 @@
 {
-  "loader": "neoforge:fluid_container",
+  "loader": "forge:fluid_container",
   "fluid": "minecraft:water",
   "flip_gas": true,
   "cover_is_mask": false,

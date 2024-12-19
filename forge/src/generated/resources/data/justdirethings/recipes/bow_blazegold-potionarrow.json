@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:bow_blazegold"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }

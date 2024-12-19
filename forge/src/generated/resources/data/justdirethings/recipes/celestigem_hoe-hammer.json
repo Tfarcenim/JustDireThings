@@ -6,8 +6,5 @@
   "base": {
     "item": "justdirethings:celestigem_hoe"
   },
-  "result": {
-    "item": "minecraft:air"
-  },
   "template": []
 }
