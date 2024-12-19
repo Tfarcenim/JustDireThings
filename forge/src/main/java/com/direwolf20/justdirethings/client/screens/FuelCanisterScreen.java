@@ -66,7 +66,7 @@ public class FuelCanisterScreen extends AbstractContainerScreen<FuelCanisterCont
     }
 
     @Override
-    protected void renderSlot(GuiGraphics pGuiGraphics, Slot pSlot) {
+    public void renderSlot(GuiGraphics pGuiGraphics, Slot pSlot) {
         super.renderSlot(pGuiGraphics, pSlot);
         if (!pSlot.getItem().isEmpty() && !container.handler.isItemValid(pSlot.getSlotIndex(), pSlot.getItem()))
             pGuiGraphics.fill(RenderType.guiOverlay(), pSlot.x, pSlot.y, pSlot.x + 16, pSlot.y + Mth.ceil(16.0F), 0x7FFF0000);

@@ -82,7 +82,7 @@ public class GooSpreadRecipeCategory implements IRecipeCategory<GooSpreadRecipe>
                     .addItemStack(new ItemStack(input.getBlock()));
         } else if (input.getBlock() instanceof LiquidBlock liquidBlock) {
             inputSlotBuilder
-                    .addFluidStack(liquidBlock.fluid, 1000);
+                    .addFluidStack(liquidBlock.getFluid(), 1000);
         }
         List<ItemStack> catalystlist = new ArrayList<>();
 
@@ -103,7 +103,7 @@ public class GooSpreadRecipeCategory implements IRecipeCategory<GooSpreadRecipe>
                     .addItemStack(new ItemStack(output.getBlock()));
         } else if (output.getBlock() instanceof LiquidBlock liquidBlock) {
             builder.addSlot(RecipeIngredientRole.OUTPUT, 88, 12)
-                    .addFluidStack(liquidBlock.fluid, 1000);
+                    .addFluidStack(liquidBlock.getFluid(), 1000);
         }
     }
 }

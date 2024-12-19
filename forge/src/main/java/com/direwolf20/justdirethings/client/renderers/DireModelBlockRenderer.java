@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.ForgeHooksClient;
 
 import java.util.BitSet;
 import java.util.List;
@@ -41,7 +42,7 @@ public class DireModelBlockRenderer extends ModelBlockRenderer {
     ) {
         for (BakedQuad bakedquad : pQuads) {
             this.calculateShape(pLevel, pState, pPos, bakedquad.getVertices(), bakedquad.getDirection(), pShape, pShapeFlags);
-            if (!net.neoforged.neoforge.client.ClientHooks.calculateFaceWithoutAO(pLevel, pState, pPos, bakedquad, pShapeFlags.get(0), pAoFace.brightness, pAoFace.lightmap))
+            if (!ForgeHooksClient.calculateFaceWithoutAO(pLevel, pState, pPos, bakedquad, pShapeFlags.get(0), pAoFace.brightness, pAoFace.lightmap))
                 pAoFace.calculate(pLevel, pState, pPos, newDirection, pShape, pShapeFlags, bakedquad.isShade());
             this.putQuadData(
                     pLevel,

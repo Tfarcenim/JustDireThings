@@ -29,13 +29,28 @@ public class BlockStateScrollList extends ObjectSelectionList<BlockStateScrollLi
     private ItemStack stateStack = ItemStack.EMPTY;
     private SensorScreenInterface parent;
 
+    int x;
+    int y;
+
     public BlockStateScrollList(SensorScreenInterface parent, int left, int listWidth, int top, int bottom) {
-        super(Minecraft.getInstance(), listWidth, bottom - top, top, parent.getFontRenderer().lineHeight * 2 + 8);
+        super(Minecraft.getInstance(), listWidth, bottom - top, top, parent.getFontRenderer().lineHeight * 2 + 8,24);//todo is this correct
         this.parent = parent;
         this.listWidth = listWidth;
         //this.setRenderBackground(false);
         this.refreshList();
         setX(left);
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     public ItemStack getStateStack() {
@@ -72,7 +87,7 @@ public class BlockStateScrollList extends ObjectSelectionList<BlockStateScrollLi
                 addEntry(new BlockStateEntry(property, setValue, defaultState.getValue(property), parent, values, isAny));
             }
         } else if (stateStack.getItem() instanceof BucketItem bucketItem) {
-            BlockState defaultState = bucketItem.content.defaultFluidState().createLegacyBlock();
+            BlockState defaultState = bucketItem.getFluid().defaultFluidState().createLegacyBlock();
             for (Property<?> property : defaultState.getProperties()) {
                 List<Comparable<?>> values = new ArrayList<>(property.getPossibleValues());
                 Comparable<?> setValue = parent.getValue(property);
@@ -86,11 +101,12 @@ public class BlockStateScrollList extends ObjectSelectionList<BlockStateScrollLi
         }
     }
 
-    @Override
+  /*  @Override
     public void renderWidget(GuiGraphics p_282708_, int p_283242_, int p_282891_, float p_283683_) {
         renderContentBackground(p_282708_);
         super.renderWidget(p_282708_, p_283242_, p_282891_, p_283683_);
-    }
+    }*/
+
 
     protected void renderContentBackground(GuiGraphics guiGraphics) {
         guiGraphics.fillGradient(getX(), getY(), getRight(), getBottom(), 0xC0101010, 0xD0101010);

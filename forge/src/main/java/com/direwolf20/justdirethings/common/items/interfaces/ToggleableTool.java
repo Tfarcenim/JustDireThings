@@ -24,6 +24,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -557,7 +558,7 @@ public interface ToggleableTool extends ToggleableItem {
 
     static void toggleSetting(ItemStack stack, String setting) {
         Ability toolAbility = Ability.byName(setting);
-        stack.update(JustDireDataComponents.ABILITY_TOGGLES.get(toolAbility), true, val -> !val);
+        JustDireDataComponents.toggleAbility(stack,toolAbility,true);
     }
 
     /**
@@ -582,12 +583,12 @@ public interface ToggleableTool extends ToggleableItem {
 
 
     static void removeBoundInventory(ItemStack stack) {
-        stack.remove(JustDireDataComponents.BOUND_INVENTORY);
+        stack.removeTagKey(JustDireDataComponents.BOUND_INVENTORY);
     }
 
     @Nullable
     static NBTHelpers.BoundInventory getBoundInventory(ItemStack stack) {
-        return stack.getOrDefault(JustDireDataComponents.BOUND_INVENTORY, null);
+        return JustDireDataComponents.getBoundInventory(stack);
     }
 
     static IItemHandler getBoundHandler(ServerLevel serverLevel, ItemStack stack) {
@@ -599,27 +600,30 @@ public interface ToggleableTool extends ToggleableItem {
 
     static void setSetting(ItemStack stack, String setting, boolean value) {
         Ability toolAbility = Ability.byName(setting);
-        stack.set(JustDireDataComponents.ABILITY_TOGGLES.get(toolAbility), value);
+        JustDireDataComponents.setAbilityToggle(stack,value,toolAbility);
     }
 
     static boolean getSetting(ItemStack stack, String setting) {
         Ability toolAbility = Ability.byName(setting);
-        return !stack.has(JustDireDataComponents.ABILITY_TOGGLES.get(toolAbility)) || stack.getOrDefault(JustDireDataComponents.ABILITY_TOGGLES.get(toolAbility), true); //Enabled by default
+        Boolean b = JustDireDataComponents.getAbilityToggle(stack,toolAbility);
+        return b != null ? b : true; //Enabled by default
     }
 
     static boolean hasUpgrade(ItemStack stack, Ability ability) {
         if (!ability.requiresUpgrade()) return true;
-        return stack.getOrDefault(JustDireDataComponents.ABILITY_UPGRADE_INSTALLS.get(ability), false);
+        Boolean b = JustDireDataComponents.getAbilityUpgradeInstalled(stack,ability);
+        return b != null ? b : false;
     }
 
     static void setCustomSetting(ItemStack stack, String setting, int value) {
         Ability toolAbility = Ability.byName(setting);
-        stack.set(JustDireDataComponents.ABILITY_CUSTOM_SETTINGS.get(toolAbility), value);
+        JustDireDataComponents.setAbilityCustomSetting(stack,value,toolAbility);
     }
 
     static int getCustomSetting(ItemStack stack, String setting) {
         Ability toolAbility = Ability.byName(setting);
-        return stack.getOrDefault(JustDireDataComponents.ABILITY_CUSTOM_SETTINGS.get(toolAbility), 0);
+        Integer i = JustDireDataComponents.getAbilityCustomSetting(stack,toolAbility);
+        return i != null ? i : 0;
     }
 
     static void setToolValue(ItemStack stack, String setting, int value) {
@@ -627,8 +631,8 @@ public interface ToggleableTool extends ToggleableItem {
         AbilityParams abilityParams = ((ToggleableTool) stack.getItem()).getAbilityParams(toolAbility);
         int min = abilityParams.minSlider;
         int max = abilityParams.maxSlider;
-        int setValue = Math.max(min, Math.min(max, value));
-        stack.set(JustDireDataComponents.ABILITY_VALUES.get(toolAbility), setValue);
+        int setValue = Mth.clamp(value,min,max);
+        JustDireDataComponents.setAbilityValue(stack,setValue,toolAbility);
     }
 
     static int getToolValue(ItemStack stack, String setting) {
@@ -636,8 +640,9 @@ public interface ToggleableTool extends ToggleableItem {
         AbilityParams abilityParams = ((ToggleableTool) stack.getItem()).getAbilityParams(toolAbility);
         int min = abilityParams.minSlider;
         int max = abilityParams.maxSlider;
-        if (stack.has(JustDireDataComponents.ABILITY_VALUES.get(toolAbility)))
-            return Math.max(min, Math.min(max, stack.getOrDefault(JustDireDataComponents.ABILITY_VALUES.get(toolAbility), abilityParams.defaultValue)));
+        Integer v = JustDireDataComponents.getAbilityValue(stack,toolAbility);
+        if (v != null)
+            return Mth.clamp(v,min,max);
         return abilityParams.defaultValue;
     }
 }

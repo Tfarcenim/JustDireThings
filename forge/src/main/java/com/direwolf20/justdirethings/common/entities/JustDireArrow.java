@@ -88,12 +88,6 @@ public class JustDireArrow extends AbstractArrow {
         return new ItemStack(Items.ARROW);
     }
 
-    @Override
-    protected void setPickupItemStack(ItemStack p_331667_) {
-        super.setPickupItemStack(p_331667_);
-        this.updateColor();
-    }
-
     private void updateColor() {
         PotionContents potioncontents = this.getPotionContents();
         this.entityData.set(ID_EFFECT_COLOR, potioncontents.equals(PotionContents.EMPTY) ? -1 : potioncontents.getColor());

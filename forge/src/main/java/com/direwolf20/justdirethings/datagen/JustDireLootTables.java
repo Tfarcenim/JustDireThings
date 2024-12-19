@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,8 +141,8 @@ public class JustDireLootTables extends VanillaBlockLoot {
     @Override
     protected Iterable<Block> getKnownBlocks() {
         List<Block> knownBlocks = new ArrayList<>();
-        knownBlocks.addAll(Registration.BLOCKS.getEntries().stream().map(DeferredHolder::get).toList());
-        knownBlocks.addAll(Registration.SIDEDBLOCKS.getEntries().stream().map(DeferredHolder::get).toList());
+        knownBlocks.addAll(Registration.BLOCKS.getEntries().stream().map(RegistryObject::get).toList());
+        knownBlocks.addAll(Registration.SIDEDBLOCKS.getEntries().stream().map(RegistryObject::get).toList());
         return knownBlocks;
     }
 }

@@ -29,8 +29,10 @@ import static com.mojang.text2speech.Narrator.LOGGER;
 public class JustDireDataComponents {
 
     public static final String ABILITY_COOLDOWNS = "ability_cooldowns";
+    public static final String BOUND_INVENTORY = "bound_inventory";
     public static final String PORTAL_GUN_FAVORITES = "portal_gun_favorites";
     public static final String TOOL_CONTENTS = "tool_contents";
+    public static final String TOOL_ENABLED = "tool_enabled";
 
 
     static Boolean getBoolean(ItemStack stack,String key) {//booleans are bytes internally
@@ -61,6 +63,18 @@ public class JustDireDataComponents {
         T t = getValue(stack,key,codec);
         if (t == null) t = defaultValue;
         setValue(stack,updater.apply(t), key,codec);
+    }
+
+    public static void update(ItemStack stack,String key,Boolean defaultValue, UnaryOperator<Boolean> updater) {
+        update(stack,key,Codec.BOOL,defaultValue,updater);
+    }
+
+    public static void toggleBoolean(ItemStack stack,String key,Boolean defaultValue) {
+        update(stack,key,defaultValue,b -> !b);
+    }
+
+    public static void toggleAbility(ItemStack stack,Ability ability,Boolean defaultValue) {
+        toggleBoolean(stack,ability+"_toggle",defaultValue);
     }
 
     static <T> T getValue(ItemStack stack,String key,Codec<T> codec) {
@@ -194,26 +208,26 @@ public class JustDireDataComponents {
     }
 
     public static NBTHelpers.BoundInventory getBoundInventory(ItemStack stack) {
-        if (stack.hasTag() && stack.getTag().contains("bound_inventory")) {
-            return NBTHelpers.BoundInventory.fromNBT(stack.getTag().getCompound("bound_inventory"));
+        if (stack.hasTag() && stack.getTag().contains(BOUND_INVENTORY)) {
+            return NBTHelpers.BoundInventory.fromNBT(stack.getTag().getCompound(BOUND_INVENTORY));
         }
         return null;
     }
 
     public static void setBoundInventory(ItemStack stack,@Nullable NBTHelpers.BoundInventory inventory) {
         if (inventory == null) {
-            stack.removeTagKey("bound_inventory");
+            stack.removeTagKey(BOUND_INVENTORY);
         } else {
-            stack.getOrCreateTag().put("bound_inventory",inventory.toNBT());
+            stack.getOrCreateTag().put(BOUND_INVENTORY,inventory.toNBT());
         }
     }
 
     public static Boolean getToolEnabled(ItemStack stack) {
-        return getBoolean(stack,"tool_enabled");
+        return getBoolean(stack,TOOL_ENABLED);
     }
 
     public static void setToolEnabled(ItemStack stack,Boolean value) {
-        setBoolean(stack,value,"tool_enabled");
+        setBoolean(stack,value,TOOL_ENABLED);
     }
 
     public static NBTHelpers.GlobalVec3 getBoundGlobalVec3(ItemStack stack) {
@@ -272,18 +286,15 @@ public class JustDireDataComponents {
         }
     }
 
-    public static ToolRecords.AbilityBinding getAbilityBindings(ItemStack stack) {
-        if (stack.hasTag() && stack.getTag().contains("ability_bindings")) {
-            return ToolRecords.AbilityBinding.fromTag(stack.getTagElement("ability_bindings"));
-        }
-        return null;
+    public static List<ToolRecords.AbilityBinding> getAbilityBindings(ItemStack stack) {
+        return getList(stack,ToolRecords.AbilityBinding.CODEC,"ability_bindings");
     }
 
-    public static void setAbilityBindings(ItemStack stack, ToolRecords.AbilityBinding binding) {
+    public static void setAbilityBindings(ItemStack stack, List<ToolRecords.AbilityBinding> binding) {
         if (binding == null) {
             stack.removeTagKey("ability_bindings");
         } else {
-            stack.getOrCreateTag().put("ability_bindings",binding.toTag());
+            setList(stack,binding,ToolRecords.AbilityBinding.CODEC,"ability_bindings");
         }
     }
 

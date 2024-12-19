@@ -6,15 +6,16 @@ import com.direwolf20.justdirethings.util.ItemStackKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class InventoryHolderSlot extends SlotItemHandler {
     private InventoryHolderBE inventoryHolderBE;
 
+    protected final int index;
+
     public InventoryHolderSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, InventoryHolderBE inventoryHolderBE) {
         super(itemHandler, index, xPosition, yPosition);
         this.inventoryHolderBE = inventoryHolderBE;
+        this.index = index;
     }
 
     @Override

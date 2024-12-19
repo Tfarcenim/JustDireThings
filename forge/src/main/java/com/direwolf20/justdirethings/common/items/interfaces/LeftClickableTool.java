@@ -11,11 +11,12 @@ import java.util.Set;
 
 public interface LeftClickableTool {
     static void setBindingMode(ItemStack stack, Ability ability, int mode) {
-        stack.set(JustDireDataComponents.ABILITY_BINDING_MODES.get(ability), mode);
+        JustDireDataComponents.setAbilityBindingmode(stack, mode, ability);
     }
 
     static int getBindingMode(ItemStack stack, Ability ability) {
-        return stack.getOrDefault(JustDireDataComponents.ABILITY_BINDING_MODES.get(ability), 0);
+        Integer i = JustDireDataComponents.getAbilityBindingmode(stack,ability);
+        return i != null ? i : 0;
     }
 
     static void removeFromLeftClickList(ItemStack stack, Ability ability) {
@@ -40,7 +41,8 @@ public interface LeftClickableTool {
 
     static Set<Ability> getLeftClickList(ItemStack stack) {
         Set<Ability> abilities = new HashSet<>();
-        List<String> abilitiesList = stack.getOrDefault(JustDireDataComponents.LEFT_CLICK_ABILITIES, new ArrayList<>());
+        List<String> abilitiesList = JustDireDataComponents.getLeftClickAbilities(stack);
+        if (abilitiesList == null) abilitiesList = new ArrayList<>();
         for (String abilityName : abilitiesList) {
             if (getBindingMode(stack, Ability.byName(abilityName)) == 1)
                 abilities.add(Ability.byName(abilityName));
@@ -70,26 +72,24 @@ public interface LeftClickableTool {
     }
 
     static void setCustomBindingList(ItemStack stack, List<ToolRecords.AbilityBinding> abilityList) {
-        stack.set(JustDireDataComponents.ABILITY_BINDINGS, abilityList);
+        JustDireDataComponents.setAbilityBindings(stack,abilityList);
     }
 
     static List<ToolRecords.AbilityBinding> getCustomBindingList(ItemStack stack) {
-        return stack.getOrDefault(JustDireDataComponents.ABILITY_BINDINGS, new ArrayList<>());
+        List<ToolRecords.AbilityBinding> bindings = JustDireDataComponents.getAbilityBindings(stack);
+        return bindings != null ? bindings : new ArrayList<>();
     }
 
     static List<Ability> getCustomBindingListFor(ItemStack stack, int key, boolean isMouse, Player player) {
-        List<Ability> returnSet = new ArrayList<>();
         List<ToolRecords.AbilityBinding> abilityBindings = getCustomBindingList(stack);
         boolean isEquipped = ToggleableTool.isItemEquipped(stack, player);
-        returnSet.addAll(
-                abilityBindings.stream().filter(k -> k.isMouse() == isMouse &&
-                                k.key() == key &&
-                                stack.get(JustDireDataComponents.ABILITY_BINDING_MODES.get(Ability.byName(k.abilityName()))) == 2 &&
-                                (!k.requireEquipped() || isEquipped))
-                        .map(ToolRecords.AbilityBinding::abilityName)
-                        .map(Ability::byName)
-                        .toList()
-        );
+        List<Ability> returnSet = new ArrayList<>(abilityBindings.stream().filter(k -> k.isMouse() == isMouse &&
+                        k.key() == key &&
+                        JustDireDataComponents.getAbilityBindingmode(stack,Ability.byName(k.abilityName())) == 2 &&
+                        (!k.requireEquipped() || isEquipped))
+                .map(ToolRecords.AbilityBinding::abilityName)
+                .map(Ability::byName)
+                .toList());
         return returnSet;
     }
 

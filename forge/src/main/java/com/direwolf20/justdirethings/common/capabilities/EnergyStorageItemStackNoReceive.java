@@ -21,7 +21,7 @@ public class EnergyStorageItemStackNoReceive extends EnergyStorageItemstack {
         int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
         if (!simulate) {
             energy += energyReceived;
-            itemStack.set(JustDireDataComponents.FORGE_ENERGY, energy);
+            JustDireDataComponents.setForgeEnergy(itemStack,energy);
         }
         return energyReceived;
     }

@@ -9,12 +9,14 @@ import net.minecraft.world.item.ItemStack;
 
 public interface ToggleableItem {
     default boolean getEnabled(ItemStack stack) {
-        return stack.getOrDefault(JustDireDataComponents.TOOL_ENABLED, true); //True by default
+        Boolean b = JustDireDataComponents.getToolEnabled(stack);
+        return b != null ? b : true; //True by default
     }
 
     default void toggleEnabled(ItemStack stack, Player player) {
-        stack.update(JustDireDataComponents.TOOL_ENABLED, true, v -> !v);
-        boolean nowEnabled = stack.getOrDefault(JustDireDataComponents.TOOL_ENABLED, true);
+        JustDireDataComponents.toggleBoolean(stack,JustDireDataComponents.TOOL_ENABLED,true);
+
+        boolean nowEnabled = JustDireDataComponents.getToolEnabled(stack);
         player.displayClientMessage(Component.translatable("justdirethings.toolenabled", stack.getDisplayName(), nowEnabled ? Component.translatable("justdirethings.enabled") : Component.translatable("justdirethings.disabled")), true);
         if (nowEnabled)
             player.playNotifySound(SoundEvents.END_PORTAL_FRAME_FILL, SoundSource.PLAYERS, 1.0F, 1.0F);

@@ -28,8 +28,8 @@ public class DecoyEntityRender<T extends DecoyEntity, M extends EntityModel<T>> 
         this.addLayer(
                 new HumanoidArmorLayer<>(
                         this,
-                        new HumanoidArmorModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
-                        new HumanoidArmorModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
+                        new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
+                        new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
                         context.getModelManager()
                 )
         );
@@ -43,10 +43,10 @@ public class DecoyEntityRender<T extends DecoyEntity, M extends EntityModel<T>> 
         Optional<UUID> ownerUUID = entity.getOwnerUUID();
         if (ownerUUID.isPresent()) {
             GameProfile profile = new GameProfile(ownerUUID.get(), "DireDecoy");
-            return Minecraft.getInstance().getSkinManager().getInsecureSkin(profile).texture();
+            return Minecraft.getInstance().getSkinManager().getInsecureSkinLocation(profile);
         } else {
             GameProfile profile = new GameProfile(defaultPlayerUUID, "DireDecoy");
-            return Minecraft.getInstance().getSkinManager().getInsecureSkin(profile).texture();
+            return Minecraft.getInstance().getSkinManager().getInsecureSkinLocation(profile);
         }
     }
 }

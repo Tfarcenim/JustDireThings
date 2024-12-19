@@ -5,7 +5,6 @@ import com.direwolf20.justdirethings.common.containers.handlers.PotionCanisterHa
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -13,8 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class PotionCanisterContainer extends BaseContainer {
     public static final int SLOTS = 1;
@@ -29,10 +26,9 @@ public class PotionCanisterContainer extends BaseContainer {
     public PotionCanisterContainer(int windowId, Inventory playerInventory, Player player, ItemStack potionCanister) {
         super(Registration.PotionCanister_Container.get(), windowId);
         playerEntity = player;
-        handler = new PotionCanisterHandler(potionCanister, JustDireDataComponents.TOOL_CONTENTS.get(), 1);
+        handler = new PotionCanisterHandler(potionCanister, JustDireDataComponents.TOOL_CONTENTS, 1);
         this.potionCanister = potionCanister;
-        if (handler != null)
-            addItemSlots(handler, 0, 80, 35, 1, 18);
+        addItemSlots(handler, 0, 80, 35, 1, 18);
 
         addPlayerSlots(playerInventory, 8, 84);
     }

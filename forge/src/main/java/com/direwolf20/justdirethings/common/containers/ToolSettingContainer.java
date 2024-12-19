@@ -50,9 +50,9 @@ public class ToolSettingContainer extends BaseContainer {
             final EquipmentSlot equipmentslot = SLOT_IDS[k];
             this.addSlot(new Slot(playerInventory, 39 - k, 44 + k * 18, 66) {
                 @Override
-                public void setByPlayer(ItemStack p_270969_, ItemStack p_299918_) {
-                    onEquipItem(playerEntity, equipmentslot, p_270969_, p_299918_);
-                    super.setByPlayer(p_270969_, p_299918_);
+                public void setByPlayer(ItemStack p_270969_) {
+                    onEquipItem(playerEntity, equipmentslot, p_270969_, getItem());
+                    super.setByPlayer(p_270969_);
                 }
 
                 @Override
@@ -80,9 +80,9 @@ public class ToolSettingContainer extends BaseContainer {
 
         this.addSlot(new Slot(playerInventory, 40, 44 + 4 * 18, 66) {
             @Override
-            public void setByPlayer(ItemStack p_270479_, ItemStack p_299920_) {
-                onEquipItem(playerEntity, EquipmentSlot.OFFHAND, p_270479_, p_299920_);
-                super.setByPlayer(p_270479_, p_299920_);
+            public void setByPlayer(ItemStack p_270479_) {
+                onEquipItem(playerEntity, EquipmentSlot.OFFHAND, p_270479_,getItem());
+                super.setByPlayer(p_270479_);
             }
 
             @Override

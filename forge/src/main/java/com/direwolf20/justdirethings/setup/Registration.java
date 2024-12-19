@@ -385,8 +385,8 @@ public class Registration {
     public static final RegistryObject<TimeCrystalBuddingBlock> TimeCrystalBuddingBlock = BLOCKS.register("time_crystal_budding_block", TimeCrystalBuddingBlock::new);
     public static final RegistryObject<BlockItem> TimeCrystalBuddingBlock_ITEM = ITEMS.register("time_crystal_budding_block", () -> new BlockItem(TimeCrystalBuddingBlock.get(), new Item.Properties()));
     public static final RegistryObject<TimeCrystalClusterBlock> TimeCrystalCluster = BLOCKS.register("time_crystal_cluster", () -> new TimeCrystalClusterBlock(
-            7.0F,
-            3.0F,
+            7,
+            3,
             BlockBehaviour.Properties.of()
                     .forceSolidOn()
                     .noOcclusion()
@@ -396,13 +396,13 @@ public class Registration {
                     .pushReaction(PushReaction.DESTROY)
     ));
     public static final RegistryObject<TimeCrystalClusterBlock> TimeCrystalCluster_Small = BLOCKS.register("time_crystal_cluster_small", () -> new TimeCrystalClusterBlock(
-            3.0F, 4.0F, BlockBehaviour.Properties.copy(TimeCrystalCluster.get()).sound(SoundType.SMALL_AMETHYST_BUD).lightLevel(p_187409_ -> 1)
+            3, 4, BlockBehaviour.Properties.copy(TimeCrystalCluster.get()).sound(SoundType.SMALL_AMETHYST_BUD).lightLevel(p_187409_ -> 1)
     ));
     public static final RegistryObject<TimeCrystalClusterBlock> TimeCrystalCluster_Medium = BLOCKS.register("time_crystal_cluster_medium", () -> new TimeCrystalClusterBlock(
-            4.0F, 3.0F, BlockBehaviour.Properties.copy(TimeCrystalCluster.get()).sound(SoundType.MEDIUM_AMETHYST_BUD).lightLevel(p_152617_ -> 2)
+            4, 3, BlockBehaviour.Properties.copy(TimeCrystalCluster.get()).sound(SoundType.MEDIUM_AMETHYST_BUD).lightLevel(p_152617_ -> 2)
     ));
     public static final RegistryObject<TimeCrystalClusterBlock> TimeCrystalCluster_Large = BLOCKS.register("time_crystal_cluster_large", () -> new TimeCrystalClusterBlock(
-            5.0F, 3.0F, BlockBehaviour.Properties.copy(TimeCrystalCluster.get()).sound(SoundType.LARGE_AMETHYST_BUD).lightLevel(p_152629_ -> 4)
+            5, 3, BlockBehaviour.Properties.copy(TimeCrystalCluster.get()).sound(SoundType.LARGE_AMETHYST_BUD).lightLevel(p_152629_ -> 4)
     ));
 
 
@@ -765,10 +765,10 @@ public class Registration {
                     throw new IllegalStateException("Cannot attach energy handler item to a non-PoweredMachine.");
                 }
             }).build());*/
-    public static final Supplier<AttachmentType<CompoundTag>> DEATH_DATA = ATTACHMENT_TYPES.register(
+   /* public static final Supplier<AttachmentType<CompoundTag>> DEATH_DATA = ATTACHMENT_TYPES.register(
             "death_data",
             () -> AttachmentType.builder(CompoundTag::new).serialize(CompoundTag.CODEC).build()
-    );
+    );*/
 
     //Fluids
     /*public static final Supplier<AttachmentType<JustDireFluidTank>> MACHINE_FLUID_HANDLER = ATTACHMENT_TYPES.register(

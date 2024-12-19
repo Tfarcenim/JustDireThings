@@ -188,7 +188,7 @@ public class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
+   /* @SubscribeEvent
     public static void onArmorDamage(ArmorHurtEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         Map<EquipmentSlot, ArmorHurtEvent.ArmorEntry> armorEntries = event.getArmorMap();
@@ -212,7 +212,7 @@ public class LivingEntityEvents {
                 }
             }
         }
-    }
+    }*/
 
     @SubscribeEvent
     public static void onPlayerDeath(LivingDeathEvent event) {
@@ -235,7 +235,7 @@ public class LivingEntityEvents {
             if (!totemStack.isEmpty()) {
                 CompoundTag deathData = new CompoundTag();
                 deathData.put("direDeathData",new NBTHelpers.GlobalVec3(player.level().dimension(), player.position()).toTag());
-                player.setData(Registration.DEATH_DATA, deathData);
+                player.getPersistentData().put("death_data", deathData);
                 totemStack.shrink(1);
             }
         }

@@ -62,7 +62,6 @@ public class ToggleButton extends BaseButton {
         setTexturePosition(texturePosition ? 1 : 0);
     }
 
-    @Override
     public void onClick(double mouseX, double mouseY, int button) {
         if (button == 1)
             previousTexturePosition();

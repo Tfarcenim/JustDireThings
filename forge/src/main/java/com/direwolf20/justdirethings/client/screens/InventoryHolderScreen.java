@@ -108,7 +108,7 @@ public class InventoryHolderScreen extends BaseMachineScreen<InventoryHolderCont
     }
 
     @Override
-    protected void renderSlot(GuiGraphics guiGraphics, Slot slot) {
+    public void renderSlot(GuiGraphics guiGraphics, Slot slot) {
         if (slot instanceof InventoryHolderSlot && slot.getItem().isEmpty() && !inventoryHolderBE.filterBasicHandler.getStackInSlot(slot.getSlotIndex()).isEmpty()) {
             ItemStack showStack = inventoryHolderBE.filterBasicHandler.getStackInSlot(slot.getSlotIndex());
             RenderSystem.enableBlend(); // Enable blending

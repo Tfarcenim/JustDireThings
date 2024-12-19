@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.AmethystClusterBlock;
 public class TimeCrystalClusterBlock extends AmethystClusterBlock {
 
 
-    public TimeCrystalClusterBlock(float height, float aabbOffset, Properties properties) {
+    public TimeCrystalClusterBlock(int height, int aabbOffset, Properties properties) {
         super(height, aabbOffset, properties);
     }
 }

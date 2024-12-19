@@ -8,8 +8,7 @@ import net.minecraft.world.item.PickaxeItem;
 
 public class FerricorePickaxeItem extends BasePickaxeItem {
     public FerricorePickaxeItem() {
-        super(GooTier.FERRICORE, new Item.Properties()
-                .attributes(PickaxeItem.createAttributes(GooTier.FERRICORE, 1.0F, -2.8F)));
+        super(GooTier.FERRICORE, 1, -2.8F, new Item.Properties());
         registerAbility(Ability.ORESCANNER);
         registerAbility(Ability.OREMINER);
     }

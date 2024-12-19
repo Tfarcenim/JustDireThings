@@ -49,7 +49,7 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
     protected final ResourceLocation POWERBAR = JustDireThings.id("textures/gui/powerbar.png");
     protected final ResourceLocation FLUIDBAR = JustDireThings.id("textures/gui/fluidbar.png");
     protected final ResourceLocation SOCIALBACKGROUND = JustDireThings.id("background");
-    protected BaseMachineContainer container;
+    protected T container;
     protected BaseMachineBE baseMachineBE;
     protected double xRadius = 3, yRadius = 3, zRadius = 3;
     protected int xOffset = 0, yOffset = 0, zOffset = 0;
@@ -125,7 +125,7 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
     public void addTickSpeedButton() {
         addRenderableWidget(ToggleButtonFactory.TICKSPEEDBUTTON(getGuiLeft() + 144, topSectionTop + 40, tickSpeed, b -> {
             tickSpeed = ((NumberButton) b).getValue(); //The value is updated in the mouseClicked method below
-            PacketDistributor.sendToServer(new C2STickSpeedPayload(tickSpeed));
+            Services.PLATFORM.sendToServer(new C2STickSpeedPayload(tickSpeed));
         }));
     }
 

@@ -19,6 +19,6 @@ public abstract class EntityMixin {
     }
 
     private boolean shouldPassThroughWalls(Player player) {
-        return player.getAttributeValue(Registration.PHASE) > 0;
+        return player.getAttributeValue(Registration.PHASE.get()) > 0;
     }
 }

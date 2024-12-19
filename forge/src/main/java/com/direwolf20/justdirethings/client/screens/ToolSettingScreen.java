@@ -29,6 +29,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.gui.widget.ForgeSlider;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
@@ -45,7 +46,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
     int buttonsStartY = getGuiTop() + 15;
     int toolSlot;
     protected Button shownAbilityButton;
-    protected final Map<Button, ExtendedSlider> sliders = new HashMap<>();
+    protected final Map<Button, ForgeSlider> sliders = new HashMap<>();
     protected final Map<Button, ToggleButton> leftRightClickButtons = new HashMap<>();
     protected final Map<Button, GrayscaleButton> bindingButtons = new HashMap<>();
     protected final Map<Button, ToggleButton> customSettingsButtons = new HashMap<>();
@@ -121,7 +122,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
                 AbilityParams abilityParams = ((ToggleableTool) tool.getItem()).getAbilityParams(toolAbility);
                 int currentValue = ToggleableTool.getToolValue(tool, toolAbility.getName());
                 if (abilityParams.minSlider != abilityParams.maxSlider) {
-                    ExtendedSlider slider = new ExtendedSlider(buttonsStartX + 20, buttonsStartY - 18, 100, 15, Component.translatable(toolAbility.getLocalization()).append(": "), Component.empty(), abilityParams.minSlider, abilityParams.maxSlider, currentValue, true) {
+                    ForgeSlider slider = new ForgeSlider(buttonsStartX + 20, buttonsStartY - 18, 100, 15, Component.translatable(toolAbility.getLocalization()).append(": "), Component.empty(), abilityParams.minSlider, abilityParams.maxSlider, currentValue, true) {
                         @Override
                         protected void applyValue() {
                             setSetting(toolAbility.getName(), this.getValueInt());
@@ -215,7 +216,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
     }
 
     protected void sendBinding(String abilityName, int buttonType, int keyCode, boolean isMouse) {
-        PacketDistributor.sendToServer(new C2SToggleToolLeftRightClickPayload(toolSlot, abilityName, buttonType, keyCode, isMouse, requireEquipped));
+        Services.PLATFORM.sendToServer(new C2SToggleToolLeftRightClickPayload(toolSlot, abilityName, buttonType, keyCode, isMouse, requireEquipped));
     }
 
     protected void collectButtonsToRemove() {

@@ -10,9 +10,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class EclipseAlloyHoeItem extends BaseHoeItem implements PoweredTool {
     public EclipseAlloyHoeItem() {
-        super(GooTier.ECLIPSEALLOY, new Properties()
-                .attributes(HoeItem.createAttributes(GooTier.ECLIPSEALLOY, -2.0F, -1.0F))
-                .fireResistant());
+        super(GooTier.ECLIPSEALLOY, -2, -1.0F, new Properties().fireResistant());
         registerAbility(Ability.DROPTELEPORT);
         registerAbility(Ability.HAMMER, new AbilityParams(3, 7, 2));
     }

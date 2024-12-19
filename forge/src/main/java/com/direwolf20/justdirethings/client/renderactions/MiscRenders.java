@@ -72,7 +72,7 @@ public class MiscRenders {
             entityModel.prepareMobModel(player, f4, f8, pPartialTicks);
             entityModel.setupAnim(player, f4, f8, f7, f2, f5);
             int packedARGB = 0x7fffffff;
-            entityModel.renderToBuffer(matrixStack, vertexconsumer, packedLight, i, packedARGB);
+            entityModel.renderToBuffer(matrixStack, vertexconsumer, packedLight, i, packedARGB,1,1,1);
         }
 
         matrixStack.popPose();

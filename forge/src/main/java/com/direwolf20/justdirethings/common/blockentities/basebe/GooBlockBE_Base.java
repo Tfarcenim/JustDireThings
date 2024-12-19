@@ -202,9 +202,9 @@ public class GooBlockBE_Base extends BlockEntity {
     private GooSpreadRecipe findRecipe(BlockState state) {
         RecipeManager recipeManager = getLevel().getRecipeManager();
 
-        for (RecipeHolder<?> recipe : recipeManager.getAllRecipesFor(ModRecipes.GOO_SPREAD_RECIPE_TYPE.get())) {
-            if (recipe.value() instanceof GooSpreadRecipe gooSpreadRecipe && gooSpreadRecipe.matches(this, state)) {
-                return gooSpreadRecipe;
+        for (GooSpreadRecipe recipe : recipeManager.getAllRecipesFor(ModRecipes.GOO_SPREAD_RECIPE_TYPE.get())) {
+            if (recipe.matches(this, state)) {
+                return recipe;
             }
         }
 
@@ -215,9 +215,9 @@ public class GooBlockBE_Base extends BlockEntity {
     private GooSpreadRecipeTag findRecipeTag(BlockState state) {
         RecipeManager recipeManager = getLevel().getRecipeManager();
 
-        for (RecipeHolder<?> recipe : recipeManager.getAllRecipesFor(ModRecipes.GOO_SPREAD_RECIPE_TYPE_TAG.get())) {
-            if (recipe.value() instanceof GooSpreadRecipeTag gooSpreadRecipeTag && gooSpreadRecipeTag.matches(this, state)) {
-                return gooSpreadRecipeTag;
+        for (GooSpreadRecipeTag recipe : recipeManager.getAllRecipesFor(ModRecipes.GOO_SPREAD_RECIPE_TYPE_TAG.get())) {
+            if (recipe.matches(this, state)) {
+                return recipe;
             }
         }
 

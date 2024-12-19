@@ -232,7 +232,7 @@ public class CreatureCatcherEntity extends ThrowableItemProjectile {
         pCompound.putBoolean("HasHitEntity", this.entityData.get(HAS_HIT));
         pCompound.putBoolean("Capturing", this.entityData.get(CAPTURING));
         pCompound.putInt("ShrinkingTime", this.entityData.get(SHRINKING_TIME));
-        pCompound.put("ReturnItemStack", this.entityData.get(RETURN_ITEM_STACK).save(this.registryAccess()));
+        pCompound.put("ReturnItemStack", this.entityData.get(RETURN_ITEM_STACK).save(new CompoundTag()));
         pCompound.putFloat("EntityPosX", this.entityData.get(ENTITY_POSITION).x());
         pCompound.putFloat("EntityPosY", this.entityData.get(ENTITY_POSITION).y());
         pCompound.putFloat("EntityPosZ", this.entityData.get(ENTITY_POSITION).z());
@@ -246,7 +246,14 @@ public class CreatureCatcherEntity extends ThrowableItemProjectile {
         this.entityData.set(HAS_HIT, pCompound.getBoolean("HasHitEntity"));
         this.entityData.set(CAPTURING, pCompound.getBoolean("Capturing"));
         this.entityData.set(SHRINKING_TIME, pCompound.getInt("ShrinkingTime"));
-        ItemStack stack = ItemStack.parse(this.registryAccess(), pCompound.getCompound("ReturnItemStack")).orElseGet(() -> new ItemStack(this.getDefaultItem()));
+
+        ItemStack stack;
+        if (pCompound.contains("ReturnItemStack")) {
+            stack = ItemStack.of(pCompound.getCompound("ReturnItemStack"));
+        } else {
+            stack = new ItemStack(getDefaultItem());
+        }
+
         this.entityData.set(RETURN_ITEM_STACK, stack);
         Vector3f position = new Vector3f(
                 pCompound.getFloat("EntityPosX"),

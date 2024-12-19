@@ -54,7 +54,7 @@ public class InventoryHolderItemHandler extends ItemStackHandler {
         int limit = getStackLimit(slot, stack);
 
         if (!existing.isEmpty()) {
-            if (!ItemStack.isSameItemSameComponents(stack, existing))
+            if (!ItemStack.isSameItemSameTags(stack, existing))
                 return stack;
 
             limit -= existing.getCount();
@@ -90,7 +90,7 @@ public class InventoryHolderItemHandler extends ItemStackHandler {
         if (inventoryHolderBE == null) return 0;
         int allowedAmt = inventoryHolderBE.getSlotLimit(slot);
         if (allowedAmt == -1)
-            return Item.ABSOLUTE_MAX_STACK_SIZE;
+            return Item.MAX_STACK_SIZE;
         return allowedAmt;
     }
 
