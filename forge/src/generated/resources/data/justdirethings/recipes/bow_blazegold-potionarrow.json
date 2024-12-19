@@ -1,0 +1,13 @@
+{
+  "type": "justdirethings:ability",
+  "addition": {
+    "item": "justdirethings:upgrade_potionarrow"
+  },
+  "base": {
+    "item": "justdirethings:bow_blazegold"
+  },
+  "result": {
+    "item": "minecraft:air"
+  },
+  "template": []
+}

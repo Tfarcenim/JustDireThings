@@ -1,0 +1,13 @@
+{
+  "type": "justdirethings:ability",
+  "addition": {
+    "item": "justdirethings:upgrade_walkspeed"
+  },
+  "base": {
+    "item": "justdirethings:ferricore_leggings"
+  },
+  "result": {
+    "item": "minecraft:air"
+  },
+  "template": []
+}

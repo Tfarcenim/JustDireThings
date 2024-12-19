@@ -1,0 +1,13 @@
+{
+  "type": "justdirethings:ability",
+  "addition": {
+    "item": "justdirethings:upgrade_treefeller"
+  },
+  "base": {
+    "item": "justdirethings:celestigem_paxel"
+  },
+  "result": {
+    "item": "minecraft:air"
+  },
+  "template": []
+}

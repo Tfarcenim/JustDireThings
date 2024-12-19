@@ -1,0 +1,13 @@
+{
+  "type": "justdirethings:ability",
+  "addition": {
+    "item": "justdirethings:upgrade_stepheight"
+  },
+  "base": {
+    "item": "justdirethings:celestigem_boots"
+  },
+  "result": {
+    "item": "minecraft:air"
+  },
+  "template": []
+}

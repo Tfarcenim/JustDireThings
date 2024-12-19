@@ -178,7 +178,7 @@ public class JustDireItemModels extends ItemModelProvider {
             String trimId = trimModelData.name(armorItem.getMaterial());
             ItemModelBuilder override = withExistingParent(builder.getLocation().withSuffix("_" + trimId + "_trim").getPath(), "item/generated")
                     .texture("layer0", texture)
-                    .texture("layer1", new ResourceLocation("trims/items/" + armorItem.getType().getName() + "_trim_" + trimId));
+                    .texture("layer1", new ResourceLocation("trims/items/" + armorItem.getType().getName() + "_trim"));
             builder.override()
                     .predicate(ItemModelGenerators.TRIM_TYPE_PREDICATE_ID, trimModelData.itemModelIndex())
                     .model(override);

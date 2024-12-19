@@ -1,0 +1,13 @@
+{
+  "type": "justdirethings:ability",
+  "addition": {
+    "item": "justdirethings:upgrade_phase"
+  },
+  "base": {
+    "item": "justdirethings:eclipsealloy_leggings"
+  },
+  "result": {
+    "item": "minecraft:air"
+  },
+  "template": []
+}

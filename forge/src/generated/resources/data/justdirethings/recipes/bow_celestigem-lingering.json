@@ -1,0 +1,13 @@
+{
+  "type": "justdirethings:ability",
+  "addition": {
+    "item": "justdirethings:upgrade_lingering"
+  },
+  "base": {
+    "item": "justdirethings:bow_celestigem"
+  },
+  "result": {
+    "item": "minecraft:air"
+  },
+  "template": []
+}

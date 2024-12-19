@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "justdirethings:upgrade_blank"
+    },
+    "f": {
+      "item": "minecraft:ladder"
+    }
+  },
+  "pattern": [
+    " f ",
+    "fbf",
+    " f "
+  ],
+  "result": {
+    "item": "justdirethings:upgrade_stepheight"
+  },
+  "show_notification": true
+}

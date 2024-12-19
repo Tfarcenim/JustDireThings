@@ -1,0 +1,13 @@
+{
+  "type": "justdirethings:ability",
+  "addition": {
+    "item": "justdirethings:upgrade_splash"
+  },
+  "base": {
+    "item": "justdirethings:bow_eclipsealloy"
+  },
+  "result": {
+    "item": "minecraft:air"
+  },
+  "template": []
+}

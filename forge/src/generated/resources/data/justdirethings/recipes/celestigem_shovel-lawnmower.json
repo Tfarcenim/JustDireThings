@@ -1,0 +1,13 @@
+{
+  "type": "justdirethings:ability",
+  "addition": {
+    "item": "justdirethings:upgrade_lawnmower"
+  },
+  "base": {
+    "item": "justdirethings:celestigem_shovel"
+  },
+  "result": {
+    "item": "minecraft:air"
+  },
+  "template": []
+}

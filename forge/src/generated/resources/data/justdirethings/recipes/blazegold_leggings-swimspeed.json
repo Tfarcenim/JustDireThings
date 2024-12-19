@@ -1,0 +1,13 @@
+{
+  "type": "justdirethings:ability",
+  "addition": {
+    "item": "justdirethings:upgrade_swimspeed"
+  },
+  "base": {
+    "item": "justdirethings:blazegold_leggings"
+  },
+  "result": {
+    "item": "minecraft:air"
+  },
+  "template": []
+}

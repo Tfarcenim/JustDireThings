@@ -1,0 +1,18 @@
+{
+  "type": "justdirethings:goospread_tag",
+  "craftingDuration": 2400,
+  "group": "justdirethings",
+  "input": {
+    "Name": "justdirethings:unrefined_t3_fluid_block",
+    "Properties": {
+      "level": "0"
+    }
+  },
+  "output": {
+    "Name": "justdirethings:refined_t3_fluid_block",
+    "Properties": {
+      "level": "0"
+    }
+  },
+  "tierRequirement": 3
+}

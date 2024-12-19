@@ -1,0 +1,13 @@
+{
+  "type": "justdirethings:ability",
+  "addition": {
+    "item": "justdirethings:upgrade_waterbreathing"
+  },
+  "base": {
+    "item": "justdirethings:eclipsealloy_helmet"
+  },
+  "result": {
+    "item": "minecraft:air"
+  },
+  "template": []
+}

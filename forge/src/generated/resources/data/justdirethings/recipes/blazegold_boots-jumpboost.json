@@ -1,0 +1,13 @@
+{
+  "type": "justdirethings:ability",
+  "addition": {
+    "item": "justdirethings:upgrade_jumpboost"
+  },
+  "base": {
+    "item": "justdirethings:blazegold_boots"
+  },
+  "result": {
+    "item": "minecraft:air"
+  },
+  "template": []
+}

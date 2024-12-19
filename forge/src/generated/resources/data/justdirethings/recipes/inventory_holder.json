@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "justdirethings",
+  "key": {
+    "f": {
+      "item": "justdirethings:blazegold_ingot"
+    },
+    "o": {
+      "item": "minecraft:armor_stand"
+    }
+  },
+  "pattern": [
+    " f ",
+    "fof",
+    " f "
+  ],
+  "result": {
+    "item": "justdirethings:inventory_holder"
+  },
+  "show_notification": true
+}

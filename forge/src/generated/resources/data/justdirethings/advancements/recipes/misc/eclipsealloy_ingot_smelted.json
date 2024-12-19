@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_eclipsealloy_raw": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "justdirethings:raw_eclipsealloy"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "justdirethings:eclipsealloy_ingot_smelted"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_eclipsealloy_raw",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "justdirethings:eclipsealloy_ingot_smelted"
+    ]
+  },
+  "sends_telemetry_event": false
+}

@@ -1625,33 +1625,31 @@ public class JustDireRecipes extends RecipeProvider {
                             PaxelRecipeBuilder.ability(Ingredient.EMPTY, Ingredient.of(armor.get()), Ingredient.of(upgrade.get()))
                                   //  .group("justdirethings")
                                     .unlocks("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
-                                    .save(consumer,name.withSuffix("-ability"));
+                                    .save(consumer);
                         }
                     }
                 }
                 for (var tool : Registration.TOOLS.getEntries()) {
                     Item toolItem = tool.get();
-                    ResourceLocation name = BuiltInRegistries.ITEM.getKey(toolItem);
                     if (toolItem instanceof ToggleableTool toggleableTool) {
                         EnumSet<Ability> abilities = toggleableTool.getAllAbilities();
                         if (abilities.contains(ability)) {
                             PaxelRecipeBuilder.ability(Ingredient.EMPTY, Ingredient.of(tool.get()), Ingredient.of(upgrade.get()))
                                  //   .group("justdirethings")
                                     .unlocks("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
-                                    .save(consumer,name.withSuffix("-ability"));
+                                    .save(consumer);
                         }
                     }
                 }
                 for (var bow : Registration.BOWS.getEntries()) {
                     Item bowItem = bow.get();
-                    ResourceLocation name = BuiltInRegistries.ITEM.getKey(bowItem);
                     if (bowItem instanceof ToggleableTool toggleableTool) {
                         EnumSet<Ability> abilities = toggleableTool.getAllAbilities();
                         if (abilities.contains(ability)) {
                             PaxelRecipeBuilder.ability(Ingredient.EMPTY, Ingredient.of(bow.get()), Ingredient.of(upgrade.get()))
                                     ///.group("justdirethings")
                                     .unlocks("has_upgrade_base", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.UPGRADE_BASE.get()))
-                                    .save(consumer,name.withSuffix("-ability"));
+                                    .save(consumer);
                         }
                     }
                 }

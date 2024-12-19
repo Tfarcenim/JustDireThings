@@ -1,0 +1,15 @@
+// 1.20.1	2024-12-19T10:23:40.9217166	JustDireThingsForge Tags
+5f1e660bc9c2edfefb9b5e0ee9b34fd54e814ffc data/c/tags/blocks/storage_blocks/charcoal.json
+d884d1dce575fffc46df4fe1c0b035f58f0281f1 data/forge/tags/blocks/ores.json
+d80ee8fbbba39b68c0348573ea5e6a823e37c3c2 data/forge/tags/blocks/storage_blocks.json
+b36284c186a0e7e752bdfecb976f356f6abe3bd7 data/justdirethings/tags/blocks/eclipsegate_deny.json
+5652c95e5a21c56bfe865c44205ca2302b181839 data/justdirethings/tags/blocks/lawnmowerable.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/justdirethings/tags/blocks/noautoclick.json
+cfab2ab481bf476a645d326b87627918009b9e50 data/justdirethings/tags/blocks/paradox_absorb_deny.json
+cb28339548a9f5c43f81c4715df14c62d24020ad data/justdirethings/tags/blocks/paradox_allow.json
+fd8f34ea7c3f46b4031a8323009cfaffab88474e data/justdirethings/tags/blocks/phase_deny.json
+b73bf681aa4023a1ac69623485bbec13846a282a data/justdirethings/tags/blocks/swapper_deny.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/justdirethings/tags/blocks/tick_speed_deny.json
+704d4386b02b3ad86131bd6cf1e36461baa4169f data/minecraft/tags/blocks/bamboo_plantable_on.json
+52127bea482b525c31cb75a667711cc315c154b3 data/minecraft/tags/blocks/mineable/pickaxe.json
+8882a0a52d428036a957d24fb046777a8795e588 data/minecraft/tags/blocks/mineable/shovel.json

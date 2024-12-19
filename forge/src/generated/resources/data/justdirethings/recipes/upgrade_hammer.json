@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "justdirethings:upgrade_blank"
+    },
+    "f": {
+      "item": "minecraft:diamond_pickaxe"
+    }
+  },
+  "pattern": [
+    "   ",
+    "fbf",
+    "   "
+  ],
+  "result": {
+    "item": "justdirethings:upgrade_hammer"
+  },
+  "show_notification": true
+}

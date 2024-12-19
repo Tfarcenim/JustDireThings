@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "justdirethings:celestigem"
+  },
+  "base": {
+    "item": "justdirethings:blazegold_axe"
+  },
+  "result": {
+    "item": "justdirethings:celestigem_axe"
+  },
+  "template": {
+    "item": "justdirethings:template_celestigem"
+  }
+}

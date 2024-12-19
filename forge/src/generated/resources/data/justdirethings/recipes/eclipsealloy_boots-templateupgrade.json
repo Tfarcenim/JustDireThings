@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "justdirethings:eclipsealloy_ingot"
+  },
+  "base": {
+    "item": "justdirethings:celestigem_boots"
+  },
+  "result": {
+    "item": "justdirethings:eclipsealloy_boots"
+  },
+  "template": {
+    "item": "justdirethings:template_eclipsealloy"
+  }
+}
