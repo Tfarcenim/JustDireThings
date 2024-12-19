@@ -716,21 +716,21 @@ public class Registration {
             () -> IForgeMenuType.create(ExperienceHolderContainer::new));
 
     //Data Attachments
-    public static final Supplier<AttachmentType<ItemStackHandler>> HANDLER = ATTACHMENT_TYPES.register(
+   /* public static final Supplier<AttachmentType<ItemStackHandler>> HANDLER = ATTACHMENT_TYPES.register(
             "handler", () -> AttachmentType.serializable(() -> new ItemStackHandler(1)).build());
     public static final Supplier<AttachmentType<GeneratorItemHandler>> GENERATOR_ITEM_HANDLER = ATTACHMENT_TYPES.register(
             "generator_item_handler", () -> AttachmentType.serializable(holder -> {
                 if (holder instanceof BaseMachineBE baseMachineBE)
                     return new GeneratorItemHandler(baseMachineBE.MACHINE_SLOTS);
                 return new GeneratorItemHandler(1);
-            }).build());
+            }).build());*/
     /*public static final Supplier<AttachmentType<InventoryHolderItemHandler>> INVENTORY_HOLDER_ITEM_HANDLER = ATTACHMENT_TYPES.register(
             "inventory_holder_item_handler", () -> AttachmentType.serializable(holder -> {
                 if (holder instanceof InventoryHolderBE inventoryHolderBE)
                     return new InventoryHolderItemHandler(inventoryHolderBE.MACHINE_SLOTS, inventoryHolderBE);
                 return new InventoryHolderItemHandler(1);
             }).build());*/
-    public static final Supplier<AttachmentType<GeneratorFluidItemHandler>> GENERATOR_FLUID_ITEM_HANDLER = ATTACHMENT_TYPES.register(
+    /*public static final Supplier<AttachmentType<GeneratorFluidItemHandler>> GENERATOR_FLUID_ITEM_HANDLER = ATTACHMENT_TYPES.register(
             "generator_fluid_item_handler", () -> AttachmentType.serializable(holder -> {
                 if (holder instanceof BaseMachineBE baseMachineBE)
                     return new GeneratorFluidItemHandler(baseMachineBE.MACHINE_SLOTS);
@@ -746,7 +746,7 @@ public class Registration {
                 } else {
                     throw new IllegalStateException("Cannot attach energy handler item to a non-PoweredMachine.");
                 }
-            }).build());
+            }).build());*/
    /* public static final Supplier<AttachmentType<TransmitterEnergyStorage>> ENERGYSTORAGE_TRANSMITTERS = ATTACHMENT_TYPES.register(
             "energystorage_transmitters", () -> AttachmentType.serializable(holder -> {
                 if (holder instanceof EnergyTransmitterBE energyTransmitterBE) {
@@ -756,7 +756,7 @@ public class Registration {
                     throw new IllegalStateException("Cannot attach energy handler item to a non-EnergyTransmitterBlock.");
                 }
             }).build());*/
-    public static final Supplier<AttachmentType<EnergyStorageNoReceive>> ENERGYSTORAGE_GENERATORS = ATTACHMENT_TYPES.register(
+    /*public static final Supplier<AttachmentType<EnergyStorageNoReceive>> ENERGYSTORAGE_GENERATORS = ATTACHMENT_TYPES.register(
             "energystorage_generators", () -> AttachmentType.serializable(holder -> {
                 if (holder instanceof PoweredMachineBE feMachineBE) {
                     int capacity = feMachineBE.getMaxEnergy(); //Default
@@ -764,14 +764,14 @@ public class Registration {
                 } else {
                     throw new IllegalStateException("Cannot attach energy handler item to a non-PoweredMachine.");
                 }
-            }).build());
+            }).build());*/
     public static final Supplier<AttachmentType<CompoundTag>> DEATH_DATA = ATTACHMENT_TYPES.register(
             "death_data",
             () -> AttachmentType.builder(CompoundTag::new).serialize(CompoundTag.CODEC).build()
     );
 
     //Fluids
-    public static final Supplier<AttachmentType<JustDireFluidTank>> MACHINE_FLUID_HANDLER = ATTACHMENT_TYPES.register(
+    /*public static final Supplier<AttachmentType<JustDireFluidTank>> MACHINE_FLUID_HANDLER = ATTACHMENT_TYPES.register(
             "machine_fluid_handler", () -> AttachmentType.serializable(holder -> {
                 if (holder instanceof FluidMachineBE fluidMachineBE)
                     return new JustDireFluidTank(fluidMachineBE.getMaxMB());
@@ -782,7 +782,7 @@ public class Registration {
                 if (holder instanceof FluidMachineBE fluidMachineBE)
                     return new JustDireFluidTank(fluidMachineBE.getMaxMB(), fluidstack -> fluidstack.getFluid() instanceof RefinedFuel);
                 return new JustDireFluidTank(0);
-            }).build());
+            }).build());*/
     /*public static final Supplier<AttachmentType<JustDireFluidTank>> PARADOX_FLUID_HANDLER = ATTACHMENT_TYPES.register(
             "paradox_fluid_handler", () -> AttachmentType.serializable(holder -> {
                 if (holder instanceof FluidMachineBE fluidMachineBE)

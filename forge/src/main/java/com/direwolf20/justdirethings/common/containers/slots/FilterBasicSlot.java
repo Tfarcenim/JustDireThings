@@ -3,8 +3,6 @@ package com.direwolf20.justdirethings.common.containers.slots;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
 
 
 public class FilterBasicSlot extends SlotItemHandler {

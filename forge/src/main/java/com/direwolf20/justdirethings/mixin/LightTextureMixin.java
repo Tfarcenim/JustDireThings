@@ -7,6 +7,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.Holder;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -18,15 +19,15 @@ public abstract class LightTextureMixin {
 
     @WrapOperation(
             method = "updateLightTexture",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;hasEffect(Lnet/minecraft/core/Holder;)Z")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;hasEffect(Lnet/minecraft/world/effect/MobEffect;)Z")
     )
-    private boolean wrapHasEffect(LocalPlayer instance, Holder holder, Operation<Boolean> original) {
+    private boolean wrapHasEffect(LocalPlayer instance, MobEffect effect, Operation<Boolean> original) {
         ItemStack helmet = instance.getItemBySlot(EquipmentSlot.HEAD);
         if (helmet.getItem() instanceof ToggleableTool toggleableTool && toggleableTool.canUseAbilityAndDurability(helmet, Ability.NIGHTVISION)) {
             return true; // Custom night vision effect
         }
 
-        return original.call(instance, holder); // Continue with the original method call
+        return original.call(instance, effect); // Continue with the original method call
     }
 
     @WrapOperation(

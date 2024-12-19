@@ -8,13 +8,13 @@ import com.direwolf20.justdirethings.common.blockentities.ExperienceHolderBE;
 import com.direwolf20.justdirethings.common.containers.ExperienceHolderContainer;
 import com.direwolf20.justdirethings.network.server.C2SExperienceHolderPayload;
 import com.direwolf20.justdirethings.network.server.C2SExperienceHolderSettingsPayload;
+import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.util.ExperienceUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderContainer> {
     private ExperienceHolderBE experienceHolderBE;
@@ -23,8 +23,8 @@ public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderCo
     private boolean ownerOnly;
     private boolean collectExp;
     public boolean showParticles = true;
-    private static final ResourceLocation EXPERIENCE_BAR_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("hud/experience_bar_background");
-    private static final ResourceLocation EXPERIENCE_BAR_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("hud/experience_bar_progress");
+    private static final ResourceLocation EXPERIENCE_BAR_BACKGROUND_SPRITE = new ResourceLocation("hud/experience_bar_background");
+    private static final ResourceLocation EXPERIENCE_BAR_PROGRESS_SPRITE = new ResourceLocation("hud/experience_bar_progress");
 
     public ExperienceHolderScreen(ExperienceHolderContainer container, Inventory inv, Component name) {
         super(container, inv, name);
@@ -47,7 +47,7 @@ public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderCo
                 amt = -1;
             else if (Screen.hasShiftDown())
                 amt = amt * 10;
-            PacketDistributor.sendToServer(new C2SExperienceHolderPayload(true, amt));
+            Services.PLATFORM.sendToServer(new C2SExperienceHolderPayload(true, amt));
         }));
         addRenderableWidget(ToggleButtonFactory.EXTRACTEXPBUTTON(topSectionLeft + (topSectionWidth / 2) - 15 - 18, topSectionTop + 62, true, b -> {
             int amt = 1;
@@ -55,7 +55,7 @@ public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderCo
                 amt = -1;
             else if (Screen.hasShiftDown())
                 amt = amt * 10;
-            PacketDistributor.sendToServer(new C2SExperienceHolderPayload(false, amt));
+            Services.PLATFORM.sendToServer(new C2SExperienceHolderPayload(false, amt));
         }));
         addRenderableWidget(ToggleButtonFactory.TARGETEXPBUTTON(topSectionLeft + (topSectionWidth / 2) - 15 - 42, topSectionTop + 64, targetExp, b -> {
             targetExp = ((NumberButton) b).getValue(); //The value is updated in the mouseClicked method below
@@ -89,7 +89,7 @@ public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderCo
         int barY = topSectionTop + topSectionHeight - 15;  // Y position for the XP bar
 
         // Bind the vanilla experience bar texture (this is the same texture used by the player XP bar)
-        guiGraphics.blitSprite(EXPERIENCE_BAR_BACKGROUND_SPRITE, barX, barY, 182, 5);
+        guiGraphics.blitSprite(EXPERIENCE_BAR_BACKGROUND_SPRITE, barX, barY, 182, 5);//todo
         int partialAmount = (int) (ExperienceUtils.getProgressToNextLevel(experienceHolderBE.exp) * 183.0F);
         if (partialAmount > 0) {
             guiGraphics.blitSprite(EXPERIENCE_BAR_PROGRESS_SPRITE, 182, 5, 0, 0, barX, barY, partialAmount, 5);
@@ -107,6 +107,6 @@ public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderCo
     @Override
     public void saveSettings() {
         super.saveSettings();
-        PacketDistributor.sendToServer(new C2SExperienceHolderSettingsPayload(targetExp, ownerOnly, collectExp, showParticles));
+        Services.PLATFORM.sendToServer(new C2SExperienceHolderSettingsPayload(targetExp, ownerOnly, collectExp, showParticles));
     }
 }

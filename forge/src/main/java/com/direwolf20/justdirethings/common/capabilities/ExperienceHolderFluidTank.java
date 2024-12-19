@@ -4,7 +4,6 @@ import com.direwolf20.justdirethings.common.blockentities.ExperienceHolderBE;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.function.Predicate;
 
@@ -68,7 +67,7 @@ public class ExperienceHolderFluidTank extends FluidTank {
 
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
-        if (resource.isEmpty() || !FluidStack.isSameFluidSameComponents(resource, fluid)) {
+        if (resource.isEmpty() || !resource.isFluidEqual( fluid)) {
             return FluidStack.EMPTY;
         }
         return drain(resource.getAmount(), action);
