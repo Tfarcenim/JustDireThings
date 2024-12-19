@@ -36,7 +36,8 @@ public abstract class AbstractGooRecipeBuilder<T> implements RecipeBuilder {
     }
 
     @Override
-    public final RecipeBuilder unlockedBy(String p_176496_, CriterionTriggerInstance p_176497_) {
+    public final RecipeBuilder unlockedBy(String pCriterionName, CriterionTriggerInstance pCriterionTrigger) {
+        this.advancement.addCriterion(pCriterionName, pCriterionTrigger);
         return this;
     }
 

@@ -2,7 +2,7 @@
   "name": "Celestigem Chestplate",
   "sortnum": 10,
   "category": "justdirethings:armor",
-  "icon": "justdirethings:celestigem_chestplate[justdirethings:forge_energy=10000]",
+  "icon": "justdirethings:celestigem_chestplate{\"justdirethings:forge_energy\":10000}",
   "pages": [
     {
       "type": "patchouli:text",

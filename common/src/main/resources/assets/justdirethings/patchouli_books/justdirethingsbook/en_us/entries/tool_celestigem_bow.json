@@ -2,7 +2,7 @@
   "name": "Celestigem Bow",
   "sortnum": 18,
   "category": "justdirethings:tools",
-  "icon": "justdirethings:bow_celestigem[justdirethings:forge_energy=10000]",
+  "icon": "justdirethings:bow_celestigem{\"justdirethings:forge_energy\":10000}",
   "pages": [
     {
       "type": "patchouli:text",

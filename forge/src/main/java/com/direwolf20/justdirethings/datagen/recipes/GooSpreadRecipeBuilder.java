@@ -56,7 +56,7 @@ public class GooSpreadRecipeBuilder extends AbstractGooRecipeBuilder<BlockState>
 
         @Override
         public RecipeSerializer<?> getType() {
-            return ModRecipes.GOO_SPREAD_RECIPE_SERIALIZER_TAG.get();
+            return ModRecipes.GOO_SPREAD_RECIPE_SERIALIZER.get();
         }
     }
 }

@@ -2,7 +2,7 @@
   "name": "Celestigem Shovel",
   "sortnum": 15,
   "category": "justdirethings:tools",
-  "icon": "justdirethings:celestigem_shovel[justdirethings:forge_energy=10000]",
+  "icon": "justdirethings:celestigem_shovel{\"justdirethings:forge_energy\":10000}",
   "pages": [
     {
       "type": "patchouli:text",

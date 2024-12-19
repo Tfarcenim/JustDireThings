@@ -66,7 +66,7 @@ public class JustDireLootTables extends VanillaBlockLoot {
         add(Registration.TimeCrystalCluster_Small.get(), noDrop());
         add(Registration.TimeCrystalCluster_Medium.get(), noDrop());
         add(Registration.TimeCrystalCluster_Large.get(), noDrop());
-        add(Registration.TimeCrystalBuddingBlock.get(), noDrop());
+        add(Registration.TIME_CRYSTAL_BUDDING_BLOCK.get(), noDrop());
         dropSelf(Registration.ParadoxMachine.get());
         dropSelf(Registration.InventoryHolder.get());
         dropSelf(Registration.ExperienceHolder.get());

@@ -53,7 +53,7 @@ public class JustDireBlockStates extends BlockStateProvider {
         sidedBlocks();
         fluidBlocks();
 
-        getVariantBuilder(Registration.TimeCrystalBuddingBlock.get()).forAllStates(s -> {
+        getVariantBuilder(Registration.TIME_CRYSTAL_BUDDING_BLOCK.get()).forAllStates(s -> {
             BlockModelBuilder model;
             int stage = s.getValue(TimeCrystalBuddingBlock.STAGE);
             if (stage == 0) {

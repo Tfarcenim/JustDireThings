@@ -2,7 +2,7 @@
   "name": "Eclipse Alloy Shovel",
   "sortnum": 22,
   "category": "justdirethings:tools",
-  "icon": "justdirethings:eclipsealloy_shovel[justdirethings:forge_energy=500000]",
+  "icon": "justdirethings:eclipsealloy_shovel{\"justdirethings:forge_energy\":500000}",
   "pages": [
     {
       "type": "patchouli:text",

@@ -53,7 +53,7 @@ public class JustDireLanguageProvider extends LanguageProvider {
         add(Registration.FluidCollectorT1.get(), "Simple Fluid Collector");
         add(Registration.FluidCollectorT2.get(), "Advanced Fluid Collector");
         add(Registration.TimeCrystalBlock.get(), "Time Crystal Block");
-        add(Registration.TimeCrystalBuddingBlock.get(), "Budding Time Crystal Block");
+        add(Registration.TIME_CRYSTAL_BUDDING_BLOCK.get(), "Budding Time Crystal Block");
         add(Registration.TimeCrystalCluster.get(), "Time Crystal Cluster");
         add(Registration.TimeCrystalCluster_Small.get(), "Small Time Crystal Cluster");
         add(Registration.TimeCrystalCluster_Medium.get(), "Medium Time Crystal Cluster");

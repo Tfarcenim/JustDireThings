@@ -2,7 +2,7 @@
   "name": "Eclipse Alloy Paxel",
   "sortnum": 26,
   "category": "justdirethings:tools",
-  "icon": "justdirethings:eclipsealloy_paxel[justdirethings:forge_energy=500000]",
+  "icon": "justdirethings:eclipsealloy_paxel{\"justdirethings:forge_energy\":500000}",
   "pages": [
     {
       "type": "patchouli:text",

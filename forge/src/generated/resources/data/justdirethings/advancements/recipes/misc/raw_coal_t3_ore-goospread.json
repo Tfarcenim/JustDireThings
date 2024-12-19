@@ -1,5 +1,22 @@
 {
-  "criteria": {},
-  "requirements": [],
+  "criteria": {
+    "has_goo_block_t3": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "justdirethings:gooblock_tier3"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_goo_block_t3"
+    ]
+  ],
   "sends_telemetry_event": false
 }

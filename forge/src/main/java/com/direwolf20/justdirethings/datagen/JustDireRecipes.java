@@ -1018,11 +1018,11 @@ public class JustDireRecipes extends RecipeProvider {
                 .group("justdirethings")
                 .unlockedBy("has_goo_block_t4", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.GooBlock_Tier4_ITEM.get()))
                 .save(consumer);
-        GooSpreadRecipeBuilder.shapeless(Blocks.BUDDING_AMETHYST.defaultBlockState(), Registration.TimeCrystalBuddingBlock.get().defaultBlockState(), 4, 4800)
+        GooSpreadRecipeBuilder.shapeless(Blocks.BUDDING_AMETHYST.defaultBlockState(), Registration.TIME_CRYSTAL_BUDDING_BLOCK.get().defaultBlockState(), 4, 4800)
                 .group("justdirethings")
                 .unlockedBy("has_goo_block_t4", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.GooBlock_Tier4_ITEM.get()))
                 .save(consumer, JustDireThings.id("budding_time_amethyst"));
-        GooSpreadRecipeBuilder.shapeless( Registration.TimeCrystalBlock.get().defaultBlockState(), Registration.TimeCrystalBuddingBlock.get().defaultBlockState(), 4, 4800)
+        GooSpreadRecipeBuilder.shapeless( Registration.TimeCrystalBlock.get().defaultBlockState(), Registration.TIME_CRYSTAL_BUDDING_BLOCK.get().defaultBlockState(), 4, 4800)
                 .group("justdirethings")
                 .unlockedBy("has_goo_block_t4", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.GooBlock_Tier4_ITEM.get()))
                 .save(consumer, JustDireThings.id("budding_time_timeblock"));

@@ -376,8 +376,8 @@ public class Registration {
     public static final RegistryObject<BlockItem> RawCoal_T4_ITEM = ITEMS.register("raw_coal_t4_ore", () -> new BlockItem(RawCoal_T4.get(), new Item.Properties()));
     public static final RegistryObject<TimeCrystalBlock> TimeCrystalBlock = BLOCKS.register("time_crystal_block", TimeCrystalBlock::new);
     public static final RegistryObject<BlockItem> TimeCrystalBlock_ITEM = ITEMS.register("time_crystal_block", () -> new BlockItem(TimeCrystalBlock.get(), new Item.Properties()));
-    public static final RegistryObject<TimeCrystalBuddingBlock> TimeCrystalBuddingBlock = BLOCKS.register("time_crystal_budding_block", TimeCrystalBuddingBlock::new);
-    public static final RegistryObject<BlockItem> TimeCrystalBuddingBlock_ITEM = ITEMS.register("time_crystal_budding_block", () -> new BlockItem(TimeCrystalBuddingBlock.get(), new Item.Properties()));
+    public static final RegistryObject<TimeCrystalBuddingBlock> TIME_CRYSTAL_BUDDING_BLOCK = BLOCKS.register("time_crystal_budding_block", TimeCrystalBuddingBlock::new);
+    public static final RegistryObject<BlockItem> TimeCrystalBuddingBlock_ITEM = ITEMS.register("time_crystal_budding_block", () -> new BlockItem(TIME_CRYSTAL_BUDDING_BLOCK.get(), new Item.Properties()));
     public static final RegistryObject<TimeCrystalClusterBlock> TimeCrystalCluster = BLOCKS.register("time_crystal_cluster", () -> new TimeCrystalClusterBlock(
             7,
             3,

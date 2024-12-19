@@ -2,7 +2,7 @@
   "name": "Advanced Portal Gun",
   "sortnum": 11,
   "category": "justdirethings:items",
-  "icon": "justdirethings:portalgun_v2[justdirethings:forge_energy=1000000]",
+  "icon": "justdirethings:portalgun_v2{\"justdirethings:forge_energy\":1000000}",
   "pages": [
     {
       "type": "patchouli:text",

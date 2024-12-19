@@ -2,7 +2,7 @@
   "name": "Eclipse Alloy Bow",
   "sortnum": 25,
   "category": "justdirethings:tools",
-  "icon": "justdirethings:bow_eclipsealloy[justdirethings:forge_energy=500000]",
+  "icon": "justdirethings:bow_eclipsealloy{\"justdirethings:forge_energy\":500000}",
   "pages": [
     {
       "type": "patchouli:text",

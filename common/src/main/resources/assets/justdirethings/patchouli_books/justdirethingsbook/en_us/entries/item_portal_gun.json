@@ -2,7 +2,7 @@
   "name": "Portal Gun",
   "sortnum": 10,
   "category": "justdirethings:items",
-  "icon": "justdirethings:portalgun[justdirethings:forge_energy=100000]",
+  "icon": "justdirethings:portalgun{\"justdirethings:forge_energy\":100000}",
   "pages": [
     {
       "type": "patchouli:text",

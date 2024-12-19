@@ -38,7 +38,7 @@ public class ItemStackNBTHandler implements IItemHandlerModifiable {
     public List<ItemStack> getContents() {
         List<ItemStack> stacks = JustDireDataComponents.getItems(stack,target);
         if (stacks == null) {
-            return NonNullList.createWithCapacity(size);
+            return NonNullList.withSize(size,ItemStack.EMPTY);
         }
         return stacks;
     }
@@ -50,7 +50,8 @@ public class ItemStackNBTHandler implements IItemHandlerModifiable {
 
     @Override
     public @NotNull ItemStack getStackInSlot(int slot) {
-        return getContents().get(slot);
+        List<ItemStack> contents = getContents();
+        return contents.get(slot);
     }
 
     @Override

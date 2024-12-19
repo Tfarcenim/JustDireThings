@@ -2,7 +2,7 @@
   "name": "Celestigem Sword",
   "sortnum": 13,
   "category": "justdirethings:tools",
-  "icon": "justdirethings:celestigem_sword[justdirethings:forge_energy=10000]",
+  "icon": "justdirethings:celestigem_sword{\"justdirethings:forge_energy\":10000}",
   "pages": [
     {
       "type": "patchouli:text",
