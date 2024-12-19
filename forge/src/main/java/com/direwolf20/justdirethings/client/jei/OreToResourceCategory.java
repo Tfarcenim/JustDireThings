@@ -24,14 +24,14 @@ public class OreToResourceCategory implements IRecipeCategory<OreToResourceRecip
     private final IDrawable background;
     private final IDrawable icon;
     private final IDrawable pickaxeIcon;
-    private final IDrawableAnimated animatedArrow;
+    //private final IDrawableAnimated animatedArrow;
     public static final ResourceLocation UID = JustDireThings.id("ore_to_resource");
 
     public OreToResourceCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createBlankDrawable(120, 30);  // Adjust size as needed
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Registration.RawFerricoreOre.get()));
-        IDrawableStatic arrowDrawable = guiHelper.getRecipeArrow();
-        this.animatedArrow = guiHelper.createAnimatedDrawable(arrowDrawable, 40, IDrawableAnimated.StartDirection.LEFT, false);  // 20 ticks duration, left-to-right animation, no looping
+       // IDrawableStatic arrowDrawable = guiHelper.getRecipeArrow();
+      //  this.animatedArrow = guiHelper.createAnimatedDrawable(arrowDrawable, 40, IDrawableAnimated.StartDirection.LEFT, false);  // 20 ticks duration, left-to-right animation, no looping
         this.pickaxeIcon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Items.IRON_PICKAXE));
     }
 
@@ -60,7 +60,7 @@ public class OreToResourceCategory implements IRecipeCategory<OreToResourceRecip
         RenderSystem.enableBlend();
 
         // Draw the animated arrow
-        animatedArrow.draw(gui, 46, 10);  // Position the arrow as needed
+       // animatedArrow.draw(gui, 46, 10);  // Position the arrow as needed
 
         background.draw(gui, 17, 0);
         pickaxeIcon.draw(gui, 50, -2);

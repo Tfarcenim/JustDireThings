@@ -79,7 +79,7 @@ public class ExperienceHolderFluidTank extends FluidTank {
         if (getFluidAmount() < drained) {
             drained = getFluidAmount();
         }
-        FluidStack stack = fluid.copyWithAmount(drained);
+        FluidStack stack = new FluidStack(fluid.getFluid(),drained,fluid.getTag());
         if (action.execute() && drained > 0) {
             extractFluid(drained);
             onContentsChanged();

@@ -31,14 +31,14 @@ public class FluidDropRecipeCategory implements IRecipeCategory<FluidDropRecipe>
     private final IDrawable slot;
     private final IDrawable icon;
     private final Component localizedName;
-    private final IDrawableStatic arrow;
+    //private final IDrawableStatic arrow;
 
     public FluidDropRecipeCategory(IGuiHelper guiHelper) {
         background = guiHelper.createBlankDrawable(width, height);
         slot = guiHelper.getSlotDrawable();
         icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.PolymorphicCatalyst.get()));
         localizedName = Component.translatable("justdirethings.fluiddroprecipe.title");
-        this.arrow = guiHelper.getRecipeArrow();
+        //this.arrow = guiHelper.getRecipeArrow();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class FluidDropRecipeCategory implements IRecipeCategory<FluidDropRecipe>
     @Override
     public void draw(FluidDropRecipe recipe, IRecipeSlotsView slotsView, GuiGraphics gui, double mouseX, double mouseY) {
         RenderSystem.enableBlend();
-        arrow.draw(gui, 34, 20);
+        //arrow.draw(gui, 34, 20);
         background.draw(gui, 17, 0);
         RenderSystem.disableBlend();
     }

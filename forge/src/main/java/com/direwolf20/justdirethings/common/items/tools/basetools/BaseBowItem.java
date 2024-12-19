@@ -152,7 +152,7 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
                     }
                 }
                 if (!potionContents.equals(PotionContents.EMPTY)) {
-                    justDireArrow.setPotionContents(potionContents);
+                    justDireArrow.setEffectsFromPotions(potionContents);
                     if (canUseAbilityAndDurability(itemStack, Ability.POTIONARROW)) {
                         justDireArrow.setPotionArrow(true);
                         Helpers.damageTool(itemStack, livingEntity, Ability.POTIONARROW);

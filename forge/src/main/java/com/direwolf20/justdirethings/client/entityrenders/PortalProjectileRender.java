@@ -40,7 +40,7 @@ public class PortalProjectileRender extends EntityRenderer<PortalProjectile> {
 
         this.model.setupAnim(pEntity, 0.0F, 0.0F, 0.0F, f, f1);
         VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.entityTranslucentCull(TEXTURE));
-        this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY);
+        this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY,1,1,1,1);
         pPoseStack.popPose();
         super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
     }

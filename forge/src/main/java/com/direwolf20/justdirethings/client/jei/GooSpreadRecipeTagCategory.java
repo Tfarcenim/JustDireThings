@@ -38,14 +38,14 @@ public class GooSpreadRecipeTagCategory implements IRecipeCategory<GooSpreadReci
     private final IDrawable slot;
     private final IDrawable icon;
     private final Component localizedName;
-    private final IDrawableStatic arrow;
+   // private final IDrawableStatic arrow;
 
     public GooSpreadRecipeTagCategory(IGuiHelper guiHelper) {
         background = guiHelper.createBlankDrawable(width, height);
         slot = guiHelper.getSlotDrawable();
         icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.GooBlock_Tier1.get()));
         localizedName = Component.translatable("justdirethings.goospreadrecipetag.title");
-        this.arrow = guiHelper.getRecipeArrow();
+        //this.arrow = guiHelper.getRecipeArrow();
     }
 
     @Override
@@ -71,7 +71,7 @@ public class GooSpreadRecipeTagCategory implements IRecipeCategory<GooSpreadReci
     @Override
     public void draw(GooSpreadRecipeTag recipe, IRecipeSlotsView slotsView, GuiGraphics gui, double mouseX, double mouseY) {
         RenderSystem.enableBlend();
-        arrow.draw(gui, 54, 12);
+       // arrow.draw(gui, 54, 12);
         background.draw(gui, 17, 0);
         RenderSystem.disableBlend();
     }

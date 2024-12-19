@@ -1,6 +1,7 @@
 package com.direwolf20.justdirethings.client.screens;
 
 import com.direwolf20.justdirethings.JustDireThings;
+import com.direwolf20.justdirethings.client.screens.basescreens.BaseMachineScreen;
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButtonFactory;
 import com.direwolf20.justdirethings.client.screens.widgets.BaseButton;
 import com.direwolf20.justdirethings.client.screens.widgets.GrayscaleButton;
@@ -17,7 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 public class MachineSettingsCopierScreen extends Screen {
-    public static final ResourceLocation SOCIALBACKGROUND = JustDireThings.id("background");
     private ItemStack copyMachineSettingsItemstack;
     boolean area, offset, filter, redstone;
     int topSectionWidth, topSectionHeight, topSectionLeft, topSectionTop;
@@ -79,9 +79,9 @@ public class MachineSettingsCopierScreen extends Screen {
 //    @Override
     public void renderBackground(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        guiGraphics.blitSprite(SOCIALBACKGROUND, topSectionLeft, topSectionTop - 20, topSectionWidth, 20);
+        guiGraphics.blit(BaseMachineScreen.SOCIALBACKGROUND, topSectionLeft, topSectionTop - 20,0,0, topSectionWidth, 20);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        guiGraphics.blitSprite(SOCIALBACKGROUND, topSectionLeft, topSectionTop, topSectionWidth, topSectionHeight);
+        guiGraphics.blit(BaseMachineScreen.SOCIALBACKGROUND, topSectionLeft, topSectionTop,0,0, topSectionWidth, topSectionHeight);
 
         Component title = copyMachineSettingsItemstack.getItem().getName(copyMachineSettingsItemstack);
         int titleX = topSectionLeft + 20 + ((topSectionWidth - 40) / 2) - this.font.width(title) / 2;

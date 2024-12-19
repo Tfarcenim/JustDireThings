@@ -34,8 +34,8 @@ public class InventoryHolderScreen extends BaseMachineScreen<InventoryHolderCont
 
     public InventoryHolderScreen(InventoryHolderContainer container, Inventory inv, Component name) {
         super(container, inv, name);
-        if (container.baseMachineBE instanceof InventoryHolderBE inventoryHolderBE) {
-            this.inventoryHolderBE = inventoryHolderBE;
+        if (container.baseMachineBE instanceof InventoryHolderBE) {
+            this.inventoryHolderBE = container.baseMachineBE;
             this.compareNBT = inventoryHolderBE.compareNBT;
             this.filtersOnly = inventoryHolderBE.filtersOnly;
             this.compareCounts = inventoryHolderBE.compareCounts;
@@ -155,7 +155,7 @@ public class InventoryHolderScreen extends BaseMachineScreen<InventoryHolderCont
     }
 
     public void renderInventorySection(GuiGraphics guiGraphics, int relX, int relY) {
-        guiGraphics.blitSprite(SOCIALBACKGROUND, relX, relY + 83 - 8, this.imageWidth, this.imageHeight - 55); //Inventory Section
+        guiGraphics.blit(SOCIALBACKGROUND, relX, relY + 83 - 8,0,0, this.imageWidth, this.imageHeight - 55); //Inventory Section
     }
 
     @Override

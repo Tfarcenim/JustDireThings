@@ -2,7 +2,7 @@ package com.direwolf20.justdirethings.common.entities;
 
 import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.PotionContents;
-import net.minecraft.core.Holder;
+import com.google.common.collect.Sets;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -20,18 +20,28 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.ZombifiedPiglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static net.minecraft.world.entity.projectile.ThrownPotion.WATER_SENSITIVE_OR_ON_FIRE;
 
 public class JustDireArrow extends AbstractArrow {
+
+    private Potion potion = Potions.EMPTY;
+    private final Set<MobEffectInstance> effects = Sets.newHashSet();
+    private boolean fixedColor;
     private static final EntityDataAccessor<Integer> ID_EFFECT_COLOR = SynchedEntityData.defineId(JustDireArrow.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> IS_POTIONARROW = SynchedEntityData.defineId(JustDireArrow.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_SPLASH = SynchedEntityData.defineId(JustDireArrow.class, EntityDataSerializers.BOOLEAN);
@@ -75,28 +85,54 @@ public class JustDireArrow extends AbstractArrow {
         this.updateColor();
     }
 
-    public PotionContents getPotionContents() {
-        return this.getPickupItemStackOrigin().getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
+    public void setEffectsFromItem(ItemStack pStack) {
+        if (pStack.is(Items.TIPPED_ARROW)) {
+            this.potion = PotionUtils.getPotion(pStack);
+            Collection<MobEffectInstance> collection = PotionUtils.getCustomEffects(pStack);
+            if (!collection.isEmpty()) {
+                for(MobEffectInstance mobeffectinstance : collection) {
+                    this.effects.add(new MobEffectInstance(mobeffectinstance));
+                }
+            }
+
+            int i = Arrow.getCustomColor(pStack);
+            if (i == -1) {
+                this.updateColor();
+            } else {
+                this.setFixedColor(i);
+            }
+        } else if (pStack.is(Items.ARROW)) {
+            this.potion = Potions.EMPTY;
+            this.effects.clear();
+            this.entityData.set(ID_EFFECT_COLOR, -1);
+        }
+
     }
 
-    public void setPotionContents(PotionContents p_331534_) {
-        this.getPickupItemStackOrigin().set(DataComponents.POTION_CONTENTS, p_331534_);
-        this.updateColor();
+    public void setEffectsFromPotions(PotionContents contents) {
+        contents.potion().ifPresent(potion1 -> this.potion = potion1);
+        effects.addAll(contents.customEffects());
     }
 
+    private void setFixedColor(int pFixedColor) {
+        this.fixedColor = true;
+        this.entityData.set(ID_EFFECT_COLOR, pFixedColor);
+    }
+
+    @Override
     protected ItemStack getPickupItem() {
         return new ItemStack(Items.ARROW);
     }
 
     private void updateColor() {
-        PotionContents potioncontents = this.getPotionContents();
-        this.entityData.set(ID_EFFECT_COLOR, potioncontents.equals(PotionContents.EMPTY) ? -1 : potioncontents.getColor());
-    }
+        this.fixedColor = false;
+        if (this.potion == Potions.EMPTY && this.effects.isEmpty()) {
+            this.entityData.set(ID_EFFECT_COLOR, -1);
+        } else {
+            this.entityData.set(ID_EFFECT_COLOR, PotionUtils.getColor(PotionUtils.getAllEffects(this.potion, this.effects)));
+        }
 
-    public void addEffect(MobEffectInstance effectInstance) {
-        this.setPotionContents(this.getPotionContents().withEffectAdded(effectInstance));
     }
-
     public void setPotionArrow(boolean potionArrow) {
         this.entityData.set(IS_POTIONARROW, potionArrow);
     }
@@ -273,7 +309,7 @@ public class JustDireArrow extends AbstractArrow {
                 this.makeParticle(2);
             }
         } else {
-            if (this.inGround && this.inGroundTime != 0 && !this.getPotionContents().equals(PotionContents.EMPTY) && this.inGroundTime >= 600) {
+            if (this.inGround && this.inGroundTime != 0 && !effects.isEmpty() && this.inGroundTime >= 600) {
                 this.level().broadcastEntityEvent(this, (byte) 0);
             }
         }
@@ -463,20 +499,15 @@ public class JustDireArrow extends AbstractArrow {
         this.xRotO = this.getXRot();
     }
 
-    private void makeParticle(int particleAmount) {
+    private void makeParticle(int pParticleAmount) {
         int i = this.getColor();
-        if (i != -1 && particleAmount > 0) {
-            for (int j = 0; j < particleAmount; j++) {
-                this.level()
-                        .addParticle(
-                                ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, i),
-                                this.getRandomX(0.5),
-                                this.getRandomY(),
-                                this.getRandomZ(0.5),
-                                0.0,
-                                0.0,
-                                0.0
-                        );
+        if (i != -1 && pParticleAmount > 0) {
+            double d0 = (double)(i >> 16 & 255) / 255.0D;
+            double d1 = (double)(i >> 8 & 255) / 255.0D;
+            double d2 = (double)(i >> 0 & 255) / 255.0D;
+
+            for(int j = 0; j < pParticleAmount; ++j) {
+                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
             }
         }
     }
@@ -491,21 +522,6 @@ public class JustDireArrow extends AbstractArrow {
         if (isPhase() && hitresult$type == HitResult.Type.BLOCK)
             return;
         super.onHit(result);
-        PotionContents potioncontents = getPotionContents();
-        if (potioncontents.is(Potions.WATER)) {
-            this.applyWater();
-        } else if (potioncontents.hasEffects()) {
-            if (this.entityData.get(IS_LINGERING)) {
-                this.makeAreaOfEffectCloud(potioncontents);
-            }
-            if (this.entityData.get(IS_SPLASH)) {
-                this.applySplash(
-                        potioncontents.getAllEffects(), result.getType() == HitResult.Type.ENTITY ? ((EntityHitResult) result).getEntity() : null
-                );
-                int i = potioncontents.potion().isPresent() && potioncontents.potion().get().hasInstantEffects() ? 2007 : 2002;
-                this.level().levelEvent(i, this.blockPosition(), potioncontents.getColor());
-            }
-        }
     }
 
     @Override
@@ -513,6 +529,7 @@ public class JustDireArrow extends AbstractArrow {
         super.onHitBlock(result);
     }
 
+    @Override
     public boolean isCurrentlyGlowing() {
         return isPhase();
     }
@@ -608,28 +625,24 @@ public class JustDireArrow extends AbstractArrow {
         if (!this.entityData.get(IS_POTIONARROW))
             return;
         Entity entity = this.getEffectSource();
-        PotionContents potioncontents = this.getPotionContents();
-        if (potioncontents.potion().isPresent()) {
-            for (MobEffectInstance mobeffectinstance : potioncontents.potion().get().getEffects()) {
-                if (mobeffectinstance.getEffect().getCategory() == MobEffectCategory.HARMFUL && getOwner() != null && living.is(getOwner()))
-                    continue;
-                if (mobeffectinstance.getEffect().getCategory() == MobEffectCategory.BENEFICIAL && getOwner() != null && !living.is(getOwner()))
-                    continue;
-                living.addEffect(
-                        new MobEffectInstance(
-                                mobeffectinstance.getEffect(),
-                                Math.max(mobeffectinstance.mapDuration(p_268168_ -> p_268168_ / 2), 1),
-                                mobeffectinstance.getAmplifier(),
-                                mobeffectinstance.isAmbient(),
-                                mobeffectinstance.isVisible()
-                        ),
-                        entity
-                );
-            }
-        }
-
-        for (MobEffectInstance mobeffectinstance1 : potioncontents.customEffects()) {
-            living.addEffect(mobeffectinstance1, entity);
+        List<MobEffectInstance> mobEffectInstances = new ArrayList<>();
+        mobEffectInstances.addAll(effects);
+        mobEffectInstances.addAll(potion.getEffects());
+        for (MobEffectInstance mobeffectinstance :mobEffectInstances ) {
+            if (mobeffectinstance.getEffect().getCategory() == MobEffectCategory.HARMFUL && getOwner() != null && living.is(getOwner()))
+                continue;
+            if (mobeffectinstance.getEffect().getCategory() == MobEffectCategory.BENEFICIAL && getOwner() != null && !living.is(getOwner()))
+                continue;
+            living.addEffect(
+                    new MobEffectInstance(
+                            mobeffectinstance.getEffect(),
+                            Math.max(mobeffectinstance.mapDuration(p_268168_ -> p_268168_ / 2), 1),
+                            mobeffectinstance.getAmplifier(),
+                            mobeffectinstance.isAmbient(),
+                            mobeffectinstance.isVisible()
+                    ),
+                    entity
+            );
         }
     }
 
@@ -637,29 +650,20 @@ public class JustDireArrow extends AbstractArrow {
      * Handles an entity event received from a {@link net.minecraft.network.protocol.game.ClientboundEntityEventPacket}.
      */
     @Override
-    public void handleEntityEvent(byte id) {
-        if (id == 0) {
+    public void handleEntityEvent(byte pId) {
+        if (pId == 0) {
             int i = this.getColor();
             if (i != -1) {
-                float f = (float) (i >> 16 & 0xFF) / 255.0F;
-                float f1 = (float) (i >> 8 & 0xFF) / 255.0F;
-                float f2 = (float) (i >> 0 & 0xFF) / 255.0F;
+                double d0 = (double)(i >> 16 & 255) / 255.0D;
+                double d1 = (double)(i >> 8 & 255) / 255.0D;
+                double d2 = (double)(i >> 0 & 255) / 255.0D;
 
-                for (int j = 0; j < 20; j++) {
-                    this.level()
-                            .addParticle(
-                                    ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, f, f1, f2),
-                                    this.getRandomX(0.5),
-                                    this.getRandomY(),
-                                    this.getRandomZ(0.5),
-                                    0.0,
-                                    0.0,
-                                    0.0
-                            );
+                for(int j = 0; j < 20; ++j) {
+                    this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
                 }
             }
         } else {
-            super.handleEntityEvent(id);
+            super.handleEntityEvent(pId);
         }
     }
 

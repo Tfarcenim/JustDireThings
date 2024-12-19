@@ -48,7 +48,7 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
     protected final ResourceLocation JUSTSLOT = JustDireThings.id("textures/gui/justslot.png");
     protected final ResourceLocation POWERBAR = JustDireThings.id("textures/gui/powerbar.png");
     protected final ResourceLocation FLUIDBAR = JustDireThings.id("textures/gui/fluidbar.png");
-    protected final ResourceLocation SOCIALBACKGROUND = JustDireThings.id("background");
+    public static final ResourceLocation SOCIALBACKGROUND = JustDireThings.id("background.png");
     protected T container;
     protected BaseMachineBE baseMachineBE;
     protected double xRadius = 3, yRadius = 3, zRadius = 3;
@@ -266,7 +266,7 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
     }
 
     public void renderInventorySection(GuiGraphics guiGraphics, int relX, int relY) {
-        guiGraphics.blitSprite(SOCIALBACKGROUND, relX, relY + 83 - 8, this.imageWidth, this.imageHeight - 73); //Inventory Section
+        guiGraphics.blit(SOCIALBACKGROUND, relX, relY + 83 - 8,0,0, this.imageWidth, this.imageHeight - 73); //Inventory Section
     }
 
     @Override
@@ -274,9 +274,9 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
         int relX = (this.width - this.imageWidth) / 2;
         int relY = (this.height - this.imageHeight) / 2;
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        guiGraphics.blitSprite(SOCIALBACKGROUND, topSectionLeft + 20, topSectionTop - 20, topSectionWidth - 40, 20);
+        guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft + 20, topSectionTop - 20,0,0, topSectionWidth - 40, 20);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        guiGraphics.blitSprite(SOCIALBACKGROUND, topSectionLeft, topSectionTop, topSectionWidth, topSectionHeight);
+        guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft, topSectionTop,0,0, topSectionWidth, topSectionHeight);
         renderInventorySection(guiGraphics, relX, relY);
         for (Slot slot : container.slots) {
             drawSlot(guiGraphics, slot);

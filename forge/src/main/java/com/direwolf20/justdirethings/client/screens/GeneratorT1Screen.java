@@ -31,8 +31,8 @@ public class GeneratorT1Screen extends BaseMachineScreen<GeneratorT1Container> {
     public GeneratorT1Screen(GeneratorT1Container container, Inventory inv, Component name) {
         super(container, inv, name);
         this.container = container;
-        if (container.baseMachineBE instanceof GeneratorT1BE generatorT1BE) {
-            this.generatorBE = generatorT1BE;
+        if (container.baseMachineBE instanceof GeneratorT1BE) {
+            this.generatorBE = container.baseMachineBE;
         }
     }
 
