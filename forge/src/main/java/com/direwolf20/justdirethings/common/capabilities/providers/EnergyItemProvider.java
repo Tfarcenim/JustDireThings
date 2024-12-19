@@ -5,6 +5,7 @@ import com.direwolf20.justdirethings.common.items.interfaces.PoweredItem;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +25,7 @@ public class EnergyItemProvider extends EnergyStorageItemstack implements ICapab
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction direction) {
-        return null;
+        if (capability == ForgeCapabilities.ENERGY) return LazyOptional.of(() -> this).cast();
+        return LazyOptional.empty();
     }
 }
