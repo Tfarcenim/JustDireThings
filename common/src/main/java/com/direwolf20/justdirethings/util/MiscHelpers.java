@@ -10,7 +10,9 @@ import com.mojang.serialization.JsonOps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.player.Player;
@@ -31,8 +33,18 @@ public class MiscHelpers {
         HIGH,
         PULSE;
 
+        public static final String KEY = "redstoneMode";
+
         public RedstoneMode next() {
             return cycle(this);
+        }
+
+        public static RedstoneMode getMode(CompoundTag tag) {
+            return getEnum(tag,KEY,RedstoneMode.class);
+        }
+
+        public void setMode(CompoundTag tag) {
+            setEnum(tag,KEY,this);
         }
     }
     private static final Random rand = new Random();
@@ -76,6 +88,22 @@ public class MiscHelpers {
     public static <E extends Enum<E>> E cycle(E e) {
         E[] values = (E[]) e.getClass().getEnumConstants();
         return values[(e.ordinal() + 1) % values.length];
+    }
+
+    public static <E extends Enum<E>> E getEnum(CompoundTag tag,String key,Class<E> clazz) {
+        E[] values = clazz.getEnumConstants();
+        if (tag.contains(key, Tag.TAG_INT)) {
+            return values[tag.getInt(key)];
+        }
+        return null;
+    }
+
+    public static  <E extends Enum<E>> void setEnum(CompoundTag tag,String key,E value) {
+        if (value == null) {
+            tag.remove(key);
+        } else {
+            tag.putInt(key,value.ordinal());
+        }
     }
 
     public static JsonElement serializeBlockState(BlockState state) {

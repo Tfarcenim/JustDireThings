@@ -64,14 +64,14 @@ public interface RedstoneControlledBE {
     }
 
     default void saveRedstoneSettings(CompoundTag tag) {
-        tag.putInt("redstoneMode", getRedstoneControlData().redstoneMode.ordinal());
+       getRedstoneControlData().redstoneMode.setMode(tag);
         tag.putBoolean("pulsed", getRedstoneControlData().pulsed);
         tag.putBoolean("receivingRedstone", getRedstoneControlData().receivingRedstone);
     }
 
     default void loadRedstoneSettings(CompoundTag tag) {
-        if (tag.contains("redstoneMode")) { //Assume all the others are there too...
-            getRedstoneControlData().redstoneMode = MiscHelpers.RedstoneMode.values()[tag.getInt("redstoneMode")];
+        if (tag.contains(MiscHelpers.RedstoneMode.KEY)) { //Assume all the others are there too...
+            getRedstoneControlData().redstoneMode = MiscHelpers.RedstoneMode.getMode(tag);
             getRedstoneControlData().pulsed = tag.getBoolean("pulsed");
             getRedstoneControlData().receivingRedstone = tag.getBoolean("receivingRedstone");
         }
