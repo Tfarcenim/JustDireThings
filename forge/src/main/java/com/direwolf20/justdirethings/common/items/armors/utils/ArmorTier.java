@@ -1,5 +1,6 @@
 package com.direwolf20.justdirethings.common.items.armors.utils;
 
+import com.direwolf20.justdirethings.JustDireThings;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -36,7 +37,7 @@ public record ArmorTier(String pName, int pDurabilityMultiplier, EnumMap<ArmorIt
 
     @Override
     public String getName() {
-        return "";
+        return JustDireThings.MODID+":"+pName;
     }
 
     @Override

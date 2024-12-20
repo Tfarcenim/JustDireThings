@@ -1119,7 +1119,7 @@ public class JustDireRecipes extends RecipeProvider {
                 .group("justdirethings")
                 .unlockedBy("has_time_crystal", InventoryChangeTrigger.TriggerInstance.hasItems(Registration.TimeCrystal.get()))
                 .save(consumer);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.CreatureCatcher.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.CREATURECATCHER.get())
                 .pattern(" b ")
                 .pattern("beb")
                 .pattern(" b ")

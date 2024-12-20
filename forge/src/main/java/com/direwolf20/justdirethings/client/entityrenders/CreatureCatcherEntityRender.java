@@ -38,7 +38,7 @@ public class CreatureCatcherEntityRender extends ThrownItemRenderer<CreatureCatc
             if (!capturing && pEntity.renderTick > 0) {
                 this.itemRenderer
                         .renderStatic(
-                                new ItemStack(Registration.CreatureCatcher.get()),
+                                new ItemStack(Registration.CREATURECATCHER.get()),
                                 ItemDisplayContext.GROUND,
                                 pPackedLight,
                                 OverlayTexture.NO_OVERLAY,

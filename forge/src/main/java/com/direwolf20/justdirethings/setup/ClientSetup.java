@@ -17,6 +17,7 @@ import com.direwolf20.justdirethings.client.events.RenderHighlight;
 import com.direwolf20.justdirethings.client.events.RenderLevelLast;
 import com.direwolf20.justdirethings.client.itemcustomrenders.FluidbarDecorator;
 import com.direwolf20.justdirethings.client.overlays.AbilityCooldownOverlay;
+import com.direwolf20.justdirethings.client.renderers.JustDireItemRenderer;
 import com.direwolf20.justdirethings.client.renderers.RenderHelpers;
 import com.direwolf20.justdirethings.client.renderers.shader.DireRenderTypes;
 import com.direwolf20.justdirethings.client.screens.*;
@@ -34,6 +35,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
@@ -133,12 +135,13 @@ public class ClientSetup {
         event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), "abilitycooldownoverlay", AbilityCooldownOverlay.INSTANCE);
     }
 
-    /*private static void onTexturesStitched(final TextureAtlasStitchedEvent event) {
+    @SubscribeEvent
+    public static void onTexturesStitched(final TextureStitchEvent.Post event) {
         //noinspection deprecation
         if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
             RenderHelpers.captureDummySprite(event.getAtlas());
         }
-    }*///todo
+    }
 
     public static void registerEnabledToolTextures(Item tool) {
         if (tool instanceof ToggleableItem toggleableItem) {
@@ -161,7 +164,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void mrl(ModelEvent.RegisterAdditional e) {
-      //todo  e.register(new ModelResourceLocation(JustDireThings.id( "item/creaturecatcher_base")));
+        e.register(JustDireItemRenderer.CREATURE_CATCHER_BASE);
     }
 
     @SubscribeEvent

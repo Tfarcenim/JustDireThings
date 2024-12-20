@@ -28,7 +28,7 @@ public class JustDireItemRenderer extends BlockEntityWithoutLevelRenderer {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
     }
 
-    private static final ModelResourceLocation CREATURE_CATCHER_BASE = new ModelResourceLocation(JustDireThings.id("item/creaturecatcher_base"),"standalone");
+    public static final ResourceLocation CREATURE_CATCHER_BASE = JustDireThings.id("item/creaturecatcher_base");
 
 
 

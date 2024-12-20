@@ -95,7 +95,7 @@ public class CreatureCatcherEntity extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return Registration.CreatureCatcher.get();
+        return Registration.CREATURECATCHER.get();
     }
 
     @Override

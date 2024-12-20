@@ -126,7 +126,7 @@ public class JustDireLanguageProvider extends LanguageProvider {
         add(Registration.BlazejetWand.get(), "Blazejet Wand");
         add(Registration.VoidshiftWand.get(), "Voidshift Wand");
         add(Registration.EclipsegateWand.get(), "Eclipsegate Wand");
-        add(Registration.CreatureCatcher.get(), "Creature Catcher");
+        add(Registration.CREATURECATCHER.get(), "Creature Catcher");
         add(Registration.MachineSettingsCopier.get(), "Machine Settings Copier");
         add(Registration.PortalGun.get(), "Portal Gun");
         add(Registration.PortalGunV2.get(), "Advanced Portal Gun");

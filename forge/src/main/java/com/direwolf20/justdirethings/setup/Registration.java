@@ -483,7 +483,7 @@ public class Registration {
     public static final RegistryObject<VoidshiftWandItem> VoidshiftWand = ITEMS.register("voidshift_wand", VoidshiftWandItem::new);
     public static final RegistryObject<EclipsegateWandItem> EclipsegateWand = ITEMS.register("eclipsegate_wand", EclipsegateWandItem::new);
     public static final RegistryObject<TimeWandItem> TimeWand = ITEMS.register("time_wand", TimeWandItem::new);
-    public static final RegistryObject<CreatureCatcherItem> CreatureCatcher = ITEMS.register("creaturecatcher", CreatureCatcherItem::new);
+    public static final RegistryObject<CreatureCatcherItem> CREATURECATCHER = ITEMS.register("creaturecatcher", CreatureCatcherItem::new);
     public static final RegistryObject<MachineSettingsCopierItem> MachineSettingsCopier = ITEMS.register("machinesettingscopier", MachineSettingsCopierItem::new);
     public static final RegistryObject<PortalGunItem> PortalGun = ITEMS.register("portalgun", PortalGunItem::new);
     public static final RegistryObject<PortalGunV2Item> PortalGunV2 = ITEMS.register("portalgun_v2", PortalGunV2Item::new);
