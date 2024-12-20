@@ -1,6 +1,7 @@
 package com.direwolf20.justdirethings.datagen;
 
 import com.direwolf20.justdirethings.JustDireThings;
+import com.direwolf20.justdirethings.mixin.ModelBuilderMixin;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -176,9 +177,14 @@ public class JustDireItemModels extends ItemModelProvider {
         ItemModelBuilder builder = generated(armorItem, texture);
         for (ItemModelGenerators.TrimModelData trimModelData : ItemModelGenerators.GENERATED_TRIM_MODELS) {
             String trimId = trimModelData.name(armorItem.getMaterial());
+            ResourceLocation trimTex = new ResourceLocation("trims/items/" + armorItem.getType().getName() + "_trim_"+trimId);
             ItemModelBuilder override = withExistingParent(builder.getLocation().withSuffix("_" + trimId + "_trim").getPath(), "item/generated")
                     .texture("layer0", texture)
-                    .texture("layer1", new ResourceLocation("trims/items/" + armorItem.getType().getName() + "_trim"));
+                    //.texture("layer1", trimTex)
+                    ;
+
+            ((ModelBuilderMixin)override).getTextures().put("layer1",trimTex.toString());
+
             builder.override()
                     .predicate(ItemModelGenerators.TRIM_TYPE_PREDICATE_ID, trimModelData.itemModelIndex())
                     .model(override);
