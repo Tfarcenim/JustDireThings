@@ -27,8 +27,7 @@ public class PocketGeneratorContainer extends BaseContainer {
         playerEntity = player;
         handler = new ItemStackNBTHandler(pocketGenerator, JustDireDataComponents.ITEMSTACK_HANDLER, 1);
         this.pocketGeneratorItemStack = pocketGenerator;
-        if (handler != null)
-            addGeneratorSlots(handler, 0, 80, 35, 1, 18);
+        addGeneratorSlots(handler, 0, 80, 35, 1, 18);
 
         addPlayerSlots(playerInventory, 8, 84);
     }

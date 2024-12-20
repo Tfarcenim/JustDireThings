@@ -22,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -114,7 +115,7 @@ public class PocketGeneratorItem extends Item implements PoweredItem, Toggleable
         ItemStackNBTHandler handler = new ItemStackNBTHandler(itemStack, JustDireDataComponents.ITEMSTACK_HANDLER, 1);
         ItemStack fuelStack = handler.getStackInSlot(0);
 
-        int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING);
+        int burnTime = ForgeHooks.getBurnTime(fuelStack,RecipeType.SMELTING);
         if (burnTime > 0) {
             if (fuelStack.getItem() instanceof TieredCoalItem direCoal) {
                 setFuelMultiplier(itemStack, direCoal.getBurnSpeedMultiplier());

@@ -22,6 +22,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -177,7 +178,7 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
         if (fuelStack.isEmpty())
             return; //Stop if we have no fuel! The slot only accepts burnables, so this should be a good enough check
         int oldMultiplier = this.fuelBurnMultiplier;
-        int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING);
+        int burnTime = ForgeHooks.getBurnTime(fuelStack,RecipeType.SMELTING);
         if (burnTime <= 0) return; //Should be impossible, but lets be sure!
         if (fuelStack.getItem() instanceof TieredCoalItem direCoal) {
             this.fuelBurnMultiplier = direCoal.getBurnSpeedMultiplier();

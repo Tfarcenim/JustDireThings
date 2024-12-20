@@ -22,6 +22,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 
@@ -44,6 +45,7 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
         if (mouseX > (leftPos + 7) && mouseX < (leftPos + 7) + 18 && mouseY > (topPos + 7) && mouseY < (topPos + 7) + 73) {
@@ -80,7 +82,7 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
     protected void renderTooltip(GuiGraphics pGuiGraphics, int pX, int pY) {
         if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
             ItemStack fuelStack = this.hoveredSlot.getItem();
-            int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING);
+            int burnTime = ForgeHooks.getBurnTime(fuelStack,RecipeType.SMELTING);
             if (burnTime > 0) {
                 int fuelBurnMultiplier = 1;
                 if (fuelStack.getItem() instanceof TieredCoalItem direCoal) {

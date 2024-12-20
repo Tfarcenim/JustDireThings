@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraftforge.common.ForgeHooks;
 
 import java.util.Arrays;
 import java.util.List;
@@ -106,7 +107,7 @@ public class GeneratorT1Screen extends BaseMachineScreen<GeneratorT1Container> {
     protected void renderTooltip(GuiGraphics pGuiGraphics, int pX, int pY) {
         if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
             ItemStack fuelStack = this.hoveredSlot.getItem();
-            int burnTime = fuelStack.getBurnTime(RecipeType.SMELTING);
+            int burnTime = ForgeHooks.getBurnTime(fuelStack,RecipeType.SMELTING);
             if (burnTime > 0) {
                 int fuelBurnMultiplier = 1;
                 if (fuelStack.getItem() instanceof TieredCoalItem direCoal) {

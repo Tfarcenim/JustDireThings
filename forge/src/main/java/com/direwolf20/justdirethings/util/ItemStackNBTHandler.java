@@ -7,17 +7,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemStackNBTHandler implements IItemHandlerModifiable {
 
-    private final ItemStack stack;
+    private final ItemStack holder;
     private final String target;
     private final int size;
 
-    public ItemStackNBTHandler(ItemStack stack, String target, int size) {
-        this.stack = stack;
+    public ItemStackNBTHandler(ItemStack holder, String target, int size) {
+        this.holder = holder;
         this.target = target;
         this.size = size;
     }
@@ -36,7 +35,7 @@ public class ItemStackNBTHandler implements IItemHandlerModifiable {
     }
 
     public List<ItemStack> getContents() {
-        List<ItemStack> stacks = JustDireDataComponents.getItems(stack,target);
+        List<ItemStack> stacks = JustDireDataComponents.getItems(holder,target);
         if (stacks == null) {
             return NonNullList.withSize(size,ItemStack.EMPTY);
         }
@@ -132,7 +131,7 @@ public class ItemStackNBTHandler implements IItemHandlerModifiable {
 
         ItemStack oldStack = list.get(slot);
         list.set(slot, stack);
-        JustDireDataComponents.setItems(stack,list,target);
+        JustDireDataComponents.setItems(holder,list,target);
         this.onContentsChanged(slot, oldStack, stack);
     }
 
