@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -47,8 +48,8 @@ public class InventoryHolderBlock extends BaseMachineBlock {
 
     @Override
     public void openMenu(ServerPlayer player, BlockPos blockPos) {
-        player.openMenu(new SimpleMenuProvider(
-                (windowId, playerInventory, playerEntity) -> new InventoryHolderContainer(windowId, playerInventory, blockPos), Component.empty()));
+        NetworkHooks.openScreen(player,new SimpleMenuProvider(
+                (windowId, playerInventory, playerEntity) -> new InventoryHolderContainer(windowId, playerInventory, blockPos), Component.empty()),blockPos);
     }
 
     @Override

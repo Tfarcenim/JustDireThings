@@ -24,6 +24,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
@@ -44,8 +45,8 @@ public class ParadoxMachineBlock extends BaseMachineBlock {
 
     @Override
     public void openMenu(ServerPlayer player, BlockPos blockPos) {
-        player.openMenu(new SimpleMenuProvider(
-                (windowId, playerInventory, playerEntity) -> new ParadoxMachineContainer(windowId, playerInventory, blockPos), Component.empty()));
+        NetworkHooks.openScreen(player,new SimpleMenuProvider(
+                (windowId, playerInventory, playerEntity) -> new ParadoxMachineContainer(windowId, playerInventory, blockPos), Component.empty()),blockPos);
     }
 
     @Override

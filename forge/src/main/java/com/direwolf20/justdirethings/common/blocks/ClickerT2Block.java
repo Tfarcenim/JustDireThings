@@ -10,6 +10,7 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
@@ -30,8 +31,8 @@ public class ClickerT2Block extends BaseMachineBlock {
 
     @Override
     public void openMenu(ServerPlayer player, BlockPos blockPos) {
-        player.openMenu(new SimpleMenuProvider(
-                (windowId, playerInventory, playerEntity) -> new ClickerT2Container(windowId, playerInventory, blockPos), Component.empty()));
+        NetworkHooks.openScreen(player,new SimpleMenuProvider(
+                (windowId, playerInventory, playerEntity) -> new ClickerT2Container(windowId, playerInventory, blockPos), Component.empty()),blockPos);
     }
 
     @Override

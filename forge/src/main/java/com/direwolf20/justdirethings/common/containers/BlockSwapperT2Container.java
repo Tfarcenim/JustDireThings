@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.containers;
 
-import com.direwolf20.justdirethings.common.blockentities.BlockSwapperT1BE;
+import com.direwolf20.justdirethings.common.blockentities.BlockSwapperT2BE;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseMachineContainer;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.BlockPos;
@@ -11,7 +11,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 
-public class BlockSwapperT2Container extends BaseMachineContainer {
+public class BlockSwapperT2Container extends BaseMachineContainer<BlockSwapperT2BE> {
     public ContainerData swapperData;
 
     public BlockSwapperT2Container(int windowId, Inventory playerInventory, FriendlyByteBuf extraData) {
@@ -21,10 +21,8 @@ public class BlockSwapperT2Container extends BaseMachineContainer {
     public BlockSwapperT2Container(int windowId, Inventory playerInventory, BlockPos blockPos) {
         super(Registration.BlockSwapperT2_Container.get(), windowId, playerInventory, blockPos);
         addPlayerSlots(player.getInventory());
-        if (baseMachineBE instanceof BlockSwapperT1BE blockSwapperT1BE) {
-            swapperData = blockSwapperT1BE.swapperData;
-            addDataSlots(swapperData);
-        }
+        swapperData = baseMachineBE.swapperData;
+        addDataSlots(swapperData);
     }
 
     public int getPartnerExists() {

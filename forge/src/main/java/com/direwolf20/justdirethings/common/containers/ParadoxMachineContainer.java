@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 
-public class ParadoxMachineContainer extends BaseMachineContainer {
+public class ParadoxMachineContainer extends BaseMachineContainer<ParadoxMachineBE> {
 
     public ParadoxMachineContainer(int windowId, Inventory playerInventory, FriendlyByteBuf extraData) {
         this(windowId, playerInventory, extraData.readBlockPos());

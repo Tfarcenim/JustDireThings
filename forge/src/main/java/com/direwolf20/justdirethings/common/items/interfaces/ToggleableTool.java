@@ -133,7 +133,7 @@ public interface ToggleableTool extends ToggleableItem {
 
     default void openSettings(Player player) {
         player.openMenu(new SimpleMenuProvider(
-                (windowId, playerInventory, playerEntity) -> new ToolSettingContainer(windowId, playerInventory, player), Component.translatable("")));
+                (windowId, playerInventory, playerEntity) -> new ToolSettingContainer(windowId, playerInventory, player), Component.empty()));
 
     }
 

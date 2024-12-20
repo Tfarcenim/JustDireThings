@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
@@ -33,8 +34,8 @@ public class SensorT1 extends BaseMachineBlock {
 
     @Override
     public void openMenu(ServerPlayer player, BlockPos blockPos) {
-        player.openMenu(new SimpleMenuProvider(
-                (windowId, playerInventory, playerEntity) -> new SensorT1Container(windowId, playerInventory, blockPos), Component.empty()));
+        NetworkHooks.openScreen(player,new SimpleMenuProvider(
+                (windowId, playerInventory, playerEntity) -> new SensorT1Container(windowId, playerInventory, blockPos), Component.empty()),blockPos);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class SensorT1 extends BaseMachineBlock {
     }
 
     @Override
-    public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @javax.annotation.Nullable Direction direction) {
+    public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
         if (direction == (state.getValue(BlockStateProperties.FACING).getOpposite()))
             return false; //Don't emit on facing side
         return true;

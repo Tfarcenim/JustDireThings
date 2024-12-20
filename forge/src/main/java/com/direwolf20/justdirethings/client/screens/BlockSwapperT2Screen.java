@@ -34,19 +34,17 @@ public class BlockSwapperT2Screen extends BaseMachineScreen<BlockSwapperT2Contai
     public BlockSwapperT2Screen(BlockSwapperT2Container container, Inventory inv, Component name) {
         super(container, inv, name);
         this.container = container;
-        if (container.baseMachineBE instanceof BlockSwapperT1BE blockSwapper) {
-            boundTo = blockSwapper.boundTo;
-            be = blockSwapper;
-            swap_entity_type = blockSwapper.swap_entity_type;
-            swapBlocks = blockSwapper.swapBlocks;
-        }
+        boundTo = container.baseMachineBE.boundTo;
+        be = container.baseMachineBE;
+        swap_entity_type = container.baseMachineBE.swap_entity_type;
+        swapBlocks = container.baseMachineBE.swapBlocks;
     }
 
     @Override
     public void init() {
         super.init();
         addRenderableWidget(ToggleButtonFactory.SWAPPERENTITYBUTTON(getGuiLeft() + 26, topSectionTop + 44, swap_entity_type.ordinal(), b -> {
-            swap_entity_type =SwapEntityType.values()[((ToggleButton) b).getTexturePosition()];
+            swap_entity_type = SwapEntityType.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));
         addRenderableWidget(ToggleButtonFactory.SWAPPERBLOCKBUTTON(getGuiLeft() + 8, topSectionTop + 44, swapBlocks ? 0 : 1, b -> {

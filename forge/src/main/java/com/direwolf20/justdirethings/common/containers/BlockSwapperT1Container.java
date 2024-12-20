@@ -11,7 +11,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 
-public class BlockSwapperT1Container extends BaseMachineContainer {
+public class BlockSwapperT1Container extends BaseMachineContainer<BlockSwapperT1BE> {
     public ContainerData swapperData;
 
     public BlockSwapperT1Container(int windowId, Inventory playerInventory, FriendlyByteBuf extraData) {
@@ -21,10 +21,8 @@ public class BlockSwapperT1Container extends BaseMachineContainer {
     public BlockSwapperT1Container(int windowId, Inventory playerInventory, BlockPos blockPos) {
         super(Registration.BlockSwapperT1_Container.get(), windowId, playerInventory, blockPos);
         addPlayerSlots(player.getInventory());
-        if (baseMachineBE instanceof BlockSwapperT1BE blockSwapperT1BE) {
-            swapperData = blockSwapperT1BE.swapperData;
-            addDataSlots(swapperData);
-        }
+        swapperData = baseMachineBE.swapperData;
+        addDataSlots(swapperData);
     }
 
     public int getPartnerExists() {

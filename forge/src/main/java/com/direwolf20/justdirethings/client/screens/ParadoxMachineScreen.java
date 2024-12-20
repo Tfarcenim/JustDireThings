@@ -26,12 +26,11 @@ public class ParadoxMachineScreen extends BaseMachineScreen<ParadoxMachineContai
     protected static final ResourceLocation PARADOXBAR = JustDireThings.id("textures/gui/paradoxbar.png");
     private boolean renderParadox = false;
     private int targetType = 0;
+
     public ParadoxMachineScreen(ParadoxMachineContainer container, Inventory inv, Component name) {
         super(container, inv, name);
-        if (container.baseMachineBE instanceof ParadoxMachineBE paradoxMachineBE) {
-            renderParadox = paradoxMachineBE.renderParadox;
-            targetType = paradoxMachineBE.targetType;
-        }
+        renderParadox = container.baseMachineBE.renderParadox;
+        targetType = container.baseMachineBE.targetType;
     }
 
     @Override

@@ -35,12 +35,10 @@ public class BlockSwapperT1Screen extends BaseMachineScreen<BlockSwapperT1Contai
     public BlockSwapperT1Screen(BlockSwapperT1Container container, Inventory inv, Component name) {
         super(container, inv, name);
         this.container = container;
-        if (container.baseMachineBE instanceof BlockSwapperT1BE blockSwapper) {
-            boundTo = blockSwapper.boundTo;
-            be = blockSwapper;
-            swap_entity_type = blockSwapper.swap_entity_type;
-            swapBlocks = blockSwapper.swapBlocks;
-        }
+        boundTo = container.baseMachineBE.boundTo;
+        be = container.baseMachineBE;
+        swap_entity_type = container.baseMachineBE.swap_entity_type;
+        swapBlocks = container.baseMachineBE.swapBlocks;
     }
 
     @Override

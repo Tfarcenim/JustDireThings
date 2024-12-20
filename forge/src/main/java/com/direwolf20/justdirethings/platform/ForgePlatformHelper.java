@@ -5,10 +5,7 @@ import com.direwolf20.justdirethings.common.blockentities.*;
 import com.direwolf20.justdirethings.common.blockentities.basebe.AreaAffectingBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.FilterableBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.RedstoneControlledBE;
-import com.direwolf20.justdirethings.common.containers.ExperienceHolderContainer;
-import com.direwolf20.justdirethings.common.containers.InventoryHolderContainer;
-import com.direwolf20.justdirethings.common.containers.ItemCollectorContainer;
-import com.direwolf20.justdirethings.common.containers.ToolSettingContainer;
+import com.direwolf20.justdirethings.common.containers.*;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseMachineContainer;
 import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
 import com.direwolf20.justdirethings.common.items.MachineSettingsCopierItem;
@@ -258,8 +255,8 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public void handleInventoryHolderSaveSlotPayload(ServerPlayer player, C2SInventoryHolderSaveSlotPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
 
-        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof InventoryHolderBE inventoryHolderBE) {
-            inventoryHolderBE.addSavedItem(payload.slot());
+        if (container instanceof InventoryHolderContainer baseMachineContainer) {
+            baseMachineContainer.baseMachineBE.addSavedItem(payload.slot());
         }
     }
 
@@ -267,8 +264,8 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public void handleC2SInventoryHolderSettingsPayload(ServerPlayer player, C2SInventoryHolderSettingsPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
 
-        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof InventoryHolderBE inventoryHolderBE) {
-            inventoryHolderBE.saveSettings(payload.compareNBT(), payload.filtersOnly(), payload.compareCounts(), payload.automatedFiltersOnly(), payload.automatedCompareCounts(), payload.renderPlayer(), payload.renderedSlot());
+        if (container instanceof InventoryHolderContainer baseMachineContainer) {
+            baseMachineContainer.baseMachineBE.saveSettings(payload.compareNBT(), payload.filtersOnly(), payload.compareCounts(), payload.automatedFiltersOnly(), payload.automatedCompareCounts(), payload.renderPlayer(), payload.renderedSlot());
         }
     }
 
@@ -276,8 +273,8 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public void handleC2SItemCollectorSettingsPayload(ServerPlayer player, C2SItemCollectorSettingsPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
 
-        if (container instanceof ItemCollectorContainer itemCollectorContainer && itemCollectorContainer.baseMachineBE instanceof ItemCollectorBE itemCollectorBE) {
-            itemCollectorBE.setSettings(payload.respectPickupDelay(), payload.showParticles());
+        if (container instanceof ItemCollectorContainer itemCollectorContainer) {
+            itemCollectorContainer.baseMachineBE.setSettings(payload.respectPickupDelay(), payload.showParticles());
         }
     }
 
@@ -285,8 +282,8 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public void handleC2SParadoxRenderPayload(ServerPlayer player, C2SParadoxRenderPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
 
-        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof ParadoxMachineBE paradoxMachineBE) {
-            paradoxMachineBE.setRenderParadox(payload.renderParadox(), payload.targetType());
+        if (container instanceof ParadoxMachineContainer baseMachineContainer) {
+            baseMachineContainer.baseMachineBE.setRenderParadox(payload.renderParadox(), payload.targetType());
         }
     }
 
@@ -304,8 +301,8 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public void handleC2SPlayerAccessorPayload(ServerPlayer player, C2SPlayerAccessorPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
 
-        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof PlayerAccessorBE playerAccessorBE) {
-            playerAccessorBE.updateSidedInventory(payload.direction(), payload.accessType());
+        if (container instanceof PlayerAccessorContainer baseMachineContainer) {
+            baseMachineContainer.baseMachineBE.updateSidedInventory(payload.direction(), payload.accessType());
         }
     }
 
@@ -378,8 +375,8 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public void handleC2SSensorPayload(ServerPlayer player, C2SSensorPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
 
-        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof SensorT1BE sensor) {
-            sensor.setSensorSettings(payload.senseTarget(), payload.strongSignal(), payload.senseCount(), payload.equality());
+        if (container instanceof SensorT1Container baseMachineContainer) {
+            baseMachineContainer.baseMachineBE.setSensorSettings(payload.senseTarget(), payload.strongSignal(), payload.senseCount(), payload.equality());
         }
     }
 
@@ -387,8 +384,8 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public void handleC2SSwapperPayload(ServerPlayer player, C2SSwapperPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
 
-        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof BlockSwapperT1BE swapper) {
-            swapper.setSwapperSettings(payload.swapBlocks(), payload.swap_entity_type());
+        if (container instanceof BlockSwapperT1Container baseMachineContainer) {
+            baseMachineContainer.baseMachineBE.setSwapperSettings(payload.swapBlocks(), payload.swap_entity_type());
         }
     }
 
