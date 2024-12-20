@@ -51,7 +51,7 @@ public class DropperT1Screen extends BaseMachineScreen<DropperT1Container> {
 
     @Override
     public void addRedstoneButtons() {
-        addRenderableWidget(ToggleButtonFactory.REDSTONEBUTTON(getGuiLeft() + 104, topSectionTop + 38, redstoneMode.ordinal(), b -> {
+        addRenderableWidget(ToggleButtonFactory.redstoneButton(getGuiLeft() + 104, topSectionTop + 38, redstoneMode.ordinal(), b -> {
             redstoneMode = MiscHelpers.RedstoneMode.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));

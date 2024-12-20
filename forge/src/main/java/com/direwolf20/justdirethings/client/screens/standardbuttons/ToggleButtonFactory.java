@@ -35,7 +35,7 @@ public class ToggleButtonFactory {
             new TextureLocalization(JustDireThings.id("textures/gui/buttons/redstonepulse.png"), Component.translatable("justdirethings.screen.pulse"))
     );
 
-    public static ToggleButton REDSTONEBUTTON(int x, int y, int startingValue, Button.OnPress onPress) {
+    public static ToggleButton redstoneButton(int x, int y, int startingValue, Button.OnPress onPress) {
         return new ToggleButton(x, y, STANDARD_WIDTH, STANDARD_HEIGHT, REDSTONE_TEXTURES, startingValue, onPress);
     }
 

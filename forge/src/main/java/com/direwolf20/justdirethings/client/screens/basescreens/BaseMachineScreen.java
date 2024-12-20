@@ -130,9 +130,9 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
     }
 
     public void addRedstoneButtons() {
-        addRenderableWidget(ToggleButtonFactory.REDSTONEBUTTON(getGuiLeft() + 134, topSectionTop + 62, redstoneMode.ordinal(), b -> {
+        addRenderableWidget(ToggleButtonFactory.redstoneButton(getGuiLeft() + 134, topSectionTop + 62, redstoneMode.ordinal(), b -> {
             redstoneMode = MiscHelpers.RedstoneMode.values()[((ToggleButton) b).getTexturePosition()];
-            //((ToggleButton) b).nextTexturePosition();
+            ((ToggleButton) b).nextTexturePosition();
             saveSettings();
         }));
     }
