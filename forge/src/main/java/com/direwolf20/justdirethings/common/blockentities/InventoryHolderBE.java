@@ -35,8 +35,8 @@ public class InventoryHolderBE extends BaseMachineBE {
     public int renderedSlot = 27;
     public boolean renderPlayer = true;
     public InventoryHolderBE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState, 0);
-        MACHINE_SLOTS = 41; //Hotbar, Inventory, Armor, and Offhand
+        super(pType, pPos, pBlockState, 41);
+        //Hotbar, Inventory, Armor, and Offhand
     }
 
     public InventoryHolderBE(BlockPos pPos, BlockState pBlockState) {

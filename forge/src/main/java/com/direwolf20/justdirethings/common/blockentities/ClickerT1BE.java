@@ -132,7 +132,7 @@ public class ClickerT1BE extends BaseMachineBE implements RedstoneControlledBE {
 
     @Override
     public boolean canRun() {
-        return (super.canRun() || (clickType == 2 && getUsefulFakePlayer((ServerLevel) level).isUsingItem()));
+        return super.canRun() || clickType == 2 && getUsefulFakePlayer((ServerLevel) level).isUsingItem();
     }
 
     public void doClick() {
@@ -144,7 +144,7 @@ public class ClickerT1BE extends BaseMachineBE implements RedstoneControlledBE {
         }
         if (!canClick()) return;
         UsefulFakePlayer fakePlayer = getUsefulFakePlayer((ServerLevel) level);
-        if ((clickTarget.equals(CLICK_TARGET.BLOCK) || clickTarget.equals(CLICK_TARGET.AIR))) {
+        if (clickTarget.equals(CLICK_TARGET.BLOCK) || clickTarget.equals(CLICK_TARGET.AIR)) {
             if (isActiveRedstone() && canRun() && positionsToClick.isEmpty())
                 positionsToClick = findSpotsToClick(fakePlayer);
             if (positionsToClick.isEmpty())
@@ -159,7 +159,7 @@ public class ClickerT1BE extends BaseMachineBE implements RedstoneControlledBE {
                 entitiesToClick = findEntitiesToClick(getAABB());
             if (entitiesToClick.isEmpty())
                 return;
-            if (canRun() || (clickType == 2 && fakePlayer.isUsingItem())) {
+            if (canRun() || clickType == 2 && fakePlayer.isUsingItem()) {
                 LivingEntity entity = entitiesToClick.remove(0);
                 clickEntity(placeStack, fakePlayer, entity);
             }
@@ -235,11 +235,11 @@ public class ClickerT1BE extends BaseMachineBE implements RedstoneControlledBE {
     public boolean isValidEntity(Entity entity) {
         if (clickTarget.equals(CLICK_TARGET.HOSTILE) && !(entity instanceof Monster))
             return false;
-        if (((clickTarget.equals(CLICK_TARGET.PASSIVE)) || (clickTarget.equals(CLICK_TARGET.ADULT)) || (clickTarget.equals(CLICK_TARGET.CHILD))) && !(entity instanceof Animal))
+        if ((clickTarget.equals(CLICK_TARGET.PASSIVE) || clickTarget.equals(CLICK_TARGET.ADULT) || clickTarget.equals(CLICK_TARGET.CHILD)) && !(entity instanceof Animal))
             return false;
-        if (clickTarget.equals(CLICK_TARGET.ADULT) && (entity instanceof Animal animal) && (animal.isBaby()))
+        if (clickTarget.equals(CLICK_TARGET.ADULT) && entity instanceof Animal animal && animal.isBaby())
             return false;
-        if (clickTarget.equals(CLICK_TARGET.CHILD) && (entity instanceof Animal animal) && !(animal.isBaby()))
+        if (clickTarget.equals(CLICK_TARGET.CHILD) && entity instanceof Animal animal && !animal.isBaby())
             return false;
         if (clickTarget.equals(CLICK_TARGET.PLAYER) && !(entity instanceof Player))
             return false;

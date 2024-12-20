@@ -42,17 +42,16 @@ public class SensorT1Screen extends BaseMachineScreen<SensorT1Container> impleme
 
     public SensorT1Screen(SensorT1Container container, Inventory inv, Component name) {
         super(container, inv, name);
-        if (baseMachineBE instanceof SensorT1BE sensor) {
-            senseTarget = sensor.sense_target;
-            strongSignal = sensor.strongSignal;
-            blockStateProperties = sensor.blockStateProperties;
-            populateItemStackCache();
-        }
+        senseTarget = container.baseMachineBE.sense_target;
+        strongSignal = container.baseMachineBE.strongSignal;
+        blockStateProperties = container.baseMachineBE.blockStateProperties;
+        populateItemStackCache();
     }
 
     @Override
     public void addFilterButtons() {
         addRenderableWidget(ToggleButtonFactory.ALLOWLISTBUTTON(getGuiLeft() + 38, topSectionTop + 38, filterData.allowlist, b -> {
+            ((ToggleButton)b).nextTexturePosition();
             filterData.allowlist = !filterData.allowlist;
             saveSettings();
         }));
@@ -62,10 +61,12 @@ public class SensorT1Screen extends BaseMachineScreen<SensorT1Container> impleme
     public void init() {
         super.init();
         addRenderableWidget(ToggleButtonFactory.SENSORTARGETBUTTON(getGuiLeft() + 56, topSectionTop + 38, senseTarget.ordinal(), b -> {
+            ((ToggleButton)b).nextTexturePosition();
             senseTarget = SenseTarget.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));
         addRenderableWidget(ToggleButtonFactory.STRONGWEAKREDSTONEBUTTON(getGuiLeft() + 20, topSectionTop + 38, strongSignal ? 1 : 0, b -> {
+            ((ToggleButton)b).nextTexturePosition();
             strongSignal = ((ToggleButton) b).getTexturePosition() == 1;
             saveSettings();
         }));
@@ -181,7 +182,7 @@ public class SensorT1Screen extends BaseMachineScreen<SensorT1Container> impleme
 
     @Override
     public boolean mouseClicked(double x, double y, int btn) {
-        if (baseMachineBE instanceof FilterableBE filterableBE) {
+        if (baseMachineBE instanceof FilterableBE) {
             if (hoveredSlot != null && (hoveredSlot instanceof FilterBasicSlot)) {
                 if (btn == 1) {
                     if (showBlockStates) {

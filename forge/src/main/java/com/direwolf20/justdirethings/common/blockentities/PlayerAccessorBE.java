@@ -24,7 +24,7 @@ public class PlayerAccessorBE extends BaseMachineBE {
     boolean checkedPlayer = false;
 
     public PlayerAccessorBE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState, 0);
+        super(pType, pPos, pBlockState, 41);
         tickSpeed = 100; //This controls how often validatePlayer() runs.  Don't worry if the player leaves before this checks, because the itemhandler will prevent insertion if they do!
     }
 

@@ -65,16 +65,19 @@ public class ClickerT2Screen extends BaseMachineScreen<ClickerT2Container> {
     public void init() {
         super.init();
         addRenderableWidget(ToggleButtonFactory.DIRECTIONBUTTON(getGuiLeft() + 116, topSectionTop + 62, direction, b -> {
+            ((ToggleButton)b).nextTexturePosition();
             direction = ((ToggleButton) b).getTexturePosition();
             Services.PLATFORM.sendToServer(new C2SDirectionSettingPayload(direction));
         }));
 
         addRenderableWidget(ToggleButtonFactory.CLICKTARGETBUTTON(getGuiLeft() + 44, topSectionTop + 62, clickTarget, b -> {
+            ((ToggleButton)b).nextTexturePosition();
             clickTarget = ((ToggleButton) b).getTexturePosition();
             saveSettings();
         }));
 
         addRenderableWidget(ToggleButtonFactory.LEFTRIGHTCLICKBUTTON(getGuiLeft() + 44, topSectionTop + 44, clickType, b -> {
+            ((ToggleButton)b).nextTexturePosition();
             clickType = ((ToggleButton) b).getTexturePosition();
             if (clickType == 2) {
                 tickSpeed = Math.max(tickSpeed, maxHoldTicks + 1);
