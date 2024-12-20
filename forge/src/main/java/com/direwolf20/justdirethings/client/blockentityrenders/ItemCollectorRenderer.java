@@ -27,6 +27,8 @@ public class ItemCollectorRenderer extends AreaAffectingBER {
             this.renderCube(itemCollectorBE, matrix4f, bufferIn.getBuffer(this.renderType()), gameTime, partialTicks);
     }
 
+
+
     private void renderCube(ItemCollectorBE blockEntity, Matrix4f matrixStack, VertexConsumer vertexConsumer, long gameTime, float partialTicks) {
         Direction direction = blockEntity.getBlockState().getValue(BlockStateProperties.FACING).getOpposite();
         float oneSmall = 0.53125f;
@@ -101,10 +103,10 @@ public class ItemCollectorRenderer extends AreaAffectingBER {
     }
 
     private void renderFace(Matrix4f matrixStack, VertexConsumer vertexConsumer, float x1, float x2, float y1, float y2, float z1, float z2, float z3, float z4) {
-        vertexConsumer.vertex(matrixStack, x1, y1, z1);
-        vertexConsumer.vertex(matrixStack, x2, y1, z2);
-        vertexConsumer.vertex(matrixStack, x2, y2, z3);
-        vertexConsumer.vertex(matrixStack, x1, y2, z4);
+        vertexConsumer.vertex(matrixStack, x1, y1, z1).endVertex();
+        vertexConsumer.vertex(matrixStack, x2, y1, z2).endVertex();
+        vertexConsumer.vertex(matrixStack, x2, y2, z3).endVertex();
+        vertexConsumer.vertex(matrixStack, x1, y2, z4).endVertex();
     }
 
     protected RenderType renderType() {
