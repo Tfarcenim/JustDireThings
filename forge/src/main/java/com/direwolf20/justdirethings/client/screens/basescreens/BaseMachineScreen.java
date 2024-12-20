@@ -267,6 +267,7 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
 
     public void renderInventorySection(GuiGraphics guiGraphics, int relX, int relY) {
         //guiGraphics.blit(SOCIALBACKGROUND, relX, relY + 83 - 8,0,0, this.imageWidth, this.imageHeight - 73,34,236); //Inventory Section
+        guiGraphics.blitNineSlicedSized(SOCIALBACKGROUND,relX,relY+83-8,imageWidth,imageHeight - 73,4,4,236,34,0,0,236,34);
     }
 
     @Override
@@ -280,9 +281,12 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
         int relX = (this.width - this.imageWidth) / 2;
         int relY = (this.height - this.imageHeight) / 2;
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft + 20, topSectionTop - 20,0,0, topSectionWidth - 40, 20);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft, topSectionTop,0,0, topSectionWidth, topSectionHeight);
+       //title Background
+        // guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft + 20, topSectionTop - 20,0,0, topSectionWidth - 40, 20);
+        guiGraphics.blitNineSlicedSized(SOCIALBACKGROUND, topSectionLeft + 20, topSectionTop - 20,topSectionWidth - 40, 20,4,4,236,34,0,0,236,34);
+        //Machine background
+        //guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft, topSectionTop,0,0, topSectionWidth, topSectionHeight);
+        guiGraphics.blitNineSlicedSized(SOCIALBACKGROUND,topSectionLeft,topSectionTop,topSectionWidth,topSectionHeight,4,4,236,34,0,0,236,34);
         renderInventorySection(guiGraphics, relX, relY);
         for (Slot slot : container.slots) {
             drawSlot(guiGraphics, slot);
