@@ -6,14 +6,10 @@ import com.direwolf20.justdirethings.common.containers.ExperienceHolderContainer
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -31,9 +27,11 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -132,42 +130,32 @@ public class ExperienceHolderBlock extends BaseMachineBlock {
     public InteractionResult use(BlockState p_60503_, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         ItemStack stack = player.getItemInHand(hand);
 
-        if (level.isClientSide) return InteractionResult.PASS;
         IFluidHandlerItem fluidHandlerItem = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(null);
         if (fluidHandlerItem != null) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity == null)return InteractionResult.PASS;
+            if (!(blockEntity instanceof ExperienceHolderBE fluidPlacerT1BE)) return InteractionResult.PASS;
             IFluidHandler cap = blockEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, blockHitResult.getDirection()).orElse(null);
             if (cap == null) return InteractionResult.PASS;
-            if (fluidHandlerItem.getFluidInTank(0).getAmount() < fluidHandlerItem.getTankCapacity(0) && !cap.getFluidInTank(0).isEmpty()) {
-                FluidStack testStack = cap.drain(fluidHandlerItem.getTankCapacity(0), IFluidHandler.FluidAction.SIMULATE);
-                if (testStack.getAmount() > 0) {
-                    int amtFit = fluidHandlerItem.fill(testStack, IFluidHandler.FluidAction.SIMULATE);
-                    if (amtFit > 0) {
-                        FluidStack extractedStack = cap.drain(amtFit, IFluidHandler.FluidAction.EXECUTE);
-                        fluidHandlerItem.fill(extractedStack, IFluidHandler.FluidAction.EXECUTE);
-                        if (stack.getItem() instanceof BucketItem)
-                            player.setItemSlot(hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND, fluidHandlerItem.getContainer());
-                        level.playSound(null, blockPos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1F, 1.0F);
-                        return InteractionResult.SUCCESS;
+            if (fluidHandlerItem.getFluidInTank(0).isEmpty()) {
+                if (!level.isClientSide) {
+                    FluidActionResult fluidActionResult = FluidUtil.tryFillContainerAndStow(player.getMainHandItem(), fluidPlacerT1BE.getHandler(),
+                            new InvWrapper(player.getInventory()), Integer.MAX_VALUE, player, true);
+                    if (fluidActionResult.isSuccess()) {
+                        player.setItemInHand(InteractionHand.MAIN_HAND, fluidActionResult.getResult());
                     }
                 }
             } else {
-                FluidStack fluidStack = fluidHandlerItem.getFluidInTank(0);
-                int insertAmt = cap.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE);
-                if (insertAmt > 0) {
-                    FluidStack extractedStack = fluidHandlerItem.drain(insertAmt, IFluidHandler.FluidAction.EXECUTE);
-                    if (!extractedStack.isEmpty()) {
-                        cap.fill(extractedStack, IFluidHandler.FluidAction.EXECUTE);
-                        if (stack.getItem() instanceof BucketItem)
-                            player.setItemSlot(hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND, fluidHandlerItem.getContainer());
-                        level.playSound(null, blockPos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1F, 1.0F);
-                        return InteractionResult.SUCCESS;
+                if (!level.isClientSide) {
+                    FluidActionResult fluidActionResult = FluidUtil.tryEmptyContainerAndStow(stack, fluidPlacerT1BE.getHandler(),
+                            new InvWrapper(player.getInventory()), Integer.MAX_VALUE, player, true);
+                    if (fluidActionResult.isSuccess()) {
+                        player.setItemInHand(hand, fluidActionResult.getResult());
                     }
                 }
             }
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
-        return InteractionResult.PASS;
+        return super.use(p_60503_, level, blockPos, player, hand, blockHitResult);
     }
 
     @Override

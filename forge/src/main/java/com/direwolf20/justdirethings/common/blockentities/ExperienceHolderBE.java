@@ -256,6 +256,10 @@ public class ExperienceHolderBE extends BaseMachineBE implements AreaAffectingBE
         }
     }
 
+    public IFluidHandler getHandler() {
+        return handler;
+    }
+
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.FLUID_HANDLER) {

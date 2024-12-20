@@ -132,8 +132,8 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public void handleC2SClickerPayload(ServerPlayer player, C2SClickerPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
 
-        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof ClickerT1BE clicker) {
-            clicker.setClickerSettings(payload.clickType(), payload.clickTarget(), payload.sneaking(), payload.showFakePlayer(), payload.maxHoldTicks());
+        if (container instanceof ClickerT1Container baseMachineContainer) {
+            baseMachineContainer.baseMachineBE.setClickerSettings(payload.clickType(), payload.clickTarget(), payload.sneaking(), payload.showFakePlayer(), payload.maxHoldTicks());
         }
     }
 
