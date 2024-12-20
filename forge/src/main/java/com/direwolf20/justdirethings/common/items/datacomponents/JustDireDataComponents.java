@@ -1,7 +1,6 @@
 package com.direwolf20.justdirethings.common.items.datacomponents;
 
 import com.direwolf20.justdirethings.Constants;
-import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.common.items.interfaces.Ability;
 import com.direwolf20.justdirethings.common.items.interfaces.ToolRecords;
 import com.direwolf20.justdirethings.util.FillMode;
@@ -10,21 +9,19 @@ import com.direwolf20.justdirethings.util.NBTHelpers;
 import com.direwolf20.justdirethings.util.PotionContents;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.BiFunction;
 import java.util.function.UnaryOperator;
-
-import static com.mojang.text2speech.Narrator.LOGGER;
 
 public class JustDireDataComponents {
 
@@ -269,10 +266,18 @@ public class JustDireDataComponents {
         setList(stack,list,Codec.STRING,"left_click_abilities");
     }
 
+    static Logger LOGGER = LoggerFactory.getLogger(JustDireDataComponents.class);
+
+
     static <T> List<T> getList(ItemStack stack, Codec<T> codec, String key) {
         if (stack.hasTag() && stack.getTag().contains(key,Tag.TAG_LIST)) {
             ListTag listTag = (ListTag) stack.getTag().get(key);
-            return codec.listOf().parse(new Dynamic<>(NbtOps.INSTANCE, listTag)).resultOrPartial(LOGGER::error).orElseGet(ArrayList::new);
+            List<T> list = new ArrayList<>();
+            for (Tag tag : listTag) {
+                T t =codec.parse(new Dynamic<>(NbtOps.INSTANCE,tag)).resultOrPartial(LOGGER::error).orElseThrow();
+                list.add(t);
+            }
+            return list;
         }
         return null;
     }
@@ -282,7 +287,11 @@ public class JustDireDataComponents {
             stack.removeTagKey(key);
         } else {
             ListTag listTag = new ListTag();
-            codec.listOf().encodeStart(NbtOps.INSTANCE, list).resultOrPartial(LOGGER::error).ifPresent(listTag::add);
+
+            for (T t : list) {
+                codec.encodeStart(NbtOps.INSTANCE,t).resultOrPartial(LOGGER::error).ifPresent(listTag::add);
+            }
+
             stack.getOrCreateTag().put(key,listTag);
         }
     }

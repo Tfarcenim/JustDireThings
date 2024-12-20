@@ -210,7 +210,7 @@ public class PocketGeneratorItem extends Item implements PoweredItem, Toggleable
     }
 
     public IItemHandler getItemHandler(ItemStack stack) {
-        return new ItemStackNBTHandler(stack,JustDireDataComponents.TOOL_CONTENTS,1);
+        return new ItemStackNBTHandler(stack,JustDireDataComponents.ITEMSTACK_HANDLER,1);
     }
 
     public EnergyStorage getEnergyStorage(ItemStack stack) {
