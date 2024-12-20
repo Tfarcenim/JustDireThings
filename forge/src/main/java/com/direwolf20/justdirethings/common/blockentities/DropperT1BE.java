@@ -32,8 +32,12 @@ public class DropperT1BE extends BaseMachineBE implements RedstoneControlledBE {
     public List<Integer> slotsToDropList = new ArrayList<>();
 
     public DropperT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
-        MACHINE_SLOTS = 1; //Slot for dropping
+        this(pType, pPos, pBlockState, 1);
+         //Slot for dropping
+    }
+
+    public DropperT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState,int slots) {
+        super(pType, pPos, pBlockState, slots);
     }
 
     public DropperT1BE(BlockPos pPos, BlockState pBlockState) {

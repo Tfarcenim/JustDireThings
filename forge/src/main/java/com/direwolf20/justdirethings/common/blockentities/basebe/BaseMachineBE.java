@@ -1,7 +1,6 @@
 package com.direwolf20.justdirethings.common.blockentities.basebe;
 
 import com.direwolf20.justdirethings.common.containers.handlers.FilterBasicHandler;
-import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.UsefulFakePlayer;
 import com.direwolf20.justdirethings.util.interfacehelpers.AreaAffectingData;
@@ -31,7 +30,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class BaseMachineBE extends BlockEntity {
-    public int MACHINE_SLOTS = 0;
+    public int MACHINE_SLOTS;
     public int ANYSIZE_FILTER_SLOTS = 0;
     public static final UUID defaultFakePlayerUUID = UUID.fromString("4191a6f5-37fe-45d9-8ba3-4549be778e54");
     public static final GameProfile defaultFakePlayerProfile = new GameProfile(defaultFakePlayerUUID, "[JustDiresFakePlayer]");
@@ -47,8 +46,9 @@ public class BaseMachineBE extends BlockEntity {
      protected ItemStackHandler machineHandler;
 
 
-    public BaseMachineBE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+    public BaseMachineBE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState,int slots) {
         super(pType, pPos, pBlockState);
+        MACHINE_SLOTS = slots;
         machineHandler = new ItemStackHandler(MACHINE_SLOTS);
     }
 

@@ -19,6 +19,7 @@ public class BlockPlacerT1Screen extends BaseMachineScreen<BlockPlacerT1Containe
     public void init() {
         super.init();
         addRenderableWidget(ToggleButtonFactory.DIRECTIONBUTTON(getGuiLeft() + 122, topSectionTop + 38, direction, b -> {
+            ((ToggleButton) b).nextTexturePosition();
             direction = ((ToggleButton) b).getTexturePosition();
             Services.PLATFORM.sendToServer(new C2SDirectionSettingPayload(direction));
         }));
@@ -33,6 +34,7 @@ public class BlockPlacerT1Screen extends BaseMachineScreen<BlockPlacerT1Containe
     @Override
     public void addRedstoneButtons() {
         addRenderableWidget(ToggleButtonFactory.redstoneButton(getGuiLeft() + 104, topSectionTop + 38, redstoneMode.ordinal(), b -> {
+            ((ToggleButton) b).nextTexturePosition();
             redstoneMode = MiscHelpers.RedstoneMode.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));

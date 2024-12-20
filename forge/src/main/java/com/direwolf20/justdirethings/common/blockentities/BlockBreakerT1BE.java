@@ -45,8 +45,8 @@ public class BlockBreakerT1BE extends BaseMachineBE implements RedstoneControlle
     Map.Entry<BlockPos, BlockBreakingProgress> currentBlock;
 
     public BlockBreakerT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
-        MACHINE_SLOTS = 1; //Slot for a pickaxe
+        super(pType, pPos, pBlockState, 1);
+        //Slot for a pickaxe
     }
 
     public BlockBreakerT1BE(BlockPos pPos, BlockState pBlockState) {

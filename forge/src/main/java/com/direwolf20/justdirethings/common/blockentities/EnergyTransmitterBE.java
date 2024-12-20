@@ -48,8 +48,7 @@ public class  EnergyTransmitterBE extends BaseMachineBE implements RedstoneContr
     public boolean showParticles = true;
 
     public EnergyTransmitterBE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
-        MACHINE_SLOTS = 1;
+        super(pType, pPos, pBlockState, 1);
         poweredMachineData = new PoweredMachineContainerData(this);
         tickSpeed = 50; //We use this to check how often to rescan the area
     }

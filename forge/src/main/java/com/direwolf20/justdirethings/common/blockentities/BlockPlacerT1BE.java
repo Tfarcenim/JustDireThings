@@ -37,8 +37,8 @@ public class BlockPlacerT1BE extends BaseMachineBE implements RedstoneControlled
     List<BlockPos> positionsToPlace = new ArrayList<>();
 
     public BlockPlacerT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
-        MACHINE_SLOTS = 1; //Slot for a pickaxe
+        super(pType, pPos, pBlockState, 1);
+        //Slot for a pickaxe
     }
 
     public BlockPlacerT1BE(BlockPos pPos, BlockState pBlockState) {

@@ -63,8 +63,8 @@ public class ClickerT1BE extends BaseMachineBE implements RedstoneControlledBE {
     }
 
     public ClickerT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
-        MACHINE_SLOTS = 1; //Slot for tool
+        super(pType, pPos, pBlockState, 1);
+        //Slot for tool
     }
 
     public ClickerT1BE(BlockPos pPos, BlockState pBlockState) {

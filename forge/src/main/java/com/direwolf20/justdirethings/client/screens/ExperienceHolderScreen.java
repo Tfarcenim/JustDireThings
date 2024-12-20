@@ -29,14 +29,12 @@ public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderCo
 
     public ExperienceHolderScreen(ExperienceHolderContainer container, Inventory inv, Component name) {
         super(container, inv, name);
-        if (container.baseMachineBE instanceof ExperienceHolderBE experienceHolderBE) {
-            this.experienceHolderBE = experienceHolderBE;
-            this.exp = experienceHolderBE.exp;
-            this.targetExp = experienceHolderBE.targetExp;
-            this.ownerOnly = experienceHolderBE.ownerOnly;
-            this.collectExp = experienceHolderBE.collectExp;
-            this.showParticles = experienceHolderBE.showParticles;
-        }
+        this.experienceHolderBE = container.baseMachineBE;
+        this.exp = container.baseMachineBE.exp;
+        this.targetExp = container.baseMachineBE.targetExp;
+        this.ownerOnly = container.baseMachineBE.ownerOnly;
+        this.collectExp = container.baseMachineBE.collectExp;
+        this.showParticles = container.baseMachineBE.showParticles;
     }
 
     @Override
@@ -91,7 +89,7 @@ public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderCo
 
         // Bind the vanilla experience bar texture (this is the same texture used by the player XP bar)
 
-        guiGraphics.blit(Gui.GUI_ICONS_LOCATION, barX, barY,0,64, 182, 5);//todo
+        guiGraphics.blit(Gui.GUI_ICONS_LOCATION, barX, barY, 0, 64, 182, 5);//todo
         int partialAmount = (int) (ExperienceUtils.getProgressToNextLevel(experienceHolderBE.exp) * 183.0F);
         if (partialAmount > 0) {
             guiGraphics.blit(Gui.GUI_ICONS_LOCATION, 182, 5, 0, 0, barX, barY, partialAmount, 5);

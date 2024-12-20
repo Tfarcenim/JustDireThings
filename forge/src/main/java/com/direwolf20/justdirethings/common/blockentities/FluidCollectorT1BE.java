@@ -43,8 +43,8 @@ public class FluidCollectorT1BE extends BaseMachineBE implements RedstoneControl
     List<BlockPos> positionsToPlace = new ArrayList<>();
 
     public FluidCollectorT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
-        MACHINE_SLOTS = 1; //Slot for a bucket
+        super(pType, pPos, pBlockState, 1);
+        //Slot for a bucket
         fluidContainerData = new FluidContainerData(this);
     }
 

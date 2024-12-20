@@ -43,7 +43,7 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
     public int equality = 0; //greaterthan, lessthan, equals
 
     public SensorT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
+        super(pType, pPos, pBlockState, 0);
         ANYSIZE_FILTER_SLOTS = 1;
     }
 

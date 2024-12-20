@@ -55,7 +55,7 @@ public class BlockSwapperT1BE extends BaseMachineBE implements RedstoneControlle
     }
 
     public BlockSwapperT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
+        super(pType, pPos, pBlockState, 0);
         swapperData = new ContainerData() {
             @Override
             public int get(int index) {

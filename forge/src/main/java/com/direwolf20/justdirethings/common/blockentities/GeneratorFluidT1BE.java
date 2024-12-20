@@ -34,8 +34,7 @@ public class GeneratorFluidT1BE extends BaseMachineBE implements RedstoneControl
     public final FluidContainerData fluidContainerData;
 
     public GeneratorFluidT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
-        MACHINE_SLOTS = 1;
+        super(pType, pPos, pBlockState, 1);
         fluidContainerData = new FluidContainerData(this);
         poweredMachineData = new PoweredMachineContainerData(this);
         generatorFluidItemHandler = new GeneratorFluidItemHandler(MACHINE_SLOTS);

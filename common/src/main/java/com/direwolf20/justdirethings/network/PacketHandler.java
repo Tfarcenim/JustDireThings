@@ -15,6 +15,7 @@ public class PacketHandler {
         Services.PLATFORM.registerServerPacket(C2SBlockStateFilterPayload.class, C2SBlockStateFilterPayload::new);
         Services.PLATFORM.registerServerPacket(C2SClickerPayload.class, C2SClickerPayload::new);
         Services.PLATFORM.registerServerPacket(C2SCopyMachineSettingsPayload.class, C2SCopyMachineSettingsPayload::new);
+        Services.PLATFORM.registerServerPacket(C2SDirectionSettingPayload.class, C2SDirectionSettingPayload::new);
         Services.PLATFORM.registerServerPacket(C2SDropperSettingPayload.class, C2SDropperSettingPayload::new);
         Services.PLATFORM.registerServerPacket(C2SExperienceHolderPayload.class, C2SExperienceHolderPayload::new);
         Services.PLATFORM.registerServerPacket(C2SExperienceHolderSettingsPayload.class, C2SExperienceHolderSettingsPayload::new);

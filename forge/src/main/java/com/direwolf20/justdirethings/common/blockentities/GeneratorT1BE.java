@@ -47,8 +47,7 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
     protected EnergyStorageNoReceive energyHandler = new EnergyStorageNoReceive(getMaxEnergy());
 
     public GeneratorT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
-        MACHINE_SLOTS = 1;
+        super(pType, pPos, pBlockState, 1);
         generatorItemHandler = new GeneratorItemHandler(MACHINE_SLOTS);
         poweredMachineData = new ContainerData() {
             @Override

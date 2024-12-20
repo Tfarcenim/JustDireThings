@@ -120,11 +120,11 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public void handleC2SBlockStateFilterPayload(ServerPlayer player, C2SBlockStateFilterPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
 
-        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof SensorT1BE sensor) {
+        if (container instanceof SensorT1Container baseMachineContainer) {
             ListTag listTag = payload.compoundTag().getList("tagList", 10); // 10 for CompoundTag type
-            ItemStack stateStack = sensor.getFilterHandler().getStackInSlot(payload.slot());
+            ItemStack stateStack = baseMachineContainer.baseMachineBE.getFilterHandler().getStackInSlot(payload.slot());
             Map<Property<?>, Comparable<?>> propertiesList = SensorT1BE.loadBlockStateProperty(listTag, stateStack);
-            sensor.addBlockStateProperty(payload.slot(), propertiesList);
+            baseMachineContainer.baseMachineBE.addBlockStateProperty(payload.slot(), propertiesList);
         }
     }
 
@@ -188,19 +188,19 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public void handleC2SDropperSettingPayload(ServerPlayer player, C2SDropperSettingPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
 
-        if (container instanceof BaseMachineContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof DropperT1BE dropperT1BE) {
-            dropperT1BE.setDropperSettings(payload.dropCount(), payload.pickupDelay());
+        if (container instanceof DropperT1Container baseMachineContainer) {
+            baseMachineContainer.baseMachineBE.setDropperSettings(payload.dropCount(), payload.pickupDelay());
         }
     }
 
     @Override
     public void handleC2SExperienceHolderPayload(ServerPlayer player, C2SExperienceHolderPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
-        if (container instanceof ExperienceHolderContainer experienceHolderContainer && experienceHolderContainer.baseMachineBE instanceof ExperienceHolderBE experienceHolderBE) {
+        if (container instanceof ExperienceHolderContainer experienceHolderContainer) {
             if (payload.add())
-                experienceHolderBE.storeExp(player, payload.levels());
+                experienceHolderContainer.baseMachineBE.storeExp(player, payload.levels());
             else
-                experienceHolderBE.extractExp(player, payload.levels());
+                experienceHolderContainer.baseMachineBE.extractExp(player, payload.levels());
         }
     }
 
@@ -208,8 +208,8 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public void handleC2SExperienceHolderSettingsPayload(ServerPlayer player, C2SExperienceHolderSettingsPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
 
-        if (container instanceof ExperienceHolderContainer experienceHolderContainer && experienceHolderContainer.baseMachineBE instanceof ExperienceHolderBE experienceHolderBE) {
-            experienceHolderBE.changeSettings(player, payload.targetExp(), payload.ownerOnly(), payload.collectExp(), payload.showParticles());
+        if (container instanceof ExperienceHolderContainer experienceHolderContainer) {
+            experienceHolderContainer.baseMachineBE.changeSettings(player, payload.targetExp(), payload.ownerOnly(), payload.collectExp(), payload.showParticles());
         }
     }
 

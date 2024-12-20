@@ -74,7 +74,7 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
     private final static Random random = new Random();
 
     public ParadoxMachineBE(BlockPos pPos, BlockState pBlockState) {
-        super(Registration.ParadoxMachineBE.get(), pPos, pBlockState);
+        super(Registration.ParadoxMachineBE.get(), pPos, pBlockState, 0);
         poweredMachineData = new PoweredMachineContainerData(this);
         fluidContainerData = new FluidContainerData(this);
     }

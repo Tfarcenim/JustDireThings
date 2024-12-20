@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseMachineContainer<B extends BaseMachineBE> extends BaseContainer {
     public int FILTER_SLOTS = 0;
-    public int MACHINE_SLOTS = 0;
+    public int MACHINE_SLOTS;
     public B baseMachineBE;
     public FilterBasicHandler filterHandler;
     public ItemStackHandler machineHandler;

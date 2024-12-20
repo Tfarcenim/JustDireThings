@@ -48,7 +48,7 @@ public class ExperienceHolderBE extends BaseMachineBE implements AreaAffectingBE
     protected IFluidHandler handler = new ExperienceHolderFluidTank(this, fluidstack -> fluidstack.getFluid().is(JustDireFluidTags.EXPERIENCE));
 
     public ExperienceHolderBE(BlockPos pPos, BlockState pBlockState) {
-        super(Registration.ExperienceHolderBE.get(), pPos, pBlockState);
+        super(Registration.ExperienceHolderBE.get(), pPos, pBlockState, 0);
     }
 
     @Override

@@ -34,8 +34,8 @@ public class DropperT2BE extends DropperT1BE implements AreaAffectingBE, Powered
     public List<ItemStack> filteredList;
 
     public DropperT2BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
-        MACHINE_SLOTS = 9; //Slot for dropping
+        super(pType, pPos, pBlockState,9);
+        //Slot for dropping
         poweredMachineData = new PoweredMachineContainerData(this);
     }
 

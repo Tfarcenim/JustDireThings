@@ -38,7 +38,7 @@ public class ItemCollectorBE extends BaseMachineBE implements FilterableBE, Area
     public boolean showParticles = true;
 
     public ItemCollectorBE(BlockPos pPos, BlockState pBlockState) {
-        super(Registration.ItemCollectorBE.get(), pPos, pBlockState);
+        super(Registration.ItemCollectorBE.get(), pPos, pBlockState, 0);
     }
 
     @Override
