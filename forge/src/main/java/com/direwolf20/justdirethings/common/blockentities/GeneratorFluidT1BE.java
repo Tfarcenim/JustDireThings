@@ -38,6 +38,7 @@ public class GeneratorFluidT1BE extends BaseMachineBE implements RedstoneControl
         MACHINE_SLOTS = 1;
         fluidContainerData = new FluidContainerData(this);
         poweredMachineData = new PoweredMachineContainerData(this);
+        generatorFluidItemHandler = new GeneratorFluidItemHandler(MACHINE_SLOTS);
     }
 
     public GeneratorFluidT1BE(BlockPos pPos, BlockState pBlockState) {
@@ -103,7 +104,7 @@ public class GeneratorFluidT1BE extends BaseMachineBE implements RedstoneControl
         return getMachineHandler().getStackInSlot(0);
     }
 
-    protected final GeneratorFluidItemHandler generatorFluidItemHandler =  new GeneratorFluidItemHandler(MACHINE_SLOTS);
+    protected final GeneratorFluidItemHandler generatorFluidItemHandler;
     @Override
     public ItemStackHandler getMachineHandler() {
         return generatorFluidItemHandler;

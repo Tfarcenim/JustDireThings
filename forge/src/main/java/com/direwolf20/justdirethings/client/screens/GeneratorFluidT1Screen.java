@@ -47,6 +47,7 @@ public class GeneratorFluidT1Screen extends BaseMachineScreen<GeneratorFluidT1Co
     @Override
     public void addRedstoneButtons() {
         addRenderableWidget(ToggleButtonFactory.redstoneButton(getGuiLeft() + 104, topSectionTop + 38, redstoneMode.ordinal(), b -> {
+            ((ToggleButton) b).nextTexturePosition();
             redstoneMode = MiscHelpers.RedstoneMode.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));

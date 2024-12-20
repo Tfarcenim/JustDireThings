@@ -92,7 +92,7 @@ public class GeneratorFluidT1Block extends BaseMachineBlock {
                 }
             }
         }
-        return InteractionResult.PASS;
+        return super.use(blockState, level, blockPos, player, hand, blockHitResult);
     }
 
     @Nullable

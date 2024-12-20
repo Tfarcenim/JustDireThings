@@ -348,11 +348,15 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
         int textureWidth = fluidStillSprite.contents().width();
         int textureHeight = fluidStillSprite.contents().height();
 
-        Tesselator tesselator = Tesselator.getInstance();
+        int y = startY - height;
+        guiGraphics.blit(startX, y, 0, width, height, fluidStillSprite);
+
+
+        /*esselator tesselator = Tesselator.getInstance();
         BufferBuilder vertexBuffer = tesselator.getBuilder();
         vertexBuffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         int yOffset = 0;
-        while (yOffset < height) {
+        /*while (yOffset < height) {
             int drawHeight = Math.min(textureHeight, height - yOffset);
             int drawY = startY - yOffset - drawHeight; // Adjust for bottom-to-top drawing
 
@@ -374,7 +378,7 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
             yOffset += drawHeight;
         }
 
-        BufferUploader.drawWithShader(vertexBuffer.end());
+        BufferUploader.drawWithShader(vertexBuffer.end());*/
         poseStack.popPose();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.applyModelViewMatrix();

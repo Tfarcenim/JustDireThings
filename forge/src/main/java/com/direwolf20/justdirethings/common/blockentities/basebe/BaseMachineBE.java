@@ -44,11 +44,12 @@ public class BaseMachineBE extends BlockEntity {
 
      protected FilterBasicHandler filterBasicHandler =  new FilterBasicHandler(ANYSIZE_FILTER_SLOTS);
 
-     protected ItemStackHandler machineHandler = new ItemStackHandler(MACHINE_SLOTS);
+     protected ItemStackHandler machineHandler;
 
 
     public BaseMachineBE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
+        machineHandler = new ItemStackHandler(MACHINE_SLOTS);
     }
 
     public void tickClient() {
