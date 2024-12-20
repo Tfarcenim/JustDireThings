@@ -49,6 +49,7 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
     public GeneratorT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
         MACHINE_SLOTS = 1;
+        generatorItemHandler = new GeneratorItemHandler(MACHINE_SLOTS);
         poweredMachineData = new ContainerData() {
             @Override
             public int get(int index) {
@@ -83,7 +84,7 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
         this(Registration.GeneratorT1BE.get(), pPos, pBlockState);
     }
 
-    protected ItemStackHandler generatorItemHandler  = new GeneratorItemHandler(MACHINE_SLOTS);
+    protected ItemStackHandler generatorItemHandler;
 
     @Override
     public ItemStackHandler getMachineHandler() {

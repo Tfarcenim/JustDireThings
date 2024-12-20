@@ -48,7 +48,7 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
     protected final ResourceLocation JUSTSLOT = JustDireThings.id("textures/gui/justslot.png");
     protected final ResourceLocation POWERBAR = JustDireThings.id("textures/gui/powerbar.png");
     protected final ResourceLocation FLUIDBAR = JustDireThings.id("textures/gui/fluidbar.png");
-    public static final ResourceLocation SOCIALBACKGROUND = JustDireThings.id("background.png");
+    public static final ResourceLocation SOCIALBACKGROUND = JustDireThings.id("textures/gui/sprites/background.png");
     protected T container;
     protected BaseMachineBE baseMachineBE;
     protected double xRadius = 3, yRadius = 3, zRadius = 3;
@@ -266,7 +266,13 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
     }
 
     public void renderInventorySection(GuiGraphics guiGraphics, int relX, int relY) {
-        guiGraphics.blit(SOCIALBACKGROUND, relX, relY + 83 - 8,0,0, this.imageWidth, this.imageHeight - 73); //Inventory Section
+        //guiGraphics.blit(SOCIALBACKGROUND, relX, relY + 83 - 8,0,0, this.imageWidth, this.imageHeight - 73,34,236); //Inventory Section
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
     @Override
