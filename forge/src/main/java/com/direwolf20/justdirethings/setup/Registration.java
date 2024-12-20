@@ -305,7 +305,7 @@ public class Registration {
 
 
     //Machines
-    public static final RegistryObject<ItemCollector> ItemCollector = BLOCKS.register("itemcollector", ItemCollector::new);
+    public static final RegistryObject<ItemCollectorBlock> ItemCollector = BLOCKS.register("itemcollector", ItemCollectorBlock::new);
     public static final RegistryObject<BlockItem> ItemCollector_ITEM = ITEMS.register("itemcollector", () -> new BlockItem(ItemCollector.get(), new Item.Properties()));
     public static final RegistryObject<BlockBreakerT1Block> BlockBreakerT1 = SIDEDBLOCKS.register("blockbreakert1", BlockBreakerT1Block::new);
     public static final RegistryObject<BlockItem> BlockBreakerT1_ITEM = ITEMS.register("blockbreakert1", () -> new BlockItem(BlockBreakerT1.get(), new Item.Properties()));

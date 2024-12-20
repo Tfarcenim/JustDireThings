@@ -1,4 +1,4 @@
-package com.direwolf20.justdirethings.datagen.recipes;
+package com.direwolf20.justdirethings.recipe;
 
 import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.ModRecipes;

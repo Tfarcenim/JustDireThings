@@ -1,15 +1,13 @@
 package com.direwolf20.justdirethings.common.events;
 
 import com.direwolf20.justdirethings.common.items.tools.basetools.BaseBowItem;
-import com.direwolf20.justdirethings.datagen.recipes.FluidDropRecipe;
+import com.direwolf20.justdirethings.recipe.FluidDropRecipe;
 import com.direwolf20.justdirethings.setup.ModRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.RecipeHolder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;

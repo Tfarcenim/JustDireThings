@@ -1,13 +1,12 @@
 package com.direwolf20.justdirethings.client.jei;
 
 import com.direwolf20.justdirethings.JustDireThings;
-import com.direwolf20.justdirethings.datagen.recipes.GooSpreadRecipe;
+import com.direwolf20.justdirethings.recipe.GooSpreadRecipe;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -26,7 +25,7 @@ import java.util.List;
 
 public class GooSpreadRecipeCategory implements IRecipeCategory<GooSpreadRecipe> {
     public static final RecipeType<GooSpreadRecipe> TYPE =
-            RecipeType.create(JustDireThings.MODID, "goo_spread_recipe", com.direwolf20.justdirethings.datagen.recipes.GooSpreadRecipe.class);
+            RecipeType.create(JustDireThings.MODID, "goo_spread_recipe", GooSpreadRecipe.class);
 
     public static final int width = 120;
     public static final int height = 40;

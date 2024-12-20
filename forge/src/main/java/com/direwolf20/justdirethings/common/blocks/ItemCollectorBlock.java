@@ -25,7 +25,7 @@ import net.minecraftforge.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
 
-public class ItemCollector extends BaseMachineBlock {
+public class ItemCollectorBlock extends BaseMachineBlock {
     protected static final VoxelShape[] shapes = new VoxelShape[]{
             Stream.of(
                     Block.box(5, 2, 10, 6, 6, 11),
@@ -97,7 +97,7 @@ public class ItemCollector extends BaseMachineBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
-    public ItemCollector() {
+    public ItemCollectorBlock() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)

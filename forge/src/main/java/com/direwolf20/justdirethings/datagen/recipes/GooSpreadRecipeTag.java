@@ -1,6 +1,7 @@
 package com.direwolf20.justdirethings.datagen.recipes;
 
 import com.direwolf20.justdirethings.JustDireThings;
+import com.direwolf20.justdirethings.recipe.AbstractGooSpreadRecipe;
 import com.direwolf20.justdirethings.setup.ModRecipes;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;

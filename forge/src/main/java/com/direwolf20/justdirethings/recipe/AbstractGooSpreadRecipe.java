@@ -1,4 +1,4 @@
-package com.direwolf20.justdirethings.datagen.recipes;
+package com.direwolf20.justdirethings.recipe;
 
 import com.direwolf20.justdirethings.common.blockentities.basebe.GooBlockBE_Base;
 import com.direwolf20.justdirethings.util.MiscHelpers;

@@ -191,6 +191,17 @@ public class JustDireItemTags extends ItemTagsProvider {
                 .add(Registration.EclipseAlloyPaxel.get());
         tag(PARADOX_DENY)
                 .add(Items.BEDROCK);
+
+        tag(ItemTags.TRIMMABLE_ARMOR).add(
+                Registration.FerricoreHelmet.get(),Registration.FerricoreChestplate.get(),
+                Registration.FerricoreLeggings.get(),Registration.FerricoreBoots.get(),
+                Registration.BlazegoldHelmet.get(),Registration.BlazegoldChestplate.get(),
+                Registration.BlazegoldLeggings.get(),Registration.BlazegoldBoots.get(),
+                Registration.CelestigemHelmet.get(),Registration.CelestigemChestplate.get(),
+                Registration.CelestigemLeggings.get(),Registration.CelestigemBoots.get(),
+                Registration.EclipseAlloyHelmet.get(),Registration.EclipseAlloyChestplate.get(),
+                Registration.EclipseAlloyLeggings.get(),Registration.EclipseAlloyBoots.get()
+        );
     }
 
     @Override

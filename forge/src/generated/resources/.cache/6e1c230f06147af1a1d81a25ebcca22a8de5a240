@@ -1,4 +1,4 @@
-// 1.20.1	2024-12-19T10:23:40.9097062	JustDireThingsForge Item Tags
+// 1.20.1	2024-12-20T01:48:31.0685374	JustDireThingsForge Item Tags
 d7ad09b1e8fb0835b7f14f744fa7866dd3521c60 data/c/tags/items/ingots/blazegold.json
 83c72da5b589b1fbbf817b5a70a6701e79ed6400 data/c/tags/items/ingots/eclipsealloy.json
 7b6e54a6f070fe5920ed5b782c02d0f1a552e7f0 data/c/tags/items/ingots/ferricore.json
@@ -35,3 +35,4 @@ cfab2ab481bf476a645d326b87627918009b9e50 data/justdirethings/tags/items/paradox_
 37c1e694624af60a6cd59abf99cd9ad69c0d16ca data/minecraft/tags/items/pickaxes.json
 534723cf32e6166395352e63214b0d96600a5e05 data/minecraft/tags/items/shovels.json
 04fbe0f3bb768fcafe301a250653460b1e531741 data/minecraft/tags/items/swords.json
+1f8a0689a9864f453a753f467490ee4e78d39346 data/minecraft/tags/items/trimmable_armor.json
