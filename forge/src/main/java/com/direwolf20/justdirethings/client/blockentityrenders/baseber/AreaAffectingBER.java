@@ -13,19 +13,17 @@ import org.joml.Matrix4f;
 
 import java.awt.*;
 
-public class AreaAffectingBER implements BlockEntityRenderer<BlockEntity> {
+public class AreaAffectingBER<B extends BlockEntity & AreaAffectingBE> implements BlockEntityRenderer<B> {
 
     @Override
-    public void render(BlockEntity blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
+    public void render(B blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
         Matrix4f matrix4f = matrixStackIn.last().pose();
-        if (blockentity instanceof AreaAffectingBE areaAffectingBE) {
-            if (areaAffectingBE.getAreaAffectingData().renderArea) {
-                RenderHelpers.renderLines(matrixStackIn, areaAffectingBE.getAABB(BlockPos.ZERO), Color.GREEN, bufferIn);
-                RenderHelpers.renderBoxSolid(matrixStackIn, matrix4f, bufferIn, areaAffectingBE.getAABB(BlockPos.ZERO), 1, 0, 0, 0.125f);
-                if (areaAffectingBE.getAreaAffectingData().xRadius > 0 || areaAffectingBE.getAreaAffectingData().yRadius > 0 || areaAffectingBE.getAreaAffectingData().zRadius > 0) {
-                    RenderHelpers.renderLines(matrixStackIn, areaAffectingBE.getAABBOffsetOnly(BlockPos.ZERO), Color.WHITE, bufferIn);
-                    RenderHelpers.renderBoxSolid(matrixStackIn, matrix4f, bufferIn, areaAffectingBE.getAABBOffsetOnly(BlockPos.ZERO), 0, 0, 1, 0.125f);
-                }
+        if (blockentity.getAreaAffectingData().renderArea) {
+            RenderHelpers.renderLines(matrixStackIn, blockentity.getAABB(BlockPos.ZERO), Color.GREEN, bufferIn);
+            RenderHelpers.renderBoxSolid(matrixStackIn, matrix4f, bufferIn, blockentity.getAABB(BlockPos.ZERO), 1, 0, 0, 0.125f);
+            if (blockentity.getAreaAffectingData().xRadius > 0 || blockentity.getAreaAffectingData().yRadius > 0 || blockentity.getAreaAffectingData().zRadius > 0) {
+                RenderHelpers.renderLines(matrixStackIn, blockentity.getAABBOffsetOnly(BlockPos.ZERO), Color.WHITE, bufferIn);
+                RenderHelpers.renderBoxSolid(matrixStackIn, matrix4f, bufferIn, blockentity.getAABBOffsetOnly(BlockPos.ZERO), 0, 0, 1, 0.125f);
             }
         }
     }

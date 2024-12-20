@@ -16,7 +16,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class ExperienceHolderBER extends AreaAffectingBER {
+public class ExperienceHolderBER extends AreaAffectingBER<ExperienceHolderBE> {
     public static final ItemStack itemStack = new ItemStack(Items.EXPERIENCE_BOTTLE);
 
     public ExperienceHolderBER(BlockEntityRendererProvider.Context context) {
@@ -24,10 +24,9 @@ public class ExperienceHolderBER extends AreaAffectingBER {
     }
 
     @Override
-    public void render(BlockEntity blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
+    public void render(ExperienceHolderBE blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
         super.render(blockentity, partialTicks, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn);
-        if (blockentity instanceof ExperienceHolderBE experienceHolderBE)
-            this.renderItemStack(experienceHolderBE, matrixStackIn, bufferIn, combinedOverlayIn);
+            this.renderItemStack(blockentity, matrixStackIn, bufferIn, combinedOverlayIn);
     }
 
     private void renderItemStack(ExperienceHolderBE blockEntity, PoseStack poseStack, MultiBufferSource bufferIn, int combinedOverlayIn) {

@@ -37,28 +37,26 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
 
-public class ParadoxMachineBER extends AreaAffectingBER {
+public class ParadoxMachineBER extends AreaAffectingBER<ParadoxMachineBE> {
     public ParadoxMachineBER(BlockEntityRendererProvider.Context context) {
-
     }
 
     @Override
-    public void render(BlockEntity blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
+    public void render(ParadoxMachineBE blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
         super.render(blockentity, partialTicks, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn);
-        if (!(blockentity instanceof ParadoxMachineBE paradoxMachineBE)) return;
         // Render blocks
-        if (paradoxMachineBE.isRunning) {
-            float alpha = Mth.clamp(0.05f + (paradoxMachineBE.timeRunning / (float) paradoxMachineBE.getRunTime()) * 0.95f, 0.05f, 1.0f);
+        if (blockentity.isRunning) {
+            float alpha = Mth.clamp(0.05f + (blockentity.timeRunning / (float) blockentity.getRunTime()) * 0.95f, 0.05f, 1.0f);
             int intAlpha = (int) (alpha * 255);
-            renderBlocks(paradoxMachineBE, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn, alpha, paradoxMachineBE.restoringBlocks);
-            renderEntities(paradoxMachineBE, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn, intAlpha);
+            renderBlocks(blockentity, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn, alpha, blockentity.restoringBlocks);
+            renderEntities(blockentity, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn, intAlpha);
         } else {
-        if (paradoxMachineBE.renderParadox) {
-            int targetType = paradoxMachineBE.targetType;
+        if (blockentity.renderParadox) {
+            int targetType = blockentity.targetType;
             if (targetType == 0 || targetType == 1)
-                renderBlocks(paradoxMachineBE, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn, 0.5f, paradoxMachineBE.getBlocksFromNBT());
+                renderBlocks(blockentity, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn, 0.5f, blockentity.getBlocksFromNBT());
             if (targetType == 0 || targetType == 2)
-                renderEntities(paradoxMachineBE, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn, 175);
+                renderEntities(blockentity, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn, 175);
         }
         }
     }

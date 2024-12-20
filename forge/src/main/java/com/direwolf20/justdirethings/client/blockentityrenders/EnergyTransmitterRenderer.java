@@ -20,18 +20,16 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.joml.Matrix4f;
 
-public class EnergyTransmitterRenderer extends AreaAffectingBER {
+public class EnergyTransmitterRenderer extends AreaAffectingBER<EnergyTransmitterBE> {
     public static final ItemStack itemStack = new ItemStack(Registration.Celestigem.get());
     public EnergyTransmitterRenderer(BlockEntityRendererProvider.Context context) {
 
     }
 
     @Override
-    public void render(BlockEntity blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
+    public void render(EnergyTransmitterBE blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
         super.render(blockentity, partialTicks, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn);
-
-        if (blockentity instanceof EnergyTransmitterBE energyTransmitterBE)
-            this.renderItemStack(energyTransmitterBE, matrixStackIn, bufferIn, combinedOverlayIn);
+        this.renderItemStack(blockentity, matrixStackIn, bufferIn, combinedOverlayIn);
     }
 
     private void renderItemStack(EnergyTransmitterBE blockEntity, PoseStack poseStack, MultiBufferSource bufferIn, int combinedOverlayIn) {

@@ -1,6 +1,5 @@
 package com.direwolf20.justdirethings.client.blockentityrenders;
 
-import com.direwolf20.justdirethings.client.blockentityrenders.baseber.AreaAffectingBER;
 import com.direwolf20.justdirethings.common.blockentities.InventoryHolderBE;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -8,29 +7,29 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.UUID;
 
-public class InventoryHolderBER extends AreaAffectingBER {
+public class InventoryHolderBER implements BlockEntityRenderer<InventoryHolderBE> {
     public InventoryHolderBER(BlockEntityRendererProvider.Context context) {
 
     }
 
     @Override
-    public void render(BlockEntity blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
-        if (blockentity instanceof InventoryHolderBE inventoryHolderBE && inventoryHolderBE.renderPlayer) {
+    public void render(InventoryHolderBE blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
+        if (blockentity.renderPlayer) {
             // Create a fake player entity
-            AbstractClientPlayer mockPlayer = createMockPlayer(inventoryHolderBE);
+            AbstractClientPlayer mockPlayer = createMockPlayer(blockentity);
             if (mockPlayer == null) return;
             mockPlayer.yHeadRot = 0;
             mockPlayer.yHeadRotO = 0;
             // Equip the mock player with items
-            equipMockPlayer(mockPlayer, inventoryHolderBE);
+            equipMockPlayer(mockPlayer, blockentity);
 
             // Render the mock player model above the block
             renderMockPlayerEntity(matrixStackIn, bufferIn, mockPlayer, combinedLightsIn, partialTicks);

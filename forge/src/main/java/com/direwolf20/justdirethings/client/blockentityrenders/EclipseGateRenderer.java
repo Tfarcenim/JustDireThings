@@ -1,29 +1,26 @@
 package com.direwolf20.justdirethings.client.blockentityrenders;
 
-import com.direwolf20.justdirethings.client.blockentityrenders.baseber.AreaAffectingBER;
 import com.direwolf20.justdirethings.common.blockentities.EclipseGateBE;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import org.joml.Matrix4f;
 
-public class EclipseGateRenderer extends AreaAffectingBER {
+public class EclipseGateRenderer implements BlockEntityRenderer<EclipseGateBE> {
     public EclipseGateRenderer(BlockEntityRendererProvider.Context context) {
 
     }
 
     @Override
-    public void render(BlockEntity blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
-        super.render(blockentity, partialTicks, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn);
+    public void render(EclipseGateBE blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
         long gameTime = blockentity.getLevel().getGameTime();
         Matrix4f matrix4f = matrixStackIn.last().pose();
-        if (blockentity instanceof EclipseGateBE eclipseGateBE)
-            this.renderCube(eclipseGateBE, matrix4f, bufferIn.getBuffer(this.renderType()), gameTime, partialTicks);
+        this.renderCube(blockentity, matrix4f, bufferIn.getBuffer(this.renderType()), gameTime, partialTicks);
     }
 
     private void renderCube(EclipseGateBE blockEntity, Matrix4f matrixStack, VertexConsumer vertexConsumer, long gameTime, float partialTicks) {

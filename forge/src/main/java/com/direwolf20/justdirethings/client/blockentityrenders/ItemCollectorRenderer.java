@@ -13,18 +13,17 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.joml.Matrix4f;
 
-public class ItemCollectorRenderer extends AreaAffectingBER {
+public class ItemCollectorRenderer extends AreaAffectingBER<ItemCollectorBE> {
     public ItemCollectorRenderer(BlockEntityRendererProvider.Context context) {
 
     }
 
     @Override
-    public void render(BlockEntity blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
+    public void render(ItemCollectorBE blockentity, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightsIn, int combinedOverlayIn) {
         super.render(blockentity, partialTicks, matrixStackIn, bufferIn, combinedLightsIn, combinedOverlayIn);
         long gameTime = blockentity.getLevel().getGameTime();
         Matrix4f matrix4f = matrixStackIn.last().pose();
-        if (blockentity instanceof ItemCollectorBE itemCollectorBE)
-            this.renderCube(itemCollectorBE, matrix4f, bufferIn.getBuffer(this.renderType()), gameTime, partialTicks);
+        this.renderCube(blockentity, matrix4f, bufferIn.getBuffer(this.renderType()), gameTime, partialTicks);
     }
 
 
