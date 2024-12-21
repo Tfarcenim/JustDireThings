@@ -92,7 +92,7 @@ public class ExperienceHolderScreen extends BaseMachineScreen<ExperienceHolderCo
         guiGraphics.blit(Gui.GUI_ICONS_LOCATION, barX, barY, 0, 64, 182, 5);//todo
         int partialAmount = (int) (ExperienceUtils.getProgressToNextLevel(experienceHolderBE.exp) * 183.0F);
         if (partialAmount > 0) {
-            guiGraphics.blit(Gui.GUI_ICONS_LOCATION, 182, 5, 0, 0, barX, barY, partialAmount, 5);
+            guiGraphics.blit(Gui.GUI_ICONS_LOCATION,barX, barY, 0, 69, partialAmount, 5);
         }
         String s = String.valueOf(ExperienceUtils.getLevelFromTotalExperience(experienceHolderBE.exp));
         int j = topSectionLeft + (topSectionWidth / 2) - font.width(s) / 2;

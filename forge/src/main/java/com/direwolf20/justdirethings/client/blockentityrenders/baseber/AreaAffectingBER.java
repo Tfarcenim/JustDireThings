@@ -28,9 +28,8 @@ public class AreaAffectingBER<B extends BlockEntity & AreaAffectingBE> implement
         }
     }
 
-
-  //todo  @Override
-  //  public AABB getRenderBoundingBox(BlockEntity blockEntity) {
-   //     return MiscHelpers.encapsulatingFullBlocks(blockEntity.getBlockPos().above(10).north(10).east(10), blockEntity.getBlockPos().below(10).south(10).west(10));
-   // }
+    @Override
+    public boolean shouldRenderOffScreen(B pBlockEntity) {
+        return true;
+    }
 }

@@ -36,7 +36,7 @@ public class ParadoxMachineContainer extends BaseMachineContainer<ParadoxMachine
         Button button = Button.values()[value];
         switch (button) {
             case SNAPSHOT ->  {
-                ((ParadoxMachineBE)baseMachineBE).snapshotArea();
+                baseMachineBE.snapshotArea();
                 return true;
             }
         }

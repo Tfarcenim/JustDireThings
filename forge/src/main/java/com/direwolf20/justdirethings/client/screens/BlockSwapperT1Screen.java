@@ -45,6 +45,7 @@ public class BlockSwapperT1Screen extends BaseMachineScreen<BlockSwapperT1Contai
     public void init() {
         super.init();
         addRenderableWidget(ToggleButtonFactory.SWAPPERENTITYBUTTON(getGuiLeft() + 106, topSectionTop + 38, swap_entity_type.ordinal(), b -> {
+            ((ToggleButton)b).nextTexturePosition();
             swap_entity_type = SwapEntityType.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));
@@ -78,6 +79,7 @@ public class BlockSwapperT1Screen extends BaseMachineScreen<BlockSwapperT1Contai
     @Override
     public void addRedstoneButtons() {
         addRenderableWidget(ToggleButtonFactory.redstoneButton(getGuiLeft() + 124, topSectionTop + 38, redstoneMode.ordinal(), b -> {
+            ((ToggleButton)b).nextTexturePosition();
             redstoneMode = MiscHelpers.RedstoneMode.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));

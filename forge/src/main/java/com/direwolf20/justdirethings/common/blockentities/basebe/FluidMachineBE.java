@@ -27,7 +27,10 @@ public interface FluidMachineBE {
     }
 
     default void setAmountStored(int value) {
-        getFluidTank().getFluid().setAmount(value);
+        FluidStack fluidStack = getFluidTank().getFluid();
+        if (!fluidStack.isEmpty()) {
+            fluidStack.setAmount(value);
+        }
     }
 
     default boolean isFull() {

@@ -1,6 +1,7 @@
 package com.direwolf20.justdirethings.client.entityrenders;
 
 import com.direwolf20.justdirethings.JustDireThings;
+import com.direwolf20.justdirethings.client.renderers.RenderHelpers;
 import com.direwolf20.justdirethings.client.renderers.shader.DireRenderTypes;
 import com.direwolf20.justdirethings.client.renderers.shader.ShaderTexture;
 import com.direwolf20.justdirethings.common.entities.PortalEntity;
@@ -19,8 +20,6 @@ import org.joml.Vector3f;
 
 import java.awt.*;
 import java.util.List;
-
-import static com.direwolf20.justdirethings.client.renderers.RenderHelpers.renderBoxSolid;
 
 public class PortalEntityRender<T extends PortalEntity> extends EntityRenderer<T> {
     protected static final RenderType renderType = DireRenderTypes.getRenderType("portal_entity")
@@ -126,33 +125,33 @@ public class PortalEntityRender<T extends PortalEntity> extends EntityRenderer<T
         if (alignment == Direction.Axis.Z) {
             // Render the frame on the Z plane (North-South)
             // Left border
-            renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(minX, minY, (minZ + maxZ) / 2, minX + thickness, maxY, (minZ + maxZ) / 2), r, g, b, alpha);
+            RenderHelpers.renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(minX, minY, (minZ + maxZ) / 2, minX + thickness, maxY, (minZ + maxZ) / 2), r, g, b, alpha);
             // Right border
-            renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(maxX - thickness, minY, (minZ + maxZ) / 2, maxX, maxY, (minZ + maxZ) / 2), r, g, b, alpha);
+            RenderHelpers.renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(maxX - thickness, minY, (minZ + maxZ) / 2, maxX, maxY, (minZ + maxZ) / 2), r, g, b, alpha);
             // Bottom border
-            renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(minX, minY, (minZ + maxZ) / 2, maxX, minY + thickness, (minZ + maxZ) / 2), r, g, b, alpha);
+            RenderHelpers.renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(minX, minY, (minZ + maxZ) / 2, maxX, minY + thickness, (minZ + maxZ) / 2), r, g, b, alpha);
             // Top border
-            renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(minX, maxY - thickness, (minZ + maxZ) / 2, maxX, maxY, (minZ + maxZ) / 2), r, g, b, alpha);
+            RenderHelpers.renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(minX, maxY - thickness, (minZ + maxZ) / 2, maxX, maxY, (minZ + maxZ) / 2), r, g, b, alpha);
         } else if (alignment == Direction.Axis.X) {
             // Render the frame on the X plane (East-West)
             // Left border
-            renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB((minX + maxX) / 2, minY, minZ, (minX + maxX) / 2, maxY, minZ + thickness), r, g, b, alpha);
+            RenderHelpers.renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB((minX + maxX) / 2, minY, minZ, (minX + maxX) / 2, maxY, minZ + thickness), r, g, b, alpha);
             // Right border
-            renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB((minX + maxX) / 2, minY, maxZ - thickness, (minX + maxX) / 2, maxY, maxZ), r, g, b, alpha);
+            RenderHelpers.renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB((minX + maxX) / 2, minY, maxZ - thickness, (minX + maxX) / 2, maxY, maxZ), r, g, b, alpha);
             // Bottom border
-            renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB((minX + maxX) / 2, minY, minZ, (minX + maxX) / 2, minY + thickness, maxZ), r, g, b, alpha);
+            RenderHelpers.renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB((minX + maxX) / 2, minY, minZ, (minX + maxX) / 2, minY + thickness, maxZ), r, g, b, alpha);
             // Top border
-            renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB((minX + maxX) / 2, maxY - thickness, minZ, (minX + maxX) / 2, maxY, maxZ), r, g, b, alpha);
+            RenderHelpers.renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB((minX + maxX) / 2, maxY - thickness, minZ, (minX + maxX) / 2, maxY, maxZ), r, g, b, alpha);
         } else {
             // Render the frame on the Y plane (Top-Bottom)
             // Left border
-            renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(minX, minY, minZ, minX + thickness, minY, maxZ), r, g, b, alpha);
+            RenderHelpers.renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(minX, minY, minZ, minX + thickness, minY, maxZ), r, g, b, alpha);
             // Right border
-            renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(maxX - thickness, minY, minZ, maxX, minY, maxZ), r, g, b, alpha);
+            RenderHelpers.renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(maxX - thickness, minY, minZ, maxX, minY, maxZ), r, g, b, alpha);
             // Front border
-            renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(minX, minY, minZ, maxX, minY, minZ + thickness), r, g, b, alpha);
+            RenderHelpers.renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(minX, minY, minZ, maxX, minY, minZ + thickness), r, g, b, alpha);
             // Back border
-            renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(minX, minY, maxZ - thickness, maxX, minY, maxZ), r, g, b, alpha);
+            RenderHelpers.renderBoxSolid(matrix, matrix.last().pose(), buffer, new AABB(minX, minY, maxZ - thickness, maxX, minY, maxZ), r, g, b, alpha);
         }
     }
 
@@ -162,9 +161,9 @@ public class PortalEntityRender<T extends PortalEntity> extends EntityRenderer<T
     }
 
     private void renderFace(Matrix4f matrixStack, VertexConsumer vertexConsumer, float x1, float x2, float y1, float y2, float z1, float z2, float z3, float z4) {
-        vertexConsumer.vertex(matrixStack, x1, y1, z1).uv(0f, 0f);
-        vertexConsumer.vertex(matrixStack, x2, y1, z2).uv(1f, 0f);
-        vertexConsumer.vertex(matrixStack, x2, y2, z3).uv(1f, 1f);
-        vertexConsumer.vertex(matrixStack, x1, y2, z4).uv(0f, 1f);
+        vertexConsumer.vertex(matrixStack, x1, y1, z1).uv(0f, 0f).endVertex();
+        vertexConsumer.vertex(matrixStack, x2, y1, z2).uv(1f, 0f).endVertex();
+        vertexConsumer.vertex(matrixStack, x2, y2, z3).uv(1f, 1f).endVertex();
+        vertexConsumer.vertex(matrixStack, x1, y2, z4).uv(0f, 1f).endVertex();
     }
 }

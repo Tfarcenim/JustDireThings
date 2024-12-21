@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.items.ItemStackHandler;
@@ -217,6 +218,14 @@ public class BaseMachineBE extends BlockEntity {
 
     public AreaAffectingData getDefaultAreaData(AreaAffectingBE areaAffectingBE) {
         return areaAffectingBE.getDefaultAreaData(getBlockState().getValue(BlockStateProperties.FACING));
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        if (this instanceof AreaAffectingBE) {
+            return MiscHelpers.encapsulatingFullBlocks(getBlockPos().above(10).north(10).east(10), getBlockPos().below(10).south(10).west(10));
+        }
+        return super.getRenderBoundingBox();
     }
 
     public boolean isDefaultSettings() {
