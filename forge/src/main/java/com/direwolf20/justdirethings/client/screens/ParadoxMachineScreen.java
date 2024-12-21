@@ -68,7 +68,7 @@ public class ParadoxMachineScreen extends BaseMachineScreen<ParadoxMachineContai
 
     public void addTargetButton() {
         addRenderableWidget(ToggleButtonFactory.PARADOXTARGETBUTTON(getGuiLeft() + 56, topSectionTop + 38, targetType, b -> {
-            ((ToggleButton)b).nextTexturePosition();
+
             targetType = ((ToggleButton) b).getTexturePosition();
             saveSettings();
         }));

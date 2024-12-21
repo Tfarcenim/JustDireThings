@@ -51,7 +51,6 @@ public class SensorT1Screen extends BaseMachineScreen<SensorT1Container> impleme
     @Override
     public void addFilterButtons() {
         addRenderableWidget(ToggleButtonFactory.ALLOWLISTBUTTON(getGuiLeft() + 38, topSectionTop + 38, filterData.allowlist, b -> {
-            ((ToggleButton)b).nextTexturePosition();
             filterData.allowlist = !filterData.allowlist;
             saveSettings();
         }));
@@ -61,12 +60,10 @@ public class SensorT1Screen extends BaseMachineScreen<SensorT1Container> impleme
     public void init() {
         super.init();
         addRenderableWidget(ToggleButtonFactory.SENSORTARGETBUTTON(getGuiLeft() + 56, topSectionTop + 38, senseTarget.ordinal(), b -> {
-            ((ToggleButton)b).nextTexturePosition();
             senseTarget = SenseTarget.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));
         addRenderableWidget(ToggleButtonFactory.STRONGWEAKREDSTONEBUTTON(getGuiLeft() + 20, topSectionTop + 38, strongSignal ? 1 : 0, b -> {
-            ((ToggleButton)b).nextTexturePosition();
             strongSignal = ((ToggleButton) b).getTexturePosition() == 1;
             saveSettings();
         }));

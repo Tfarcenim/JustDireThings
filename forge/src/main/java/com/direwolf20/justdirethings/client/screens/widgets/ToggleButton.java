@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 
 import java.util.List;
 
@@ -44,30 +45,28 @@ public class ToggleButton extends BaseButton {
         guiGraphics.blit(textureLocalizations.get(getTexturePosition()).texture(), this.getX(), this.getY(), 0, 0, width, height, width, height);
     }
 
-    @Override
-    public void onClick(double p_onClick_1_, double p_onClick_3_) {
-        super.onClick(p_onClick_1_, p_onClick_3_);
-    }
 
     @Override
     public boolean mouseClicked(double x, double y, int button) {
-        return super.mouseClicked(x, y, button);
+        boolean valid = super.mouseClicked(x,y,button);
+        if (valid) {
+            if (button == 1) previousTexturePosition();
+            else nextTexturePosition();
+        }
+        return valid;
+    }
+
+    @Override
+    protected boolean isValidClickButton(int pButton) {
+        return pButton == 0 || pButton == 1;
     }
 
     public int getTexturePosition() {
-        return texturePosition >= textureLocalizations.size() ? 0 : texturePosition;
+        return Mth.clamp(texturePosition,0,textureLocalizations.size() - 1);
     }
 
     public void setTexturePosition(boolean texturePosition) {
         setTexturePosition(texturePosition ? 1 : 0);
-    }
-
-    public void onClick(double mouseX, double mouseY, int button) {
-        if (button == 1)
-            previousTexturePosition();
-        else
-            nextTexturePosition();
-        onPress();
     }
 
     public void setTexturePosition(int texturePosition) {

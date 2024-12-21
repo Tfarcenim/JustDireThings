@@ -66,19 +66,19 @@ public class ClickerT1Screen extends BaseMachineScreen<ClickerT1Container> {
     public void init() {
         super.init();
         addRenderableWidget(ToggleButtonFactory.DIRECTIONBUTTON(getGuiLeft() + 122, topSectionTop + 38, direction, b -> {
-            ((ToggleButton)b).nextTexturePosition();
+
             direction = ((ToggleButton) b).getTexturePosition();
             Services.PLATFORM.sendToServer(new C2SDirectionSettingPayload(direction));
         }));
 
         addRenderableWidget(ToggleButtonFactory.CLICKTARGETBUTTON(getGuiLeft() + 56, topSectionTop + 38, clickTarget, b -> {
-            ((ToggleButton)b).nextTexturePosition();
+
             clickTarget = ((ToggleButton) b).getTexturePosition();
             saveSettings();
         }));
 
         addRenderableWidget(ToggleButtonFactory.LEFTRIGHTCLICKBUTTON(getGuiLeft() + 38, topSectionTop + 38, clickType, b -> {
-            ((ToggleButton)b).nextTexturePosition();
+
             clickType = ((ToggleButton) b).getTexturePosition();
             if (clickType == 2) {
                 tickSpeed = Math.max(tickSpeed, maxHoldTicks + 1);
@@ -123,7 +123,7 @@ public class ClickerT1Screen extends BaseMachineScreen<ClickerT1Container> {
     @Override
     public void addRedstoneButtons() {
         addRenderableWidget(ToggleButtonFactory.redstoneButton(getGuiLeft() + 104, topSectionTop + 38, redstoneMode.ordinal(), b -> {
-            ((ToggleButton)b).nextTexturePosition();
+
             redstoneMode = MiscHelpers.RedstoneMode.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));

@@ -28,7 +28,6 @@ public class FluidPlacerT2Screen extends BaseMachineScreen<FluidPlacerT2Containe
     public void init() {
         super.init();
         addRenderableWidget(ToggleButtonFactory.DIRECTIONBUTTON(getGuiLeft() + 116, topSectionTop + 62, direction, b -> {
-            ((ToggleButton)b).nextTexturePosition();
             direction = ((ToggleButton) b).getTexturePosition();
             Services.PLATFORM.sendToServer(new C2SDirectionSettingPayload(direction));
         }));

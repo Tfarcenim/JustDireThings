@@ -69,7 +69,7 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
     public void init() {
         super.init();
         addRenderableWidget(ToggleButtonFactory.SENSORTARGETBUTTON(getGuiLeft() + 26, topSectionTop + 62, senseTarget.ordinal(), b -> {
-            ((ToggleButton)b).nextTexturePosition();
+
             senseTarget = SenseTarget.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));
@@ -83,8 +83,8 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
             saveSettings();
         }));
 
-        addRenderableWidget(ToggleButtonFactory.EQUALSBUTTON(getGuiLeft() + 104, topSectionTop + 62, equality, b -> {            ((ToggleButton)b).nextTexturePosition();
-            ((ToggleButton)b).nextTexturePosition();
+        addRenderableWidget(ToggleButtonFactory.EQUALSBUTTON(getGuiLeft() + 104, topSectionTop + 62, equality, b -> {
+
             equality = ((ToggleButton) b).getTexturePosition();
             saveSettings();
         }));

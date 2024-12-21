@@ -132,7 +132,6 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
     public void addRedstoneButtons() {
         addRenderableWidget(ToggleButtonFactory.redstoneButton(getGuiLeft() + 134, topSectionTop + 62, redstoneMode.ordinal(), b -> {
             redstoneMode = MiscHelpers.RedstoneMode.values()[((ToggleButton) b).getTexturePosition()];
-            ((ToggleButton) b).nextTexturePosition();
             saveSettings();
         }));
     }
@@ -140,7 +139,6 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
     public void addFilterButtons() {
         addRenderableWidget(ToggleButtonFactory.ALLOWLISTBUTTON(getGuiLeft() + 8, topSectionTop + 62, filterData.allowlist, b -> {
             filterData.allowlist = !filterData.allowlist;
-            ((ToggleButton) b).nextTexturePosition();
             saveSettings();
         }));
 
@@ -152,7 +150,6 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
 
         if (filterData.blockItemFilter != -1) {
             addRenderableWidget(ToggleButtonFactory.FILTERBLOCKITEMBUTTON(getGuiLeft() + 44, topSectionTop + 62, filterData.blockItemFilter, b -> {
-                ((ToggleButton) b).nextTexturePosition();
                 filterData.blockItemFilter = ((ToggleButton) b).getTexturePosition();
                 saveSettings();
             }));
@@ -449,12 +446,12 @@ public abstract class BaseMachineScreen<T extends BaseMachineContainer> extends 
                 numberButton.playDownSound(Minecraft.getInstance().getSoundManager());
                 return true;
             }
-            if (renderable instanceof ToggleButton toggleButton && MiscTools.inBounds(toggleButton.getX(), toggleButton.getY(), toggleButton.getWidth(), toggleButton.getHeight(), x, y)) {
+           /* if (renderable instanceof ToggleButton toggleButton && MiscTools.inBounds(toggleButton.getX(), toggleButton.getY(), toggleButton.getWidth(), toggleButton.getHeight(), x, y)) {
                 if (btn == 1) {
                     toggleButton.onClick(x, y, btn);
                     toggleButton.playDownSound(Minecraft.getInstance().getSoundManager());
                 }
-            }
+            }*/
         }
         return super.mouseClicked(x, y, btn);
     }
