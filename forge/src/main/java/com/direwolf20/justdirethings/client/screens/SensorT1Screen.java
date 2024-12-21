@@ -71,7 +71,15 @@ public class SensorT1Screen extends BaseMachineScreen<SensorT1Container> impleme
             saveSettings();
         }));
 
-        this.scrollPanel = new BlockStateScrollList(this, topSectionLeft - 95, 90, topSectionTop + 5, topSectionTop + topSectionHeight - 10);
+        initList(false);
+    }
+
+    protected void initList(boolean refresh) {
+        if (refresh) {
+            removeWidget(scrollPanel);
+        }
+        this.scrollPanel = new BlockStateScrollList(this, topSectionLeft - 95, topSectionTop + 5, 90,90);
+        addRenderableWidget(scrollPanel);
     }
 
     @Override
@@ -148,7 +156,8 @@ public class SensorT1Screen extends BaseMachineScreen<SensorT1Container> impleme
         super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         validateItemStackCache();
         if (showBlockStates) {
-            guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,0,0, 100, topSectionHeight);
+            //guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,0,0, 100, topSectionHeight);
+            guiGraphics.blitNineSlicedSized(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,100, topSectionHeight,4,236,34,0,0,236,34);
             if (blockStateSlot != -1 && !container.filterHandler.getStackInSlot(blockStateSlot).equals(scrollPanel.getStateStack()))
                 refreshStateWindow();
         }

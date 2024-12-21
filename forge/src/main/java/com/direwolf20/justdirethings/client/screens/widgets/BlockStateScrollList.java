@@ -25,32 +25,18 @@ public class BlockStateScrollList extends ObjectSelectionList<BlockStateScrollLi
         return net.minecraft.util.StringUtil.stripColor(value);
     }
 
-    private final int listWidth;
     private ItemStack stateStack = ItemStack.EMPTY;
     private SensorScreenInterface parent;
 
-    int x;
-    int y;
 
-    public BlockStateScrollList(SensorScreenInterface parent, int left, int listWidth, int top, int bottom) {
-        super(Minecraft.getInstance(), listWidth, bottom - top, top, parent.getFontRenderer().lineHeight * 2 + 8,24);//todo is this correct
+    //AbstractSelectionList(Minecraft pMinecraft, int pWidth, int pHeight, int pY0, int pY1, int pItemHeight)
+    public BlockStateScrollList(SensorScreenInterface parent, int left, int top, int width,int listHeight) {
+        super(Minecraft.getInstance(), width, listHeight, top, top + listHeight,26);
+        setLeftPos(left);
         this.parent = parent;
-        this.listWidth = listWidth;
-        //this.setRenderBackground(false);
+        this.setRenderBackground(false);
+        setRenderTopAndBottom(false);
         this.refreshList();
-        setX(left);
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public ItemStack getStateStack() {
@@ -63,12 +49,12 @@ public class BlockStateScrollList extends ObjectSelectionList<BlockStateScrollLi
 
     @Override
     protected int getScrollbarPosition() {
-        return this.getX() + this.listWidth - 5;
+        return x1 - 5;
     }
 
     @Override
     public int getRowWidth() {
-        return this.listWidth;
+        return width;
     }
 
     public void refreshList() {
@@ -101,7 +87,7 @@ public class BlockStateScrollList extends ObjectSelectionList<BlockStateScrollLi
         }
     }
 
-  /*  @Override
+    /*  @Override
     public void renderWidget(GuiGraphics p_282708_, int p_283242_, int p_282891_, float p_283683_) {
         renderContentBackground(p_282708_);
         super.renderWidget(p_282708_, p_283242_, p_282891_, p_283683_);
@@ -109,7 +95,7 @@ public class BlockStateScrollList extends ObjectSelectionList<BlockStateScrollLi
 
 
     protected void renderContentBackground(GuiGraphics guiGraphics) {
-        guiGraphics.fillGradient(getX(), getY(), getRight(), getBottom(), 0xC0101010, 0xD0101010);
+        //guiGraphics.fillGradient(getX(), getY(), getRight(), getBottom(), 0xC0101010, 0xD0101010);
     }
 
     public class BlockStateEntry extends ObjectSelectionList.Entry<BlockStateEntry> {
@@ -140,8 +126,8 @@ public class BlockStateScrollList extends ObjectSelectionList<BlockStateScrollLi
             Component name = Component.literal(stripControlCodes(property.getName()));
             Component value = Component.literal(stripControlCodes(isAny ? "ANY" : this.currentValue.toString()));
             Font font = this.parent.getFontRenderer();
-            guiGraphics.drawString(font, Language.getInstance().getVisualOrder(FormattedText.composite(font.substrByWidth(name, listWidth))), left + 3, top + 2, 0xFFFFFF, false);
-            guiGraphics.drawString(font, Language.getInstance().getVisualOrder(FormattedText.composite(font.substrByWidth(value, listWidth))), left + 3, top + 2 + font.lineHeight, 0xCCCCCC, false);
+            guiGraphics.drawString(font, Language.getInstance().getVisualOrder(FormattedText.composite(font.substrByWidth(name, width))), left + 3, top + 2, 0xFFFFFF, false);
+            guiGraphics.drawString(font, Language.getInstance().getVisualOrder(FormattedText.composite(font.substrByWidth(value,width))), left + 3, top + 2 + font.lineHeight, 0xCCCCCC, false);
         }
 
         @Override
@@ -159,7 +145,7 @@ public class BlockStateScrollList extends ObjectSelectionList<BlockStateScrollLi
             currentValue = possibleValues.get(nextIndex);
             parent.setPropertyValue(property, currentValue, isAny);
 
-            return false;
+            return true;
         }
     }
 }

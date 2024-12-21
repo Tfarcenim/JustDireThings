@@ -45,6 +45,7 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
     public SensorT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState, 0);
         ANYSIZE_FILTER_SLOTS = 1;
+        filterBasicHandler = new FilterBasicHandler(ANYSIZE_FILTER_SLOTS);
     }
 
     public SensorT1BE(BlockPos pPos, BlockState pBlockState) {
@@ -145,7 +146,7 @@ public class SensorT1BE extends BaseMachineBE implements FilterableBE {
         });
     }
 
-    FilterBasicHandler filterBasicHandler = new FilterBasicHandler(ANYSIZE_FILTER_SLOTS);
+    FilterBasicHandler filterBasicHandler;
 
     @Override
     public FilterBasicHandler getFilterHandler() {

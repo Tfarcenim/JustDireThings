@@ -69,6 +69,7 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
     public void init() {
         super.init();
         addRenderableWidget(ToggleButtonFactory.SENSORTARGETBUTTON(getGuiLeft() + 26, topSectionTop + 62, senseTarget.ordinal(), b -> {
+            ((ToggleButton)b).nextTexturePosition();
             senseTarget = SenseTarget.values()[((ToggleButton) b).getTexturePosition()];
             saveSettings();
         }));
@@ -82,12 +83,13 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
             saveSettings();
         }));
 
-        addRenderableWidget(ToggleButtonFactory.EQUALSBUTTON(getGuiLeft() + 104, topSectionTop + 62, equality, b -> {
+        addRenderableWidget(ToggleButtonFactory.EQUALSBUTTON(getGuiLeft() + 104, topSectionTop + 62, equality, b -> {            ((ToggleButton)b).nextTexturePosition();
+            ((ToggleButton)b).nextTexturePosition();
             equality = ((ToggleButton) b).getTexturePosition();
             saveSettings();
         }));
 
-        this.scrollPanel = new BlockStateScrollList(this, topSectionLeft - 95, 90, topSectionTop + 5, topSectionTop + topSectionHeight - 10);
+        this.scrollPanel = new BlockStateScrollList(this, topSectionLeft - 95, topSectionTop + 5, 90,100);
     }
 
     @Override
@@ -164,7 +166,7 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
         super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         validateItemStackCache();
         if (showBlockStates) {
-            guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,0,0, 100, topSectionHeight);
+        //    guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,0,0, 100, topSectionHeight);
             if (blockStateSlot != -1 && !container.filterHandler.getStackInSlot(blockStateSlot).equals(scrollPanel.getStateStack()))
                 refreshStateWindow();
         }
@@ -216,7 +218,7 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
 
     @Override
     public boolean mouseClicked(double x, double y, int btn) {
-        if (baseMachineBE instanceof FilterableBE filterableBE) {
+        if (baseMachineBE instanceof FilterableBE) {
             if (hoveredSlot != null && (hoveredSlot instanceof FilterBasicSlot)) {
                 if (btn == 1) {
                     if (showBlockStates) {
