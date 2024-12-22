@@ -1,5 +1,6 @@
 package com.direwolf20.justdirethings.common.blockentities.basebe;
 
+import com.direwolf20.justdirethings.common.MachineItemStackHandler;
 import com.direwolf20.justdirethings.common.containers.handlers.FilterBasicHandler;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.direwolf20.justdirethings.util.UsefulFakePlayer;
@@ -42,15 +43,12 @@ public class BaseMachineBE extends BlockEntity {
     protected UsefulFakePlayer usefulFakePlayer;
     protected final Map<ChunkPos, Boolean> chunkTestCache = new Object2BooleanOpenHashMap<>();
 
-     protected FilterBasicHandler filterBasicHandler =  new FilterBasicHandler(ANYSIZE_FILTER_SLOTS);
-
-     protected ItemStackHandler machineHandler;
-
+    protected ItemStackHandler machineHandler;
 
     public BaseMachineBE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState,int slots) {
         super(pType, pPos, pBlockState);
         MACHINE_SLOTS = slots;
-        machineHandler = new ItemStackHandler(MACHINE_SLOTS);
+        machineHandler = new MachineItemStackHandler(MACHINE_SLOTS,this);
     }
 
     public void tickClient() {
@@ -254,6 +252,7 @@ public class BaseMachineBE extends BlockEntity {
     @Override
     public void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
+        saveStorage(tag);
         tag.putInt("tickspeed", tickSpeed);
         if (placedByUUID != null)
             tag.putUUID("placedBy", placedByUUID);
@@ -266,8 +265,22 @@ public class BaseMachineBE extends BlockEntity {
             redstoneControlledBE.saveRedstoneSettings(tag);
     }
 
+    protected void saveStorage(CompoundTag tag) {
+        tag.put("machine_handler",machineHandler.serializeNBT());
+        if (this instanceof FilterableBE filterableBE) {
+            tag.put("handler_item_collector", filterableBE.getFilterHandler().serializeNBT());
+        }
+        if (this instanceof PoweredMachineBE poweredMachineBE) {
+            tag.put("energystorage_machines",poweredMachineBE.getEnergyStorage().serializeNBT());
+        }
+        if (this instanceof FluidMachineBE fluidMachineBE) {
+            tag.put("machine_fluid_handler",fluidMachineBE.getFluidTank().writeToNBT(new CompoundTag()));
+        }
+    }
+
     @Override
     public void load(CompoundTag tag) {
+        loadStorage(tag);
         if (tag.contains("direction"))
             direction = tag.getInt("direction");
         if (tag.contains("tickspeed"))
@@ -281,5 +294,18 @@ public class BaseMachineBE extends BlockEntity {
         if (this instanceof RedstoneControlledBE redstoneControlledBE)
             redstoneControlledBE.loadRedstoneSettings(tag);
         super.load(tag);
+    }
+
+    protected void loadStorage(CompoundTag tag) {
+        machineHandler.deserializeNBT(tag.getCompound("machine_handler"));
+        if (this instanceof FilterableBE filterableBE) {
+            filterableBE.getFilterHandler().deserializeNBT(tag.getCompound("handler_item_collector"));
+        }
+        if (this instanceof PoweredMachineBE poweredMachineBE) {
+            poweredMachineBE.getEnergyStorage().deserializeNBT(tag.get("energystorage_machines"));
+        }
+        if (this instanceof FluidMachineBE fluidMachineBE) {
+            fluidMachineBE.getFluidTank().readFromNBT(tag.getCompound("machine_fluid_handler"));
+        }
     }
 }

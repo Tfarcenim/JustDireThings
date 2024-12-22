@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.blocks.gooblocks;
 
-import com.direwolf20.justdirethings.common.blockentities.basebe.GooBlockBE_Base;
+import com.direwolf20.justdirethings.common.blockentities.basebe.GooBlockBE;
 import com.direwolf20.justdirethings.datagen.JustDireItemTags;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.BlockPos;
@@ -84,13 +84,13 @@ public class GooBlock_Base extends Block implements EntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide()) {
             return (lvl, pos, blockState, t) -> {
-                if (t instanceof GooBlockBE_Base tile) {
+                if (t instanceof GooBlockBE tile) {
                     tile.tickClient();
                 }
             };
         }
         return (lvl, pos, blockState, t) -> {
-            if (t instanceof GooBlockBE_Base tile) {
+            if (t instanceof GooBlockBE tile) {
                 tile.tickServer();
             }
         };
@@ -99,6 +99,6 @@ public class GooBlock_Base extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new GooBlockBE_Base(Registration.GooBlockBE_Tier1.get(), pos, state);
+        return new GooBlockBE(Registration.GooBlockBE_Tier1.get(), pos, state);
     }
 }

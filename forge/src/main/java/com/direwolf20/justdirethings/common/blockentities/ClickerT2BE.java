@@ -65,7 +65,7 @@ public class ClickerT2BE extends ClickerT1BE implements PoweredMachineBE, AreaAf
         return areaAffectingData;
     }
 
-    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
+    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9,this);
     @Override
     public FilterBasicHandler getFilterHandler() {
         return filterBasicHandler;

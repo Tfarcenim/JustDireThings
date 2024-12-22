@@ -1,10 +1,11 @@
 package com.direwolf20.justdirethings.common.containers.handlers;
 
-import net.minecraftforge.items.ItemStackHandler;
+import com.direwolf20.justdirethings.common.MachineItemStackHandler;
+import com.direwolf20.justdirethings.common.blockentities.basebe.BaseMachineBE;
 
-public class FilterBasicHandler extends ItemStackHandler {
-    public FilterBasicHandler(int size) {
-        super(size);
+public class FilterBasicHandler extends MachineItemStackHandler {
+    public FilterBasicHandler(int size, BaseMachineBE baseMachineBE) {
+        super(size,baseMachineBE);
     }
 
     @Override

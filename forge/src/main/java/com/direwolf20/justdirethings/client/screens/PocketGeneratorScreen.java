@@ -1,7 +1,7 @@
 package com.direwolf20.justdirethings.client.screens;
 
 import com.direwolf20.justdirethings.JustDireThings;
-import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock_T1;
+import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock;
 import com.direwolf20.justdirethings.common.containers.PocketGeneratorContainer;
 import com.direwolf20.justdirethings.common.items.FuelCanisterItem;
 import com.direwolf20.justdirethings.common.items.PocketGeneratorItem;
@@ -87,7 +87,7 @@ public class PocketGeneratorScreen extends AbstractContainerScreen<PocketGenerat
                 int fuelBurnMultiplier = 1;
                 if (fuelStack.getItem() instanceof TieredCoalItem direCoal) {
                     fuelBurnMultiplier = direCoal.getBurnSpeedMultiplier();
-                } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock) {
+                } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock coalBlock) {
                     fuelBurnMultiplier = coalBlock.getBurnSpeedMultiplier();
                 } else if (fuelStack.getItem() instanceof FuelCanisterItem) {
                     fuelBurnMultiplier = FuelCanisterItem.getBurnSpeedMultiplier(fuelStack);

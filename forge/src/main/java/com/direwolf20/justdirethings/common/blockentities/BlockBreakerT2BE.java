@@ -67,7 +67,7 @@ public class BlockBreakerT2BE extends BlockBreakerT1BE implements PoweredMachine
         return areaAffectingData;
     }
 
-    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
+    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9,this);
 
     @Override
     public FilterBasicHandler getFilterHandler() {

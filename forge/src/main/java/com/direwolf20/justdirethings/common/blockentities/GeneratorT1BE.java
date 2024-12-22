@@ -3,7 +3,7 @@ package com.direwolf20.justdirethings.common.blockentities;
 import com.direwolf20.justdirethings.common.blockentities.basebe.BaseMachineBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.PoweredMachineBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.RedstoneControlledBE;
-import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock_T1;
+import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock;
 import com.direwolf20.justdirethings.common.capabilities.EnergyStorageNoReceive;
 import com.direwolf20.justdirethings.common.capabilities.GeneratorItemHandler;
 import com.direwolf20.justdirethings.common.capabilities.MachineEnergyStorage;
@@ -182,7 +182,7 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
         if (burnTime <= 0) return; //Should be impossible, but lets be sure!
         if (fuelStack.getItem() instanceof TieredCoalItem direCoal) {
             this.fuelBurnMultiplier = direCoal.getBurnSpeedMultiplier();
-        } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock) {
+        } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock coalBlock) {
             this.fuelBurnMultiplier = coalBlock.getBurnSpeedMultiplier();
         } else if (fuelStack.getItem() instanceof FuelCanisterItem fuelCanister) {
             this.fuelBurnMultiplier = FuelCanisterItem.getBurnSpeedMultiplier(fuelStack);

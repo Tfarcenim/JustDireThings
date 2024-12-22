@@ -194,7 +194,9 @@ public class PortalGunV2Item extends BasePoweredItem implements PoweredItem, Flu
     }
 
     public static List<NBTHelpers.PortalDestination> getFavorites(ItemStack itemStack) {
-        return JustDireDataComponents.getPortalGunFavorites(itemStack);
+        List<NBTHelpers.PortalDestination> favs = JustDireDataComponents.getPortalGunFavorites(itemStack);
+        if (favs == null) favs = new ArrayList<>();
+        return favs;
     }
 
     public static void setFavorites(ItemStack itemStack, List<NBTHelpers.PortalDestination> favorites) {

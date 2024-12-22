@@ -89,7 +89,7 @@ public class Registration {
     //public static final TicketController TICKET_CONTROLLER = new TicketController(JustDireThings.id("chunk_loader"), null);
 
     //TieredCoalItem.getId(), new FurnaceFuel(4800), false)
-    //                .add(Registration.CoalBlock_T1.getId(), new FurnaceFuel(48000), false)
+    //                .add(Registration.CoalBlock.getId(), new FurnaceFuel(48000), false)
     //                .add(Registration.TieredCoal_T2Item.getId(), new FurnaceFuel(14400), false)
     //                .add(Registration.CoalBlock_T2.getId(), new FurnaceFuel(144000), false)
     //                .add(Registration.TieredCoal_T3Item.getId(), new FurnaceFuel(43200), false)
@@ -366,13 +366,13 @@ public class Registration {
     public static final RegistryObject<BlockItem> RawCelestigemOre_ITEM = ITEMS.register("raw_celestigem_ore", () -> new BlockItem(RawCelestigemOre.get(), new Item.Properties()));
     public static final RegistryObject<RawEclipseAlloyOre> RawEclipseAlloyOre = BLOCKS.register("raw_eclipsealloy_ore", RawEclipseAlloyOre::new);
     public static final RegistryObject<BlockItem> RawEclipseAlloyOre_ITEM = ITEMS.register("raw_eclipsealloy_ore", () -> new BlockItem(RawEclipseAlloyOre.get(), new Item.Properties()));
-    public static final RegistryObject<RawCoal_T1> RawCoal_T1 = BLOCKS.register("raw_coal_t1_ore", RawCoal_T1::new);
+    public static final RegistryObject<RawCoal> RawCoal_T1 = BLOCKS.register("raw_coal_t1_ore", RawCoal::new);
     public static final RegistryObject<BlockItem> RawCoal_T1_ITEM = ITEMS.register("raw_coal_t1_ore", () -> new BlockItem(RawCoal_T1.get(), new Item.Properties()));
-    public static final RegistryObject<RawCoal_T2> RawCoal_T2 = BLOCKS.register("raw_coal_t2_ore", RawCoal_T2::new);
+    public static final RegistryObject<RawCoal> RawCoal_T2 = BLOCKS.register("raw_coal_t2_ore", RawCoal::new);
     public static final RegistryObject<BlockItem> RawCoal_T2_ITEM = ITEMS.register("raw_coal_t2_ore", () -> new BlockItem(RawCoal_T2.get(), new Item.Properties()));
-    public static final RegistryObject<RawCoal_T3> RawCoal_T3 = BLOCKS.register("raw_coal_t3_ore", RawCoal_T3::new);
+    public static final RegistryObject<RawCoal> RawCoal_T3 = BLOCKS.register("raw_coal_t3_ore", RawCoal::new);
     public static final RegistryObject<BlockItem> RawCoal_T3_ITEM = ITEMS.register("raw_coal_t3_ore", () -> new BlockItem(RawCoal_T3.get(), new Item.Properties()));
-    public static final RegistryObject<RawCoal_T4> RawCoal_T4 = BLOCKS.register("raw_coal_t4_ore", RawCoal_T4::new);
+    public static final RegistryObject<RawCoal> RawCoal_T4 = BLOCKS.register("raw_coal_t4_ore", RawCoal::new);
     public static final RegistryObject<BlockItem> RawCoal_T4_ITEM = ITEMS.register("raw_coal_t4_ore", () -> new BlockItem(RawCoal_T4.get(), new Item.Properties()));
     public static final RegistryObject<TimeCrystalBlock> TimeCrystalBlock = BLOCKS.register("time_crystal_block", TimeCrystalBlock::new);
     public static final RegistryObject<BlockItem> TimeCrystalBlock_ITEM = ITEMS.register("time_crystal_block", () -> new BlockItem(TimeCrystalBlock.get(), new Item.Properties()));
@@ -409,16 +409,16 @@ public class Registration {
     public static final RegistryObject<BlockItem> CelestigemBlock_ITEM = ITEMS.register("celestigem_block", () -> new BlockItem(CelestigemBlock.get(), new Item.Properties()));
     public static final RegistryObject<EclipseAlloyBlock> EclipseAlloyBlock = BLOCKS.register("eclipsealloy_block", EclipseAlloyBlock::new);
     public static final RegistryObject<BlockItem> EclipseAlloyBlock_ITEM = ITEMS.register("eclipsealloy_block", () -> new BlockItem(EclipseAlloyBlock.get(), new Item.Properties()));
-    public static final RegistryObject<CoalBlock_T1> CoalBlock_T1 = BLOCKS.register("coalblock_t1", CoalBlock_T1::new);
-    public static final RegistryObject<BlockItem> CoalBlock_T1_ITEM = ITEMS.register("coalblock_t1", () -> new BlockItem(CoalBlock_T1.get(), new Item.Properties()));
-    public static final RegistryObject<CoalBlock_T2> CoalBlock_T2 = BLOCKS.register("coalblock_t2", CoalBlock_T2::new);
-    public static final RegistryObject<BlockItem> CoalBlock_T2_ITEM = ITEMS.register("coalblock_t2", () -> new BlockItem(CoalBlock_T2.get(), new Item.Properties()));
-    public static final RegistryObject<CoalBlock_T3> CoalBlock_T3 = BLOCKS.register("coalblock_t3", CoalBlock_T3::new);
-    public static final RegistryObject<BlockItem> CoalBlock_T3_ITEM = ITEMS.register("coalblock_t3", () -> new BlockItem(CoalBlock_T3.get(), new Item.Properties()));
-    public static final RegistryObject<CoalBlock_T4> CoalBlock_T4 = BLOCKS.register("coalblock_t4", CoalBlock_T4::new);
-    public static final RegistryObject<BlockItem> CoalBlock_T4_ITEM = ITEMS.register("coalblock_t4", () -> new BlockItem(CoalBlock_T4.get(), new Item.Properties()));
+    public static final RegistryObject<CoalBlock> CoalBlock_T1 = BLOCKS.register("coalblock_t1", () -> new CoalBlock(2));
+    public static final RegistryObject<BlockItem> CoalBlock_T1_ITEM = ITEMS.register("coalblock_t1", () -> new CoalBlockItem(CoalBlock_T1.get(), new Item.Properties(),48000));
+    public static final RegistryObject<CoalBlock> CoalBlock_T2 = BLOCKS.register("coalblock_t2",() -> new CoalBlock(4));
+    public static final RegistryObject<BlockItem> CoalBlock_T2_ITEM = ITEMS.register("coalblock_t2", () -> new CoalBlockItem(CoalBlock_T2.get(), new Item.Properties(),144000));
+    public static final RegistryObject<CoalBlock> CoalBlock_T3 = BLOCKS.register("coalblock_t3",() -> new CoalBlock(8));
+    public static final RegistryObject<BlockItem> CoalBlock_T3_ITEM = ITEMS.register("coalblock_t3", () -> new CoalBlockItem(CoalBlock_T3.get(), new Item.Properties(),432000));
+    public static final RegistryObject<CoalBlock> CoalBlock_T4 = BLOCKS.register("coalblock_t4",() -> new CoalBlock(16));
+    public static final RegistryObject<BlockItem> CoalBlock_T4_ITEM = ITEMS.register("coalblock_t4", () -> new CoalBlockItem(CoalBlock_T4.get(), new Item.Properties(),1296000));
     public static final RegistryObject<CharcoalBlock> CharcoalBlock = BLOCKS.register("charcoal", CharcoalBlock::new);
-    public static final RegistryObject<BlockItem> CharcoalBlock_ITEM = ITEMS.register("charcoal", () -> new BlockItem(CharcoalBlock.get(), new Item.Properties()));
+    public static final RegistryObject<BlockItem> CharcoalBlock_ITEM = ITEMS.register("charcoal", () -> new FuelBlockItem(CharcoalBlock.get(), new Item.Properties(),16000));
 
     //BlockEntities (Not TileEntities - Honest)
     public static final RegistryObject<BlockEntityType<GooBlockBE_Tier1>> GooBlockBE_Tier1 = BLOCK_ENTITIES.register("gooblock_tier1", () -> BlockEntityType.Builder.of(GooBlockBE_Tier1::new, GooBlock_Tier1.get()).build(null));
@@ -466,10 +466,10 @@ public class Registration {
     public static final RegistryObject<BlazeGoldIngot> BlazegoldIngot = ITEMS.register("blazegold_ingot", BlazeGoldIngot::new);
     public static final RegistryObject<Celestigem> Celestigem = ITEMS.register("celestigem", Celestigem::new);
     public static final RegistryObject<Item> EclipseAlloyIngot = ITEMS.register("eclipsealloy_ingot", Registration::basic);
-    public static final RegistryObject<TieredCoalItem> Coal_T1 = ITEMS.register("coal_t1", () -> new TieredCoalItem(2));
-    public static final RegistryObject<TieredCoalItem> Coal_T2 = ITEMS.register("coal_t2", () -> new TieredCoalItem(4));
-    public static final RegistryObject<TieredCoalItem> Coal_T3 = ITEMS.register("coal_t3",() -> new TieredCoalItem(8));
-    public static final RegistryObject<TieredCoalItem> Coal_T4 = ITEMS.register("coal_t4", () -> new TieredCoalItem(16));
+    public static final RegistryObject<TieredCoalItem> Coal_T1 = ITEMS.register("coal_t1", () -> new TieredCoalItem(1));
+    public static final RegistryObject<TieredCoalItem> Coal_T2 = ITEMS.register("coal_t2", () -> new TieredCoalItem(2));
+    public static final RegistryObject<TieredCoalItem> Coal_T3 = ITEMS.register("coal_t3",() -> new TieredCoalItem(3));
+    public static final RegistryObject<TieredCoalItem> Coal_T4 = ITEMS.register("coal_t4", () -> new TieredCoalItem(4));
     public static final RegistryObject<PolymorphicCatalyst> PolymorphicCatalyst = ITEMS.register("polymorphic_catalyst", PolymorphicCatalyst::new);
     public static final RegistryObject<Item> PortalFluidCatalyst = ITEMS.register("portal_fluid_catalyst", () -> new Item(new Item.Properties()));
     public static final RegistryObject<TimeCrystal> TimeCrystal = ITEMS.register("time_crystal", TimeCrystal::new);

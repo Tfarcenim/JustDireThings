@@ -40,7 +40,7 @@ public class SensorT2BE extends SensorT1BE implements AreaAffectingBE, PoweredMa
         this(Registration.SensorT2BE.get(), pPos, pBlockState);
     }
 
-    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
+    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9,this);
     @Override
     public FilterBasicHandler getFilterHandler() {
         return filterBasicHandler;

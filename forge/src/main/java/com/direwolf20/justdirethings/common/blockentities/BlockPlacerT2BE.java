@@ -61,7 +61,7 @@ public class BlockPlacerT2BE extends BlockPlacerT1BE implements PoweredMachineBE
         return areaAffectingData;
     }
 
-    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
+    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9,this);
     @Override
     public FilterBasicHandler getFilterHandler() {
         return filterBasicHandler;

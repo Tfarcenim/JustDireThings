@@ -62,7 +62,7 @@ public class  EnergyTransmitterBE extends BaseMachineBE implements RedstoneContr
         markDirtyClient();
     }
 
-    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
+    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9,this);
     @Override
     public FilterBasicHandler getFilterHandler() {
         return filterBasicHandler;

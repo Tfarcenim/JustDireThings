@@ -30,7 +30,7 @@ import java.util.Random;
 
 import static com.direwolf20.justdirethings.common.blocks.gooblocks.GooBlock_Base.ALIVE;
 
-public class GooBlockBE_Base extends BlockEntity {
+public class GooBlockBE extends BlockEntity {
     public final Map<Direction, Integer> sidedCounters = new Object2IntOpenHashMap<>();
     public final Map<Direction, Integer> sidedDurations = new Object2IntOpenHashMap<>();
 
@@ -38,7 +38,7 @@ public class GooBlockBE_Base extends BlockEntity {
     public final Map<BlockState, BlockState> outputCache = new HashMap<>();
     public final Map<BlockState, Integer> durationCache = new Object2IntOpenHashMap<>();
 
-    public GooBlockBE_Base(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public GooBlockBE(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         for (Direction direction : Direction.values()) {
             sidedCounters.put(direction, -1); //Init the counters, -1 means we aren't operating on anything on that side

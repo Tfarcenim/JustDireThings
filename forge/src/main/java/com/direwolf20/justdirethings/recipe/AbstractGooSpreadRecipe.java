@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.recipe;
 
-import com.direwolf20.justdirethings.common.blockentities.basebe.GooBlockBE_Base;
+import com.direwolf20.justdirethings.common.blockentities.basebe.GooBlockBE;
 import com.direwolf20.justdirethings.util.MiscHelpers;
 import com.google.gson.JsonObject;
 import net.minecraft.core.RegistryAccess;
@@ -63,8 +63,8 @@ public abstract class AbstractGooSpreadRecipe<T> implements Recipe<CraftingConta
         return ItemStack.EMPTY;
     }
 
-    public final boolean matches(GooBlockBE_Base gooBlockBE_base, BlockState sourceState) {
-        return sourceState.equals(input) && gooBlockBE_base.getTier() >= tierRequirement;
+    public final boolean matches(GooBlockBE gooBlockBE_, BlockState sourceState) {
+        return sourceState.equals(input) && gooBlockBE_.getTier() >= tierRequirement;
     }
 
     public final BlockState getOutput() {

@@ -2,6 +2,7 @@ package com.direwolf20.justdirethings.client.screens.widgets;
 
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButtonFactory.TextureLocalization;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
@@ -48,12 +49,21 @@ public class ToggleButton extends BaseButton {
 
     @Override
     public boolean mouseClicked(double x, double y, int button) {
-        boolean valid = super.mouseClicked(x,y,button);
-        if (valid) {
-            if (button == 1) previousTexturePosition();
-            else nextTexturePosition();
+        if (this.active && this.visible) {
+            if (this.isValidClickButton(button)) {
+                boolean flag = this.clicked(x, y);
+                if (flag) {
+                    this.playDownSound(Minecraft.getInstance().getSoundManager());
+
+                    if (button == 1) previousTexturePosition();
+                    else nextTexturePosition();
+
+                    this.onClick(x, y);
+                    return true;
+                }
+            }
         }
-        return valid;
+        return false;
     }
 
     @Override

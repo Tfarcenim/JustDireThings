@@ -3,7 +3,7 @@ package com.direwolf20.justdirethings.client.blockentityrenders.baseber;
 import com.direwolf20.justdirethings.client.renderers.DireModelBlockRenderer;
 import com.direwolf20.justdirethings.client.renderers.DireVertexConsumer;
 import com.direwolf20.justdirethings.client.renderers.OurRenderTypes;
-import com.direwolf20.justdirethings.common.blockentities.basebe.GooBlockBE_Base;
+import com.direwolf20.justdirethings.common.blockentities.basebe.GooBlockBE;
 import com.direwolf20.justdirethings.common.blocks.gooblocks.GooBlock_Base;
 import com.direwolf20.justdirethings.common.blocks.gooblocks.GooPatternBlock;
 import com.direwolf20.justdirethings.datagen.JustDireItemTags;
@@ -35,7 +35,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.StainedGlassPaneBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.client.model.data.ModelData;
@@ -45,7 +44,7 @@ import java.util.List;
 
 import static net.minecraft.client.renderer.entity.ItemRenderer.getFoilBufferDirect;
 
-public class GooBlockRender_Base<T extends GooBlockBE_Base> implements BlockEntityRenderer<T> {
+public class GooBlockRender_Base<T extends GooBlockBE> implements BlockEntityRenderer<T> {
     private final static float percentageDivisor = (float) 100 / GooPatternBlock.GOOSTAGE.getPossibleValues().size();
     private ItemStack cachedItemStack = ItemStack.EMPTY;
     private int currentItemIndex = 0;
@@ -210,21 +209,21 @@ public class GooBlockRender_Base<T extends GooBlockBE_Base> implements BlockEnti
         }
     }
 
-    public void renderTextures(Direction direction, Level level, BlockPos pos, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedOverlayIn, int remainingTicks, int maxTicks, BlockState renderState, GooBlockBE_Base gooBlockBE_base) {
+    public void renderTextures(Direction direction, Level level, BlockPos pos, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedOverlayIn, int remainingTicks, int maxTicks, BlockState renderState, GooBlockBE gooBlockBE_) {
         float percentComplete = ((1 - (float) remainingTicks / (float) maxTicks) * 100);
         int tensDigit = (int) (percentComplete / percentageDivisor);
         if (tensDigit > 0) { //Render the prior stage with full transparency
             BlockState patternState = Registration.GooPatternBlock.get().defaultBlockState().setValue(GooPatternBlock.GOOSTAGE, tensDigit - 1);
-            renderTexturePattern(direction, level, pos, matrixStackIn, bufferIn, combinedOverlayIn, 1f, patternState, renderState, gooBlockBE_base);
+            renderTexturePattern(direction, level, pos, matrixStackIn, bufferIn, combinedOverlayIn, 1f, patternState, renderState, gooBlockBE_);
         }
         BlockState patternState = Registration.GooPatternBlock.get().defaultBlockState().setValue(GooPatternBlock.GOOSTAGE, tensDigit);
         float startOfCurrentStage = tensDigit * percentageDivisor; // This calculates the starting percentage of the current stage
         float percentagePart = percentComplete - startOfCurrentStage; // This calculates how far into the current stage we are
         float alpha = percentagePart / percentageDivisor;
-        renderTexturePattern(direction, level, pos, matrixStackIn, bufferIn, combinedOverlayIn, alpha, patternState, renderState, gooBlockBE_base);
+        renderTexturePattern(direction, level, pos, matrixStackIn, bufferIn, combinedOverlayIn, alpha, patternState, renderState, gooBlockBE_);
     }
 
-    public void renderTexturePattern(Direction direction, Level level, BlockPos pos, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedOverlayIn, float transparency, BlockState pattern, BlockState renderState, GooBlockBE_Base gooBlockBE_base) {
+    public void renderTexturePattern(Direction direction, Level level, BlockPos pos, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedOverlayIn, float transparency, BlockState pattern, BlockState renderState, GooBlockBE gooBlockBE_) {
         BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
         BlockColors blockColors = Minecraft.getInstance().getBlockColors();
         DireModelBlockRenderer modelBlockRenderer = new DireModelBlockRenderer(blockColors, direction);
@@ -243,9 +242,9 @@ public class GooBlockRender_Base<T extends GooBlockBE_Base> implements BlockEnti
         matrixStackIn.translate(direction.getNormal().getX(), direction.getNormal().getY(), direction.getNormal().getZ());
         //Slightly larger than a normal block, to prevent z-fighting -
         //Based on tier incase someone puts a craft in between 2 different tiers - If they put between two of the same tiers theres a bit of zfighting but oh well
-        float translateF = (float) gooBlockBE_base.getTier() / 2000;
+        float translateF = (float) gooBlockBE_.getTier() / 2000;
         matrixStackIn.translate(-translateF, -translateF, -translateF);
-        float scaleF = (float) gooBlockBE_base.getTier() / 1000;
+        float scaleF = (float) gooBlockBE_.getTier() / 1000;
         matrixStackIn.scale(1 + scaleF, 1 + scaleF, 1 + scaleF);
 
         //Rotate based on the direction of the block we're drawing. If we don't rotate both blocks together we get z-fighting!

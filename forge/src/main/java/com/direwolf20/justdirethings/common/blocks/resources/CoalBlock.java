@@ -2,15 +2,18 @@ package com.direwolf20.justdirethings.common.blocks.resources;
 
 import net.minecraft.world.level.block.Block;
 
-public class CoalBlock_T1 extends Block {
-    public CoalBlock_T1() {
+public class CoalBlock extends Block {
+    private final int mult;
+
+    public CoalBlock(int mult) {
         super(Properties.of()
                 .requiresCorrectToolForDrops()
                 .strength(5.0F, 6.0F)
         );
+        this.mult = mult;
     }
 
     public int getBurnSpeedMultiplier() {
-        return 2;
+        return mult;
     }
 }

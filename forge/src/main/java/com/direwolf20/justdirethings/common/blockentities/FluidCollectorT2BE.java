@@ -63,7 +63,7 @@ public class FluidCollectorT2BE extends FluidCollectorT1BE implements PoweredMac
         return areaAffectingData;
     }
 
-    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
+    protected FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9,this);
 
     @Override
     public FilterBasicHandler getFilterHandler() {

@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.items;
 
-import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock_T1;
+import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock;
 import com.direwolf20.justdirethings.common.capabilities.EnergyStorageItemStackNoReceive;
 import com.direwolf20.justdirethings.common.containers.PocketGeneratorContainer;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
@@ -119,7 +119,7 @@ public class PocketGeneratorItem extends Item implements PoweredItem, Toggleable
         if (burnTime > 0) {
             if (fuelStack.getItem() instanceof TieredCoalItem direCoal) {
                 setFuelMultiplier(itemStack, direCoal.getBurnSpeedMultiplier());
-            } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock) {
+            } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock coalBlock) {
                 setFuelMultiplier(itemStack, coalBlock.getBurnSpeedMultiplier());
             } else if (fuelStack.getItem() instanceof FuelCanisterItem) {
                 setFuelMultiplier(itemStack, FuelCanisterItem.getBurnSpeedMultiplier(fuelStack));

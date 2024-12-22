@@ -63,7 +63,7 @@ public class BlockSwapperT2BE extends BlockSwapperT1BE implements PoweredMachine
         return areaAffectingData;
     }
 
-    protected FilterBasicHandler filterHandler = new FilterBasicHandler(9);
+    protected FilterBasicHandler filterHandler = new FilterBasicHandler(9,this);
 
     @Override
     public FilterBasicHandler getFilterHandler() {

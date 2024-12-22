@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InventoryHolderBE extends BaseMachineBE {
-    public FilterBasicHandler filterBasicHandler = new FilterBasicHandler(41);
+    public FilterBasicHandler filterBasicHandler = new FilterBasicHandler(41,this);
     public Map<ItemStackKey, List<Integer>> filteredCache = new HashMap<>();
     public boolean compareNBT = false;
     public boolean filtersOnly = false;

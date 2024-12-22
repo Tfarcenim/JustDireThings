@@ -65,7 +65,7 @@ public class DropperT2BE extends DropperT1BE implements AreaAffectingBE, Powered
         return areaAffectingData;
     }
 
-    FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
+    FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9,this);
 
     @Override
     public FilterBasicHandler getFilterHandler() {

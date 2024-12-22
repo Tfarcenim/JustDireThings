@@ -76,7 +76,7 @@ public class ItemCollectorBE extends BaseMachineBE implements FilterableBE, Area
         markDirtyClient();
     }
 
-    FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9);
+    FilterBasicHandler filterBasicHandler = new FilterBasicHandler(9,this);
 
     @Override
     public FilterBasicHandler getFilterHandler() {

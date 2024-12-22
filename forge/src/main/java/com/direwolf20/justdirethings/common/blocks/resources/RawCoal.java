@@ -2,8 +2,8 @@ package com.direwolf20.justdirethings.common.blocks.resources;
 
 import com.direwolf20.justdirethings.common.blocks.baseblocks.BaseRawOre;
 
-public class RawCoal_T4 extends BaseRawOre {
-    public RawCoal_T4() {
+public class RawCoal extends BaseRawOre {
+    public RawCoal() {
         super(Properties.of()
                 .requiresCorrectToolForDrops()
                 .noOcclusion()

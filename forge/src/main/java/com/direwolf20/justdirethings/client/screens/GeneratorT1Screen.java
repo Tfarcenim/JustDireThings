@@ -5,7 +5,7 @@ import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButton
 import com.direwolf20.justdirethings.client.screens.widgets.ToggleButton;
 import com.direwolf20.justdirethings.common.blockentities.GeneratorT1BE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.PoweredMachineBE;
-import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock_T1;
+import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock;
 import com.direwolf20.justdirethings.common.containers.GeneratorT1Container;
 import com.direwolf20.justdirethings.common.items.FuelCanisterItem;
 import com.direwolf20.justdirethings.common.items.resources.TieredCoalItem;
@@ -113,7 +113,7 @@ public class GeneratorT1Screen extends BaseMachineScreen<GeneratorT1Container> {
                 int fuelBurnMultiplier = 1;
                 if (fuelStack.getItem() instanceof TieredCoalItem direCoal) {
                     fuelBurnMultiplier = direCoal.getBurnSpeedMultiplier();
-                } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock) {
+                } else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock coalBlock) {
                     fuelBurnMultiplier = coalBlock.getBurnSpeedMultiplier();
                 } else if (fuelStack.getItem() instanceof FuelCanisterItem) {
                     fuelBurnMultiplier = FuelCanisterItem.getBurnSpeedMultiplier(fuelStack);

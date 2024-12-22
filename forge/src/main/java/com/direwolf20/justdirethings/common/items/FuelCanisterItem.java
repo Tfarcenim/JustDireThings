@@ -1,6 +1,6 @@
 package com.direwolf20.justdirethings.common.items;
 
-import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock_T1;
+import com.direwolf20.justdirethings.common.blocks.resources.CoalBlock;
 import com.direwolf20.justdirethings.common.containers.FuelCanisterContainer;
 import com.direwolf20.justdirethings.common.items.datacomponents.JustDireDataComponents;
 import com.direwolf20.justdirethings.common.items.resources.TieredCoalItem;
@@ -122,7 +122,7 @@ public class FuelCanisterItem extends Item {
         int fuelMultiplier = 1;
         if (fuelStack.getItem() instanceof TieredCoalItem direCoal)
             fuelMultiplier = direCoal.getBurnSpeedMultiplier();
-        else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock_T1 coalBlock)
+        else if (fuelStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CoalBlock coalBlock)
             fuelMultiplier = coalBlock.getBurnSpeedMultiplier();
         int totalNewFuel = 0;
         while ((currentFuel + totalNewFuel) + fuelPerPiece <= Config.FUEL_CANISTER_MAXIMUM_FUEL.get() && !fuelStack.isEmpty()) {
