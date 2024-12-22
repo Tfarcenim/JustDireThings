@@ -12,8 +12,8 @@ import java.util.List;
 
 import static com.direwolf20.justdirethings.util.TooltipHelpers.appendShiftForInfo;
 
-public class PolymorphicCatalyst extends Item {
-    public PolymorphicCatalyst() {
+public class PolymorphicCatalystItem extends Item {
+    public PolymorphicCatalystItem() {
         super(new Properties());
     }
 

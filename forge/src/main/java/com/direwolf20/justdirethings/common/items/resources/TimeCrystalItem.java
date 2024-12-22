@@ -19,8 +19,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class TimeCrystal extends Item {
-    public TimeCrystal() {
+public class TimeCrystalItem extends Item {
+    public TimeCrystalItem() {
         super(new Item.Properties());
     }
 

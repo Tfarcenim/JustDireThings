@@ -50,8 +50,6 @@ import com.direwolf20.justdirethings.common.fluids.xpfluid.XPFluidBlock;
 import com.direwolf20.justdirethings.common.fluids.xpfluid.XPFluidType;
 import com.direwolf20.justdirethings.common.items.*;
 import com.direwolf20.justdirethings.common.items.abilityupgrades.Upgrade;
-import com.direwolf20.justdirethings.common.items.abilityupgrades.UpgradeBlank;
-import com.direwolf20.justdirethings.common.items.abilityupgrades.UpgradeTemplate;
 import com.direwolf20.justdirethings.common.items.armors.*;
 import com.direwolf20.justdirethings.common.items.resources.*;
 import com.direwolf20.justdirethings.common.items.tools.*;
@@ -319,7 +317,7 @@ public class Registration {
     public static final RegistryObject<BlockItem> ClickerT1_ITEM = ITEMS.register("clickert1", () -> new BlockItem(ClickerT1.get(), new Item.Properties()));
     public static final RegistryObject<ClickerT2Block> ClickerT2 = SIDEDBLOCKS.register("clickert2", ClickerT2Block::new);
     public static final RegistryObject<BlockItem> ClickerT2_ITEM = ITEMS.register("clickert2", () -> new BlockItem(ClickerT2.get(), new Item.Properties()));
-    public static final RegistryObject<SensorT1> SensorT1 = SIDEDBLOCKS.register("sensort1", SensorT1::new);
+    public static final RegistryObject<SensorT1Block> SensorT1 = SIDEDBLOCKS.register("sensort1", SensorT1Block::new);
     public static final RegistryObject<BlockItem> SensorT1_ITEM = ITEMS.register("sensort1", () -> new BlockItem(SensorT1.get(), new Item.Properties()));
     public static final RegistryObject<SensorT2Block> SensorT2 = SIDEDBLOCKS.register("sensort2", SensorT2Block::new);
     public static final RegistryObject<BlockItem> SensorT2_ITEM = ITEMS.register("sensort2", () -> new BlockItem(SensorT2.get(), new Item.Properties()));
@@ -327,7 +325,7 @@ public class Registration {
     public static final RegistryObject<BlockItem> DropperT1_ITEM = ITEMS.register("droppert1", () -> new BlockItem(DropperT1.get(), new Item.Properties()));
     public static final RegistryObject<DropperT2Block> DropperT2 = SIDEDBLOCKS.register("droppert2", DropperT2Block::new);
     public static final RegistryObject<BlockItem> DropperT2_ITEM = ITEMS.register("droppert2", () -> new BlockItem(DropperT2.get(), new Item.Properties()));
-    public static final RegistryObject<BlockSwapperT1> BlockSwapperT1 = SIDEDBLOCKS.register("blockswappert1", BlockSwapperT1::new);
+    public static final RegistryObject<BlockSwapperT1Block> BlockSwapperT1 = SIDEDBLOCKS.register("blockswappert1", BlockSwapperT1Block::new);
     public static final RegistryObject<BlockItem> BlockSwapperT1_ITEM = ITEMS.register("blockswappert1", () -> new BlockItem(BlockSwapperT1.get(), new Item.Properties()));
     public static final RegistryObject<BlockSwapperT2Block> BlockSwapperT2 = SIDEDBLOCKS.register("blockswappert2", BlockSwapperT2Block::new);
     public static final RegistryObject<BlockItem> BlockSwapperT2_ITEM = ITEMS.register("blockswappert2", () -> new BlockItem(BlockSwapperT2.get(), new Item.Properties()));
@@ -463,16 +461,16 @@ public class Registration {
 
     //Items - Resources
     public static final RegistryObject<Item> FerricoreIngot = ITEMS.register("ferricore_ingot", Registration::basic);
-    public static final RegistryObject<BlazeGoldIngot> BlazegoldIngot = ITEMS.register("blazegold_ingot", BlazeGoldIngot::new);
-    public static final RegistryObject<Celestigem> Celestigem = ITEMS.register("celestigem", Celestigem::new);
+    public static final RegistryObject<Item> BlazegoldIngot = ITEMS.register("blazegold_ingot",Registration::basic);
+    public static final RegistryObject<Item> Celestigem = ITEMS.register("celestigem", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> EclipseAlloyIngot = ITEMS.register("eclipsealloy_ingot", Registration::basic);
     public static final RegistryObject<TieredCoalItem> Coal_T1 = ITEMS.register("coal_t1", () -> new TieredCoalItem(1));
     public static final RegistryObject<TieredCoalItem> Coal_T2 = ITEMS.register("coal_t2", () -> new TieredCoalItem(2));
     public static final RegistryObject<TieredCoalItem> Coal_T3 = ITEMS.register("coal_t3",() -> new TieredCoalItem(3));
     public static final RegistryObject<TieredCoalItem> Coal_T4 = ITEMS.register("coal_t4", () -> new TieredCoalItem(4));
-    public static final RegistryObject<PolymorphicCatalyst> PolymorphicCatalyst = ITEMS.register("polymorphic_catalyst", PolymorphicCatalyst::new);
+    public static final RegistryObject<PolymorphicCatalystItem> PolymorphicCatalyst = ITEMS.register("polymorphic_catalyst", PolymorphicCatalystItem::new);
     public static final RegistryObject<Item> PortalFluidCatalyst = ITEMS.register("portal_fluid_catalyst", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<TimeCrystal> TimeCrystal = ITEMS.register("time_crystal", TimeCrystal::new);
+    public static final RegistryObject<TimeCrystalItem> TimeCrystal = ITEMS.register("time_crystal", TimeCrystalItem::new);
 
     //Items
     public static final RegistryObject<FuelCanisterItem> Fuel_Canister = ITEMS.register("fuel_canister", FuelCanisterItem::new);
@@ -540,12 +538,12 @@ public class Registration {
     public static final RegistryObject<EclipseAlloyBoots> EclipseAlloyBoots = ARMORS.register("eclipsealloy_boots", EclipseAlloyBoots::new);
 
     //Items - Ability Upgrades
-    public static final RegistryObject<UpgradeTemplate> TEMPLATE_FERRICORE = ITEMS.register("template_ferricore", UpgradeTemplate::new);
-    public static final RegistryObject<UpgradeTemplate> TEMPLATE_BLAZEGOLD = ITEMS.register("template_blazegold", UpgradeTemplate::new);
-    public static final RegistryObject<UpgradeTemplate> TEMPLATE_CELESTIGEM = ITEMS.register("template_celestigem", UpgradeTemplate::new);
-    public static final RegistryObject<UpgradeTemplate> TEMPLATE_ECLIPSEALLOY = ITEMS.register("template_eclipsealloy", UpgradeTemplate::new);
+    public static final RegistryObject<Item> TEMPLATE_FERRICORE = ITEMS.register("template_ferricore", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> TEMPLATE_BLAZEGOLD = ITEMS.register("template_blazegold", () ->new Item(new Item.Properties()));
+    public static final RegistryObject<Item> TEMPLATE_CELESTIGEM = ITEMS.register("template_celestigem", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> TEMPLATE_ECLIPSEALLOY = ITEMS.register("template_eclipsealloy", () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<UpgradeBlank> UPGRADE_BASE = UPGRADES.register("upgrade_blank", UpgradeBlank::new);
+    public static final RegistryObject<Item> UPGRADE_BASE = UPGRADES.register("upgrade_blank",  () -> new Item(new Item.Properties()));
 
 
     //Tier 1 Abilities

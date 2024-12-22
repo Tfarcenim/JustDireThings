@@ -240,4 +240,9 @@ public class SensorT2Screen extends BaseMachineScreen<SensorT2Container> impleme
         }
         return super.mouseClicked(x, y, btn);
     }
+
+    @Override
+    public boolean listVisible() {
+        return showBlockStates;
+    }
 }

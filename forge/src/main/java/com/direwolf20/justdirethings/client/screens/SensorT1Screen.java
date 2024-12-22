@@ -155,8 +155,8 @@ public class SensorT1Screen extends BaseMachineScreen<SensorT1Container> impleme
         if (showBlockStates) {
             //guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,0,0, 100, topSectionHeight);
             guiGraphics.blitNineSlicedSized(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,100, topSectionHeight,4,236,34,0,0,236,34);
-            if (blockStateSlot != -1 && !container.filterHandler.getStackInSlot(blockStateSlot).equals(scrollPanel.getStateStack()))
-                refreshStateWindow();
+        //    if (blockStateSlot != -1 && !container.filterHandler.getStackInSlot(blockStateSlot).equals(scrollPanel.getStateStack()))
+        //        refreshStateWindow();
         }
     }
 
@@ -209,5 +209,10 @@ public class SensorT1Screen extends BaseMachineScreen<SensorT1Container> impleme
             }
         }
         return super.mouseClicked(x, y, btn);
+    }
+
+    @Override
+    public boolean listVisible() {
+        return showBlockStates;
     }
 }

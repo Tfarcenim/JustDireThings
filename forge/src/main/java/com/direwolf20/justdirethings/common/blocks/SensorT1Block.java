@@ -17,8 +17,8 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class SensorT1 extends BaseMachineBlock {
-    public SensorT1() {
+public class SensorT1Block extends BaseMachineBlock {
+    public SensorT1Block() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)

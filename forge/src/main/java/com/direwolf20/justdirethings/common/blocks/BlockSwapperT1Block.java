@@ -14,8 +14,8 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class BlockSwapperT1 extends BaseMachineBlock {
-    public BlockSwapperT1() {
+public class BlockSwapperT1Block extends BaseMachineBlock {
+    public BlockSwapperT1Block() {
         super(Properties.of()
                 .sound(SoundType.METAL)
                 .strength(2.0f)

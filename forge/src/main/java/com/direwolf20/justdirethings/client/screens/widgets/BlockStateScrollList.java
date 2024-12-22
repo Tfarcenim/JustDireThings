@@ -93,6 +93,12 @@ public class BlockStateScrollList extends ObjectSelectionList<BlockStateScrollLi
         super.renderWidget(p_282708_, p_283242_, p_282891_, p_283683_);
     }*/
 
+    @Override
+    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        if (parent.listVisible())
+            guiGraphics.fillGradient(x0, y0, x1, y1, 0xC0101010, 0xD0101010);
+        super.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
+    }
 
     protected void renderContentBackground(GuiGraphics guiGraphics) {
         //guiGraphics.fillGradient(getX(), getY(), getRight(), getBottom(), 0xC0101010, 0xD0101010);
