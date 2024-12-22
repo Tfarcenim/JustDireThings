@@ -48,7 +48,7 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
 
     public GeneratorT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState, 1);
-        generatorItemHandler = new GeneratorItemHandler(MACHINE_SLOTS);
+        generatorItemHandler = new GeneratorItemHandler(MACHINE_SLOTS,this);
         poweredMachineData = new ContainerData() {
             @Override
             public int get(int index) {
@@ -106,7 +106,7 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
     }
 
     @Override
-    public MachineEnergyStorage getEnergyStorage() {
+    public MachineEnergyStorage<GeneratorT1BE> getEnergyStorage() {
         return energyHandler;
     }
 
@@ -128,8 +128,8 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
 
     @Override
     public int insertEnergy(int power, boolean simulate) {
-        MachineEnergyStorage energyStorage = getEnergyStorage();
-        if (energyStorage instanceof EnergyStorageNoReceive energyStorageNoReceive)
+        MachineEnergyStorage<GeneratorT1BE> energyStorage = getEnergyStorage();
+        if (energyStorage instanceof EnergyStorageNoReceive<GeneratorT1BE> energyStorageNoReceive)
             return energyStorageNoReceive.forceReceiveEnergy(power, simulate);
         return 0;
     }
@@ -278,6 +278,12 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
     }
 
     @Override
+    protected void saveStorage(CompoundTag tag) {
+        super.saveStorage(tag);
+        tag.put("generator_handler",generatorItemHandler.serializeNBT());
+    }
+
+    @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         this.burnRemaining = tag.getInt("burnRemaining");
@@ -285,5 +291,11 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
         this.feRemaining = tag.getInt("feRemaining");
         if (tag.contains("fuelBurnMultiplier"))
             this.fuelBurnMultiplier = tag.getInt("fuelBurnMultiplier");
+    }
+
+    @Override
+    protected void loadStorage(CompoundTag tag) {
+        super.loadStorage(tag);
+        generatorItemHandler.deserializeNBT(tag.getCompound("generator_handler"));
     }
 }
