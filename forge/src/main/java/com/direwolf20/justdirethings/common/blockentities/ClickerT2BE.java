@@ -49,9 +49,9 @@ public class ClickerT2BE extends ClickerT1BE implements PoweredMachineBE, AreaAf
         return poweredMachineData;
     }
 
-    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+    protected MachineEnergyStorage<ClickerT2BE> energyStorage = new MachineEnergyStorage<>(getMaxEnergy(),this);
     @Override
-    public MachineEnergyStorage getEnergyStorage() {
+    public MachineEnergyStorage<ClickerT2BE> getEnergyStorage() {
         return energyStorage;
     }
 

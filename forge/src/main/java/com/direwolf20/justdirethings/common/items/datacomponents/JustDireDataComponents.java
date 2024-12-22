@@ -78,14 +78,15 @@ public class JustDireDataComponents {
     static <T> T getValue(ItemStack stack,String key,Codec<T> codec) {
         if (!stack.hasTag()) return null;
         Tag tag = stack.getTag().get(key);
-        return codec.parse(new Dynamic<>(NbtOps.INSTANCE, tag)).resultOrPartial(Constants.LOG::error).orElse(null);
+        if (tag == null) return null;
+        return codec.parse(new Dynamic<>(NbtOps.INSTANCE, tag)).resultOrPartial(LOGGER::error).orElse(null);
     }
 
     static<T> void setValue(ItemStack stack,T value,String key,Codec<T> codec) {
         if (value == null) {
             stack.removeTagKey(key);
         } else {
-            codec.encodeStart(NbtOps.INSTANCE,value).resultOrPartial(Constants.LOG::error).ifPresent(tag -> stack.getOrCreateTag().put(key,tag));
+            codec.encodeStart(NbtOps.INSTANCE,value).resultOrPartial(LOGGER::error).ifPresent(tag -> stack.getOrCreateTag().put(key,tag));
         }
     }
 

@@ -49,9 +49,9 @@ public class GeneratorFluidT1BE extends BaseMachineBE implements RedstoneControl
         return 4000;
     }
 
-    JustDireFluidTank fluidTank = new JustDireFluidTank(getMaxMB(), fluidstack -> fluidstack.getFluid() instanceof RefinedFuel);
+    JustDireFluidTank<GeneratorFluidT1BE> fluidTank = new JustDireFluidTank<>(getMaxMB(),fluidstack -> fluidstack.getFluid() instanceof RefinedFuel, this);
 
-    public JustDireFluidTank getFluidTank() {
+    public JustDireFluidTank<GeneratorFluidT1BE> getFluidTank() {
         return fluidTank;
     }
 
@@ -75,10 +75,10 @@ public class GeneratorFluidT1BE extends BaseMachineBE implements RedstoneControl
         return poweredMachineData;
     }
 
-    protected MachineEnergyStorage energyStorage = new EnergyStorageNoReceive(getMaxEnergy());
+    protected MachineEnergyStorage<GeneratorFluidT1BE> energyStorage = new EnergyStorageNoReceive<>(getMaxEnergy(),this);
 
     @Override
-    public MachineEnergyStorage getEnergyStorage() {
+    public MachineEnergyStorage<GeneratorFluidT1BE> getEnergyStorage() {
         return energyStorage;
     }
 

@@ -56,9 +56,9 @@ public class SensorT2BE extends SensorT1BE implements AreaAffectingBE, PoweredMa
         return poweredMachineData;
     }
 
-    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+    protected MachineEnergyStorage<SensorT2BE> energyStorage = new MachineEnergyStorage<>(getMaxEnergy(),this);
     @Override
-    public MachineEnergyStorage getEnergyStorage() {
+    public MachineEnergyStorage<SensorT2BE> getEnergyStorage() {
         return energyStorage;
     }
 

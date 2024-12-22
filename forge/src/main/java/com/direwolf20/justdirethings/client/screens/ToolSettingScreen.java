@@ -245,6 +245,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
         if (!tool.isEmpty()) {

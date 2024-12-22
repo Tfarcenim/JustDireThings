@@ -44,7 +44,7 @@ public class GeneratorT1BE extends BaseMachineBE implements RedstoneControlledBE
     private final Map<Direction,IEnergyStorage> energyHandlers = new HashMap<>();
     int fuelBurnMultiplier = 1;
 
-    protected EnergyStorageNoReceive energyHandler = new EnergyStorageNoReceive(getMaxEnergy());
+    protected EnergyStorageNoReceive<GeneratorT1BE> energyHandler = new EnergyStorageNoReceive<>(getMaxEnergy(),this);
 
     public GeneratorT1BE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState, 1);

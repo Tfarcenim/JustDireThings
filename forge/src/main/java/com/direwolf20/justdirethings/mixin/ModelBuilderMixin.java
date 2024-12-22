@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.Map;
 
-@Mixin(ModelBuilder.class)
+@Mixin(value = ModelBuilder.class,remap = false)
 public interface ModelBuilderMixin {
     @Accessor
     Map<String, String> getTextures();

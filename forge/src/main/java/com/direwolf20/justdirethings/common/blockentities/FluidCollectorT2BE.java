@@ -46,10 +46,10 @@ public class FluidCollectorT2BE extends FluidCollectorT1BE implements PoweredMac
         return poweredMachineData;
     }
 
-    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+    protected MachineEnergyStorage<FluidCollectorT2BE> energyStorage = new MachineEnergyStorage<>(getMaxEnergy(),this);
 
     @Override
-    public MachineEnergyStorage getEnergyStorage() {
+    public MachineEnergyStorage<FluidCollectorT2BE> getEnergyStorage() {
         return energyStorage;
     }
 

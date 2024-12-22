@@ -332,10 +332,10 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
         return Config.PARADOX_TOTAL_FLUID_CAPACITY.get();
     }
 
-    protected JustDireFluidTank justDireFluidTank = new JustDireFluidTank(getMaxMB(), fluidstack -> fluidstack.getFluid() instanceof TimeFluid);
+    protected JustDireFluidTank<ParadoxMachineBE> justDireFluidTank = new JustDireFluidTank<>(getMaxMB(), fluidstack -> fluidstack.getFluid() instanceof TimeFluid,this);
 
     @Override
-    public JustDireFluidTank getFluidTank() {
+    public JustDireFluidTank<ParadoxMachineBE> getFluidTank() {
         return justDireFluidTank;
     }
 
@@ -364,10 +364,10 @@ public class ParadoxMachineBE extends BaseMachineBE implements PoweredMachineBE,
         return poweredMachineData;
     }
 
-    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+    protected MachineEnergyStorage<ParadoxMachineBE> energyStorage = new MachineEnergyStorage<>(getMaxEnergy(),this);
 
     @Override
-    public MachineEnergyStorage getEnergyStorage() {
+    public MachineEnergyStorage<ParadoxMachineBE> getEnergyStorage() {
         return energyStorage;
     }
 

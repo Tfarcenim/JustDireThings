@@ -42,7 +42,7 @@ public class BlockSwapperT2BE extends BlockSwapperT1BE implements PoweredMachine
         return poweredMachineData;
     }
 
-    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage<>(getMaxEnergy(),this);
 
     @Override
     public MachineEnergyStorage getEnergyStorage() {

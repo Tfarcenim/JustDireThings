@@ -50,10 +50,10 @@ public class BlockBreakerT2BE extends BlockBreakerT1BE implements PoweredMachine
     }
 
 
-    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+    protected MachineEnergyStorage<BlockBreakerT2BE> energyStorage = new MachineEnergyStorage<>(getMaxEnergy(),this);
 
     @Override
-    public MachineEnergyStorage getEnergyStorage() {
+    public MachineEnergyStorage<BlockBreakerT2BE> getEnergyStorage() {
         return energyStorage;
     }
 

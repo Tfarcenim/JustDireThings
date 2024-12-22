@@ -116,9 +116,9 @@ public class FluidPlacerT1BE extends BaseMachineBE implements RedstoneControlled
         return getFluidTank().getFluid();
     }
 
-    JustDireFluidTank fluidTank = new JustDireFluidTank(getMaxMB());
+    JustDireFluidTank<FluidPlacerT1BE> fluidTank = new JustDireFluidTank<>(getMaxMB(),this);
 
-    public JustDireFluidTank getFluidTank() {
+    public JustDireFluidTank<FluidPlacerT1BE> getFluidTank() {
         return fluidTank;
     }
 
@@ -175,7 +175,7 @@ public class FluidPlacerT1BE extends BaseMachineBE implements RedstoneControlled
     public boolean isBlockPosValid(BlockPos blockPos, FakePlayer fakePlayer) {
         if (!level.getBlockState(blockPos).canBeReplaced())
             return false;
-        if (level.getBlockState(blockPos).getBlock() instanceof LiquidBlock liquidBlock && level.getFluidState(blockPos).isSource())
+        if (level.getBlockState(blockPos).getBlock() instanceof LiquidBlock && level.getFluidState(blockPos).isSource())
             return false;
         if (!canBreakAndPlaceAt(level, blockPos, fakePlayer))
             return false;

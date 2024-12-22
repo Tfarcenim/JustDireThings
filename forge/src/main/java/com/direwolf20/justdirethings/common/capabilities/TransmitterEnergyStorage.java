@@ -7,17 +7,10 @@ import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class TransmitterEnergyStorage extends MachineEnergyStorage implements INBTSerializable<Tag> {
-    private final EnergyTransmitterBE energyTransmitterBE;
+public class TransmitterEnergyStorage extends MachineEnergyStorage<EnergyTransmitterBE> implements INBTSerializable<Tag> {
 
     public TransmitterEnergyStorage(int capacity, EnergyTransmitterBE energyTransmitterBE) {
-        super(capacity);
-        this.energyTransmitterBE = energyTransmitterBE;
-    }
-
-    @Override
-    public void setEnergy(int energy) {
-        this.energy = energy;
+        super(capacity,energyTransmitterBE);
     }
 
     @Override
@@ -27,7 +20,8 @@ public class TransmitterEnergyStorage extends MachineEnergyStorage implements IN
 
         int energyReceived = Math.min(getMaxEnergyStored() - getEnergyStored(), Math.min(this.maxReceive, maxReceive));
         if (!simulate) {
-            energyTransmitterBE.distributeEnergy(energyReceived);
+            be.distributeEnergy(energyReceived);
+            be.setChanged();
             //energy += energyReceived;
         }
         return energyReceived;
@@ -38,8 +32,10 @@ public class TransmitterEnergyStorage extends MachineEnergyStorage implements IN
             return 0;
 
         int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
-        if (!simulate)
+        if (!simulate) {
             energy += energyReceived;
+            be.setChanged();
+        }
         return energyReceived;
     }
 
@@ -49,8 +45,10 @@ public class TransmitterEnergyStorage extends MachineEnergyStorage implements IN
             return 0;
 
         int energyExtracted = Math.min(getEnergyStored(), Math.min(this.maxExtract, maxExtract));
-        if (!simulate)
+        if (!simulate) {
             energy -= energyExtracted;
+            be.setChanged();
+        }
         return energyExtracted;
     }
 
@@ -59,19 +57,21 @@ public class TransmitterEnergyStorage extends MachineEnergyStorage implements IN
             return 0;
 
         int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
-        if (!simulate)
+        if (!simulate) {
             energy -= energyExtracted;
+            be.setChanged();
+        }
         return energyExtracted;
     }
 
     @Override
     public int getEnergyStored() {
-        return energyTransmitterBE.getTotalEnergyStored();
+        return be.getTotalEnergyStored();
     }
 
     @Override
     public int getMaxEnergyStored() {
-        return energyTransmitterBE.getTotalMaxEnergyStored();
+        return be.getTotalMaxEnergyStored();
     }
 
     public int getRealEnergyStored() {

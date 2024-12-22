@@ -50,10 +50,10 @@ public class FluidPlacerT2BE extends FluidPlacerT1BE implements PoweredMachineBE
         return poweredMachineData;
     }
 
-    MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+    MachineEnergyStorage<FluidPlacerT2BE> energyStorage = new MachineEnergyStorage<>(getMaxEnergy(),this);
 
     @Override
-    public MachineEnergyStorage getEnergyStorage() {
+    public MachineEnergyStorage<FluidPlacerT2BE> getEnergyStorage() {
         return energyStorage;
     }
 

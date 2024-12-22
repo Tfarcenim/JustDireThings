@@ -1,9 +1,12 @@
 package com.direwolf20.justdirethings.common.capabilities;
 
-public class EnergyStorageNoReceive extends MachineEnergyStorage {
+import com.direwolf20.justdirethings.common.blockentities.basebe.PoweredMachineBE;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-    public EnergyStorageNoReceive(int capacity) {
-        super(capacity);
+public class EnergyStorageNoReceive<B extends BlockEntity & PoweredMachineBE> extends MachineEnergyStorage<B> {
+
+    public EnergyStorageNoReceive(int capacity,B be) {
+        super(capacity,be);
     }
 
     @Override

@@ -122,9 +122,9 @@ public class FluidCollectorT1BE extends BaseMachineBE implements RedstoneControl
         return getFluidTank().getFluid();
     }
 
-    protected JustDireFluidTank fluidTank = new JustDireFluidTank(getMaxMB());
+    protected JustDireFluidTank<FluidCollectorT1BE> fluidTank = new JustDireFluidTank<>(getMaxMB(),this);
 
-    public JustDireFluidTank getFluidTank() {
+    public JustDireFluidTank<FluidCollectorT1BE> getFluidTank() {
         return fluidTank;
     }
 

@@ -45,9 +45,9 @@ public class BlockPlacerT2BE extends BlockPlacerT1BE implements PoweredMachineBE
         return poweredMachineData;
     }
 
-    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+    protected MachineEnergyStorage<BlockPlacerT2BE> energyStorage = new MachineEnergyStorage<>(getMaxEnergy(),this);
     @Override
-    public MachineEnergyStorage getEnergyStorage() {
+    public MachineEnergyStorage<BlockPlacerT2BE> getEnergyStorage() {
         return energyStorage;
     }
 

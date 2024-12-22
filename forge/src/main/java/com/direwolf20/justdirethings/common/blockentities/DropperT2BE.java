@@ -48,10 +48,10 @@ public class DropperT2BE extends DropperT1BE implements AreaAffectingBE, Powered
         return poweredMachineData;
     }
 
-    protected MachineEnergyStorage energyStorage = new MachineEnergyStorage(getMaxEnergy());
+    protected MachineEnergyStorage<DropperT2BE> energyStorage = new MachineEnergyStorage<>(getMaxEnergy(),this);
 
     @Override
-    public MachineEnergyStorage getEnergyStorage() {
+    public MachineEnergyStorage<DropperT2BE> getEnergyStorage() {
         return energyStorage;
     }
 
