@@ -76,20 +76,13 @@ public class SensorT2Screen extends SensorScreen<SensorT2BE,SensorT2Container> {
             saveSettings();
         }));
 
-        this.scrollPanel = new BlockStateScrollList(this, topSectionLeft - 95, topSectionTop + 5, 90,100);
+        this.scrollPanel = new BlockStateScrollList(this, topSectionLeft - 95, topSectionTop + 5, 90,90);
     }
 
     @Override
     public void setTopSection() {
         extraWidth = 60;
         extraHeight = 0;
-    }
-
-    @Override
-    protected boolean hasClickedOutside(double mouseX, double mouseY, int guiLeftIn, int guiTopIn, int mouseButton) {
-        if (showBlockStates && MiscTools.inBounds(topSectionLeft - 101, topSectionTop, 100, topSectionHeight, mouseX, mouseY))
-            return false;
-        return super.hasClickedOutside(mouseX, mouseY, guiLeftIn, guiTopIn, mouseButton);
     }
 
     @Override
@@ -104,6 +97,7 @@ public class SensorT2Screen extends SensorScreen<SensorT2BE,SensorT2Container> {
         validateItemStackCache();
         if (showBlockStates) {
         //    guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,0,0, 100, topSectionHeight);
+            guiGraphics.blitNineSlicedSized(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,100, topSectionHeight,4,236,34,0,0,236,34);
             if (blockStateSlot != -1 && !container.filterHandler.getStackInSlot(blockStateSlot).equals(scrollPanel.getStateStack()))
                 refreshStateWindow();
         }
@@ -177,6 +171,4 @@ public class SensorT2Screen extends SensorScreen<SensorT2BE,SensorT2Container> {
         }
         return super.mouseClicked(x, y, btn);
     }
-
-
 }

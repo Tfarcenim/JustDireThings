@@ -74,13 +74,6 @@ public class SensorT1Screen extends SensorScreen<SensorT1BE,SensorT1Container>  
     }
 
     @Override
-    protected boolean hasClickedOutside(double mouseX, double mouseY, int guiLeftIn, int guiTopIn, int mouseButton) {
-        if (showBlockStates && MiscTools.inBounds(topSectionLeft - 101, topSectionTop, 100, topSectionHeight, mouseX, mouseY))
-            return false;
-        return super.hasClickedOutside(mouseX, mouseY, guiLeftIn, guiTopIn, mouseButton);
-    }
-
-    @Override
     public void saveSettings() {
         super.saveSettings();
         Services.PLATFORM.sendToServer(new C2SSensorPayload(senseTarget, strongSignal, 0, 0));

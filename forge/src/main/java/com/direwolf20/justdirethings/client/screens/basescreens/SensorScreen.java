@@ -4,6 +4,7 @@ import com.direwolf20.justdirethings.common.blockentities.SensorT1BE;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseMachineContainer;
 import com.direwolf20.justdirethings.network.server.C2SBlockStateFilterPayload;
 import com.direwolf20.justdirethings.platform.Services;
+import com.direwolf20.justdirethings.util.MiscTools;
 import com.direwolf20.justdirethings.util.SenseTarget;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -75,6 +76,13 @@ public abstract class SensorScreen<B extends SensorT1BE,C extends BaseMachineCon
                 itemStackCache.put(i, stack);
             }
         }
+    }
+
+    @Override
+    protected boolean hasClickedOutside(double mouseX, double mouseY, int guiLeftIn, int guiTopIn, int mouseButton) {
+        if (showBlockStates && MiscTools.inBounds(topSectionLeft - 101, topSectionTop, 100, topSectionHeight, mouseX, mouseY))
+            return false;
+        return super.hasClickedOutside(mouseX, mouseY, guiLeftIn, guiTopIn, mouseButton);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.direwolf20.justdirethings.common.blockentities.basebe.FilterableBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.RedstoneControlledBE;
 import com.direwolf20.justdirethings.common.containers.*;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseMachineContainer;
+import com.direwolf20.justdirethings.common.containers.basecontainers.SensorContainer;
 import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
 import com.direwolf20.justdirethings.common.items.MachineSettingsCopierItem;
 import com.direwolf20.justdirethings.common.items.PortalGunItem;
@@ -120,11 +121,11 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public void handleC2SBlockStateFilterPayload(ServerPlayer player, C2SBlockStateFilterPayload payload) {
         AbstractContainerMenu container = player.containerMenu;
 
-        if (container instanceof SensorT1Container baseMachineContainer) {
+        if (container instanceof SensorContainer baseMachineContainer && baseMachineContainer.baseMachineBE instanceof SensorT1BE sensor) {
             ListTag listTag = payload.compoundTag().getList("tagList", 10); // 10 for CompoundTag type
-            ItemStack stateStack = baseMachineContainer.baseMachineBE.getFilterHandler().getStackInSlot(payload.slot());
+            ItemStack stateStack = sensor.getFilterHandler().getStackInSlot(payload.slot());
             Map<Property<?>, Comparable<?>> propertiesList = SensorT1BE.loadBlockStateProperty(listTag, stateStack);
-            baseMachineContainer.baseMachineBE.addBlockStateProperty(payload.slot(), propertiesList);
+            sensor.addBlockStateProperty(payload.slot(), propertiesList);
         }
     }
 
