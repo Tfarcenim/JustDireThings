@@ -2,31 +2,24 @@ package com.direwolf20.justdirethings.client.screens;
 
 import com.direwolf20.justdirethings.client.screens.basescreens.SensorScreen;
 import com.direwolf20.justdirethings.client.screens.standardbuttons.ToggleButtonFactory;
-import com.direwolf20.justdirethings.client.screens.widgets.BlockStateScrollList;
 import com.direwolf20.justdirethings.client.screens.widgets.NumberButton;
 import com.direwolf20.justdirethings.client.screens.widgets.ToggleButton;
 import com.direwolf20.justdirethings.common.blockentities.SensorT2BE;
-import com.direwolf20.justdirethings.common.blockentities.basebe.FilterableBE;
 import com.direwolf20.justdirethings.common.blockentities.basebe.PoweredMachineBE;
 import com.direwolf20.justdirethings.common.containers.SensorT2Container;
-import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
 import com.direwolf20.justdirethings.network.server.C2SSensorPayload;
 import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.util.MagicHelpers;
 import com.direwolf20.justdirethings.util.MiscTools;
 import com.direwolf20.justdirethings.util.SenseTarget;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
 
 public class SensorT2Screen extends SensorScreen<SensorT2BE,SensorT2Container> {
-    private BlockStateScrollList scrollPanel;
     public int senseAmount;
     public int equality;
     public SensorT2BE sensorT2BE;
@@ -75,8 +68,6 @@ public class SensorT2Screen extends SensorScreen<SensorT2BE,SensorT2Container> {
             equality = ((ToggleButton) b).getTexturePosition();
             saveSettings();
         }));
-
-        this.scrollPanel = new BlockStateScrollList(this, topSectionLeft - 95, topSectionTop + 5, 90,90);
     }
 
     @Override
@@ -91,24 +82,6 @@ public class SensorT2Screen extends SensorScreen<SensorT2BE,SensorT2Container> {
         Services.PLATFORM.sendToServer(new C2SSensorPayload(senseTarget, strongSignal, senseAmount, equality));
     }
 
-    @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
-        validateItemStackCache();
-        if (showBlockStates) {
-        //    guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,0,0, 100, topSectionHeight);
-            guiGraphics.blitNineSlicedSized(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,100, topSectionHeight,4,236,34,0,0,236,34);
-            if (blockStateSlot != -1 && !container.filterHandler.getStackInSlot(blockStateSlot).equals(scrollPanel.getStateStack()))
-                refreshStateWindow();
-        }
-    }
-
-    public void refreshStateWindow() {
-        if (!showBlockStates || blockStateSlot == -1) return;
-        stateItemStack = container.filterHandler.getStackInSlot(blockStateSlot);
-        scrollPanel.setStateStack(stateItemStack);
-        scrollPanel.refreshList();
-    }
 
     @Override
     public void powerBarTooltip(GuiGraphics pGuiGraphics, int pX, int pY) {
@@ -126,49 +99,5 @@ public class SensorT2Screen extends SensorScreen<SensorT2BE,SensorT2Container> {
                     )), pX, pY);
             }
         }
-    }
-
-    @Override
-    protected void renderTooltip(GuiGraphics pGuiGraphics, int pX, int pY) {
-        if (hoveredSlot != null && (hoveredSlot instanceof FilterBasicSlot)) {
-            if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
-                List<Component> components = new ArrayList<>();
-                ItemStack itemstack = this.hoveredSlot.getItem();
-                components.add(Component.translatable("justdirethings.screen.rightclicksettings").withStyle(ChatFormatting.RED));
-                components.addAll(this.getTooltipFromContainerItem(itemstack));
-                pGuiGraphics.renderTooltip(this.font, components, itemstack.getTooltipImage(), itemstack, pX, pY);
-            } else {
-                List<FormattedText> components = new ArrayList<>();
-                components.add(Component.translatable("justdirethings.screen.rightclicksettings").withStyle(ChatFormatting.RED));
-                pGuiGraphics.renderTooltip(this.font, Language.getInstance().getVisualOrder(components), pX, pY);
-            }
-        } else {
-            super.renderTooltip(pGuiGraphics, pX, pY);
-        }
-    }
-
-    @Override
-    public boolean mouseClicked(double x, double y, int btn) {
-        if (baseMachineBE instanceof FilterableBE) {
-            if (hoveredSlot != null && (hoveredSlot instanceof FilterBasicSlot)) {
-                if (btn == 1) {
-                    if (showBlockStates) {
-                        blockStateSlot = -1;
-                        stateItemStack = ItemStack.EMPTY;
-                        scrollPanel.setStateStack(ItemStack.EMPTY);
-                        this.removeWidget(scrollPanel);
-                    } else {
-                        blockStateSlot = hoveredSlot.getSlotIndex();
-                        stateItemStack = hoveredSlot.getItem();
-                        scrollPanel.setStateStack(stateItemStack);
-                        this.addRenderableWidget(scrollPanel);
-                    }
-                    showBlockStates = !showBlockStates;
-                    this.scrollPanel.refreshList();
-                    return true;
-                }
-            }
-        }
-        return super.mouseClicked(x, y, btn);
     }
 }

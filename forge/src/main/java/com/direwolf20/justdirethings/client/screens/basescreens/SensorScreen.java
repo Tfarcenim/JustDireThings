@@ -1,19 +1,28 @@
 package com.direwolf20.justdirethings.client.screens.basescreens;
 
+import com.direwolf20.justdirethings.client.screens.widgets.BlockStateScrollList;
 import com.direwolf20.justdirethings.common.blockentities.SensorT1BE;
+import com.direwolf20.justdirethings.common.blockentities.basebe.FilterableBE;
 import com.direwolf20.justdirethings.common.containers.basecontainers.BaseMachineContainer;
+import com.direwolf20.justdirethings.common.containers.slots.FilterBasicSlot;
 import com.direwolf20.justdirethings.network.server.C2SBlockStateFilterPayload;
 import com.direwolf20.justdirethings.platform.Services;
 import com.direwolf20.justdirethings.util.MiscTools;
 import com.direwolf20.justdirethings.util.SenseTarget;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.locale.Language;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.Property;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class SensorScreen<B extends SensorT1BE,C extends BaseMachineContainer<B>> extends BaseMachineScreen<C> implements SensorScreenInterface{
@@ -24,6 +33,9 @@ public abstract class SensorScreen<B extends SensorT1BE,C extends BaseMachineCon
     public ItemStack stateItemStack = ItemStack.EMPTY;
     public Map<Integer, Map<Property<?>, Comparable<?>>> blockStateProperties = new HashMap<>();
     public Map<Integer, ItemStack> itemStackCache = new HashMap<>();
+
+    private BlockStateScrollList scrollPanel;
+
     public SensorScreen(C container, Inventory pPlayerInventory, Component pTitle) {
         super(container, pPlayerInventory, pTitle);
     }
@@ -35,6 +47,12 @@ public abstract class SensorScreen<B extends SensorT1BE,C extends BaseMachineCon
         ListTag listTag = SensorT1BE.saveBlockStateProperty(props);
         tag.put("tagList", listTag);
         Services.PLATFORM.sendToServer(new C2SBlockStateFilterPayload(slot, tag));
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        this.scrollPanel = new BlockStateScrollList(this, topSectionLeft - 95, topSectionTop + 5, 90,90);
     }
 
     public void clearStateProperties(int slot) {
@@ -75,6 +93,69 @@ public abstract class SensorScreen<B extends SensorT1BE,C extends BaseMachineCon
                 saveBlockStateData(i);
                 itemStackCache.put(i, stack);
             }
+        }
+    }
+
+    @Override
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+        validateItemStackCache();
+        if (showBlockStates) {
+            //    guiGraphics.blit(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,0,0, 100, topSectionHeight);
+            guiGraphics.blitNineSlicedSized(SOCIALBACKGROUND, topSectionLeft - 100, topSectionTop,100, topSectionHeight,4,236,34,0,0,236,34);
+            if (blockStateSlot != -1 && !container.filterHandler.getStackInSlot(blockStateSlot).equals(scrollPanel.getStateStack()))
+                refreshStateWindow();
+        }
+    }
+
+    public void refreshStateWindow() {
+        if (!showBlockStates || blockStateSlot == -1) return;
+        stateItemStack = container.filterHandler.getStackInSlot(blockStateSlot);
+        scrollPanel.setStateStack(stateItemStack);
+        scrollPanel.refreshList();
+    }
+
+    @Override
+    public boolean mouseClicked(double x, double y, int btn) {
+        if (baseMachineBE instanceof FilterableBE) {
+            if (hoveredSlot != null && (hoveredSlot instanceof FilterBasicSlot)) {
+                if (btn == 1) {
+                    if (showBlockStates) {
+                        blockStateSlot = -1;
+                        stateItemStack = ItemStack.EMPTY;
+                        scrollPanel.setStateStack(ItemStack.EMPTY);
+                        this.removeWidget(scrollPanel);
+                    } else {
+                        blockStateSlot = hoveredSlot.getSlotIndex();
+                        stateItemStack = hoveredSlot.getItem();
+                        scrollPanel.setStateStack(stateItemStack);
+                        this.addRenderableWidget(scrollPanel);
+                    }
+                    showBlockStates = !showBlockStates;
+                    this.scrollPanel.refreshList();
+                    return true;
+                }
+            }
+        }
+        return super.mouseClicked(x, y, btn);
+    }
+
+    @Override
+    protected void renderTooltip(GuiGraphics pGuiGraphics, int pX, int pY) {
+        if (hoveredSlot != null && (hoveredSlot instanceof FilterBasicSlot)) {
+            if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
+                List<Component> components = new ArrayList<>();
+                ItemStack itemstack = this.hoveredSlot.getItem();
+                components.add(Component.translatable("justdirethings.screen.rightclicksettings").withStyle(ChatFormatting.RED));
+                components.addAll(this.getTooltipFromContainerItem(itemstack));
+                pGuiGraphics.renderTooltip(this.font, components, itemstack.getTooltipImage(), itemstack, pX, pY);
+            } else {
+                List<FormattedText> components = new ArrayList<>();
+                components.add(Component.translatable("justdirethings.screen.rightclicksettings").withStyle(ChatFormatting.RED));
+                pGuiGraphics.renderTooltip(this.font, Language.getInstance().getVisualOrder(components), pX, pY);
+            }
+        } else {
+            super.renderTooltip(pGuiGraphics, pX, pY);
         }
     }
 
