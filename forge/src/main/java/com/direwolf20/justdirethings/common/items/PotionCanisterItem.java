@@ -121,7 +121,8 @@ public class PotionCanisterItem extends Item {
     }
 
     public static int getPotionColor(ItemStack itemStack) {
-        return getPotionContents(itemStack).getColor();
+        PotionContents potionContents = getPotionContents(itemStack);
+        return potionContents.getColor();
     }
 
     public IItemHandler getItemHandler(ItemStack stack) {

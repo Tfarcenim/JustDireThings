@@ -106,8 +106,8 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
     protected AbstractArrow createProjectile(Level level, LivingEntity livingEntity, ItemStack weapon, ItemStack ammo, boolean crit) {
         ArrowItem arrowitem = ammo.getItem() instanceof ArrowItem arrowitem1 ? arrowitem1 : (ArrowItem) Items.ARROW;
         ToggleableTool toggleableTool = (ToggleableTool) weapon.getItem();
+        JustDireArrow justDireArrow = new JustDireArrow(level, livingEntity);
         if (arrowitem.equals(Items.ARROW)) {
-            JustDireArrow justDireArrow = new JustDireArrow(level, livingEntity);
             if (crit) {
                 justDireArrow.setCritArrow(true);
             }
@@ -143,7 +143,6 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
 
             IItemHandler itemHandler = weapon.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
             if (itemHandler instanceof ItemStackNBTHandler componentItemHandler) {
-                PotionContents potionContents = PotionContents.EMPTY;
                 for (int slot = 0; slot < componentItemHandler.getSlots(); slot++) {
                     ItemStack potionCanister = componentItemHandler.getStackInSlot(slot);
                     if (potionCanister.getItem() instanceof PotionCanisterItem) {
@@ -158,36 +157,29 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
                             if (canUseAbilityAndDurability(weapon, Ability.LINGERING))
                                 neededAmt = neededAmt + 50;
                             if (potionAmt >= neededAmt) {
-                                for (MobEffectInstance mobEffectInstance : slotPotionContents.getAllEffects())
-                                    potionContents = potionContents.withEffectAdded(mobEffectInstance);
                                 PotionCanisterItem.setPotionAmount(potionCanister, potionAmt - neededAmt);
                                 componentItemHandler.setStackInSlot(slot, potionCanister);
+                                if (canUseAbilityAndDurability(weapon, Ability.POTIONARROW)) {
+                                    justDireArrow.setPotionArrow(true);
+                                    Helpers.damageTool(weapon, livingEntity, Ability.POTIONARROW);
+                                }
+                                if (canUseAbilityAndDurability(weapon, Ability.SPLASH)) {
+                                    justDireArrow.setSplash(true);
+                                    Helpers.damageTool(weapon, livingEntity, Ability.SPLASH);
+                                }
+                                if (canUseAbilityAndDurability(weapon, Ability.LINGERING)) {
+                                    justDireArrow.setLingering(true);
+                                    Helpers.damageTool(weapon, livingEntity, Ability.LINGERING);
+                                }
+                                justDireArrow.setEffectsFromPotions(slotPotionContents);
                             }
                         }
-                    }
-                }
-                if (!potionContents.equals(PotionContents.EMPTY)) {
-                    justDireArrow.setEffectsFromPotions(potionContents);
-                    if (canUseAbilityAndDurability(weapon, Ability.POTIONARROW)) {
-                        justDireArrow.setPotionArrow(true);
-                        Helpers.damageTool(weapon, livingEntity, Ability.POTIONARROW);
-                    }
-                    if (canUseAbilityAndDurability(weapon, Ability.SPLASH)) {
-                        justDireArrow.setSplash(true);
-                        Helpers.damageTool(weapon, livingEntity, Ability.SPLASH);
-                    }
-                    if (canUseAbilityAndDurability(weapon, Ability.LINGERING)) {
-                        justDireArrow.setLingering(true);
-                        Helpers.damageTool(weapon, livingEntity, Ability.LINGERING);
+                        break;
                     }
                 }
             }
-
-            justDireArrow.setEffectsFromItem(ammo);
-
-            return customArrow(justDireArrow);
         }
-        return null;//super.createProjectile(level, livingEntity, itemStack, stack, crit);
+        return customArrow(justDireArrow);
     }
 
     public LivingEntity findAimedAtEntity(LivingEntity livingEntity, boolean onlyHostile) {

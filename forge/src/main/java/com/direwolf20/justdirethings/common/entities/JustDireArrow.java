@@ -19,7 +19,6 @@ import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.ZombifiedPiglin;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -30,19 +29,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static net.minecraft.world.entity.projectile.ThrownPotion.WATER_SENSITIVE_OR_ON_FIRE;
 
-public class JustDireArrow extends AbstractArrow {
+public class JustDireArrow extends Arrow {
 
-    private Potion potion = Potions.EMPTY;
-    private final Set<MobEffectInstance> effects = Sets.newHashSet();
-    private boolean fixedColor;
-    private static final EntityDataAccessor<Integer> ID_EFFECT_COLOR = SynchedEntityData.defineId(JustDireArrow.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> IS_POTIONARROW = SynchedEntityData.defineId(JustDireArrow.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_SPLASH = SynchedEntityData.defineId(JustDireArrow.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_LINGERING = SynchedEntityData.defineId(JustDireArrow.class, EntityDataSerializers.BOOLEAN);
@@ -71,20 +63,21 @@ public class JustDireArrow extends AbstractArrow {
 
     private LivingEntity targetEntity;
 
-    public JustDireArrow(EntityType<? extends AbstractArrow> p_36858_, Level p_36859_) {
+    public JustDireArrow(EntityType<? extends Arrow> p_36858_, Level p_36859_) {
         super(p_36858_, p_36859_);
     }
 
-    public JustDireArrow(Level level, double x, double y, double z) {
-        super(Registration.JustDireArrow.get(), x, y, z, level);
-        this.updateColor();
-    }
 
     public JustDireArrow(Level level, LivingEntity owner) {
-        super(Registration.JustDireArrow.get(), owner, level);
-        this.updateColor();
+        super(level,owner);
     }
 
+    @Override
+    public EntityType<?> getType() {
+        return Registration.JustDireArrow.get();
+    }
+
+    @Override
     public void setEffectsFromItem(ItemStack pStack) {
         if (pStack.is(Items.TIPPED_ARROW)) {
             this.potion = PotionUtils.getPotion(pStack);
@@ -104,7 +97,7 @@ public class JustDireArrow extends AbstractArrow {
         } else if (pStack.is(Items.ARROW)) {
             this.potion = Potions.EMPTY;
             this.effects.clear();
-            this.entityData.set(ID_EFFECT_COLOR, -1);
+            setFixedColor(-1);
         }
 
     }
@@ -112,27 +105,9 @@ public class JustDireArrow extends AbstractArrow {
     public void setEffectsFromPotions(PotionContents contents) {
         contents.potion().ifPresent(potion1 -> this.potion = potion1);
         effects.addAll(contents.customEffects());
+        contents.customColor().ifPresentOrElse(this::setFixedColor, this::updateColor);
     }
 
-    private void setFixedColor(int pFixedColor) {
-        this.fixedColor = true;
-        this.entityData.set(ID_EFFECT_COLOR, pFixedColor);
-    }
-
-    @Override
-    protected ItemStack getPickupItem() {
-        return new ItemStack(Items.ARROW);
-    }
-
-    private void updateColor() {
-        this.fixedColor = false;
-        if (this.potion == Potions.EMPTY && this.effects.isEmpty()) {
-            this.entityData.set(ID_EFFECT_COLOR, -1);
-        } else {
-            this.entityData.set(ID_EFFECT_COLOR, PotionUtils.getColor(PotionUtils.getAllEffects(this.potion, this.effects)));
-        }
-
-    }
     public void setPotionArrow(boolean potionArrow) {
         this.entityData.set(IS_POTIONARROW, potionArrow);
     }
@@ -185,7 +160,6 @@ public class JustDireArrow extends AbstractArrow {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        entityData.define(ID_EFFECT_COLOR, -1);
         entityData.define(IS_POTIONARROW, false);
         entityData.define(IS_SPLASH, false);
         entityData.define(IS_LINGERING, false);
@@ -220,11 +194,6 @@ public class JustDireArrow extends AbstractArrow {
 
     public double searchRadius() {
         return isEpic() ? 20 : 10;
-    }
-
-    @Override
-    public void setDeltaMovement(Vec3 deltaMovement) {
-        super.setDeltaMovement(deltaMovement);
     }
 
     @Override
@@ -503,23 +472,6 @@ public class JustDireArrow extends AbstractArrow {
         this.xRotO = this.getXRot();
     }
 
-    private void makeParticle(int pParticleAmount) {
-        int i = this.getColor();
-        if (i != -1 && pParticleAmount > 0) {
-            double d0 = (double)(i >> 16 & 255) / 255.0D;
-            double d1 = (double)(i >> 8 & 255) / 255.0D;
-            double d2 = (double)(i >> 0 & 255) / 255.0D;
-
-            for(int j = 0; j < pParticleAmount; ++j) {
-                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
-            }
-        }
-    }
-
-    public int getColor() {
-        return this.entityData.get(ID_EFFECT_COLOR);
-    }
-
     @Override
     protected void onHit(HitResult result) {
         HitResult.Type hitresult$type = result.getType();
@@ -647,27 +599,6 @@ public class JustDireArrow extends AbstractArrow {
                     ),
                     entity
             );
-        }
-    }
-
-    /**
-     * Handles an entity event received from a {@link net.minecraft.network.protocol.game.ClientboundEntityEventPacket}.
-     */
-    @Override
-    public void handleEntityEvent(byte pId) {
-        if (pId == 0) {
-            int i = this.getColor();
-            if (i != -1) {
-                double d0 = (double)(i >> 16 & 255) / 255.0D;
-                double d1 = (double)(i >> 8 & 255) / 255.0D;
-                double d2 = (double)(i >> 0 & 255) / 255.0D;
-
-                for(int j = 0; j < 20; ++j) {
-                    this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
-                }
-            }
-        } else {
-            super.handleEntityEvent(pId);
         }
     }
 
