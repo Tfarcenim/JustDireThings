@@ -47,22 +47,22 @@ public record PotionContents(Optional<Potion> potion, OptionalInt customColor,
     }
 
     public static int getColor(Iterable<MobEffectInstance> effects) {
-        return getColorOptional(effects).orElse(-13083194);
+        return getColorOptional(effects).orElse(0xff385dc6);
     }
 
     public static OptionalInt getColorOptional(Iterable<MobEffectInstance> effects) {
-        int i = 0;
-        int j = 0;
-        int k = 0;
+        int r = 0;
+        int g = 0;
+        int b = 0;
         int l = 0;
 
         for (MobEffectInstance mobEffectInstance : effects) {
             if (mobEffectInstance.isVisible()) {
                 int m = mobEffectInstance.getEffect().getColor();
                 int n = mobEffectInstance.getAmplifier() + 1;
-                i += n * FastColor.ARGB32.red(m);
-                j += n * FastColor.ARGB32.green(m);
-                k += n * FastColor.ARGB32.blue(m);
+                r += n * FastColor.ARGB32.red(m);
+                g += n * FastColor.ARGB32.green(m);
+                b += n * FastColor.ARGB32.blue(m);
                 l += n;
             }
         }
@@ -70,7 +70,7 @@ public record PotionContents(Optional<Potion> potion, OptionalInt customColor,
         if (l == 0) {
             return OptionalInt.empty();
         } else {
-            return OptionalInt.of(FastColor.ARGB32.color(i / l, j / l, k / l, 1));
+            return OptionalInt.of(FastColor.ARGB32.color(1,r / l, g / l, b / l));
         }
     }
 

@@ -34,7 +34,7 @@ import org.joml.Matrix4f;
 
 import java.awt.*;
 
-public class AdvPortalRadialMenu extends Screen {
+public class AdvPortalRadialScreen extends Screen {
     ToggleButtonFactory.TextureLocalization ADD_BUTTON = new ToggleButtonFactory.TextureLocalization(JustDireThings.id("textures/gui/buttons/add.png"), Component.translatable("justdirethings.screen.add_favorite"));
     ToggleButtonFactory.TextureLocalization REMOVE_BUTTON = new ToggleButtonFactory.TextureLocalization(JustDireThings.id("textures/gui/buttons/remove.png"), Component.translatable("justdirethings.screen.remove_favorite"));
     ToggleButtonFactory.TextureLocalization EDIT_BUTTON = new ToggleButtonFactory.TextureLocalization(JustDireThings.id("textures/gui/buttons/matchnbttrue.png"), Component.translatable("justdirethings.screen.edit_favorite"));
@@ -49,7 +49,7 @@ public class AdvPortalRadialMenu extends Screen {
     private final static int radiusMax = 120;
     private boolean staysOpen = false;
 
-    public AdvPortalRadialMenu(ItemStack stack) {
+    public AdvPortalRadialScreen(ItemStack stack) {
         super(Component.literal(""));
         portalGun = stack;
         slotSelected = PortalGunV2Item.getFavoritePosition(portalGun);
@@ -154,8 +154,8 @@ public class AdvPortalRadialMenu extends Screen {
                 float yp = (float) (y + Math.sin(rad) * radius);
 
                 Matrix4f pose = matrices.last().pose();
-                buffer.vertex(pose, (float) (x + Math.cos(rad) * radius / 2.3F), (float) (y + Math.sin(rad) * radius / 2.3F), 0).color(r, g, b, a);
-                buffer.vertex(xp, yp, 0).color(r, g, b, a);
+                buffer.vertex(pose, (float) (x + Math.cos(rad) * radius / 2.3F), (float) (y + Math.sin(rad) * radius / 2.3F), 0).color(r, g, b, a).endVertex();
+                buffer.vertex(xp, yp, 0).color(r, g, b, a).endVertex();
             }
 
             bufferSource.endBatch(OurRenderTypes.TRIANGLE_STRIP);
@@ -264,7 +264,7 @@ public class AdvPortalRadialMenu extends Screen {
     }
 
     public void editFavorite() {
-        Minecraft.getInstance().setScreen(new AdvPortalEditMenu(portalGun, slotSelected));
+        Minecraft.getInstance().setScreen(new AdvPortalEditScreen(portalGun, slotSelected));
         OurSounds.playSound(Registration.BEEP.get());
     }
 

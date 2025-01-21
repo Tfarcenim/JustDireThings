@@ -19,7 +19,7 @@ import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 import java.util.function.Predicate;
 
-public class AdvPortalEditMenu extends Screen {
+public class AdvPortalEditScreen extends Screen {
     private int slotSelected = 0;
     private int ticksOpened = 0;
     private ItemStack portalGun;
@@ -30,7 +30,7 @@ public class AdvPortalEditMenu extends Screen {
     // Define the predicate as a class-level variable
     private final Predicate<String> doubleInputValidator = this::isValidDoubleInput;
 
-    protected AdvPortalEditMenu(ItemStack itemStack, int favoritePosition) {
+    protected AdvPortalEditScreen(ItemStack itemStack, int favoritePosition) {
         super(Component.literal(""));
         this.portalGun = itemStack;
         this.slotSelected = favoritePosition;

@@ -21,6 +21,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -36,6 +37,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -85,48 +87,61 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
 
     @Override
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
-        super.releaseUsing(pStack, pLevel, pEntityLiving, pTimeLeft);
+        if (pEntityLiving instanceof Player player) {
+            boolean flag = player.getAbilities().instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, pStack) > 0;
+            ItemStack ammo = pEntityLiving.getProjectile(pStack);
+            int i = this.getUseDuration(pStack) - pTimeLeft;
+            i = ForgeEventFactory.onArrowLoose(pStack, pLevel, player, i, !ammo.isEmpty() || flag);
+            if (i < 0) return;
+            float f = getPowerForTime(i);
+
+            if (!pLevel.isClientSide) {
+                AbstractArrow arrow = createProjectile(pLevel, pEntityLiving, pStack, ammo, f >= 1);
+                arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, f * 3.0F, 1.0F);
+                pLevel.addFreshEntity(arrow);
+            }
+        }
     }//todo
 
-    protected Projectile createProjectile(Level level, LivingEntity livingEntity, ItemStack itemStack, ItemStack stack, boolean crit) {
-        ArrowItem arrowitem = stack.getItem() instanceof ArrowItem arrowitem1 ? arrowitem1 : (ArrowItem) Items.ARROW;
-        ToggleableTool toggleableTool = (ToggleableTool) itemStack.getItem();
+    protected AbstractArrow createProjectile(Level level, LivingEntity livingEntity, ItemStack weapon, ItemStack ammo, boolean crit) {
+        ArrowItem arrowitem = ammo.getItem() instanceof ArrowItem arrowitem1 ? arrowitem1 : (ArrowItem) Items.ARROW;
+        ToggleableTool toggleableTool = (ToggleableTool) weapon.getItem();
         if (arrowitem.equals(Items.ARROW)) {
             JustDireArrow justDireArrow = new JustDireArrow(level, livingEntity);
             if (crit) {
                 justDireArrow.setCritArrow(true);
             }
-            Boolean e = JustDireDataComponents.isEpicArrow(itemStack);
+            Boolean e = JustDireDataComponents.isEpicArrow(weapon);
             if (e != null && e) {
                 justDireArrow.setEpicArrow(true);
                 justDireArrow.setBaseDamage(20d);
                 AbilityParams abilityParams = toggleableTool.getAbilityParams(Ability.EPICARROW);
-                ToggleableTool.addCooldown(itemStack, Ability.EPICARROW, abilityParams.cooldown, false);
-                JustDireDataComponents.setEpicArrow(itemStack,false);
+                ToggleableTool.addCooldown(weapon, Ability.EPICARROW, abilityParams.cooldown, false);
+                JustDireDataComponents.setEpicArrow(weapon,false);
             }
 
-            if (!toggleableTool.getEnabled(itemStack))
+            if (!toggleableTool.getEnabled(weapon))
                 return customArrow(justDireArrow);
 
-            if (canUseAbilityAndDurability(itemStack, Ability.PHASE)) {
+            if (canUseAbilityAndDurability(weapon, Ability.PHASE)) {
                 justDireArrow.setPhase(true);
-                Helpers.damageTool(itemStack, livingEntity, Ability.PHASE);
+                Helpers.damageTool(weapon, livingEntity, Ability.PHASE);
             }
 
-            if (canUseAbilityAndDurability(itemStack, Ability.HOMING)) {
+            if (canUseAbilityAndDurability(weapon, Ability.HOMING)) {
                 justDireArrow.setHoming(true);
-                Helpers.damageTool(itemStack, livingEntity, Ability.HOMING);
-                boolean hostileOnly = ToggleableTool.getCustomSetting(itemStack, Ability.HOMING.getName()) == 0;
+                Helpers.damageTool(weapon, livingEntity, Ability.HOMING);
+                boolean hostileOnly = ToggleableTool.getCustomSetting(weapon, Ability.HOMING.getName()) == 0;
                 LivingEntity aimedAtEntity = findAimedAtEntity(livingEntity, hostileOnly);
                 if (aimedAtEntity != null)
                     justDireArrow.setTargetEntity(aimedAtEntity);
                 justDireArrow.setHostileOnly(hostileOnly);
             }
 
-            if (noPotionAbilitiesActive(itemStack))
+            if (noPotionAbilitiesActive(weapon))
                 return customArrow(justDireArrow);
 
-            IItemHandler itemHandler = itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
+            IItemHandler itemHandler = weapon.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
             if (itemHandler instanceof ItemStackNBTHandler componentItemHandler) {
                 PotionContents potionContents = PotionContents.EMPTY;
                 for (int slot = 0; slot < componentItemHandler.getSlots(); slot++) {
@@ -136,11 +151,11 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
                         PotionContents slotPotionContents = PotionCanisterItem.getPotionContents(potionCanister);
                         if (!slotPotionContents.equals(PotionContents.EMPTY)) {
                             int neededAmt = 0;
-                            if (canUseAbilityAndDurability(itemStack, Ability.POTIONARROW))
+                            if (canUseAbilityAndDurability(weapon, Ability.POTIONARROW))
                                 neededAmt = neededAmt + 25;
-                            if (canUseAbilityAndDurability(itemStack, Ability.SPLASH))
+                            if (canUseAbilityAndDurability(weapon, Ability.SPLASH))
                                 neededAmt = neededAmt + 25;
-                            if (canUseAbilityAndDurability(itemStack, Ability.LINGERING))
+                            if (canUseAbilityAndDurability(weapon, Ability.LINGERING))
                                 neededAmt = neededAmt + 50;
                             if (potionAmt >= neededAmt) {
                                 for (MobEffectInstance mobEffectInstance : slotPotionContents.getAllEffects())
@@ -153,20 +168,22 @@ public class BaseBowItem extends BowItem implements ToggleableTool, LeftClickabl
                 }
                 if (!potionContents.equals(PotionContents.EMPTY)) {
                     justDireArrow.setEffectsFromPotions(potionContents);
-                    if (canUseAbilityAndDurability(itemStack, Ability.POTIONARROW)) {
+                    if (canUseAbilityAndDurability(weapon, Ability.POTIONARROW)) {
                         justDireArrow.setPotionArrow(true);
-                        Helpers.damageTool(itemStack, livingEntity, Ability.POTIONARROW);
+                        Helpers.damageTool(weapon, livingEntity, Ability.POTIONARROW);
                     }
-                    if (canUseAbilityAndDurability(itemStack, Ability.SPLASH)) {
+                    if (canUseAbilityAndDurability(weapon, Ability.SPLASH)) {
                         justDireArrow.setSplash(true);
-                        Helpers.damageTool(itemStack, livingEntity, Ability.SPLASH);
+                        Helpers.damageTool(weapon, livingEntity, Ability.SPLASH);
                     }
-                    if (canUseAbilityAndDurability(itemStack, Ability.LINGERING)) {
+                    if (canUseAbilityAndDurability(weapon, Ability.LINGERING)) {
                         justDireArrow.setLingering(true);
-                        Helpers.damageTool(itemStack, livingEntity, Ability.LINGERING);
+                        Helpers.damageTool(weapon, livingEntity, Ability.LINGERING);
                     }
                 }
             }
+
+            justDireArrow.setEffectsFromItem(ammo);
 
             return customArrow(justDireArrow);
         }

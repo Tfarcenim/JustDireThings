@@ -1,5 +1,6 @@
 package com.direwolf20.justdirethings.common.entities;
 
+import com.direwolf20.justdirethings.JustDireThings;
 import com.direwolf20.justdirethings.setup.Registration;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.entity.PartEntity;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -231,7 +233,12 @@ public class PortalEntity extends Entity {
         if (!level().isClientSide) {
             ServerLevel serverLevel = (ServerLevel) this.level();
             ChunkPos chunkPos = new ChunkPos(this.blockPosition());
+
+
+
             //Registration.TICKET_CONTROLLER.forceChunk(serverLevel, this, chunkPos.x, chunkPos.z, true, false);
+
+            ForgeChunkManager.forceChunk(serverLevel, JustDireThings.MODID,this.getUUID(),chunkPos.x,chunkPos.z,true,false);
 
             level().playSound(
                     null,
@@ -266,6 +273,7 @@ public class PortalEntity extends Entity {
         if (!level().isClientSide) {
             ServerLevel serverLevel = (ServerLevel) this.level();
             ChunkPos chunkPos = new ChunkPos(this.blockPosition());
+            ForgeChunkManager.forceChunk(serverLevel,JustDireThings.MODID,this.getUUID(),chunkPos.x,chunkPos.z,false,false);
         //    Registration.TICKET_CONTROLLER.forceChunk(serverLevel, this, chunkPos.x, chunkPos.z, false, false);
         }
     }

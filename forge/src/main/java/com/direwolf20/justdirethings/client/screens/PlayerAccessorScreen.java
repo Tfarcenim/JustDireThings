@@ -19,10 +19,8 @@ public class PlayerAccessorScreen extends BaseMachineScreen<PlayerAccessorContai
     public HashMap<Direction, Integer> sidedInventoryTypes;
     public PlayerAccessorScreen(PlayerAccessorContainer container, Inventory inv, Component name) {
         super(container, inv, name);
-        if (container.baseMachineBE instanceof PlayerAccessorBE) {
-            this.playerAccessorBE = (PlayerAccessorBE) container.baseMachineBE;
-            sidedInventoryTypes = playerAccessorBE.sidedInventoryTypes;
-        }
+        this.playerAccessorBE = container.baseMachineBE;
+        sidedInventoryTypes = playerAccessorBE.sidedInventoryTypes;
     }
 
     @Override

@@ -145,6 +145,10 @@ public class JustDireArrow extends AbstractArrow {
         this.entityData.set(IS_LINGERING, lingering);
     }
 
+    public boolean isLingering() {
+        return entityData.get(IS_LINGERING);
+    }
+
     public void setHoming(boolean homing) {
         this.entityData.set(IS_HOMING, homing);
     }
@@ -672,7 +676,7 @@ public class JustDireArrow extends AbstractArrow {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("is_potionarrow", this.entityData.get(IS_POTIONARROW));
         pCompound.putBoolean("is_splash", this.entityData.get(IS_SPLASH));
-        pCompound.putBoolean("is_lingering", this.entityData.get(IS_LINGERING));
+        pCompound.putBoolean("is_lingering", isLingering());
         pCompound.putBoolean("is_homing", this.entityData.get(IS_HOMING));
         pCompound.putInt("arrow_state", this.entityData.get(ARROW_STATE));
         pCompound.putInt("state_tick_counter", this.entityData.get(STATE_TICK_COUNTER));
@@ -686,7 +690,7 @@ public class JustDireArrow extends AbstractArrow {
         super.readAdditionalSaveData(pCompound);
         this.entityData.set(IS_POTIONARROW, pCompound.getBoolean("is_potionarrow"));
         this.entityData.set(IS_SPLASH, pCompound.getBoolean("is_splash"));
-        this.entityData.set(IS_LINGERING, pCompound.getBoolean("is_lingering"));
+        setLingering(pCompound.getBoolean("is_lingering"));
         this.entityData.set(IS_HOMING, pCompound.getBoolean("is_homing"));
         this.entityData.set(ARROW_STATE, pCompound.getInt("arrow_state"));
         this.entityData.set(STATE_TICK_COUNTER, pCompound.getInt("state_tick_counter"));

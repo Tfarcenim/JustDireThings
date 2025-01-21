@@ -32,7 +32,7 @@ public class FluidCollectorT2Block extends FluidCollectorBlock {
     @Override
     public void openMenu(ServerPlayer player, BlockPos blockPos) {
         NetworkHooks.openScreen(player, new SimpleMenuProvider(
-                (windowId, playerInventory, playerEntity) -> new FluidCollectorT2Container(windowId, playerInventory, blockPos), Component.empty()));
+                (windowId, playerInventory, playerEntity) -> new FluidCollectorT2Container(windowId, playerInventory, blockPos), Component.empty()),blockPos);
     }
 
     @Override

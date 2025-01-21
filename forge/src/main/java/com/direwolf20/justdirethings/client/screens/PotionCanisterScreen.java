@@ -20,8 +20,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,7 @@ public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanister
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
@@ -79,9 +82,15 @@ public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanister
     public void renderFluid(GuiGraphics guiGraphics, int startX, int startY, int width, int height, ItemStack potionCanister) {
         PotionContents potionContents = PotionCanisterItem.getPotionContents(potionCanister);
         if (potionContents.equals(PotionContents.EMPTY) || PotionCanisterItem.getPotionAmount(potionCanister) <= 0) return;
-        ResourceLocation fluidStill = IClientFluidTypeExtensions.of(Fluids.WATER).getStillTexture();
+        FluidStack fluidStack = new FluidStack(Fluids.WATER,PotionCanisterItem.getPotionAmount(potionCanister));
+        if (fluidStack.isEmpty() || height <= 0) return;
+
+        Fluid fluid = fluidStack.getFluid();
+        ResourceLocation fluidStill = IClientFluidTypeExtensions.of(fluid).getStillTexture();
         TextureAtlasSprite fluidStillSprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidStill);
         int fluidColor = potionContents.getColor();
+
+        int i = 0xff9900;
 
         float red = (float) (fluidColor >> 16 & 255) / 255.0F;
         float green = (float) (fluidColor >> 8 & 255) / 255.0F;
@@ -101,12 +110,15 @@ public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanister
         int textureWidth = fluidStillSprite.contents().width();
         int textureHeight = fluidStillSprite.contents().height();
 
-        Tesselator tesselator = Tesselator.getInstance();
+        int y = startY - height;
+        guiGraphics.blit(startX, y, 0, width, height, fluidStillSprite);
+
+
+        /*esselator tesselator = Tesselator.getInstance();
         BufferBuilder vertexBuffer = tesselator.getBuilder();
         vertexBuffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-
         int yOffset = 0;
-        while (yOffset < height) {
+        /*while (yOffset < height) {
             int drawHeight = Math.min(textureHeight, height - yOffset);
             int drawY = startY - yOffset - drawHeight; // Adjust for bottom-to-top drawing
 
@@ -128,7 +140,7 @@ public class PotionCanisterScreen extends AbstractContainerScreen<PotionCanister
             yOffset += drawHeight;
         }
 
-        BufferUploader.drawWithShader(vertexBuffer.end());
+        BufferUploader.drawWithShader(vertexBuffer.end());*/
         poseStack.popPose();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.applyModelViewMatrix();
