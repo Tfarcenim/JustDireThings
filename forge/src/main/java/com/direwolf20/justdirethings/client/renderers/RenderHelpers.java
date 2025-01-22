@@ -378,14 +378,14 @@ public class RenderHelpers {
                         .uv(dummyU0, dummyV0)
                         .overlayCoords(OverlayTexture.NO_OVERLAY)
                         .uv2(light)
-                        .normal(matrixPose, x1, y1, z1);
+                        .normal(matrixPose, x1, y1, z1).endVertex();
 
                 builder.vertex(matrix, x2 * radius, y2 * radius, z2 * radius)
                         .color(red, green, blue, alpha)
                         .uv(dummyU1, dummyV1)
                         .overlayCoords(OverlayTexture.NO_OVERLAY)
                         .uv2(light)
-                        .normal(matrixPose, x2, y2, z2);
+                        .normal(matrixPose, x2, y2, z2).endVertex();
             }
         }
     }

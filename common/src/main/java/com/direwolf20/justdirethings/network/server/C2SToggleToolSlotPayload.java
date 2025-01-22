@@ -22,7 +22,10 @@ public record C2SToggleToolSlotPayload(
 
     @Override
     public void write(FriendlyByteBuf to) {
-
+        to.writeUtf(settingName);
+        to.writeInt(slot);
+        to.writeInt(typeTool);
+        to.writeInt(value);
     }
 }
 

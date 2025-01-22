@@ -5,7 +5,6 @@ import com.direwolf20.justdirethings.common.items.PotionCanisterItem;
 import com.direwolf20.justdirethings.setup.Registration;
 import com.direwolf20.justdirethings.util.ItemStackNBTHandler;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
@@ -35,10 +34,6 @@ public class ToolSettingContainer extends BaseContainer {
     public final List<Slot> dynamicSlots = new ArrayList<>();
     public ItemStackNBTHandler componentItemHandler;
 
-
-    public ToolSettingContainer(int windowId, Inventory playerInventory, Player player, FriendlyByteBuf extraData) {
-        this(windowId, playerInventory, player);
-    }
 
     public ToolSettingContainer(int windowId, Inventory playerInventory, Player player) {
         super(Registration.Tool_Settings_Container.get(), windowId);

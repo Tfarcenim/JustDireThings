@@ -38,7 +38,6 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
     private final ResourceLocation GUI = JustDireThings.id("textures/gui/settings.png");
     protected final ResourceLocation JUSTSLOT = JustDireThings.id( "textures/gui/justslot.png");
 
-    protected final ToolSettingContainer container;
     Player player;
     protected ItemStack tool = ItemStack.EMPTY;
     private EnumSet<Ability> abilities = EnumSet.noneOf(Ability.class);
@@ -61,7 +60,6 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
 
     public ToolSettingScreen(ToolSettingContainer container, Inventory inv, Component name) {
         super(container, inv, name);
-        this.container = container;
         this.player = container.playerEntity;
         if (player.getMainHandItem().getItem() instanceof ToggleableTool) {
             tool = player.getMainHandItem();
@@ -307,7 +305,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
         guiGraphics.blit(GUI, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
         if (renderablesChanged)
             updateRenderables();
-        for (Slot slot : container.dynamicSlots) {
+        for (Slot slot : menu.dynamicSlots) {
             guiGraphics.blit(JUSTSLOT, getGuiLeft() + slot.x - 1, getGuiTop() + slot.y - 1, 0, 0, 18, 18);
         }
     }
@@ -385,7 +383,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
                     }
                     if (requireEquippedButtons.containsKey(shownAbilityButton) && showCustomBinding()) {
                         widgetsToAdd.add(requireEquippedButtons.get(shownAbilityButton));
-                        requireEquipped = bindingMap.get(leftRightClickButtons.get(shownAbilityButton)) == null ? true : bindingMap.get(leftRightClickButtons.get(shownAbilityButton)).requireEquipped();
+                        requireEquipped = bindingMap.get(leftRightClickButtons.get(shownAbilityButton)) == null || bindingMap.get(leftRightClickButtons.get(shownAbilityButton)).requireEquipped();
                     }
                     if (customSettingsButtons.containsKey(shownAbilityButton)) {
                         widgetsToAdd.add(customSettingsButtons.get(shownAbilityButton));
@@ -394,7 +392,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
                 }
             }
 
-            if (widgetsToRemove.size() > 0 || widgetsToAdd.size() > 0) {
+            if (!widgetsToRemove.isEmpty() || !widgetsToAdd.isEmpty()) {
                 renderablesChanged = true;
                 return true;
             }
@@ -407,7 +405,7 @@ public class ToolSettingScreen extends AbstractContainerScreen<ToolSettingContai
     }
 
     public void refreshToolAndSlots() {
-        this.container.refreshSlots(tool);
+        this.menu.refreshSlots(tool);
         Services.PLATFORM.sendToServer(new C2SToggleToolRefreshSlotPayload(toolSlot));
     }
 
